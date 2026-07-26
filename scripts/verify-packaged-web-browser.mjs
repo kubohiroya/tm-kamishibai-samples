@@ -7,7 +7,7 @@ import {fileURLToPath} from 'node:url';
 import {chromium} from 'playwright';
 
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
-const outputSampleDirectory = path.join(projectRoot, 'dist/samples/urashima');
+const outputSampleDirectory = path.join(projectRoot, 'dist/stories/urashima');
 const browserName = 'chromium';
 
 const [html, manifest] = await Promise.all([

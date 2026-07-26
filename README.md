@@ -4,7 +4,7 @@
 
 公開サイト: <https://kubohiroya.github.io/tmpose-kamishibai-samples/>
 
-浦島太郎サンプルの台本、元アセット、生成設定は `samples/urashima/` に配置しています。
+浦島太郎サンプルの台本、元アセット、生成設定は `stories/urashima/` に配置しています。
 
 - `source.txt`: 元アセットを `file:` 参照するビルド元台本
 - `urashima.txt`: editor/playerで共通の変換済み公開用台本
@@ -25,7 +25,7 @@
 
 ## ライセンス
 
-本リポジトリのコンテンツは [Mozilla Public License 2.0](LICENSE)（SPDX: `MPL-2.0`）で提供します。浦島太郎サンプルの適用範囲は [`samples/urashima/LICENSES.md`](samples/urashima/LICENSES.md) に明記しています。
+本リポジトリのコンテンツは [Mozilla Public License 2.0](LICENSE)（SPDX: `MPL-2.0`）で提供します。浦島太郎サンプルの適用範囲は [`stories/urashima/LICENSES.md`](stories/urashima/LICENSES.md) に明記しています。
 
 ## ビルドと検証
 

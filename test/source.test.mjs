@@ -14,7 +14,7 @@ import {
 } from '../scripts/build-packaged-web.mjs';
 
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
-const sampleDirectory = path.join(projectRoot, 'samples/urashima');
+const sampleDirectory = path.join(projectRoot, 'stories/urashima');
 
 function sha256(contents) {
   return createHash('sha256').update(contents).digest('hex');

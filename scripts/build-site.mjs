@@ -8,9 +8,9 @@ import {buildPackagedWeb} from './build-packaged-web.mjs';
 import {verifyPublishedSite} from './verify-site.mjs';
 
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
-const sourceDirectory = path.join(projectRoot, 'samples/urashima');
+const sourceDirectory = path.join(projectRoot, 'stories/urashima');
 const outputDirectory = path.join(projectRoot, 'dist');
-const outputSampleDirectory = path.join(outputDirectory, 'samples/urashima');
+const outputSampleDirectory = path.join(outputDirectory, 'stories/urashima');
 const publicUrl = 'https://kubohiroya.github.io/tmpose-kamishibai-samples/';
 
 function sha256(contents) {
@@ -63,7 +63,7 @@ function renderRootIndex(manifest) {
     ? '<p>Web版には画像・音声・台本を組み込み済みです。TMPoseのライブラリ・モデル取得とカメラ利用にはネットワーク接続が必要です。</p>'
     : '';
   const webAction = manifest.web.enabled
-    ? '      <a class="button" href="samples/urashima/web/">Web版を開く</a>\n'
+    ? '      <a class="button" href="stories/urashima/web/">Web版を開く</a>\n'
     : '';
   return `<!doctype html>
 <html lang="ja">
@@ -96,11 +96,11 @@ function renderRootIndex(manifest) {
     <p>紙芝居DSL 3.1の台本と、画像${manifest.assetCounts.images}件・音声${manifest.assetCounts.sounds}件から生成したサンプルです。</p>
     ${webDescription}
     <div class="actions">
-${webAction}      <a class="button secondary" href="samples/urashima/urashima.txt">台本を表示</a>
-      <a class="button secondary" href="samples/urashima/urashima.sb3" download>再生用SB3をダウンロード</a>
-      <a class="button secondary" href="samples/urashima/manifest.json">manifest</a>
-      <a class="button secondary" href="samples/urashima/LICENSES.md">ライセンス</a>
-      <a class="button secondary" href="samples/urashima/">詳細を見る</a>
+${webAction}      <a class="button secondary" href="stories/urashima/urashima.txt">台本を表示</a>
+      <a class="button secondary" href="stories/urashima/urashima.sb3" download>再生用SB3をダウンロード</a>
+      <a class="button secondary" href="stories/urashima/manifest.json">manifest</a>
+      <a class="button secondary" href="stories/urashima/LICENSES.md">ライセンス</a>
+      <a class="button secondary" href="stories/urashima/">詳細を見る</a>
     </div>
   </article>
   <footer>
@@ -243,7 +243,7 @@ export async function buildSite() {
   const manifest = {
     formatVersion: 3,
     sample: 'urashima',
-    publicUrl: `${publicUrl}samples/urashima/`,
+    publicUrl: `${publicUrl}stories/urashima/`,
     license: 'MPL-2.0',
     builder: config.builder,
     baseSb3: {...config.baseSb3, published: true},
