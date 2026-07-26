@@ -6,9 +6,10 @@
   "description": "TMPose紙芝居の公開サンプルとGitHub Pagesサイト",
   "homepage": "https://kubohiroya.github.io/tmpose-kamishibai-samples/",
   "license": "MPL-2.0",
-  "packageManager": "pnpm@11.11.0",
+  "packageManager": "pnpm@11.17.0",
   "scripts": {
     "build": "node scripts/build-site.mjs",
+    "deploy": "gh workflow run deploy.yml --ref main",
     "test": "node --test test/*.test.mjs",
     "test:web": "node scripts/verify-packaged-web-browser.mjs",
     "verify": "node scripts/verify-site.mjs"
