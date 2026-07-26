@@ -13,9 +13,9 @@
 - `assets.lock.json`: 組み込み対象42件の名前・target・ハッシュ・メタデータ
 - `sample.config.json`: `generic` / `editor` / `player` とWeb版の生成設定
 - `artifacts.lock.json`: 再現可能な生成物のサイズとSHA-256
-- `base/kamishibai.sb3`: 本体 `v3.1.0` から生成した `generic` ベース
+- `base/kamishibai.sb3`: テキストアクション対応済み本体コミットから生成した `generic` ベース
 
-`pnpm build` は、固定した `@kubohiroya/tmpose-kamishibai` `v3.1.0` のビルダーと `@turbowarp/packager` `3.13.0` を使い、次の成果物を生成します。
+`pnpm build` は、固定した `@kubohiroya/tmpose-kamishibai` `v3.1.0` のビルダー、サンプル設定でハッシュ固定した汎用ベース、`@turbowarp/packager` `3.13.0` を使い、次の成果物を生成します。
 
 - `_urashima.sb3` (`editor`): 台本非埋め込み・アセット埋め込み。物語作成者の編集用
 - `urashima.sb3` (`player`): 台本・アセット埋め込み。配布・再生用

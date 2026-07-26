@@ -9,29 +9,29 @@
     "editor": {
       "outputName": "_urashima",
       "sb3": {
-        "size": 14622545,
-        "sha256": "e7b884ea4af043712f94c3c0bb1c5f0498ea83f55381ef04eee0b32e24a759b6"
+        "size": 15046888,
+        "sha256": "3c832b7084749c789adbd9f02f27c37033d9d67279745b1974b97cd92f4fc5f1"
       },
       "script": {
-        "size": 8327,
-        "sha256": "052aba497a229884258582b0f9b446cd6c689bf36d227f136ae9171528b4a0e7"
+        "size": 8610,
+        "sha256": "4b540a5ad7ab390dfbfcaaa33a102f0ca68899071341dd3fa4beeda72594e1ee"
       },
       "manifest": {
-        "sha256": "abc98bbde1427beaee6d6758a6a595729863513a2154e5871e94ca7259429145"
+        "sha256": "edbe1444ced21cefcb13519ba265eceb6c80d02cf8c1c7cc08c8bd30cf504ed2"
       }
     },
     "player": {
       "outputName": "urashima",
       "sb3": {
-        "size": 14624755,
-        "sha256": "eb9532783d9fc6d0014d580bff081dca6655f3d91cb7d0bb9a1ae7d94da3f60c"
+        "size": 15049267,
+        "sha256": "494c06f34c13c03b626316ae7465d397bf3dd333f8f764256da93bb971aef74a"
       },
       "script": {
-        "size": 8327,
-        "sha256": "052aba497a229884258582b0f9b446cd6c689bf36d227f136ae9171528b4a0e7"
+        "size": 8610,
+        "sha256": "4b540a5ad7ab390dfbfcaaa33a102f0ca68899071341dd3fa4beeda72594e1ee"
       },
       "manifest": {
-        "sha256": "f64938fe472bee7fba6ea9f3456c7734e5cf8bca270189ac2cdaffd1820a5629"
+        "sha256": "fb6dd8b014143dee4dfe31cb6da2946aff9d376560f640290e6cba54c4cb2a72"
       }
     }
   },
@@ -43,14 +43,14 @@
     "input": {
       "profile": "player",
       "path": "urashima.sb3",
-      "size": 14624755,
-      "sha256": "eb9532783d9fc6d0014d580bff081dca6655f3d91cb7d0bb9a1ae7d94da3f60c"
+      "size": 15049267,
+      "sha256": "494c06f34c13c03b626316ae7465d397bf3dd333f8f764256da93bb971aef74a"
     },
     "output": {
       "path": "web/index.html",
       "contentType": "text/html",
-      "size": 20671958,
-      "sha256": "2cbba50bb0062fca5f7e2e9885fac1bb0e690f19c4cd85af0920fe6e65b6819b"
+      "size": 21204026,
+      "sha256": "98a78e3b47040e25dfa3b3ac9015289a5706b0e99e7841c65407408fdf3de3b4"
     }
   }
 }

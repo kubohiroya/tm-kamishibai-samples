@@ -10,8 +10,10 @@
   "baseSb3": {
     "path": "base/kamishibai.sb3",
     "profile": "generic",
-    "size": 466638,
-    "sha256": "552f712652187a6fc04e4e167451c9409317b3500c3fa91f052c3dc03a21a38f"
+    "source": "github:kubohiroya/tmpose-kamishibai#d5ebaee7ba5f4e24df4405c339661a3bd980efea",
+    "commit": "d5ebaee7ba5f4e24df4405c339661a3bd980efea",
+    "size": 465404,
+    "sha256": "2950328d5cff2a722c18dda4878dfa6f4bed85413365423fa3ca2a835264b157"
   },
   "sourceScript": "source.txt",
   "assetManifest": "assets.lock.json",
