@@ -73,6 +73,14 @@ test('pins the generic, editor, and player profile contract', async () => {
   assert.equal(config.builder.version, '3.1.0');
   assert.equal(config.builder.commit, 'c92c310159c88ff03ed3cae65dbe21f1991fcf16');
   assert.equal(config.baseSb3.profile, 'generic');
+  assert.equal(
+    config.baseSb3.source,
+    'github:kubohiroya/tmpose-kamishibai#d5ebaee7ba5f4e24df4405c339661a3bd980efea',
+  );
+  assert.equal(
+    config.baseSb3.commit,
+    'd5ebaee7ba5f4e24df4405c339661a3bd980efea',
+  );
   assert.equal(config.baseSb3.size, baseSb3.length);
   assert.equal(config.baseSb3.sha256, sha256(baseSb3));
   assert.equal(artifactsLock.formatVersion, 2);
@@ -137,6 +145,31 @@ test('locks every external script asset and publishes one transformed script', a
   assert.equal(/^(?:asset=.*,(?:file|https?):)/mu.test(published), false);
   assert.equal(published.includes('asset=Stars,backdrop'), true);
   assert.equal(published.includes('asset=Narration,text'), true);
-  assert.equal(/^text=/mu.test(published), false);
-  assert.equal(published.includes('setRuntimeVariable=Narration:むかし'), true);
+  assert.equal(published.includes('asset=EndingText,text'), true);
+  for (const definition of [
+    'text=ui.prompt:ポーズをとろう！',
+    'text=ui.invalidScript:エラー：不正な台本ファイル',
+    'text=ui.open:ファイルをひらく',
+    'text=ui.reload:もういちど',
+    'text=ui.about:このアプリについて',
+    'text=EndingText:お し ま い',
+  ]) {
+    assert.equal(published.includes(definition), true, definition);
+  }
+  assert.equal(published.includes('action=text:Narration:むかし'), true);
+  assert.equal(
+    published.includes('action=text:Narration:むかし　むかし、あるところに...'),
+    true,
+  );
+  assert.equal(/^action=text:Narration:$/mu.test(published), true);
+  assert.equal(
+    published.includes('action=Narration:show:Narration:0,0,100'),
+    true,
+  );
+  assert.equal(
+    published.includes('action=Narration:show:EndingText:0,0,100'),
+    true,
+  );
+  assert.equal(/^setRuntimeVariable=Narration:/mu.test(published), false);
+  assert.equal(/^action=Prompt:show:Narration:/mu.test(published), false);
 });

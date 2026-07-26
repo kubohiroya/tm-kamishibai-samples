@@ -1,6 +1,6 @@
 # 浦島太郎 — 用途別SB3の生成元
 
-浦島太郎の元台本、画像・音声、アセットロック、生成設定を管理します。公開用SB3は、固定した本体 `v3.1.0` の汎用ベースとビルダーからGitHub Pagesのビルド時に生成します。
+浦島太郎の元台本、画像・音声、アセットロック、生成設定を管理します。公開用SB3は、固定したビルダー `v3.1.0` と、テキストアクション対応済みの汎用ベースからGitHub Pagesのビルド時に生成します。
 
 ## 3つのプロファイル
 
@@ -14,7 +14,7 @@
 
 `editor`と`player`は同じ `source.txt` と `assets.lock.json` から生成します。両者の変換済み台本は同一バイト列です。`player`ではタイトル画面をクリックすると、ファイル選択を開かず、SB3内の台本とアセットだけで紙芝居を開始します。
 
-本体 `v3.1.0` では文書化済みのシーン内 `text=` が実行時エラーになるため、冒頭のテキスト更新は互換性のある `setRuntimeVariable=` で記述しています。本体側の修正は [`tmpose-kamishibai` Issue #63](https://github.com/kubohiroya/tmpose-kamishibai/issues/63) で追跡します。
+冒頭のテキストは `action=text:Narration:...` と `action=wait:...` を交互に記述し、シーン内の時系列に沿って更新します。汎用ベースは、同アクション、表示済みテキストの再描画、scene 0 のUI文言定義に対応した本体コミット `d5ebaee7ba5f4e24df4405c339661a3bd980efea` から生成しています。
 
 ## ビルド元データ
 
@@ -25,7 +25,7 @@
 - `assets.lock.json`: 組み込み対象42件の名前、target、Scratchメタデータ、サイズ、SHA-256
 - `sample.config.json`: ベース、ビルダー、プロファイル、出力名、既定OFFのWeb生成機能を浦島太郎で有効にする設定
 - `artifacts.lock.json`: `_urashima` / `urashima` / `web/index.html` の再現可能な出力ハッシュ
-- `base/kamishibai.sb3`: `tmpose-kamishibai` `v3.1.0` の `generic` 成果物
+- `base/kamishibai.sb3`: `tmpose-kamishibai` `d5ebaee7ba5f4e24df4405c339661a3bd980efea` の `generic` 成果物
 
 コスチューム18件は汎用アプリの `Actor`、背景6件と音声18件は `Stage` に組み込みます。これにより、汎用ベースへ浦島太郎専用のScratch targetを追加せず、台本のactor定義からクローンを生成できます。
 
@@ -39,6 +39,7 @@ Web版は `player` の `urashima.sb3` だけをTurboWarp Packager 3.13.0へ渡�
 
 - 移設元: [`kubohiroya/tmpose-kamishibai`](https://github.com/kubohiroya/tmpose-kamishibai) PR #44
 - 移設元コミット: `9526c9d6391622ee261b8d7c0778b1fbbd2e6745`
-- ビルダーとベース: `tmpose-kamishibai` `v3.1.0` / `c92c310159c88ff03ed3cae65dbe21f1991fcf16`
+- ビルダー: `tmpose-kamishibai` `v3.1.0` / `c92c310159c88ff03ed3cae65dbe21f1991fcf16`
+- 汎用ベース: `tmpose-kamishibai` / `d5ebaee7ba5f4e24df4405c339661a3bd980efea`
 
 生成・検証・公開の実装は [Issue #2](https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/2)、Packager Web版は [Issue #7](https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/7) で管理します。

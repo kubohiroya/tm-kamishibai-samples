@@ -394,14 +394,14 @@
     },
     {
       "name": "End",
-      "uri": "file:assets/images/45b03f8de9c2090c0449184b43f0a33c.png",
+      "uri": "file:assets/images/47a3f4dc8ef6daef91623e54ee109cd9.png",
       "kind": "backdrop",
       "target": "@stage",
       "sb3Name": "End",
       "contentType": "image/png",
       "dataFormat": "png",
-      "size": 558732,
-      "sha256": "1f96993787fea1efb64cb37b55f2dcda9da00eef7d23921700d786ef6e61bcdf",
+      "size": 972749,
+      "sha256": "728ac621230d821f2183815c89c391a8eb6a7c24ad250502ff5080e7b0c1f114",
       "license": "MPL-2.0: LICENSES.md",
       "metadata": {
         "bitmapResolution": 2,
