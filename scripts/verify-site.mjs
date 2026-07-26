@@ -68,8 +68,8 @@ async function verifyProfile(outputSampleDirectory, profile, record) {
 export async function verifyPublishedSite(options = {}) {
   const projectRoot = options.projectRoot ?? fileURLToPath(new URL('../', import.meta.url));
   const outputDirectory = options.outputDirectory ?? path.join(projectRoot, 'dist');
-  const sourceDirectory = options.sourceDirectory ?? path.join(projectRoot, 'samples/urashima');
-  const outputSampleDirectory = path.join(outputDirectory, 'samples/urashima');
+  const sourceDirectory = options.sourceDirectory ?? path.join(projectRoot, 'stories/urashima');
+  const outputSampleDirectory = path.join(outputDirectory, 'stories/urashima');
 
   const [
     sourceFiles,
@@ -111,7 +111,7 @@ export async function verifyPublishedSite(options = {}) {
   assert.equal(manifest.sample, 'urashima');
   assert.equal(
     manifest.publicUrl,
-    'https://kubohiroya.github.io/tmpose-kamishibai-samples/samples/urashima/',
+    'https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/',
   );
   assert.equal(manifest.license, 'MPL-2.0');
   assert.equal(manifest.builder.version, '3.1.0');
@@ -200,7 +200,7 @@ export async function verifyPublishedSite(options = {}) {
   assert(packagerNotice.includes('Copyright (C) 2021-2024 Thomas Weber'));
   assert(packagerNotice.includes('MPL-2.0'));
   assert(rootIndex.includes('https://github.com/kubohiroya/tmpose-kamishibai-samples'));
-  assert(!rootIndex.includes('https://kubohiroya.github.io/tmpose-kamishibai/samples/'));
+  assert(!rootIndex.includes('https://kubohiroya.github.io/tmpose-kamishibai/stories/'));
   assert(sampleIndex.includes(manifest.profiles.player.sb3.sha256));
   assert(sampleIndex.includes(manifest.profiles.editor.sb3.sha256));
   assert(sampleIndex.includes(manifest.web.output.sha256));

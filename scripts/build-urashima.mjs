@@ -8,7 +8,7 @@ import {fileURLToPath} from 'node:url';
 import {buildSb3Bundle} from '@kubohiroya/tmpose-kamishibai/builder';
 
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
-const sampleDirectory = path.join(projectRoot, 'samples/urashima');
+const sampleDirectory = path.join(projectRoot, 'stories/urashima');
 const require = createRequire(import.meta.url);
 const installedPackage = JSON.parse(
   await readFile(require.resolve('@kubohiroya/tmpose-kamishibai/package.json'), 'utf8'),
