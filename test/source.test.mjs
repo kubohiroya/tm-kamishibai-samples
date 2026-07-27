@@ -12,6 +12,10 @@ import {
   buildPackagedWeb,
   DEFAULT_WEB_CONFIGURATION,
 } from '../scripts/build-packaged-web.mjs';
+import {
+  actorCloneRuntimePatch,
+  patchActorCloneRuntime,
+} from '../scripts/patch-actor-clone-runtime.mjs';
 
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 const sampleDirectory = path.join(projectRoot, 'stories/urashima');
@@ -83,6 +87,23 @@ test('pins the generic, editor, and player profile contract', async () => {
   );
   assert.equal(config.baseSb3.size, baseSb3.length);
   assert.equal(config.baseSb3.sha256, sha256(baseSb3));
+  assert.equal(config.baseSb3.runtimePatch.id, actorCloneRuntimePatch.id);
+  assert.equal(
+    config.baseSb3.runtimePatch.outputName,
+    actorCloneRuntimePatch.outputName,
+  );
+  const patchedBaseSb3 = patchActorCloneRuntime(baseSb3);
+  assert.equal(config.baseSb3.runtimePatch.size, patchedBaseSb3.length);
+  assert.equal(config.baseSb3.runtimePatch.sha256, sha256(patchedBaseSb3));
+  const patchedArchive = unzipSync(new Uint8Array(patchedBaseSb3));
+  const patchedProject = JSON.parse(strFromU8(patchedArchive['project.json']));
+  const assetManagerSource = Buffer.from(
+    patchedProject.extensionURLs.twAssetManager.split(',')[1],
+    'base64',
+  ).toString('utf8');
+  assert(assetManagerSource.includes(actorCloneRuntimePatch.extensionVersion));
+  assert(assetManagerSource.includes('this.actorNameOf(target2) === actor'));
+  assert(assetManagerSource.includes('&& target.isOriginal'));
   assert.equal(artifactsLock.formatVersion, 2);
   assert.deepEqual(config.profiles, {
     editor: {outputName: '_urashima', script: 'external', assets: 'embedded'},
@@ -170,6 +191,23 @@ test('locks every external script asset and publishes one transformed script', a
     published.includes('action=Narration:show:EndingText:0,0,100'),
     true,
   );
+  const danceScene = published.slice(
+    published.indexOf('sceneLabel=welcome to dragon castle'),
+    published.indexOf('sceneLabel=goodbye dragon castle'),
+  );
+  const danceFishActions = [
+    'action=bgm:Jump',
+    'action=Fish:show:Fish1:-130,-27,70',
+    'action=Fish:setLayer:back',
+    'action=Fish:loop:Fish1,Fish2:1,1',
+    'action=Urashima:setSkin:Urashima-dance-1:45',
+  ];
+  assert.equal(danceFishActions.every((action) => danceScene.includes(action)), true);
+  assert.deepEqual(
+    danceFishActions.map((action) => danceScene.indexOf(action)),
+    danceFishActions.map((action) => danceScene.indexOf(action)).toSorted((a, b) => a - b),
+  );
+  assert.equal(danceScene.includes('action=Fish:show:-130,-27,70'), false);
   assert.equal(/^setRuntimeVariable=Narration:/mu.test(published), false);
   assert.equal(/^action=Prompt:show:Narration:/mu.test(published), false);
 });

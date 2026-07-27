@@ -26,8 +26,11 @@
 - `sample.config.json`: ベース、ビルダー、プロファイル、出力名、既定OFFのWeb生成機能を浦島太郎で有効にする設定
 - `artifacts.lock.json`: `_urashima` / `urashima` / `web/index.html` の再現可能な出力ハッシュ
 - `base/kamishibai.sb3`: `tmpose-kamishibai` `d5ebaee7ba5f4e24df4405c339661a3bd980efea` の `generic` 成果物
+- `scripts/patch-actor-clone-runtime.mjs`: 元のベースを変更せず、Asset Managerが`actorName`でクローンを解決できるよう生成時に適用する互換パッチ
 
 コスチューム18件は汎用アプリの `Actor`、背景6件と音声18件は `Stage` に組み込みます。これにより、汎用ベースへ浦島太郎専用のScratch targetを追加せず、台本のactor定義からクローンを生成できます。
+
+scene 3の魚アニメーションでは、`Fish`クローンを乙姫と同じ中心座標に置き、背面レイヤーで`Fish1`と`Fish2`をloop再生します。固定済み汎用ベースのAsset ManagerはScratch target名だけを検索し、コスチューム元のサイズをクローンへ再適用するため、生成時の互換パッチで`actorName`変数も検索対象に加え、クローンの表示サイズを保持します。元の`base/kamishibai.sb3`は変更せず、パッチ後の一時ベースも`sample.config.json`のサイズとSHA-256で検証します。
 
 Web版は `player` の `urashima.sb3` だけをTurboWarp Packager 3.13.0へ渡して生成します。音声はブラウザ互換性を考慮してMP3（44.1kHz、モノラル、128kbps）へ統一しています。Packagerは外部URLのScratch拡張も単一HTMLへ取り込みます。実行時にオンライン取得するものはmanifestで許可したTMPoseのTensorFlow.js、Teachable Machine Pose、モデルに限定し、台本固有の画像・音声・台本はSB3内参照のまま利用します。
 
