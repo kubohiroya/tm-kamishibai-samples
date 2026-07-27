@@ -98,7 +98,7 @@ try {
   await page.waitForFunction(
     () => {
       const variables = window.scaffolding?.vm?.runtime?.ext_lmsTempVars2?.runtimeVariables;
-      return variables?.message === '45 / 45' && variables?.sceneIndex !== undefined;
+      return variables?.message === '43 / 43' && variables?.sceneIndex !== undefined;
     },
     undefined,
     {timeout: 120000},
