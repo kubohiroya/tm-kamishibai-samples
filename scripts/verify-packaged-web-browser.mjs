@@ -276,6 +276,91 @@ try {
     const runtime = window.scaffolding.vm.runtime;
     const stage = runtime.getTargetForStage();
     const scriptVariable = stage.variables.tmposeEmbeddedScript;
+    const sections = String(scriptVariable.value).split(/\r?\n---\r?\n/u);
+    const header = sections[0];
+    const danceScene = sections.find((section) =>
+      section.includes('sceneLabel=welcome to dragon castle'),
+    );
+    if (!danceScene) throw new Error('Dance scene is missing from the embedded script.');
+    scriptVariable.value = [
+      header,
+      '---',
+      danceScene
+        .replace(/^TMPoseURL=.*(?:\r?\n)?/mu, '')
+        .replace(/^action=Urashima:pose:.*$/mu, 'action=wait:30'),
+    ].join('\n');
+  });
+  await page.locator('canvas.sc-canvas').click({position: {x: 480, y: 360}});
+  await page.waitForFunction(
+    () => {
+      const runtime = window.scaffolding?.vm?.runtime;
+      const actor = (name) =>
+        runtime?.targets.find((target) => {
+          const actorName = target.lookupVariableByNameAndType?.('actorName', '')?.value;
+          return !target.isStage && actorName === name;
+        });
+      const fish = actor('Fish');
+      const princess = actor('Princess');
+      const drawList = runtime?.renderer?._drawList ?? [];
+      return (
+        fish?.visible
+        && princess?.visible
+        && drawList.indexOf(fish.drawableID) < drawList.indexOf(princess.drawableID)
+      );
+    },
+    undefined,
+    {timeout: 120000},
+  );
+  const danceState = await page.evaluate(async () => {
+    const runtime = window.scaffolding.vm.runtime;
+    const actor = (name) =>
+      runtime.targets.find((target) => {
+        const actorName = target.lookupVariableByNameAndType?.('actorName', '')?.value;
+        return !target.isStage && actorName === name;
+      });
+    const fish = actor('Fish');
+    const princess = actor('Princess');
+    const fishSkinNames = [];
+    for (let index = 0; index < 12; index += 1) {
+      const drawable = runtime.renderer._allDrawables[fish.drawableID];
+      const skinId = drawable?._skin?._id;
+      fishSkinNames.push(fish.getCostumes().find((costume) => costume.skinId === skinId)?.name);
+      await new Promise((resolve) => setTimeout(resolve, 250));
+    }
+    const drawList = runtime.renderer._drawList;
+    return {
+      fish: {visible: fish.visible, x: fish.x, y: fish.y, size: fish.size},
+      princess: {
+        visible: princess.visible,
+        x: princess.x,
+        y: princess.y,
+        size: princess.size,
+      },
+      fishBehindPrincess:
+        drawList.indexOf(fish.drawableID) < drawList.indexOf(princess.drawableID),
+      fishSkinNames: [...new Set(fishSkinNames)].filter(Boolean).toSorted(),
+    };
+  });
+  assert.deepEqual(danceState, {
+    fish: {visible: true, x: -130, y: -27, size: 70},
+    princess: {visible: true, x: -130, y: -27, size: 70},
+    fishBehindPrincess: true,
+    fishSkinNames: ['Fish1', 'Fish2'],
+  });
+
+  await page.reload({waitUntil: 'domcontentloaded', timeout: 120000});
+  await page.waitForFunction(
+    () => {
+      const runtime = window.scaffolding?.vm?.runtime;
+      return runtime?.ext_lmsTempVars2?.runtimeVariables?.skipMode === 'title';
+    },
+    undefined,
+    {timeout: 120000},
+  );
+  await page.evaluate(() => {
+    const runtime = window.scaffolding.vm.runtime;
+    const stage = runtime.getTargetForStage();
+    const scriptVariable = stage.variables.tmposeEmbeddedScript;
     const header = String(scriptVariable.value).split(/\r?\n---\r?\n/u)[0];
     scriptVariable.value = [
       header,
@@ -309,7 +394,7 @@ try {
   );
 
   console.log(
-    `Verified ${browserName}: title, scene-0 UI text assets, visible Narration and EndingText, 18 decoded MP3 sounds with playback, no file picker, and ${uniqueRequests.length} allowed requests.`,
+    `Verified ${browserName}: title, scene-0 UI text assets, scene-3 Fish loop behind Princess, visible Narration and EndingText, 18 decoded MP3 sounds with playback, no file picker, and ${uniqueRequests.length} allowed requests.`,
   );
 } finally {
   await browser?.close();

@@ -1,11 +1,17 @@
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
-import {readFile} from 'node:fs/promises';
+import {mkdtemp, readFile, rm, writeFile} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
 import path from 'node:path';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 
 import {buildSb3Bundle} from '@kubohiroya/tmpose-kamishibai/builder';
+
+import {
+  actorCloneRuntimePatch,
+  patchActorCloneRuntime,
+} from './patch-actor-clone-runtime.mjs';
 
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 const sampleDirectory = path.join(projectRoot, 'stories/urashima');
@@ -44,6 +50,11 @@ function verifyConfiguration(config, artifactsLock) {
   assert.equal(config.profiles.player.script, 'embedded');
   assert.equal(config.profiles.editor.assets, 'embedded');
   assert.equal(config.profiles.player.assets, 'embedded');
+  assert.equal(config.baseSb3.runtimePatch.id, actorCloneRuntimePatch.id);
+  assert.equal(
+    config.baseSb3.runtimePatch.outputName,
+    actorCloneRuntimePatch.outputName,
+  );
 }
 
 function verifyArtifactLock(result, lock, profile) {
@@ -65,23 +76,47 @@ export async function buildUrashima(outputDirectory) {
   const artifactsLock = await readJson(config.artifactsLock);
   verifyConfiguration(config, artifactsLock);
   const baseSb3Path = path.join(sampleDirectory, config.baseSb3.path);
-  await verifyLockedFile(baseSb3Path, config.baseSb3, 'generic base SB3');
-
-  const results = Object.fromEntries(
-    await Promise.all(
-      Object.entries(config.profiles).map(async ([profile, profileConfig]) => [
-        profile,
-        await buildSb3Bundle({
-          baseSb3: baseSb3Path,
-          sourceScript: path.join(sampleDirectory, config.sourceScript),
-          assetManifest: path.join(sampleDirectory, config.assetManifest),
-          outputDirectory,
-          outputName: profileConfig.outputName,
-          profile,
-        }),
-      ]),
-    ),
+  const baseSb3 = await verifyLockedFile(baseSb3Path, config.baseSb3, 'generic base SB3');
+  const patchedBaseSb3 = patchActorCloneRuntime(baseSb3);
+  assert.equal(
+    patchedBaseSb3.length,
+    config.baseSb3.runtimePatch.size,
+    'patched base SB3 size differs from its lock.',
   );
+  assert.equal(
+    sha256(patchedBaseSb3),
+    config.baseSb3.runtimePatch.sha256,
+    'patched base SB3 SHA-256 differs from its lock.',
+  );
+
+  const temporaryDirectory = await mkdtemp(
+    path.join(tmpdir(), 'tmpose-kamishibai-patched-base-'),
+  );
+  let results;
+  try {
+    const patchedBaseSb3Path = path.join(
+      temporaryDirectory,
+      config.baseSb3.runtimePatch.outputName,
+    );
+    await writeFile(patchedBaseSb3Path, patchedBaseSb3);
+    results = Object.fromEntries(
+      await Promise.all(
+        Object.entries(config.profiles).map(async ([profile, profileConfig]) => [
+          profile,
+          await buildSb3Bundle({
+            baseSb3: patchedBaseSb3Path,
+            sourceScript: path.join(sampleDirectory, config.sourceScript),
+            assetManifest: path.join(sampleDirectory, config.assetManifest),
+            outputDirectory,
+            outputName: profileConfig.outputName,
+            profile,
+          }),
+        ]),
+      ),
+    );
+  } finally {
+    await rm(temporaryDirectory, {recursive: true, force: true});
+  }
 
   for (const [profile, result] of Object.entries(results)) {
     const lock = artifactsLock.profiles[profile];

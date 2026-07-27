@@ -13,7 +13,14 @@
     "source": "github:kubohiroya/tmpose-kamishibai#d5ebaee7ba5f4e24df4405c339661a3bd980efea",
     "commit": "d5ebaee7ba5f4e24df4405c339661a3bd980efea",
     "size": 465404,
-    "sha256": "2950328d5cff2a722c18dda4878dfa6f4bed85413365423fa3ca2a835264b157"
+    "sha256": "2950328d5cff2a722c18dda4878dfa6f4bed85413365423fa3ca2a835264b157",
+    "runtimePatch": {
+      "id": "tw-asset-manager-actor-clone-compatibility",
+      "issue": "https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/18",
+      "outputName": "kamishibai-actor-clone-runtime.sb3",
+      "size": 465628,
+      "sha256": "9cbc06c3ab7bfdebfde25e2a6914821f811f24192788e0cf524bccb5513c8cbf"
+    }
   },
   "sourceScript": "source.txt",
   "assetManifest": "assets.lock.json",
