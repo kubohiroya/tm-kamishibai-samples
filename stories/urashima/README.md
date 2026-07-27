@@ -25,10 +25,12 @@
 - `assets.lock.json`: 組み込み対象42件の名前、target、Scratchメタデータ、サイズ、SHA-256
 - `sample.config.json`: ベース、ビルダー、プロファイル、出力名、既定OFFのWeb生成機能を浦島太郎で有効にする設定
 - `artifacts.lock.json`: `_urashima` / `urashima` / `web/index.html` の再現可能な出力ハッシュ
-- `base/kamishibai.sb3`: `tmpose-kamishibai` `d5ebaee7ba5f4e24df4405c339661a3bd980efea` の `generic` 成果物
+- `base/kamishibai.sb3`: `tmpose-kamishibai` `a5b64639b96c55a076c3620f37dde3272b522e3c` の `generic` 成果物
 - `scripts/patch-actor-clone-runtime.mjs`: 元のベースを変更せず、Asset Managerが`actorName`でクローンを解決できるよう生成時に適用する互換パッチ
 
 コスチューム18件は汎用アプリの `Actor`、背景6件と音声18件は `Stage` に組み込みます。これにより、汎用ベースへ浦島太郎専用のScratch targetを追加せず、台本のactor定義からクローンを生成できます。
+
+`Fish1`と`Fish2`は、`setLoadingCostume=Fish1,Fish2`により通常アセット読込中のLoading画像として交互に表示します。Loading用の2画像は読込進捗の分子・分母から除外されます。
 
 scene 3の魚アニメーションでは、`Fish`クローンを乙姫と同じ中心座標に置き、背面レイヤーで`Fish1`と`Fish2`をloop再生します。固定済み汎用ベースのAsset ManagerはScratch target名だけを検索し、コスチューム元のサイズをクローンへ再適用するため、生成時の互換パッチで`actorName`変数も検索対象に加え、クローンの表示サイズを保持します。元の`base/kamishibai.sb3`は変更せず、パッチ後の一時ベースも`sample.config.json`のサイズとSHA-256で検証します。
 

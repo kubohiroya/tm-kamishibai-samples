@@ -79,11 +79,11 @@ test('pins the generic, editor, and player profile contract', async () => {
   assert.equal(config.baseSb3.profile, 'generic');
   assert.equal(
     config.baseSb3.source,
-    'github:kubohiroya/tmpose-kamishibai#d5ebaee7ba5f4e24df4405c339661a3bd980efea',
+    'github:kubohiroya/tmpose-kamishibai#a5b64639b96c55a076c3620f37dde3272b522e3c',
   );
   assert.equal(
     config.baseSb3.commit,
-    'd5ebaee7ba5f4e24df4405c339661a3bd980efea',
+    'a5b64639b96c55a076c3620f37dde3272b522e3c',
   );
   assert.equal(config.baseSb3.size, baseSb3.length);
   assert.equal(config.baseSb3.sha256, sha256(baseSb3));
@@ -133,7 +133,7 @@ test('pins the generic, editor, and player profile contract', async () => {
   assert.deepEqual(stage.variables.tmposeEmbeddedScript, ['__tmpose_embedded_script', '']);
   assert.deepEqual(
     project.targets.map((target) => target.name),
-    ['Stage', 'Actor', 'prompt', 'openButton', 'reloadButton', 'showTitleButton', 'Hatchling'],
+    ['Stage', 'Actor', 'prompt', 'openButton', 'reloadButton', 'showTitleButton', 'Loading'],
   );
 });
 
