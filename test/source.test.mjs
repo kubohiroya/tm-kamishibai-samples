@@ -167,6 +167,8 @@ test('locks every external script asset and publishes one transformed script', a
   assert.equal(published.includes('asset=Stars,backdrop'), true);
   assert.equal(published.includes('asset=Narration,text'), true);
   assert.equal(published.includes('asset=EndingText,text'), true);
+  assert.equal(source.includes('setLoadingCostume=Fish1,Fish2'), true);
+  assert.equal(published.includes('setLoadingCostume=Fish1,Fish2'), true);
   for (const definition of [
     'text=ui.prompt:ポーズをとろう！',
     'text=ui.invalidScript:エラー：不正な台本ファイル',
