@@ -97,7 +97,9 @@ export async function buildPackagedWeb({
     size: input.length,
     sha256: sha256(input),
   };
-  assert.deepEqual(inputRecord, expectedInput, 'Packager input differs from the locked player SB3.');
+  if (expectedInput !== undefined) {
+    assert.deepEqual(inputRecord, expectedInput, 'Packager input differs from the locked player SB3.');
+  }
 
   const extensions = projectExtensions(input);
   const loadedProject = await Packager.loadProject(input);
@@ -115,7 +117,9 @@ export async function buildPackagedWeb({
     size: firstBytes.length,
     sha256: sha256(firstBytes),
   };
-  assert.deepEqual(outputRecord, expectedOutput, 'Packager HTML differs from its artifact lock.');
+  if (expectedOutput !== undefined) {
+    assert.deepEqual(outputRecord, expectedOutput, 'Packager HTML differs from its artifact lock.');
+  }
 
   const temporaryDirectory = await mkdtemp(path.join(tmpdir(), 'tmpose-kamishibai-web-'));
   try {

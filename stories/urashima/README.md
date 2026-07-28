@@ -28,6 +28,8 @@
 - `base/kamishibai.sb3`: `tmpose-kamishibai` `17246c6d2a7e3b357d55112af766f68743a37ba9` の `generic` 成果物
 - `scripts/patch-actor-clone-runtime.mjs`: 元のベースを変更せず、Asset Managerが`actorName`でクローンを解決できるよう生成時に適用する互換パッチ
 
+`source.txt`などの入力を意図的に変更したときは、リポジトリルートで`pnpm update:artifacts-lock`を実行すると、両プロファイルとWeb版を実際に生成して`artifacts.lock.json`を再作成できます。その後の`pnpm build`では、再生成したロックとの一致を通常どおり検証します。
+
 コスチューム18件は汎用アプリの `Actor`、背景6件と音声18件は `Stage` に組み込みます。これにより、汎用ベースへ浦島太郎専用のScratch targetを追加せず、台本のactor定義からクローンを生成できます。
 
 `Fish1`と`Fish2`は、`setLoadingCostume=Fish1,Fish2`により通常アセット読込中のLoading画像として交互に表示します。Loading用の2画像は読込進捗の分子・分母から除外されます。

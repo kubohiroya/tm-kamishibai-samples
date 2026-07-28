@@ -32,6 +32,11 @@
   ],
   "scriptReplacements": [
     {
+      "description": "Princess pose setup",
+      "from": "action=Urashima:pose:Urashima-dance-1,Urashima-dance-2,Urashima-dance-1,Urashima-dance-2:dance1,dance2,dance1,dance2:Drum Funky,Drum Funky,Drum Funky,Drum Funky",
+      "to": "action=Princess:setSkin:p1:70"
+    },
+    {
       "description": "two-pose class names",
       "from": "#action=Princess:pose:p1,p2,p1,p2:pose1,pose2,pose1,pose2:Drum Funky,Drum Funky,Drum Funky,Drum Funky",
       "to": "#action=Princess:pose:p1,p2,p1,p2:p1,p2,p1,p2:Drum Funky,Drum Funky,Drum Funky,Drum Funky"

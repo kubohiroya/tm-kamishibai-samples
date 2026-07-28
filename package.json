@@ -13,6 +13,7 @@
     "test": "node --test test/*.test.mjs",
     "test:web": "node scripts/verify-packaged-web-browser.mjs",
     "update:my-urashima": "node scripts/update-my-urashima-artifacts.mjs",
+    "update:artifacts-lock": "node scripts/update-urashima-artifacts-lock.mjs",
     "verify": "node scripts/verify-site.mjs"
   },
   "engines": {
