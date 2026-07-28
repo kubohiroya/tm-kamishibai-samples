@@ -15,10 +15,13 @@
 - `artifacts.lock.json`: 再現可能な生成物のサイズとSHA-256
 - `base/kamishibai.sb3`: テキストアクション対応済み本体コミットから生成した `generic` ベース
 
+`stories/my-urashima/`はワークショップ用の依存ストーリーです。`urashima`の`source.txt`、アセットロック、generic baseを親入力として、Princess PNGを独立した`Princess`スプライトへ直接組み込んだ、台本非埋め込みの`my-urashima.sb3`を生成します。生成規約と更新方法は[`stories/my-urashima/README.md`](stories/my-urashima/README.md)に記載しています。
+
 `pnpm build` は、固定した `@kubohiroya/tmpose-kamishibai` `v3.1.0` のビルダー、サンプル設定でハッシュ固定した汎用ベース、`@turbowarp/packager` `3.13.0` を使い、次の成果物を生成します。
 
 - `_urashima.sb3` (`editor`): 台本非埋め込み・アセット埋め込み。物語作成者の編集用
 - `urashima.sb3` (`player`): 台本・アセット埋め込み。配布・再生用
+- `my-urashima.sb3` (`dependent editor`): `urashima`依存・台本非埋め込み・Princess専用スプライト付きの教材用
 - `web/index.html`: `player`だけを入力とする、画像・音声・台本組み込み済みの単一HTML
 
 先頭の `_` は物語作成者による内部的使用を示します。`player` は編集禁止を意味する「再生専用」ではなく「再生用」です。成果物そのものはリポジトリへ重複コミットせず、GitHub Pagesのビルド時にロック済み入力から生成します。

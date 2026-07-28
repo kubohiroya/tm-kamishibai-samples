@@ -1,0 +1,51 @@
+{
+  "formatVersion": 1,
+  "sample": "my-urashima",
+  "parentStory": {
+    "name": "urashima",
+    "config": "../urashima/sample.config.json"
+  },
+  "profile": {
+    "outputName": "my-urashima",
+    "script": "external",
+    "assets": "embedded"
+  },
+  "targets": [
+    {
+      "name": "Princess",
+      "type": "sprite",
+      "layerOrder": 6,
+      "visible": false,
+      "x": 4,
+      "y": -16,
+      "size": 70,
+      "direction": 90,
+      "draggable": false,
+      "rotationStyle": "all around",
+      "costumes": [
+        {
+          "asset": "Princess",
+          "reference": "costume"
+        }
+      ]
+    }
+  ],
+  "scriptReplacements": [
+    {
+      "description": "two-pose class names",
+      "from": "#action=Princess:pose:p1,p2,p1,p2:pose1,pose2,pose1,pose2:Drum Funky,Drum Funky,Drum Funky,Drum Funky",
+      "to": "#action=Princess:pose:p1,p2,p1,p2:p1,p2,p1,p2:Drum Funky,Drum Funky,Drum Funky,Drum Funky"
+    },
+    {
+      "description": "three-pose class names",
+      "from": "#action=Princess:pose:p1,p2,p3,p1,p2,p3:pose1,pose2,pose3,pose1,pose2,pose3:Drum Funky,Drum Funky,Drum Funky,Drum Funky,Drum Funky,Drum Funky",
+      "to": "#action=Princess:pose:p1,p2,p3,p1,p2,p3:p1,p2,p3,p1,p2,p3:Drum Funky,Drum Funky,Drum Funky,Drum Funky,Drum Funky,Drum Funky"
+    },
+    {
+      "description": "four-pose class names",
+      "from": "#action=Princess:pose:p1,p2,p3,p4,p1,p2,p3,p4:pose1,pose2,pose3,pose4,pose1,pose2,pose3,pose4:Drum Funky,Drum Funky,Drum Funky,Drum Funky,Drum Funky,Drum Funky,Drum Funky,Drum Funky",
+      "to": "#action=Princess:pose:p1,p2,p3,p4,p1,p2,p3,p4:p1,p2,p3,p4,p1,p2,p3,p4:Drum Funky,Drum Funky,Drum Funky,Drum Funky,Drum Funky,Drum Funky,Drum Funky,Drum Funky"
+    }
+  ],
+  "artifactsLock": "artifacts.lock.json"
+}

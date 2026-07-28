@@ -3,14 +3,17 @@ import {copyFile, cp, mkdir, readFile, readdir, rm, writeFile} from 'node:fs/pro
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 
+import {buildMyUrashima} from './build-my-urashima.mjs';
 import {buildUrashima} from './build-urashima.mjs';
 import {buildPackagedWeb} from './build-packaged-web.mjs';
 import {verifyPublishedSite} from './verify-site.mjs';
 
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 const sourceDirectory = path.join(projectRoot, 'stories/urashima');
+const mySourceDirectory = path.join(projectRoot, 'stories/my-urashima');
 const outputDirectory = path.join(projectRoot, 'dist');
 const outputSampleDirectory = path.join(outputDirectory, 'stories/urashima');
+const myOutputSampleDirectory = path.join(outputDirectory, 'stories/my-urashima');
 const publicUrl = 'https://kubohiroya.github.io/tmpose-kamishibai-samples/';
 
 function sha256(contents) {
@@ -220,7 +223,9 @@ export async function buildSite() {
   await rm(outputDirectory, {recursive: true, force: true});
   await mkdir(path.dirname(outputSampleDirectory), {recursive: true});
   await cp(sourceDirectory, outputSampleDirectory, {recursive: true});
+  await cp(mySourceDirectory, myOutputSampleDirectory, {recursive: true});
   const {artifactsLock, config, results} = await buildUrashima(outputSampleDirectory);
+  await buildMyUrashima(myOutputSampleDirectory);
   const [sourceScript, assetManifest, assetManifestRecord, sourceScriptRecord] = await Promise.all([
     readFile(path.join(sourceDirectory, config.sourceScript)),
     readFile(path.join(sourceDirectory, config.assetManifest), 'utf8').then(JSON.parse),

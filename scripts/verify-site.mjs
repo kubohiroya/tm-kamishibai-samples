@@ -6,6 +6,8 @@ import {fileURLToPath, pathToFileURL} from 'node:url';
 
 import {validateBundle} from '@kubohiroya/tmpose-kamishibai/builder';
 
+import {verifyMyUrashimaOutput} from './build-my-urashima.mjs';
+
 function sha256(contents) {
   return createHash('sha256').update(contents).digest('hex');
 }
@@ -209,6 +211,9 @@ export async function verifyPublishedSite(options = {}) {
   assert(sampleIndex.indexOf('Web版を開く') < sampleIndex.indexOf('台本を表示'));
   assert(sampleIndex.indexOf('台本を表示') < sampleIndex.indexOf('再生用SB3をダウンロード'));
   assert(publishedFiles.includes('.nojekyll'));
+  assert(publishedFiles.includes('stories/my-urashima/my-urashima.sb3'));
+  assert(publishedFiles.includes('stories/my-urashima/my-urashima.txt'));
+  await verifyMyUrashimaOutput(path.join(outputDirectory, 'stories/my-urashima'));
 
   const noJekyll = await stat(path.join(outputDirectory, '.nojekyll'));
   assert(noJekyll.isFile());
