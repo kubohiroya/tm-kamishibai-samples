@@ -192,6 +192,7 @@ test('keeps my-urashima external-script-only with Princess assets isolated by sp
     princess.costumes.map(({name, dataFormat}) => ({name, dataFormat})),
     [{name: 'Princess', dataFormat: 'png'}],
   );
+  assert.equal(princess.size, 70);
   assert.equal(
     actor.costumes.some(({name}) => name === 'Princess'),
     false,
@@ -207,6 +208,9 @@ test('keeps my-urashima external-script-only with Princess assets isolated by sp
   );
   assert.equal(script.includes('asset=Princess,costume\n'), true);
   assert.equal(script.includes('asset=Princess,costume:Actor'), false);
+  assert.equal(script.includes('action=Princess:show:Princess:-130,-27,70'), true);
+  assert.equal(script.includes('action=Princess:setSkin:p1:70'), true);
+  assert.equal(script.includes('action=Urashima:pose:Urashima-dance-1'), false);
   assert.deepEqual(config.parentStory, {
     name: 'urashima',
     config: '../urashima/sample.config.json',
@@ -288,7 +292,7 @@ test('locks every external script asset and publishes one transformed script', a
     'action=bgm:Jump',
     'action=Fish:show:Fish1:-130,-27,70',
     'action=Fish:setLayer:back',
-    'action=Fish:loop:Fish1,Fish2:1,1',
+    'action=Fish:loop:Fish1,Fish2:0.3,0.3',
     'action=Urashima:setSkin:Urashima-dance-1:45',
   ];
   assert.equal(danceFishActions.every((action) => danceScene.includes(action)), true);

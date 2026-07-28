@@ -44,6 +44,8 @@ pnpm verify
 
 `pnpm build` は空の `dist/` から両プロファイルのSB3、Packager Web版、公開サイトを生成し、台本・SB3・HTML・全アセット・ライセンス・リンク・SHA-256を検証します。同じ入力からWeb版を2回生成してハッシュが一致することも確認します。`pnpm test:web` はPages相当のHTTPサーバでWeb版を開き、タイトル画面の1クリック後に、ファイル選択や台本固有アセットの外部取得なしで組み込み台本が開始することをheadless Chromiumで検証します。
 
+`source.txt`、アセット、生成設定など、成果物へ影響する入力を意図的に変更した場合は、`pnpm update:artifacts-lock` で `stories/urashima/artifacts.lock.json` を再生成してから `pnpm build` を実行します。更新コマンドはSB3とWeb版を実際に生成し、Web版の2回生成が一致した後にだけロックファイルを置き換えます。通常の `pnpm build` はロックを更新せず、入力や生成環境の意図しない変化をエラーとして検出します。
+
 Pull Requestでは `.github/workflows/ci.yml` が生成と検証だけを行います。`main` へのマージ後は `.github/workflows/deploy.yml` が同じ検証を再実行し、成功した `dist/` だけをGitHub Pagesへ公開します。
 
 ## 手動デプロイ

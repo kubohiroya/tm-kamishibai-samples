@@ -28,6 +28,20 @@ async function readJson(filename) {
   return JSON.parse(await readFile(path.join(sampleDirectory, filename), 'utf8'));
 }
 
+async function readArtifactsLock(filename) {
+  try {
+    return await readJson(filename);
+  } catch (error) {
+    if (error.code === 'ENOENT') {
+      throw new Error(
+        `Artifact lock not found: ${filename}. Run "pnpm update:artifacts-lock" to regenerate it.`,
+        {cause: error},
+      );
+    }
+    throw error;
+  }
+}
+
 async function verifyLockedFile(filePath, lock, description) {
   const contents = await readFile(filePath);
   assert.equal(contents.length, lock.size, `${description} size differs from its lock.`);
@@ -35,13 +49,11 @@ async function verifyLockedFile(filePath, lock, description) {
   return contents;
 }
 
-function verifyConfiguration(config, artifactsLock) {
+function verifyConfiguration(config) {
   assert.equal(config.formatVersion, 1);
   assert.equal(config.sample, 'urashima');
   assert.equal(config.builder.package, '@kubohiroya/tmpose-kamishibai');
   assert.equal(config.builder.version, installedPackage.version);
-  assert.equal(config.builder.version, artifactsLock.builder.version);
-  assert.equal(config.builder.commit, artifactsLock.builder.commit);
   assert.deepEqual(Object.keys(config.profiles).sort(), ['editor', 'player']);
   assert.equal(config.baseSb3.profile, 'generic');
   assert.equal(config.profiles.editor.outputName, '_urashima');
@@ -57,24 +69,44 @@ function verifyConfiguration(config, artifactsLock) {
   );
 }
 
-function verifyArtifactLock(result, lock, profile) {
+function verifyArtifactResult(result, profile, profileConfig) {
   const {manifest} = result;
   assert.equal(manifest.profile, profile);
-  assert.equal(manifest.outputName, lock.outputName);
-  assert.deepEqual(manifest.outputs.sb3, {
-    filename: `${lock.outputName}.sb3`,
-    sha256: lock.sb3.sha256,
-    size: lock.sb3.size,
-  });
-  assert.equal(manifest.outputs.script.sha256, lock.script.sha256);
-  assert.equal(manifest.outputs.script.size, lock.script.size);
+  assert.equal(manifest.outputName, profileConfig.outputName);
+  assert.equal(manifest.outputs.sb3.filename, `${profileConfig.outputName}.sb3`);
   assert.equal(manifest.script.mode, profile === 'player' ? 'embedded' : 'external');
 }
 
-export async function buildUrashima(outputDirectory) {
+async function createProfileLock(result) {
+  const {manifest} = result;
+  const manifestFilename = manifest.outputs.manifest.filename;
+  const manifestContents = await readFile(result.outputPaths[manifestFilename]);
+  return {
+    outputName: manifest.outputName,
+    sb3: {
+      size: manifest.outputs.sb3.size,
+      sha256: manifest.outputs.sb3.sha256,
+    },
+    script: {
+      size: manifest.outputs.script.size,
+      sha256: manifest.outputs.script.sha256,
+    },
+    manifest: {
+      sha256: sha256(manifestContents),
+    },
+  };
+}
+
+export async function buildUrashima(outputDirectory, {verifyArtifacts = true} = {}) {
   const config = await readJson('sample.config.json');
-  const artifactsLock = await readJson(config.artifactsLock);
-  verifyConfiguration(config, artifactsLock);
+  verifyConfiguration(config);
+  const artifactsLock = verifyArtifacts
+    ? await readArtifactsLock(config.artifactsLock)
+    : undefined;
+  if (artifactsLock) {
+    assert.equal(config.builder.version, artifactsLock.builder.version);
+    assert.equal(config.builder.commit, artifactsLock.builder.commit);
+  }
   const baseSb3Path = path.join(sampleDirectory, config.baseSb3.path);
   const baseSb3 = await verifyLockedFile(baseSb3Path, config.baseSb3, 'generic base SB3');
   const patchedBaseSb3 = patchActorCloneRuntime(baseSb3);
@@ -118,15 +150,19 @@ export async function buildUrashima(outputDirectory) {
     await rm(temporaryDirectory, {recursive: true, force: true});
   }
 
-  for (const [profile, result] of Object.entries(results)) {
-    const lock = artifactsLock.profiles[profile];
-    verifyArtifactLock(result, lock, profile);
-    const manifestFilename = result.manifest.outputs.manifest.filename;
-    const manifestContents = await readFile(result.outputPaths[manifestFilename]);
-    assert.equal(
-      sha256(manifestContents),
-      lock.manifest.sha256,
-      `${profile} manifest SHA-256 differs from its lock.`,
+  const profileLocks = Object.fromEntries(
+    await Promise.all(
+      Object.entries(results).map(async ([profile, result]) => {
+        verifyArtifactResult(result, profile, config.profiles[profile]);
+        return [profile, await createProfileLock(result)];
+      }),
+    ),
+  );
+  if (artifactsLock) {
+    assert.deepEqual(
+      profileLocks,
+      artifactsLock.profiles,
+      'Generated Urashima artifacts differ from their lock.',
     );
   }
 
@@ -139,5 +175,5 @@ export async function buildUrashima(outputDirectory) {
   assert(playerScript.equals(publishedScript), 'urashima.txt differs from the generated script.');
   assert.equal(editorScript.toString('utf8').includes('file:'), false);
 
-  return {artifactsLock, config, results};
+  return {artifactsLock, config, profileLocks, results};
 }
