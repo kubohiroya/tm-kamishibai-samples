@@ -25,7 +25,7 @@
 - `assets.lock.json`: 組み込み対象42件の名前、target、Scratchメタデータ、サイズ、SHA-256
 - `sample.config.json`: ベース、ビルダー、プロファイル、出力名、既定OFFのWeb生成機能を浦島太郎で有効にする設定
 - `artifacts.lock.json`: `_urashima` / `urashima` / `web/index.html` の再現可能な出力ハッシュ
-- `base/kamishibai.sb3`: `tmpose-kamishibai` `a5b64639b96c55a076c3620f37dde3272b522e3c` の `generic` 成果物
+- `base/kamishibai.sb3`: `tmpose-kamishibai` `17246c6d2a7e3b357d55112af766f68743a37ba9` の `generic` 成果物
 - `scripts/patch-actor-clone-runtime.mjs`: 元のベースを変更せず、Asset Managerが`actorName`でクローンを解決できるよう生成時に適用する互換パッチ
 
 コスチューム18件は汎用アプリの `Actor`、背景6件と音声18件は `Stage` に組み込みます。これにより、汎用ベースへ浦島太郎専用のScratch targetを追加せず、台本のactor定義からクローンを生成できます。

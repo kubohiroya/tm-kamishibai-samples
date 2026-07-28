@@ -10,16 +10,16 @@
   "baseSb3": {
     "path": "base/kamishibai.sb3",
     "profile": "generic",
-    "source": "github:kubohiroya/tmpose-kamishibai#a5b64639b96c55a076c3620f37dde3272b522e3c",
-    "commit": "a5b64639b96c55a076c3620f37dde3272b522e3c",
-    "size": 467680,
-    "sha256": "1fc2cf3d93fa829ad7f67c4ec106a7324831938b526581f117e3165a0f2c7217",
+    "source": "github:kubohiroya/tmpose-kamishibai#17246c6d2a7e3b357d55112af766f68743a37ba9",
+    "commit": "17246c6d2a7e3b357d55112af766f68743a37ba9",
+    "size": 467818,
+    "sha256": "a9dfae210e762cb74a6d8ef0746b18300f39dd2d23b495196767dd8d0c1683ac",
     "runtimePatch": {
       "id": "tw-asset-manager-actor-clone-compatibility",
       "issue": "https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/18",
       "outputName": "kamishibai-actor-clone-runtime.sb3",
-      "size": 467938,
-      "sha256": "f50e279122c81a53eebf9bbac8512f7c29148073a46da1a4ecfdb24ff1280e83"
+      "size": 468078,
+      "sha256": "f09fca20789f278e1e2fb39b3afaec12068cfac1f0442386d6764d768664d981"
     }
   },
   "sourceScript": "source.txt",
