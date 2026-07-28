@@ -24,6 +24,29 @@ function sha256(contents) {
   return createHash('sha256').update(contents).digest('hex');
 }
 
+function readSb3Project(contents) {
+  const archive = unzipSync(new Uint8Array(contents));
+  return JSON.parse(strFromU8(archive['project.json']));
+}
+
+function assertLoadingBubbleAnchor(project, description) {
+  const loading = project.targets.find((target) => target.name === 'Loading');
+  const anchor = project.targets.find((target) => target.name === 'LoadingBubbleAnchor');
+  assert.ok(loading, `${description}: Loading target is missing`);
+  assert.ok(anchor, `${description}: LoadingBubbleAnchor target is missing`);
+  assert.equal(
+    Object.values(loading.blocks).some((block) => block.opcode === 'looks_say'),
+    false,
+    `${description}: Loading still contains looks_say`,
+  );
+  assert.equal(
+    Object.values(anchor.blocks).some((block) => block.opcode === 'looks_say'),
+    true,
+    `${description}: LoadingBubbleAnchor does not contain looks_say`,
+  );
+  assert.deepEqual([anchor.x, anchor.y], [1, -20]);
+}
+
 test('licenses the repository, Urashima content, and Packager notices', async () => {
   const [packageJson, license, licenseSummary, runtimeLicense, packagerNotice] = await Promise.all([
     readFile(path.join(projectRoot, 'package.json'), 'utf8').then(JSON.parse),
@@ -79,11 +102,11 @@ test('pins the generic, editor, and player profile contract', async () => {
   assert.equal(config.baseSb3.profile, 'generic');
   assert.equal(
     config.baseSb3.source,
-    'github:kubohiroya/tmpose-kamishibai#a5b64639b96c55a076c3620f37dde3272b522e3c',
+    'github:kubohiroya/tmpose-kamishibai#17246c6d2a7e3b357d55112af766f68743a37ba9',
   );
   assert.equal(
     config.baseSb3.commit,
-    'a5b64639b96c55a076c3620f37dde3272b522e3c',
+    '17246c6d2a7e3b357d55112af766f68743a37ba9',
   );
   assert.equal(config.baseSb3.size, baseSb3.length);
   assert.equal(config.baseSb3.sha256, sha256(baseSb3));
@@ -127,14 +150,30 @@ test('pins the generic, editor, and player profile contract', async () => {
     ...artifactsLock.profiles.player.sb3,
   });
 
-  const archive = unzipSync(new Uint8Array(baseSb3));
-  const project = JSON.parse(strFromU8(archive['project.json']));
+  const project = readSb3Project(baseSb3);
   const stage = project.targets.find((target) => target.isStage);
   assert.deepEqual(stage.variables.tmposeEmbeddedScript, ['__tmpose_embedded_script', '']);
   assert.deepEqual(
     project.targets.map((target) => target.name),
-    ['Stage', 'Actor', 'prompt', 'openButton', 'reloadButton', 'showTitleButton', 'Loading'],
+    [
+      'Stage',
+      'Actor',
+      'prompt',
+      'openButton',
+      'reloadButton',
+      'showTitleButton',
+      'Loading',
+      'LoadingBubbleAnchor',
+    ],
   );
+  assertLoadingBubbleAnchor(project, 'Urashima base');
+});
+
+test('uses the fixed Loading bubble anchor in my-urashima', async () => {
+  const myUrashima = await readFile(
+    path.join(projectRoot, 'stories/my-urashima/my-urashima.sb3'),
+  );
+  assertLoadingBubbleAnchor(readSb3Project(myUrashima), 'my-urashima');
 });
 
 test('keeps shared Packager output disabled unless a sample enables it', async () => {
