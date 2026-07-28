@@ -169,11 +169,59 @@ test('pins the generic, editor, and player profile contract', async () => {
   assertLoadingBubbleAnchor(project, 'Urashima base');
 });
 
-test('uses the fixed Loading bubble anchor in my-urashima', async () => {
-  const myUrashima = await readFile(
-    path.join(projectRoot, 'stories/my-urashima/my-urashima.sb3'),
+test('keeps my-urashima external-script-only with Princess assets isolated by sprite', async () => {
+  const [myUrashima, script, config, artifactsLock] = await Promise.all([
+    readFile(path.join(projectRoot, 'stories/my-urashima/my-urashima.sb3')),
+    readFile(path.join(projectRoot, 'stories/my-urashima/my-urashima.txt'), 'utf8'),
+    readFile(path.join(projectRoot, 'stories/my-urashima/sample.config.json'), 'utf8').then(
+      JSON.parse,
+    ),
+    readFile(path.join(projectRoot, 'stories/my-urashima/artifacts.lock.json'), 'utf8').then(
+      JSON.parse,
+    ),
+  ]);
+  const archive = unzipSync(new Uint8Array(myUrashima));
+  const project = JSON.parse(strFromU8(archive['project.json']));
+  const stage = project.targets.find((target) => target.isStage);
+  const actor = project.targets.find((target) => target.name === 'Actor');
+  const princess = project.targets.find((target) => target.name === 'Princess');
+
+  assertLoadingBubbleAnchor(project, 'my-urashima');
+  assert.ok(princess, 'my-urashima: Princess target is missing');
+  assert.deepEqual(
+    princess.costumes.map(({name, dataFormat}) => ({name, dataFormat})),
+    [{name: 'Princess', dataFormat: 'png'}],
   );
-  assertLoadingBubbleAnchor(readSb3Project(myUrashima), 'my-urashima');
+  assert.equal(
+    actor.costumes.some(({name}) => name === 'Princess'),
+    false,
+  );
+  assert.deepEqual(stage.variables.tmposeEmbeddedScript, ['__tmpose_embedded_script', '']);
+  assert.equal(
+    Object.values(stage.lists).every(([, values]) => values.length === 0),
+    true,
+  );
+  assert.deepEqual(
+    Object.keys(archive).filter((filename) => filename.endsWith('.txt')),
+    [],
+  );
+  assert.equal(script.includes('asset=Princess,costume\n'), true);
+  assert.equal(script.includes('asset=Princess,costume:Actor'), false);
+  assert.deepEqual(config.parentStory, {
+    name: 'urashima',
+    config: '../urashima/sample.config.json',
+  });
+  assert.deepEqual(config.profile, {
+    outputName: 'my-urashima',
+    script: 'external',
+    assets: 'embedded',
+  });
+  assert.deepEqual(config.targets[0].costumes, [{asset: 'Princess', reference: 'costume'}]);
+  assert.equal(artifactsLock.parentStory.name, 'urashima');
+  assert.equal(artifactsLock.parentStory.sourceScript.path, '../urashima/source.txt');
+  assert.equal(artifactsLock.parentStory.assetManifest.path, '../urashima/assets.lock.json');
+  assert.equal(artifactsLock.output.sb3.sha256, sha256(myUrashima));
+  assert.equal(artifactsLock.output.script.sha256, sha256(script));
 });
 
 test('keeps shared Packager output disabled unless a sample enables it', async () => {

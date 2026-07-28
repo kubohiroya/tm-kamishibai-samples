@@ -12,6 +12,7 @@
     "deploy": "gh workflow run deploy.yml --ref main",
     "test": "node --test test/*.test.mjs",
     "test:web": "node scripts/verify-packaged-web-browser.mjs",
+    "update:my-urashima": "node scripts/update-my-urashima-artifacts.mjs",
     "verify": "node scripts/verify-site.mjs"
   },
   "engines": {
