@@ -1,6 +1,6 @@
 # 浦島太郎 — 用途別SB3の生成元
 
-浦島太郎の元台本、画像・音声、アセットロック、生成設定を管理します。公開用SB3は、固定したビルダー `v3.1.0` と、テキストアクション対応済みの汎用ベースからGitHub Pagesのビルド時に生成します。
+浦島太郎の元台本、画像・音声、アセットロック、生成設定を管理します。公開用SB3は、固定したビルダー `v3.1.1` と、テキストアクション対応済みの汎用ベースからGitHub Pagesのビルド時に生成します。
 
 ## 3つのプロファイル
 
@@ -46,7 +46,7 @@ Web版は `player` の `urashima.sb3` だけをTurboWarp Packager 3.13.0へ渡�
 
 - 移設元: [`kubohiroya/tmpose-kamishibai`](https://github.com/kubohiroya/tmpose-kamishibai) PR #44
 - 移設元コミット: `9526c9d6391622ee261b8d7c0778b1fbbd2e6745`
-- ビルダー: `tmpose-kamishibai` `v3.1.0` / `c92c310159c88ff03ed3cae65dbe21f1991fcf16`
+- ビルダー: `tmpose-kamishibai` `v3.1.1` / `585368f3c31e7bece3e4cc926e6fcf35225cce4a`
 - 汎用ベース: `tmpose-kamishibai` / `d5ebaee7ba5f4e24df4405c339661a3bd980efea`
 
 生成・検証・公開の実装は [Issue #2](https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/2)、Packager Web版は [Issue #7](https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/7) で管理します。

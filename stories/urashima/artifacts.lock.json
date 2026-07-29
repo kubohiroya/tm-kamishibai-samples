@@ -2,8 +2,8 @@
   "formatVersion": 2,
   "builder": {
     "package": "@kubohiroya/tmpose-kamishibai",
-    "version": "3.1.0",
-    "commit": "c92c310159c88ff03ed3cae65dbe21f1991fcf16"
+    "version": "3.1.1",
+    "commit": "585368f3c31e7bece3e4cc926e6fcf35225cce4a"
   },
   "profiles": {
     "editor": {
@@ -13,25 +13,25 @@
         "sha256": "b3bc96eba96a50090c1efb9ddb74ca59a7a5bc6fc267f643d2cb9a483128e996"
       },
       "script": {
-        "size": 8676,
-        "sha256": "b9be8e20716160b8e3a8e97fdb7295f7f76b356445659a98fc7774730603e89f"
+        "size": 8423,
+        "sha256": "597e69511ff67dae7ede2ee5ca5ce65926538297fecea624affb7895c5889386"
       },
       "manifest": {
-        "sha256": "dab3dc2e88fd210fbe4c9f7db333ae1f480103afc20cdb9549164a4704b3cdbc"
+        "sha256": "6768610ba9419322d98c6981cab893372fbf5a9f4b5baccb892bfdc75dc83355"
       }
     },
     "player": {
       "outputName": "urashima",
       "sb3": {
-        "size": 15051966,
-        "sha256": "51d46a2eb2481b1afac0624e0300ee003f55e8c1d67201b1f8f4bee7b6d9177e"
+        "size": 15051907,
+        "sha256": "88252bda53d1067cacf3c3b89de2944e7c92796e7262e2fc644ce1e6e86aa845"
       },
       "script": {
-        "size": 8676,
-        "sha256": "b9be8e20716160b8e3a8e97fdb7295f7f76b356445659a98fc7774730603e89f"
+        "size": 8423,
+        "sha256": "597e69511ff67dae7ede2ee5ca5ce65926538297fecea624affb7895c5889386"
       },
       "manifest": {
-        "sha256": "e872217e7339854da94501b98b86991ca2e30a461956d432a1286c4682ff2ea6"
+        "sha256": "4c888840c696801e42e1b7c19684c8f17541d1ee0b95f39b8ba6959f4816d2f5"
       }
     }
   },
@@ -43,14 +43,14 @@
     "input": {
       "profile": "player",
       "path": "urashima.sb3",
-      "size": 15051966,
-      "sha256": "51d46a2eb2481b1afac0624e0300ee003f55e8c1d67201b1f8f4bee7b6d9177e"
+      "size": 15051907,
+      "sha256": "88252bda53d1067cacf3c3b89de2944e7c92796e7262e2fc644ce1e6e86aa845"
     },
     "output": {
       "path": "web/index.html",
       "contentType": "text/html",
-      "size": 21212517,
-      "sha256": "12ebe45f59a31779f2c66957b880e0a36d3f50fce5e06b609275583f49a4b335"
+      "size": 21212447,
+      "sha256": "8728538e2ad20a00a05c9e9301289d985c71b49421b92e2119c4638f6371d6e0"
     }
   }
 }

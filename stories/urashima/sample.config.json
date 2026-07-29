@@ -3,9 +3,9 @@
   "sample": "urashima",
   "builder": {
     "package": "@kubohiroya/tmpose-kamishibai",
-    "version": "3.1.0",
-    "source": "github:kubohiroya/tmpose-kamishibai#v3.1.0",
-    "commit": "c92c310159c88ff03ed3cae65dbe21f1991fcf16"
+    "version": "3.1.1",
+    "source": "github:kubohiroya/tmpose-kamishibai#v3.1.1",
+    "commit": "585368f3c31e7bece3e4cc926e6fcf35225cce4a"
   },
   "baseSb3": {
     "path": "base/kamishibai.sb3",
