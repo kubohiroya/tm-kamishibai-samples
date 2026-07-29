@@ -202,7 +202,13 @@ export async function verifyPublishedSite(options = {}) {
   });
   assert.deepEqual(manifest.web.audioUnlock, {
     enabled: true,
-    events: ['pointerdown', 'touchstart', 'mousedown', 'keydown'],
+    events: ['pointerdown', 'pointerup', 'touchend', 'mousedown', 'click', 'keydown'],
+    lifecycleEvents: ['visibilitychange', 'pageshow'],
+    verification: {
+      strategy: 'state-and-clock',
+      clockCheckDelayMs: 250,
+      primesOutput: true,
+    },
   });
   assert.equal(manifest.web.packager.projectExtensions.length, 12);
   assert.equal(manifest.web.scriptMode, 'embedded');

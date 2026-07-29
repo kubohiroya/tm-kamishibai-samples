@@ -17,52 +17,169 @@ export const DEFAULT_WEB_CONFIGURATION = Object.freeze({
 });
 export const AUDIO_UNLOCK_EVENTS = Object.freeze([
   'pointerdown',
-  'touchstart',
+  'pointerup',
+  'touchend',
   'mousedown',
+  'click',
   'keydown',
 ]);
+export const AUDIO_UNLOCK_LIFECYCLE_EVENTS = Object.freeze([
+  'visibilitychange',
+  'pageshow',
+]);
+export const AUDIO_UNLOCK_CLOCK_CHECK_DELAY_MS = 250;
 
-const AUDIO_UNLOCK_SCRIPT = `
+export const AUDIO_UNLOCK_SCRIPT = `
 (() => {
   const eventNames = ${JSON.stringify(AUDIO_UNLOCK_EVENTS)};
-  const state = {installed: true, attempts: 0, completed: false};
+  const lifecycleEventNames = ${JSON.stringify(AUDIO_UNLOCK_LIFECYCLE_EVENTS)};
+  const clockCheckDelayMs = ${AUDIO_UNLOCK_CLOCK_CHECK_DELAY_MS};
+  const state = {
+    installed: true,
+    attempts: 0,
+    primeAttempts: 0,
+    primeCompletions: 0,
+    verifications: 0,
+    ignoredEvents: 0,
+    lifecycleEvents: 0,
+    completed: false,
+    clockAdvanced: false,
+    hasActivated: false,
+    listenersInstalled: false,
+    unlocking: false,
+  };
   window.__tmposeAudioUnlockState = state;
+  let verificationToken = 0;
+
+  function installUnlockListeners() {
+    if (state.listenersInstalled) return;
+    for (const eventName of eventNames) {
+      document.addEventListener(eventName, unlockAudio, {capture: true, passive: true});
+    }
+    state.listenersInstalled = true;
+  }
 
   function removeUnlockListeners() {
+    if (!state.listenersInstalled) return;
     for (const eventName of eventNames) {
       document.removeEventListener(eventName, unlockAudio, true);
     }
+    state.listenersInstalled = false;
   }
 
-  function completeIfRunning(audioContext) {
-    if (audioContext.state !== 'running') return;
-    state.completed = true;
-    removeUnlockListeners();
+  function audioContext() {
+    return window.scaffolding?.vm?.runtime?.audioEngine?.audioContext;
   }
 
-  function unlockAudio() {
-    const audioContext = window.scaffolding?.vm?.runtime?.audioEngine?.audioContext;
-    if (!audioContext) return;
-    state.attempts += 1;
-    if (audioContext.state === 'running') {
-      completeIfRunning(audioContext);
+  function recordError(error) {
+    state.lastError = String(error);
+    state.unlocking = false;
+    installUnlockListeners();
+    console.warn('Unable to unlock Web Audio from user activation.', error);
+  }
+
+  function isWebKitActivation(event) {
+    if (event.type === 'pointerdown') return event.pointerType === 'mouse';
+    if (event.type === 'pointerup') return event.pointerType !== 'mouse';
+    return true;
+  }
+
+  function primeOutput(context) {
+    try {
+      const buffer = context.createBuffer(1, 1, context.sampleRate || 44100);
+      const source = context.createBufferSource();
+      source.buffer = buffer;
+      source.connect(context.destination);
+      source.onended = () => {
+        state.primeCompletions += 1;
+        source.disconnect();
+      };
+      source.start(0);
+      state.primeAttempts += 1;
+    } catch (error) {
+      state.lastPrimeError = String(error);
+    }
+  }
+
+  function verifyClock(context) {
+    const startTime = Number(context.currentTime);
+    const token = ++verificationToken;
+    state.verifications += 1;
+    window.setTimeout(() => {
+      if (token !== verificationToken) return;
+      const endTime = Number(context.currentTime);
+      state.lastContextState = context.state;
+      state.lastClockDelta = endTime - startTime;
+      state.clockAdvanced =
+        context.state === 'running'
+        && Number.isFinite(state.lastClockDelta)
+        && state.lastClockDelta > 0;
+      state.completed = state.clockAdvanced;
+      state.unlocking = false;
+      if (state.completed) {
+        delete state.lastError;
+        removeUnlockListeners();
+      } else {
+        installUnlockListeners();
+      }
+    }, clockCheckDelayMs);
+  }
+
+  async function recoverAudio(context, resetRunningContext) {
+    try {
+      if (context.state === 'closed') throw new Error('AudioContext is closed.');
+      primeOutput(context);
+      if (resetRunningContext && context.state === 'running') {
+        await context.suspend();
+      }
+      if (context.state !== 'running') {
+        await context.resume();
+      }
+      primeOutput(context);
+      verifyClock(context);
+    } catch (error) {
+      recordError(error);
+    }
+  }
+
+  function unlockAudio(event) {
+    if (!isWebKitActivation(event)) {
+      state.ignoredEvents += 1;
       return;
     }
-    try {
-      Promise.resolve(audioContext.resume())
-        .then(() => completeIfRunning(audioContext))
-        .catch((error) => {
-          state.lastError = String(error);
-          console.warn('Unable to unlock Web Audio from user activation.', error);
-        });
-    } catch (error) {
-      state.lastError = String(error);
-      console.warn('Unable to unlock Web Audio from user activation.', error);
-    }
+    const context = audioContext();
+    if (!context || state.unlocking) return;
+    state.attempts += 1;
+    state.lastEvent = event.type;
+    state.lastPointerType = event.pointerType || '';
+    state.hasActivated = true;
+    state.completed = false;
+    state.clockAdvanced = false;
+    state.unlocking = true;
+    delete state.lastError;
+    verificationToken += 1;
+    void recoverAudio(context, context.state === 'running');
   }
 
-  for (const eventName of eventNames) {
-    document.addEventListener(eventName, unlockAudio, {capture: true, passive: true});
+  function recoverAfterLifecycle(event) {
+    if (event.type === 'visibilitychange' && document.visibilityState !== 'visible') return;
+    installUnlockListeners();
+    if (!state.hasActivated) return;
+    const context = audioContext();
+    if (!context || state.unlocking) return;
+    state.lifecycleEvents += 1;
+    state.lastLifecycleEvent = event.type;
+    state.completed = false;
+    state.clockAdvanced = false;
+    state.unlocking = true;
+    verificationToken += 1;
+    void recoverAudio(context, false);
+  }
+
+  installUnlockListeners();
+  for (const eventName of lifecycleEventNames) {
+    const target = eventName === 'visibilitychange' ? document : window;
+    target.addEventListener(eventName, recoverAfterLifecycle, true);
   }
 })();
 `;
@@ -212,6 +329,16 @@ export async function buildPackagedWeb({
     audioUnlock: {
       enabled: webConfig.audioUnlock?.enabled === true,
       events: webConfig.audioUnlock?.enabled === true ? [...AUDIO_UNLOCK_EVENTS] : [],
+      lifecycleEvents:
+        webConfig.audioUnlock?.enabled === true ? [...AUDIO_UNLOCK_LIFECYCLE_EVENTS] : [],
+      verification:
+        webConfig.audioUnlock?.enabled === true
+          ? {
+              strategy: 'state-and-clock',
+              clockCheckDelayMs: AUDIO_UNLOCK_CLOCK_CHECK_DELAY_MS,
+              primesOutput: true,
+            }
+          : null,
     },
     allowedOnlineDependencies: webConfig.allowedOnlineDependencies,
     runtimeCapabilities: webConfig.runtimeCapabilities,
