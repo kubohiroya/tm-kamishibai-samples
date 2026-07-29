@@ -67,6 +67,40 @@ async function verifyProfile(outputSampleDirectory, profile, record) {
   return {builderManifest, sb3Contents, scriptContents};
 }
 
+function verifySiteHeader(html, assetPrefix) {
+  const destinations = [
+    'https://kubohiroya.github.io/tmpose-kamishibai/',
+    'https://kubohiroya.github.io/tmpose-kamishibai/docs/',
+    'https://kubohiroya.github.io/tmpose-kamishibai-samples/',
+    'https://kubohiroya.github.io/tmpose-kamishibai/downloads/',
+  ];
+
+  assert(html.includes('<a class="skip-link" href="#main-content">本文へ移動</a>'));
+  assert(html.includes('<header class="site-header">'));
+  assert(html.includes(`<link rel="stylesheet" href="${assetPrefix}site-shell.css">`));
+  assert(
+    html.includes(
+      `<img class="site-brand__symbol" src="${assetPrefix}favicon.png" width="40" height="40" alt="">`,
+    ),
+  );
+  assert(html.includes('<main id="main-content">'));
+  for (const destination of destinations) {
+    assert(html.includes(`href="${destination}"`), `Missing site destination: ${destination}`);
+  }
+  assert.equal((html.match(/aria-current="page"/gu) ?? []).length, 1);
+  assert(
+    html.includes(
+      '<a class="site-nav__link" href="https://kubohiroya.github.io/tmpose-kamishibai-samples/" aria-current="page">サンプル</a>',
+    ),
+  );
+  assert(
+    html.includes(
+      '<a class="site-repository" href="https://github.com/kubohiroya/tmpose-kamishibai-samples" target="_blank" rel="noopener" aria-label="tmpose-kamishibai-samplesをGitHubで開く" title="tmpose-kamishibai-samplesをGitHubで開く">',
+    ),
+  );
+  assert(html.includes('<svg class="site-repository__icon"'));
+}
+
 export async function verifyPublishedSite(options = {}) {
   const projectRoot = options.projectRoot ?? fileURLToPath(new URL('../', import.meta.url));
   const outputDirectory = options.outputDirectory ?? path.join(projectRoot, 'dist');
@@ -201,7 +235,9 @@ export async function verifyPublishedSite(options = {}) {
   assert(licenseSummary.includes('完全オフライン版ではありません'));
   assert(packagerNotice.includes('Copyright (C) 2021-2024 Thomas Weber'));
   assert(packagerNotice.includes('MPL-2.0'));
-  assert(rootIndex.includes('https://github.com/kubohiroya/tmpose-kamishibai-samples'));
+  verifySiteHeader(rootIndex, '');
+  verifySiteHeader(sampleIndex, '../../');
+  assert(!rootIndex.includes('>GitHubリポジトリ</a>'));
   assert(!rootIndex.includes('https://kubohiroya.github.io/tmpose-kamishibai/stories/'));
   assert(sampleIndex.includes(manifest.profiles.player.sb3.sha256));
   assert(sampleIndex.includes(manifest.profiles.editor.sb3.sha256));
@@ -211,9 +247,31 @@ export async function verifyPublishedSite(options = {}) {
   assert(sampleIndex.indexOf('Web版を開く') < sampleIndex.indexOf('台本を表示'));
   assert(sampleIndex.indexOf('台本を表示') < sampleIndex.indexOf('再生用SB3をダウンロード'));
   assert(publishedFiles.includes('.nojekyll'));
+  assert(publishedFiles.includes('favicon.png'));
+  assert(publishedFiles.includes('favicon.source.json'));
+  assert(publishedFiles.includes('site-shell.css'));
   assert(publishedFiles.includes('stories/my-urashima/my-urashima.sb3'));
   assert(publishedFiles.includes('stories/my-urashima/my-urashima.txt'));
   await verifyMyUrashimaOutput(path.join(outputDirectory, 'stories/my-urashima'));
+
+  const [siteCss, faviconMetadata, favicon] = await Promise.all([
+    readFile(path.join(outputDirectory, 'site-shell.css'), 'utf8'),
+    readFile(path.join(outputDirectory, 'favicon.source.json'), 'utf8').then(JSON.parse),
+    readFile(path.join(outputDirectory, 'favicon.png')),
+  ]);
+  assert.match(
+    siteCss,
+    /\.site-brand__symbol\s*\{[\s\S]*?border:\s*0;[\s\S]*?border-radius:\s*0;[\s\S]*?background:\s*transparent;/u,
+  );
+  assert.equal(faviconMetadata.sourceName, 'Urashima-walk-1');
+  assert.equal(
+    faviconMetadata.sourcePath,
+    'stories/urashima/assets/images/963e926995791fde1b335fd4ba60d6d7.png',
+  );
+  assert.equal(
+    sha256(favicon),
+    'ba493fbb17f1260e782e8e34d0cda1db896d9eef798b316d28ed7f723d0f1018',
+  );
 
   const noJekyll = await stat(path.join(outputDirectory, '.nojekyll'));
   assert(noJekyll.isFile());

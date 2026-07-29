@@ -11,6 +11,7 @@ import {verifyPublishedSite} from './verify-site.mjs';
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 const sourceDirectory = path.join(projectRoot, 'stories/urashima');
 const mySourceDirectory = path.join(projectRoot, 'stories/my-urashima');
+const siteDirectory = path.join(projectRoot, 'site');
 const outputDirectory = path.join(projectRoot, 'dist');
 const outputSampleDirectory = path.join(outputDirectory, 'stories/urashima');
 const myOutputSampleDirectory = path.join(outputDirectory, 'stories/my-urashima');
@@ -26,6 +27,29 @@ function escapeHtml(value) {
     .replaceAll('<', '&lt;')
     .replaceAll('>', '&gt;')
     .replaceAll('"', '&quot;');
+}
+
+function renderSiteHeader(assetPrefix) {
+  return `<a class="skip-link" href="#main-content">本文へ移動</a>
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="site-brand" href="https://kubohiroya.github.io/tmpose-kamishibai/">
+      <img class="site-brand__symbol" src="${assetPrefix}favicon.png" width="40" height="40" alt="">
+      <span>TMPose紙芝居</span>
+    </a>
+    <nav class="site-nav" aria-label="サイトナビゲーション">
+      <a class="site-nav__link" href="https://kubohiroya.github.io/tmpose-kamishibai/">トップ</a>
+      <a class="site-nav__link" href="https://kubohiroya.github.io/tmpose-kamishibai/docs/">ドキュメント</a>
+      <a class="site-nav__link" href="https://kubohiroya.github.io/tmpose-kamishibai-samples/" aria-current="page">サンプル</a>
+      <a class="site-nav__link" href="https://kubohiroya.github.io/tmpose-kamishibai/downloads/">ダウンロード</a>
+    </nav>
+    <a class="site-repository" href="https://github.com/kubohiroya/tmpose-kamishibai-samples" target="_blank" rel="noopener" aria-label="tmpose-kamishibai-samplesをGitHubで開く" title="tmpose-kamishibai-samplesをGitHubで開く">
+      <svg class="site-repository__icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M10.226 17.284c-2.965-.36-5.054-2.493-5.054-5.256 0-1.123.404-2.336 1.078-3.144-.292-.741-.247-2.314.09-2.965.898-.112 2.111.36 2.83 1.01.853-.269 1.752-.404 2.853-.404 1.1 0 1.999.135 2.807.382.696-.629 1.932-1.1 2.83-.988.315.606.36 2.179.067 2.942.72.854 1.101 2 1.101 3.167 0 2.763-2.089 4.852-5.098 5.234.763.494 1.28 1.572 1.28 2.807v2.336c0 .674.561 1.056 1.235.786 4.066-1.55 7.255-5.615 7.255-10.646C23.5 6.188 18.334 1 11.978 1 5.62 1 .5 6.188.5 12.545c0 4.986 3.167 9.12 7.435 10.669.606.225 1.19-.18 1.19-.786V20.63a2.9 2.9 0 0 1-1.078.224c-1.483 0-2.359-.808-2.987-2.313-.247-.607-.517-.966-1.034-1.033-.27-.023-.359-.135-.359-.27 0-.27.45-.471.898-.471.652 0 1.213.404 1.797 1.235.45.651.921.943 1.483.943.561 0 .92-.202 1.437-.719.382-.381.674-.718.944-.943"/>
+      </svg>
+    </a>
+  </div>
+</header>`;
 }
 
 function contentType(filename) {
@@ -75,6 +99,8 @@ function renderRootIndex(manifest) {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="TMPose紙芝居の公開サンプル">
   <title>TMPose紙芝居サンプル</title>
+  <link rel="icon" href="favicon.png" type="image/png">
+  <link rel="stylesheet" href="site-shell.css">
   <style>
     :root { color-scheme: light; font-family: system-ui, sans-serif; --ink: #3f302b; --muted: #756960; --paper: #fffdf8; --canvas: #fff8ee; --accent: #963f2f; --line: #dbc9bb; }
     * { box-sizing: border-box; }
@@ -91,7 +117,8 @@ function renderRootIndex(manifest) {
   </style>
 </head>
 <body>
-<main>
+${renderSiteHeader('')}
+<main id="main-content">
   <h1>TMPose紙芝居サンプル</h1>
   <p class="lead">台本、画像・音声、用途別のSB3を配布しています。</p>
   <article>
@@ -108,7 +135,6 @@ ${webAction}      <a class="button secondary" href="stories/urashima/urashima.tx
   </article>
   <footer>
     <p>サンプルコンテンツは <a href="LICENSE">Mozilla Public License 2.0</a> で提供します。</p>
-    <p><a href="https://github.com/kubohiroya/tmpose-kamishibai-samples">GitHubリポジトリ</a></p>
   </footer>
 </main>
 </body>
@@ -143,11 +169,13 @@ function renderSampleIndex(manifest) {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="TMPose紙芝居 浦島太郎サンプル">
   <title>浦島太郎 | TMPose紙芝居サンプル</title>
+  <link rel="icon" href="../../favicon.png" type="image/png">
+  <link rel="stylesheet" href="../../site-shell.css">
   <style>
     :root { color-scheme: light; font-family: system-ui, sans-serif; --ink: #3f302b; --muted: #756960; --canvas: #fff8ee; --accent: #963f2f; }
     body { margin: 0; background: var(--canvas); color: var(--ink); }
     main { max-width: 920px; margin: auto; padding: 40px 24px 72px; }
-    nav { margin-bottom: 32px; }
+    .local-nav { margin-bottom: 32px; }
     a { color: var(--accent); }
     .actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 24px 0; }
     .button { display: inline-block; padding: 10px 14px; border-radius: 8px; background: var(--accent); color: white; text-decoration: none; font-weight: 700; }
@@ -158,8 +186,9 @@ function renderSampleIndex(manifest) {
   </style>
 </head>
 <body>
-<main>
-  <nav><a href="../../">サンプル一覧へ戻る</a></nav>
+${renderSiteHeader('../../')}
+<main id="main-content">
+  <nav class="local-nav" aria-label="サンプル内ナビゲーション"><a href="../../">サンプル一覧へ戻る</a></nav>
   <h1>浦島太郎</h1>
   <p>同じ台本とアセットロックから、編集用と再生用の2種類のSB3を生成しています。</p>
   ${webDescription}
@@ -222,6 +251,17 @@ export async function buildSite() {
 
   await rm(outputDirectory, {recursive: true, force: true});
   await mkdir(path.dirname(outputSampleDirectory), {recursive: true});
+  await Promise.all([
+    copyFile(path.join(siteDirectory, 'favicon.png'), path.join(outputDirectory, 'favicon.png')),
+    copyFile(
+      path.join(siteDirectory, 'favicon.source.json'),
+      path.join(outputDirectory, 'favicon.source.json'),
+    ),
+    copyFile(
+      path.join(siteDirectory, 'site-shell.css'),
+      path.join(outputDirectory, 'site-shell.css'),
+    ),
+  ]);
   await cp(sourceDirectory, outputSampleDirectory, {recursive: true});
   await cp(mySourceDirectory, myOutputSampleDirectory, {recursive: true});
   const {artifactsLock, config, results} = await buildUrashima(outputSampleDirectory);
