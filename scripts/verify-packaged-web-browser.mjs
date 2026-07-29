@@ -46,7 +46,10 @@ try {
     hasTouch: true,
     isMobile: true,
     userAgent:
-      'Mozilla/5.0 (iPad; CPU OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/138.0.7204.119 Mobile/15E148 Safari/604.1',
+      'Mozilla/5.0 (iPad; CPU OS 26_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/151.0.7922.25 Mobile/15E148 Safari/604.1',
+  });
+  page.on('pageerror', (error) => {
+    console.error(`[${browserName} page error] ${error.stack ?? error}`);
   });
   await page.addInitScript(() => {
     window.__tmposeUnexpectedFilePicker = 0;
@@ -90,7 +93,18 @@ try {
     undefined,
     {timeout: 120000},
   );
-  await page.evaluate(() => window.scaffolding.vm.runtime.audioEngine.audioContext.suspend());
+  await page.evaluate(() => {
+    const context = window.scaffolding.vm.runtime.audioEngine.audioContext;
+    if (context.state === 'running') void context.suspend();
+  });
+  await page.waitForFunction(
+    () => {
+      const state = window.scaffolding?.vm?.runtime?.audioEngine?.audioContext?.state;
+      return state === 'suspended' || state === 'interrupted';
+    },
+    undefined,
+    {timeout: 120000},
+  );
   const titleState = await page.evaluate(() => {
     const runtime = window.scaffolding.vm.runtime;
     const stage = runtime.getTargetForStage();
@@ -105,12 +119,15 @@ try {
   assert.equal(titleState.costume, 'Title');
   assert(titleState.embeddedScript.startsWith('kamishibai=3.1'));
   assert.equal(titleState.skipMode, 'title');
-  assert.equal(titleState.audioContextState, 'suspended');
-  assert.deepEqual(titleState.audioUnlockState, {
-    installed: true,
-    attempts: 0,
-    completed: false,
-  });
+  assert(
+    ['suspended', 'interrupted'].includes(titleState.audioContextState),
+    `Unexpected initial audio state: ${titleState.audioContextState}`,
+  );
+  assert.equal(titleState.audioUnlockState.installed, true);
+  assert.equal(titleState.audioUnlockState.attempts, 0);
+  assert.equal(titleState.audioUnlockState.completed, false);
+  assert.equal(titleState.audioUnlockState.clockAdvanced, false);
+  assert.equal(titleState.audioUnlockState.listenersInstalled, true);
 
   await page.locator('canvas.sc-canvas').tap({position: {x: 240, y: 180}});
   await page.waitForFunction(
@@ -120,14 +137,30 @@ try {
     undefined,
     {timeout: 120000},
   );
-  await page.waitForFunction(
-    () => {
-      const variables = window.scaffolding?.vm?.runtime?.ext_lmsTempVars2?.runtimeVariables;
-      return variables?.message === '43 / 43' && variables?.sceneIndex !== undefined;
-    },
-    undefined,
-    {timeout: 120000},
-  );
+  try {
+    await page.waitForFunction(
+      () => {
+        const variables = window.scaffolding?.vm?.runtime?.ext_lmsTempVars2?.runtimeVariables;
+        return variables?.message === '43 / 43' && variables?.sceneIndex !== undefined;
+      },
+      undefined,
+      {timeout: 120000},
+    );
+  } catch (error) {
+    const diagnostics = await page.evaluate(() => {
+      const runtime = window.scaffolding?.vm?.runtime;
+      const variables = runtime?.ext_lmsTempVars2?.runtimeVariables;
+      return {
+        message: variables?.message,
+        sceneIndex: variables?.sceneIndex,
+        skipMode: variables?.skipMode,
+        audioContextState: runtime?.audioEngine?.audioContext?.state,
+        audioUnlockState: window.__tmposeAudioUnlockState,
+      };
+    });
+    console.error(`[${browserName} startup diagnostics] ${JSON.stringify(diagnostics)}`);
+    throw error;
+  }
   const startedState = await page.evaluate(() => {
     const runtime = window.scaffolding.vm.runtime;
     const stage = runtime.getTargetForStage();
@@ -162,6 +195,9 @@ try {
   assert.equal(startedState.audioUnlockState.installed, true);
   assert(startedState.audioUnlockState.attempts >= 1);
   assert.equal(startedState.audioUnlockState.completed, true);
+  assert.equal(startedState.audioUnlockState.clockAdvanced, true);
+  assert(startedState.audioUnlockState.lastClockDelta > 0);
+  assert.equal(startedState.audioUnlockState.listenersInstalled, false);
   assert.equal(startedState.audioUnlockState.lastError, undefined);
   assert.deepEqual(startedState.uiText, {
     prompt: 'ポーズをとろう！',
@@ -264,10 +300,12 @@ try {
     const sounds = stage.getSounds();
     const soundBank = stage.sprite.soundBank;
     const testSound = sounds.find((sound) => sound.name === 'Jump');
+    const clockStart = runtime.audioEngine.audioContext.currentTime;
     runtime.ext_scratch3_sound.playSound({SOUND_MENU: testSound.name}, {target: stage});
-    await new Promise((resolve) => setTimeout(resolve, 100));
+    await new Promise((resolve) => setTimeout(resolve, 300));
     return {
       contextState: runtime.audioEngine.audioContext.state,
+      clockAdvanced: runtime.audioEngine.audioContext.currentTime > clockStart,
       soundCount: sounds.length,
       mp3SoundCount: sounds.filter((sound) => sound.dataFormat === 'mp3').length,
       decodedSoundCount: Object.keys(soundBank.soundPlayers).length,
@@ -276,11 +314,48 @@ try {
   });
   assert.deepEqual(audioState, {
     contextState: 'running',
+    clockAdvanced: true,
     soundCount: 18,
     mp3SoundCount: 18,
     decodedSoundCount: 18,
     testSoundPlaying: true,
   });
+
+  await page.evaluate(() => {
+    const context = window.scaffolding.vm.runtime.audioEngine.audioContext;
+    if (context.state === 'running') void context.suspend();
+  });
+  await page.waitForFunction(
+    () => {
+      const state = window.scaffolding?.vm?.runtime?.audioEngine?.audioContext?.state;
+      return state === 'suspended' || state === 'interrupted';
+    },
+    undefined,
+    {timeout: 120000},
+  );
+  await page.evaluate(() => {
+    window.dispatchEvent(new PageTransitionEvent('pageshow', {persisted: true}));
+  });
+  await page.waitForFunction(
+    () =>
+      window.scaffolding?.vm?.runtime?.audioEngine?.audioContext?.state === 'running'
+      && window.__tmposeAudioUnlockState?.completed === true
+      && window.__tmposeAudioUnlockState?.clockAdvanced === true,
+    undefined,
+    {timeout: 120000},
+  );
+  const foregroundAudioState = await page.evaluate(() => ({
+    contextState: window.scaffolding.vm.runtime.audioEngine.audioContext.state,
+    lifecycleEvents: window.__tmposeAudioUnlockState.lifecycleEvents,
+    lastLifecycleEvent: window.__tmposeAudioUnlockState.lastLifecycleEvent,
+    completed: window.__tmposeAudioUnlockState.completed,
+    clockAdvanced: window.__tmposeAudioUnlockState.clockAdvanced,
+  }));
+  assert.equal(foregroundAudioState.contextState, 'running');
+  assert(foregroundAudioState.lifecycleEvents >= 1);
+  assert.equal(foregroundAudioState.lastLifecycleEvent, 'pageshow');
+  assert.equal(foregroundAudioState.completed, true);
+  assert.equal(foregroundAudioState.clockAdvanced, true);
 
   const uniqueRequests = [...new Set(requests)];
   const storyResourceRequests = uniqueRequests.filter((url) =>

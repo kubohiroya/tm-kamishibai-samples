@@ -4,11 +4,16 @@ import {readFile, readdir} from 'node:fs/promises';
 import path from 'node:path';
 import test from 'node:test';
 import {fileURLToPath} from 'node:url';
+import {runInNewContext} from 'node:vm';
 
 import {validateAssetManifest} from '@kubohiroya/tmpose-kamishibai/builder';
 import {strFromU8, unzipSync} from 'fflate';
 
 import {
+  AUDIO_UNLOCK_CLOCK_CHECK_DELAY_MS,
+  AUDIO_UNLOCK_EVENTS,
+  AUDIO_UNLOCK_LIFECYCLE_EVENTS,
+  AUDIO_UNLOCK_SCRIPT,
   buildPackagedWeb,
   DEFAULT_WEB_CONFIGURATION,
 } from '../scripts/build-packaged-web.mjs';
@@ -271,6 +276,136 @@ test('keeps my-urashima external-script-only with Princess assets isolated by sp
 
 test('keeps shared Packager output disabled unless a sample enables it', async () => {
   assert.deepEqual(await buildPackagedWeb({}), {enabled: false});
+});
+
+test('recovers interrupted or stalled-running WebKit audio after touch completion', async () => {
+  const createEventTarget = () => {
+    const listeners = new Map();
+    return {
+      listeners,
+      addEventListener(eventName, listener) {
+        if (!listeners.has(eventName)) listeners.set(eventName, new Set());
+        listeners.get(eventName).add(listener);
+      },
+      removeEventListener(eventName, listener) {
+        listeners.get(eventName)?.delete(listener);
+      },
+      dispatch(eventName, properties = {}) {
+        for (const listener of [...(listeners.get(eventName) ?? [])]) {
+          listener({type: eventName, ...properties});
+        }
+      },
+    };
+  };
+
+  let currentTime = 4;
+  let resumeCalls = 0;
+  let suspendCalls = 0;
+  let primeStarts = 0;
+  const timers = [];
+  const audioContext = {
+    state: 'interrupted',
+    sampleRate: 44100,
+    destination: {},
+    get currentTime() {
+      return currentTime;
+    },
+    createBuffer() {
+      return {};
+    },
+    createBufferSource() {
+      return {
+        buffer: null,
+        onended: null,
+        connect() {},
+        disconnect() {},
+        start() {
+          primeStarts += 1;
+          this.onended?.();
+        },
+      };
+    },
+    async resume() {
+      resumeCalls += 1;
+      this.state = 'running';
+    },
+    async suspend() {
+      suspendCalls += 1;
+      this.state = 'suspended';
+    },
+  };
+  const documentTarget = createEventTarget();
+  const windowTarget = createEventTarget();
+  const document = Object.assign(documentTarget, {visibilityState: 'visible'});
+  const window = Object.assign(windowTarget, {
+    scaffolding: {vm: {runtime: {audioEngine: {audioContext}}}},
+    setTimeout(callback, delay) {
+      timers.push({callback, delay});
+    },
+  });
+  runInNewContext(AUDIO_UNLOCK_SCRIPT, {
+    console: {warn() {}},
+    document,
+    window,
+  });
+
+  assert.deepEqual(AUDIO_UNLOCK_EVENTS, [
+    'pointerdown',
+    'pointerup',
+    'touchend',
+    'mousedown',
+    'click',
+    'keydown',
+  ]);
+  assert.deepEqual(AUDIO_UNLOCK_LIFECYCLE_EVENTS, ['visibilitychange', 'pageshow']);
+  assert.equal(window.__tmposeAudioUnlockState.listenersInstalled, true);
+
+  document.dispatch('pointerdown', {pointerType: 'touch'});
+  assert.equal(window.__tmposeAudioUnlockState.ignoredEvents, 1);
+  assert.equal(resumeCalls, 0);
+
+  document.dispatch('pointerup', {pointerType: 'touch'});
+  await new Promise(setImmediate);
+  assert.equal(resumeCalls, 1);
+  assert.equal(suspendCalls, 0);
+  assert.equal(primeStarts, 2);
+  assert.equal(timers.length, 1);
+  assert.equal(timers[0].delay, AUDIO_UNLOCK_CLOCK_CHECK_DELAY_MS);
+  currentTime += 0.5;
+  timers.shift().callback();
+  assert.equal(window.__tmposeAudioUnlockState.lastEvent, 'pointerup');
+  assert.equal(window.__tmposeAudioUnlockState.lastPointerType, 'touch');
+  assert.equal(window.__tmposeAudioUnlockState.completed, true);
+  assert.equal(window.__tmposeAudioUnlockState.clockAdvanced, true);
+  assert.equal(window.__tmposeAudioUnlockState.primeCompletions, 2);
+  assert.equal(window.__tmposeAudioUnlockState.listenersInstalled, false);
+
+  window.__tmposeAudioUnlockState.hasActivated = false;
+  window.dispatch('pageshow', {persisted: true});
+  audioContext.state = 'running';
+  document.dispatch('pointerup', {pointerType: 'touch'});
+  await new Promise(setImmediate);
+  assert.equal(resumeCalls, 2);
+  assert.equal(suspendCalls, 1);
+  assert.equal(timers.length, 1);
+  currentTime += 0.5;
+  timers.shift().callback();
+  assert.equal(window.__tmposeAudioUnlockState.completed, true);
+  assert.equal(window.__tmposeAudioUnlockState.clockAdvanced, true);
+  assert.equal(window.__tmposeAudioUnlockState.primeCompletions, 4);
+
+  audioContext.state = 'suspended';
+  window.dispatch('pageshow', {persisted: true});
+  await new Promise(setImmediate);
+  assert.equal(resumeCalls, 3);
+  assert.equal(timers.length, 1);
+  currentTime += 0.5;
+  timers.shift().callback();
+  assert.equal(window.__tmposeAudioUnlockState.lifecycleEvents, 1);
+  assert.equal(window.__tmposeAudioUnlockState.lastLifecycleEvent, 'pageshow');
+  assert.equal(window.__tmposeAudioUnlockState.completed, true);
+  assert.equal(window.__tmposeAudioUnlockState.clockAdvanced, true);
+  assert.equal(window.__tmposeAudioUnlockState.primeCompletions, 6);
 });
 
 test('locks every external script asset and publishes one transformed script', async () => {
