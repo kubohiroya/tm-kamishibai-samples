@@ -133,6 +133,15 @@ ${webAction}      <a class="button secondary" href="stories/urashima/urashima.tx
       <a class="button secondary" href="stories/urashima/">詳細を見る</a>
     </div>
   </article>
+  <article>
+    <h2>my-urashima（ワークショップにおける作業用）</h2>
+    <p>2026年8月1日のワークショップで、ポーズと物語を変更するためのサンプルです。SB3を開いたあと、外部台本の<code>my-urashima.txt</code>を読み込んで使用します。</p>
+    <div class="actions">
+      <a class="button" href="stories/my-urashima/my-urashima.sb3" download>作業用SB3をダウンロード</a>
+      <a class="button secondary" href="stories/my-urashima/my-urashima.txt" download>作業用台本をダウンロード</a>
+      <a class="button secondary" href="stories/my-urashima/README.md">説明を見る</a>
+    </div>
+  </article>
   <footer>
     <p>サンプルコンテンツは <a href="LICENSE">Mozilla Public License 2.0</a> で提供します。</p>
   </footer>
