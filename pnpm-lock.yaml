@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@kubohiroya/tmpose-kamishibai':
-        specifier: github:kubohiroya/tmpose-kamishibai#v3.1.0
-        version: https://codeload.github.com/kubohiroya/tmpose-kamishibai/tar.gz/c92c310159c88ff03ed3cae65dbe21f1991fcf16
+        specifier: github:kubohiroya/tmpose-kamishibai#v3.1.1
+        version: https://codeload.github.com/kubohiroya/tmpose-kamishibai/tar.gz/585368f3c31e7bece3e4cc926e6fcf35225cce4a
       fflate:
         specifier: 0.8.3
         version: 0.8.3
@@ -32,9 +32,9 @@ packages:
     resolution: {integrity: sha512-XuhF/edg+iIvXjkCWgfj6fWtRi/KrEPg2ILXj1l86EN4EssuOiPcLKgkMDr9cL8jTGtVd/MKUWW6Y0/ZVf1PGA==}
     engines: {node: '>=8'}
 
-  '@kubohiroya/tmpose-kamishibai@https://codeload.github.com/kubohiroya/tmpose-kamishibai/tar.gz/c92c310159c88ff03ed3cae65dbe21f1991fcf16':
-    resolution: {gitHosted: true, integrity: sha512-rDITDNL5obWXgxPin+gvRaPeW6phZMQgxr71VcX9RI43335tj78nnOspYuOAOVljkJPj+uB8mz1evLCHTsrKJA==, tarball: https://codeload.github.com/kubohiroya/tmpose-kamishibai/tar.gz/c92c310159c88ff03ed3cae65dbe21f1991fcf16}
-    version: 3.1.0
+  '@kubohiroya/tmpose-kamishibai@https://codeload.github.com/kubohiroya/tmpose-kamishibai/tar.gz/585368f3c31e7bece3e4cc926e6fcf35225cce4a':
+    resolution: {gitHosted: true, integrity: sha512-/zbiAl9E4+AZti1CtRhAqJUWh0ug2j1Wg4lXDJgIHgp7u1H5vRg7pZ/t9mmV64TzPhs36iMrxIVCahiazd0T4w==, tarball: https://codeload.github.com/kubohiroya/tmpose-kamishibai/tar.gz/585368f3c31e7bece3e4cc926e6fcf35225cce4a}
+    version: 3.1.1
     engines: {node: '>=22.12.0'}
     hasBin: true
 
@@ -252,7 +252,7 @@ snapshots:
 
   '@fiahfy/packbits@0.0.6': {}
 
-  '@kubohiroya/tmpose-kamishibai@https://codeload.github.com/kubohiroya/tmpose-kamishibai/tar.gz/c92c310159c88ff03ed3cae65dbe21f1991fcf16':
+  '@kubohiroya/tmpose-kamishibai@https://codeload.github.com/kubohiroya/tmpose-kamishibai/tar.gz/585368f3c31e7bece3e4cc926e6fcf35225cce4a':
     dependencies:
       fflate: 0.8.3
 

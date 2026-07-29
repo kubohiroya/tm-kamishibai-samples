@@ -2,16 +2,16 @@
   "formatVersion": 1,
   "builder": {
     "package": "@kubohiroya/tmpose-kamishibai",
-    "version": "3.1.0",
-    "source": "github:kubohiroya/tmpose-kamishibai#v3.1.0",
-    "commit": "c92c310159c88ff03ed3cae65dbe21f1991fcf16"
+    "version": "3.1.1",
+    "source": "github:kubohiroya/tmpose-kamishibai#v3.1.1",
+    "commit": "585368f3c31e7bece3e4cc926e6fcf35225cce4a"
   },
   "parentStory": {
     "name": "urashima",
     "config": {
       "path": "../urashima/sample.config.json",
       "size": 2573,
-      "sha256": "f596205b6b479cd61f45ccc228a310c23eeff881a185d850170c5460ec76a3b9"
+      "sha256": "c0d5551117689ba0fcdcd1e0026440d2c0e6ec587891f17603f277ab65a6b03e"
     },
     "sourceScript": {
       "path": "../urashima/source.txt",
@@ -43,13 +43,13 @@
     },
     "script": {
       "filename": "my-urashima.txt",
-      "sha256": "7dd269761ae5176571076bc971566c92311d630de8ec96c581d311c239aab787",
-      "size": 8476
+      "sha256": "79364be4c7e23ec167be267e6665562a5b9cf5c43124443324544ed5034b4fbd",
+      "size": 8232
     },
     "manifest": {
       "filename": "my-urashima.manifest.json",
-      "size": 29027,
-      "sha256": "5334811f75078423bf6e19ae3c25fa47015dcf8f80041d99a720e9698f33b0c7"
+      "size": 28783,
+      "sha256": "2c0b631f0d2b1166e62347dd73bdb96e1a957be866ef21dc7c235512a7258ea2"
     }
   }
 }

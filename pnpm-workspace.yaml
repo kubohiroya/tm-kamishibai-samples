@@ -2,4 +2,4 @@ packages:
   - .
 
 allowBuilds:
-  '@kubohiroya/tmpose-kamishibai@https://codeload.github.com/kubohiroya/tmpose-kamishibai/tar.gz/c92c310159c88ff03ed3cae65dbe21f1991fcf16': true
+  '@kubohiroya/tmpose-kamishibai@https://codeload.github.com/kubohiroya/tmpose-kamishibai/tar.gz/585368f3c31e7bece3e4cc926e6fcf35225cce4a': true
