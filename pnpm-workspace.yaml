@@ -1,5 +1,5 @@
 packages:
   - .
 
-allowBuilds:
-  '@kubohiroya/tmpose-kamishibai@https://codeload.github.com/kubohiroya/tmpose-kamishibai/tar.gz/585368f3c31e7bece3e4cc926e6fcf35225cce4a': true
+minimumReleaseAgeExclude:
+  - '@kubohiroya/tmpose-kamishibai@3.1.3'

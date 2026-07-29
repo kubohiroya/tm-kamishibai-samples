@@ -13,9 +13,9 @@ import {
   DEFAULT_WEB_CONFIGURATION,
 } from '../scripts/build-packaged-web.mjs';
 import {
-  patchUrashimaRuntime,
-  urashimaRuntimePatch,
-} from '../scripts/patch-urashima-runtime.mjs';
+  actorCloneRuntimePatch,
+  patchActorCloneRuntime,
+} from '../scripts/patch-actor-clone-runtime.mjs';
 
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 const sampleDirectory = path.join(projectRoot, 'stories/urashima');
@@ -95,36 +95,36 @@ test('pins the generic, editor, and player profile contract', async () => {
   ]);
   assert.equal(
     packageJson.dependencies['@kubohiroya/tmpose-kamishibai'],
-    'github:kubohiroya/tmpose-kamishibai#v3.1.1',
+    '3.1.3',
   );
-  assert.equal(config.builder.version, '3.1.1');
-  assert.equal(config.builder.commit, '585368f3c31e7bece3e4cc926e6fcf35225cce4a');
+  assert.equal(config.builder.version, '3.1.3');
+  assert.equal(config.builder.commit, '51a2b466327b43b31e3d6b78db363ca5d1ad33f5');
   assert.equal(config.baseSb3.profile, 'generic');
   assert.equal(
     config.baseSb3.source,
-    'github:kubohiroya/tmpose-kamishibai#17246c6d2a7e3b357d55112af766f68743a37ba9',
+    'github:kubohiroya/tmpose-kamishibai#v3.1.3',
   );
   assert.equal(
     config.baseSb3.commit,
-    '17246c6d2a7e3b357d55112af766f68743a37ba9',
+    '51a2b466327b43b31e3d6b78db363ca5d1ad33f5',
   );
   assert.equal(config.baseSb3.size, baseSb3.length);
   assert.equal(config.baseSb3.sha256, sha256(baseSb3));
-  assert.equal(config.baseSb3.runtimePatch.id, urashimaRuntimePatch.id);
+  assert.equal(config.baseSb3.runtimePatch.id, actorCloneRuntimePatch.id);
   assert.equal(
     config.baseSb3.runtimePatch.outputName,
-    urashimaRuntimePatch.outputName,
+    actorCloneRuntimePatch.outputName,
   );
-  const patchedBaseSb3 = patchUrashimaRuntime(baseSb3);
+  const patchedBaseSb3 = patchActorCloneRuntime(baseSb3);
   assert.equal(config.baseSb3.runtimePatch.size, patchedBaseSb3.length);
   assert.equal(config.baseSb3.runtimePatch.sha256, sha256(patchedBaseSb3));
   const patchedArchive = unzipSync(new Uint8Array(patchedBaseSb3));
   const patchedProject = JSON.parse(strFromU8(patchedArchive['project.json']));
   const assetManagerSource = Buffer.from(
-    patchedProject.extensionURLs.twAssetManager.split(',')[1],
+    patchedProject.extensionURLs.kubohiroyaassetmanager.split(',')[1],
     'base64',
   ).toString('utf8');
-  assert(assetManagerSource.includes(urashimaRuntimePatch.extensionVersion));
+  assert(assetManagerSource.includes(actorCloneRuntimePatch.extensionVersion));
   assert(assetManagerSource.includes('this.actorNameOf(target2) === actor'));
   assert(assetManagerSource.includes('&& target.isOriginal'));
   const patchedStage = patchedProject.targets.find((target) => target.isStage);
@@ -139,7 +139,7 @@ test('pins the generic, editor, and player profile contract', async () => {
       .filter((block) => block.opcode === 'operator_equals')
       .map((block) => block.inputs.OPERAND2?.[1]?.[1]),
   );
-  for (const transitionAction of urashimaRuntimePatch.transitionActions) {
+  for (const transitionAction of ['fadeToWhite', 'fadeFromWhite']) {
     assert(transitionProcedures.has(`exec transition ${transitionAction}`));
     assert(transitionDispatchNames.has(transitionAction));
   }

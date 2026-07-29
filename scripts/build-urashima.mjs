@@ -9,9 +9,9 @@ import {fileURLToPath} from 'node:url';
 import {buildSb3Bundle} from '@kubohiroya/tmpose-kamishibai/builder';
 
 import {
-  patchUrashimaRuntime,
-  urashimaRuntimePatch,
-} from './patch-urashima-runtime.mjs';
+  actorCloneRuntimePatch,
+  patchActorCloneRuntime,
+} from './patch-actor-clone-runtime.mjs';
 
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 const sampleDirectory = path.join(projectRoot, 'stories/urashima');
@@ -62,10 +62,10 @@ function verifyConfiguration(config) {
   assert.equal(config.profiles.player.script, 'embedded');
   assert.equal(config.profiles.editor.assets, 'embedded');
   assert.equal(config.profiles.player.assets, 'embedded');
-  assert.equal(config.baseSb3.runtimePatch.id, urashimaRuntimePatch.id);
+  assert.equal(config.baseSb3.runtimePatch.id, actorCloneRuntimePatch.id);
   assert.equal(
     config.baseSb3.runtimePatch.outputName,
-    urashimaRuntimePatch.outputName,
+    actorCloneRuntimePatch.outputName,
   );
 }
 
@@ -109,7 +109,7 @@ export async function buildUrashima(outputDirectory, {verifyArtifacts = true} = 
   }
   const baseSb3Path = path.join(sampleDirectory, config.baseSb3.path);
   const baseSb3 = await verifyLockedFile(baseSb3Path, config.baseSb3, 'generic base SB3');
-  const patchedBaseSb3 = patchUrashimaRuntime(baseSb3);
+  const patchedBaseSb3 = patchActorCloneRuntime(baseSb3);
   assert.equal(
     patchedBaseSb3.length,
     config.baseSb3.runtimePatch.size,

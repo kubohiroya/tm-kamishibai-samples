@@ -61,7 +61,7 @@ async function verifyProfile(outputSampleDirectory, profile, record) {
   assert.equal(builderManifest.outputName, record.outputName);
   assert.equal(builderManifest.assets.length, 42);
   assert.equal(builderManifest.builder.package, '@kubohiroya/tmpose-kamishibai');
-  assert.equal(builderManifest.builder.version, '3.1.1');
+  assert.equal(builderManifest.builder.version, '3.1.3');
   validateBundle({sb3Bytes: sb3Contents, scriptBytes: scriptContents, manifest: builderManifest});
   assert.equal(/^(?:asset=.*,(?:file|https?):)/mu.test(scriptContents.toString('utf8')), false);
   return {builderManifest, sb3Contents, scriptContents};
@@ -150,7 +150,7 @@ export async function verifyPublishedSite(options = {}) {
     'https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/',
   );
   assert.equal(manifest.license, 'MPL-2.0');
-  assert.equal(manifest.builder.version, '3.1.1');
+  assert.equal(manifest.builder.version, '3.1.3');
   assert.equal(packageJson.devDependencies['@turbowarp/packager'], '3.13.0');
   assert.equal(manifest.baseSb3.profile, 'generic');
   assert.equal(manifest.baseSb3.published, true);
