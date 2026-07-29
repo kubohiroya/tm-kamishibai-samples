@@ -200,6 +200,10 @@ export async function verifyPublishedSite(options = {}) {
     cloudVariables: {mode: 'disabled'},
     bakeExtensions: true,
   });
+  assert.deepEqual(manifest.web.audioUnlock, {
+    enabled: true,
+    events: ['pointerdown', 'touchstart', 'mousedown', 'keydown'],
+  });
   assert.equal(manifest.web.packager.projectExtensions.length, 12);
   assert.equal(manifest.web.scriptMode, 'embedded');
   assert.equal(manifest.web.assets, 'embedded');
