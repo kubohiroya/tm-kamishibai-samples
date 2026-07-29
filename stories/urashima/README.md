@@ -26,7 +26,7 @@
 - `sample.config.json`: ベース、ビルダー、プロファイル、出力名、既定OFFのWeb生成機能を浦島太郎で有効にする設定
 - `artifacts.lock.json`: `_urashima` / `urashima` / `web/index.html` の再現可能な出力ハッシュ
 - `base/kamishibai.sb3`: `tmpose-kamishibai` `17246c6d2a7e3b357d55112af766f68743a37ba9` の `generic` 成果物
-- `scripts/patch-actor-clone-runtime.mjs`: 元のベースを変更せず、Asset Managerが`actorName`でクローンを解決できるよう生成時に適用する互換パッチ
+- `scripts/patch-urashima-runtime.mjs`: 元のベースを変更せず、Asset Managerの`actorName`クローン解決と、scene 7用の`fadeToWhite` / `fadeFromWhite`を生成時に追加する互換パッチ
 
 `source.txt`などの入力を意図的に変更したときは、リポジトリルートで`pnpm update:artifacts-lock`を実行すると、両プロファイルとWeb版を実際に生成して`artifacts.lock.json`を再作成できます。その後の`pnpm build`では、再生成したロックとの一致を通常どおり検証します。
 
@@ -34,7 +34,9 @@
 
 `Fish1`と`Fish2`は、`setLoadingCostume=Fish1,Fish2`により通常アセット読込中のLoading画像として交互に表示します。Loading用の2画像は読込進捗の分子・分母から除外されます。
 
-scene 3の魚アニメーションでは、`Fish`クローンを乙姫と同じ中心座標に置き、背面レイヤーで`Fish1`と`Fish2`をloop再生します。固定済み汎用ベースのAsset ManagerはScratch target名だけを検索し、コスチューム元のサイズをクローンへ再適用するため、生成時の互換パッチで`actorName`変数も検索対象に加え、クローンの表示サイズを保持します。元の`base/kamishibai.sb3`は変更せず、パッチ後の一時ベースも`sample.config.json`のサイズとSHA-256で検証します。
+scene 3の魚アニメーションでは、`Fish`クローンを乙姫と同じ中心座標に置き、背面レイヤーで`Fish1`と`Fish2`をloop再生します。固定済み汎用ベースのAsset ManagerはScratch target名だけを検索し、コスチューム元のサイズをクローンへ再適用するため、生成時の互換パッチで`actorName`変数も検索対象に加え、クローンの表示サイズを保持します。
+
+scene 7では、`fadeToWhite`でステージの明るさを`+100`へ上げたまま保持してから背景をSmokeへ切り替え、`fadeFromWhite`で`0`へ戻して煙を見せます。通常の`fadeOut`（`-100`で保持）と`fadeUp`（`0`へ復帰）は変更しません。これらの互換処理は元の`base/kamishibai.sb3`を変更せず生成時に適用し、パッチ後の一時ベースも`sample.config.json`のサイズとSHA-256で検証します。
 
 Web版は `player` の `urashima.sb3` だけをTurboWarp Packager 3.13.0へ渡して生成します。音声はブラウザ互換性を考慮してMP3（44.1kHz、モノラル、128kbps）へ統一しています。Packagerは外部URLのScratch拡張も単一HTMLへ取り込みます。実行時にオンライン取得するものはmanifestで許可したTMPoseのTensorFlow.js、Teachable Machine Pose、モデルに限定し、台本固有の画像・音声・台本はSB3内参照のまま利用します。
 

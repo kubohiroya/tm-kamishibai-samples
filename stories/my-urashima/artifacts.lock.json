@@ -10,13 +10,13 @@
     "name": "urashima",
     "config": {
       "path": "../urashima/sample.config.json",
-      "size": 2573,
-      "sha256": "c0d5551117689ba0fcdcd1e0026440d2c0e6ec587891f17603f277ab65a6b03e"
+      "size": 2654,
+      "sha256": "d0b03fbf71f1ba4498f831d16a114c5af1b53c2ef09d1f0826bad29ee2df6c9d"
     },
     "sourceScript": {
       "path": "../urashima/source.txt",
-      "size": 10016,
-      "sha256": "c2f4013fd44223912ea4f6c576639654b5383c84eebfb1856c66490bc3a5c3aa"
+      "size": 10027,
+      "sha256": "2d71caca254ebf5932580dcea5d188327a116b4bd7418b1f5155b3a3af0a2e39"
     },
     "assetManifest": {
       "path": "../urashima/assets.lock.json",
@@ -38,18 +38,18 @@
     "outputName": "my-urashima",
     "sb3": {
       "filename": "my-urashima.sb3",
-      "sha256": "92df5d6f5c08d483503be70ed76d0b26154eaf967f8d6b5a6eeb4a90ce391051",
-      "size": 15049593
+      "sha256": "6687923b0365b0eb4a2f9d60e4a696d4d2c9f6e1271a882205b59dd407cbdd82",
+      "size": 15050100
     },
     "script": {
       "filename": "my-urashima.txt",
-      "sha256": "79364be4c7e23ec167be267e6665562a5b9cf5c43124443324544ed5034b4fbd",
-      "size": 8232
+      "sha256": "9ceeb07ccdb75e298f5552f76fe0655546f6de81ab88e0fbc42a734e5aebe32f",
+      "size": 8243
     },
     "manifest": {
       "filename": "my-urashima.manifest.json",
       "size": 28783,
-      "sha256": "2c0b631f0d2b1166e62347dd73bdb96e1a957be866ef21dc7c235512a7258ea2"
+      "sha256": "24d286e3f164a2f2273b86260634b098338d232c0ec5d1dd3452a61e618c447b"
     }
   }
 }

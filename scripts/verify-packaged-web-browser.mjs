@@ -267,7 +267,12 @@ try {
   await page.waitForFunction(
     () => {
       const runtime = window.scaffolding?.vm?.runtime;
-      return runtime?.ext_lmsTempVars2?.runtimeVariables?.skipMode === 'title';
+      const stage = runtime?.getTargetForStage();
+      const costume = stage?.getCostumes()[stage.currentCostume]?.name;
+      return (
+        costume === 'Title'
+        && runtime?.ext_lmsTempVars2?.runtimeVariables?.skipMode === 'title'
+      );
     },
     undefined,
     {timeout: 120000},
@@ -352,7 +357,97 @@ try {
   await page.waitForFunction(
     () => {
       const runtime = window.scaffolding?.vm?.runtime;
-      return runtime?.ext_lmsTempVars2?.runtimeVariables?.skipMode === 'title';
+      const stage = runtime?.getTargetForStage();
+      const costume = stage?.getCostumes()[stage.currentCostume]?.name;
+      return (
+        costume === 'Title'
+        && runtime?.ext_lmsTempVars2?.runtimeVariables?.skipMode === 'title'
+      );
+    },
+    undefined,
+    {timeout: 120000},
+  );
+  await page.evaluate(() => {
+    const runtime = window.scaffolding.vm.runtime;
+    const stage = runtime.getTargetForStage();
+    const scriptVariable = stage.variables.tmposeEmbeddedScript;
+    const header = String(scriptVariable.value).split(/\r?\n---\r?\n/u)[0];
+    scriptVariable.value = [
+      header,
+      '---',
+      'sceneLabel=white transition',
+      'action=stage:Beach2',
+      'action=transition:fadeToWhite',
+      'action=stage:Smoke',
+      'action=transition:fadeFromWhite',
+      'action=wait:30',
+    ].join('\n');
+    window.__tmposeWhiteTransitionSamples = [];
+    window.__tmposeWhiteTransitionTimer = window.setInterval(() => {
+      const drawable = runtime.renderer._allDrawables[stage.drawableID];
+      const skinId = drawable?._skin?._id;
+      const costume = stage
+        .getCostumes()
+        .find((candidate) => candidate.skinId === skinId)?.name;
+      window.__tmposeWhiteTransitionSamples.push({
+        brightness: Number(stage.effects.brightness),
+        costume,
+      });
+    }, 10);
+  });
+  await page.locator('canvas.sc-canvas').click({position: {x: 480, y: 360}});
+  await page.waitForFunction(
+    () => {
+      const runtime = window.scaffolding?.vm?.runtime;
+      const stage = runtime?.getTargetForStage();
+      const drawable = runtime?.renderer?._allDrawables?.[stage?.drawableID];
+      const skinId = drawable?._skin?._id;
+      const costume = stage
+        ?.getCostumes()
+        .find((candidate) => candidate.skinId === skinId)?.name;
+      return costume === 'Smoke' && stage.effects.brightness === 0;
+    },
+    undefined,
+    {timeout: 120000},
+  );
+  const whiteTransitionState = await page.evaluate(() => {
+    window.clearInterval(window.__tmposeWhiteTransitionTimer);
+    const runtime = window.scaffolding.vm.runtime;
+    const stage = runtime.getTargetForStage();
+    const samples = window.__tmposeWhiteTransitionSamples;
+    const drawable = runtime.renderer._allDrawables[stage.drawableID];
+    const skinId = drawable?._skin?._id;
+    return {
+      costume: stage
+        .getCostumes()
+        .find((candidate) => candidate.skinId === skinId)?.name,
+      finalBrightness: stage.effects.brightness,
+      maximumBrightness: Math.max(...samples.map((sample) => sample.brightness)),
+      maximumSmokeBrightness: Math.max(
+        ...samples
+          .filter((sample) => sample.costume === 'Smoke')
+          .map((sample) => sample.brightness),
+      ),
+    };
+  });
+  assert.equal(whiteTransitionState.costume, 'Smoke');
+  assert.equal(whiteTransitionState.finalBrightness, 0);
+  assert.equal(whiteTransitionState.maximumBrightness, 100);
+  assert(
+    whiteTransitionState.maximumSmokeBrightness >= 95
+      && whiteTransitionState.maximumSmokeBrightness <= 100,
+  );
+
+  await page.reload({waitUntil: 'domcontentloaded', timeout: 120000});
+  await page.waitForFunction(
+    () => {
+      const runtime = window.scaffolding?.vm?.runtime;
+      const stage = runtime?.getTargetForStage();
+      const costume = stage?.getCostumes()[stage.currentCostume]?.name;
+      return (
+        costume === 'Title'
+        && runtime?.ext_lmsTempVars2?.runtimeVariables?.skipMode === 'title'
+      );
     },
     undefined,
     {timeout: 120000},
@@ -394,7 +489,7 @@ try {
   );
 
   console.log(
-    `Verified ${browserName}: title, scene-0 UI text assets, scene-3 Fish loop behind Princess, visible Narration and EndingText, 18 decoded MP3 sounds with playback, no file picker, and ${uniqueRequests.length} allowed requests.`,
+    `Verified ${browserName}: title, scene-0 UI text assets, scene-3 Fish loop behind Princess, scene-7 white transition to Smoke, visible Narration and EndingText, 18 decoded MP3 sounds with playback, no file picker, and ${uniqueRequests.length} allowed requests.`,
   );
 } finally {
   await browser?.close();

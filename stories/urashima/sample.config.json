@@ -15,11 +15,14 @@
     "size": 467818,
     "sha256": "a9dfae210e762cb74a6d8ef0746b18300f39dd2d23b495196767dd8d0c1683ac",
     "runtimePatch": {
-      "id": "tw-asset-manager-actor-clone-compatibility",
-      "issue": "https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/18",
-      "outputName": "kamishibai-actor-clone-runtime.sb3",
-      "size": 468078,
-      "sha256": "f09fca20789f278e1e2fb39b3afaec12068cfac1f0442386d6764d768664d981"
+      "id": "urashima-runtime-compatibility",
+      "issues": [
+        "https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/18",
+        "https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/36"
+      ],
+      "outputName": "kamishibai-urashima-runtime.sb3",
+      "size": 468600,
+      "sha256": "fd88282df8fc23135233d8a62693415186dd9cadda84fe232dffb0dafb9bdbaa"
     }
   },
   "sourceScript": "source.txt",

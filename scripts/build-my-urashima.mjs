@@ -8,7 +8,7 @@ import {fileURLToPath} from 'node:url';
 import {buildSb3Bundle} from '@kubohiroya/tmpose-kamishibai/builder';
 import {strFromU8, strToU8, unzipSync, zipSync} from 'fflate';
 
-import {patchActorCloneRuntime} from './patch-actor-clone-runtime.mjs';
+import {patchUrashimaRuntime} from './patch-urashima-runtime.mjs';
 
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 const storyDirectory = path.join(projectRoot, 'stories/my-urashima');
@@ -245,7 +245,7 @@ export async function buildMyUrashima(outputDirectory, {verifyArtifacts = true} 
     assets: parentManifest.assets.filter(({name}) => !derivedAssetNames.has(name)),
   };
   const baseSb3 = await readFile(path.join(parentDirectory, parentConfig.baseSb3.path));
-  const patchedBase = patchActorCloneRuntime(baseSb3);
+  const patchedBase = patchUrashimaRuntime(baseSb3);
   const derivedBase = await createDerivedBase(
     patchedBase,
     parentDirectory,

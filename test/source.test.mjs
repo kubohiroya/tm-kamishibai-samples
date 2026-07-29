@@ -13,9 +13,9 @@ import {
   DEFAULT_WEB_CONFIGURATION,
 } from '../scripts/build-packaged-web.mjs';
 import {
-  actorCloneRuntimePatch,
-  patchActorCloneRuntime,
-} from '../scripts/patch-actor-clone-runtime.mjs';
+  patchUrashimaRuntime,
+  urashimaRuntimePatch,
+} from '../scripts/patch-urashima-runtime.mjs';
 
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 const sampleDirectory = path.join(projectRoot, 'stories/urashima');
@@ -110,12 +110,12 @@ test('pins the generic, editor, and player profile contract', async () => {
   );
   assert.equal(config.baseSb3.size, baseSb3.length);
   assert.equal(config.baseSb3.sha256, sha256(baseSb3));
-  assert.equal(config.baseSb3.runtimePatch.id, actorCloneRuntimePatch.id);
+  assert.equal(config.baseSb3.runtimePatch.id, urashimaRuntimePatch.id);
   assert.equal(
     config.baseSb3.runtimePatch.outputName,
-    actorCloneRuntimePatch.outputName,
+    urashimaRuntimePatch.outputName,
   );
-  const patchedBaseSb3 = patchActorCloneRuntime(baseSb3);
+  const patchedBaseSb3 = patchUrashimaRuntime(baseSb3);
   assert.equal(config.baseSb3.runtimePatch.size, patchedBaseSb3.length);
   assert.equal(config.baseSb3.runtimePatch.sha256, sha256(patchedBaseSb3));
   const patchedArchive = unzipSync(new Uint8Array(patchedBaseSb3));
@@ -124,9 +124,46 @@ test('pins the generic, editor, and player profile contract', async () => {
     patchedProject.extensionURLs.twAssetManager.split(',')[1],
     'base64',
   ).toString('utf8');
-  assert(assetManagerSource.includes(actorCloneRuntimePatch.extensionVersion));
+  assert(assetManagerSource.includes(urashimaRuntimePatch.extensionVersion));
   assert(assetManagerSource.includes('this.actorNameOf(target2) === actor'));
   assert(assetManagerSource.includes('&& target.isOriginal'));
+  const patchedStage = patchedProject.targets.find((target) => target.isStage);
+  const patchedBlocks = Object.values(patchedStage.blocks);
+  const transitionProcedures = new Set(
+    patchedBlocks
+      .filter((block) => block.opcode === 'procedures_prototype')
+      .map((block) => block.mutation?.proccode),
+  );
+  const transitionDispatchNames = new Set(
+    patchedBlocks
+      .filter((block) => block.opcode === 'operator_equals')
+      .map((block) => block.inputs.OPERAND2?.[1]?.[1]),
+  );
+  for (const transitionAction of urashimaRuntimePatch.transitionActions) {
+    assert(transitionProcedures.has(`exec transition ${transitionAction}`));
+    assert(transitionDispatchNames.has(transitionAction));
+  }
+  const finalBrightnessByTransition = Object.fromEntries(
+    ['fadeOut', 'fadeUp', 'fadeToWhite', 'fadeFromWhite'].map((transitionAction) => {
+      const prototypeEntry = Object.entries(patchedStage.blocks).find(
+        ([, block]) =>
+          block.opcode === 'procedures_prototype' &&
+          block.mutation?.proccode === `exec transition ${transitionAction}`,
+      );
+      assert.ok(prototypeEntry, `${transitionAction} prototype is missing`);
+      const definition = patchedStage.blocks[prototypeEntry[1].parent];
+      const repeat = patchedStage.blocks[definition.next];
+      const finalBrightness = patchedStage.blocks[repeat.next];
+      assert.equal(finalBrightness.opcode, 'looks_seteffectto');
+      return [transitionAction, Number(finalBrightness.inputs.VALUE[1][1])];
+    }),
+  );
+  assert.deepEqual(finalBrightnessByTransition, {
+    fadeOut: -100,
+    fadeUp: 0,
+    fadeToWhite: 100,
+    fadeFromWhite: 0,
+  });
   assert.equal(artifactsLock.formatVersion, 2);
   assert.deepEqual(config.profiles, {
     editor: {outputName: '_urashima', script: 'external', assets: 'embedded'},
