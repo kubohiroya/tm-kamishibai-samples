@@ -292,14 +292,14 @@
     },
     {
       "name": "Fish2",
-      "uri": "file:assets/images/b06dbfe1c71a1309b12dced1411bfb74.png",
+      "uri": "file:assets/images/1f3f91b56deb108fef4d42bcc90dd664.png",
       "kind": "costume",
       "target": "Actor",
       "sb3Name": "Fish2",
       "contentType": "image/png",
       "dataFormat": "png",
-      "size": 214569,
-      "sha256": "8a4537889d975c48cb1b486d0b104c19c2539247080c2b327dd2aeeaf09f0117",
+      "size": 187499,
+      "sha256": "8003dacd9374248656ec8c5735c2e61faf8bf9ef70fee26259a12c5a4adaa113",
       "license": "MPL-2.0: LICENSES.md",
       "metadata": {
         "bitmapResolution": 2,
