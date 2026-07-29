@@ -95,18 +95,18 @@ test('pins the generic, editor, and player profile contract', async () => {
   ]);
   assert.equal(
     packageJson.dependencies['@kubohiroya/tmpose-kamishibai'],
-    'github:kubohiroya/tmpose-kamishibai#v3.1.1',
+    '3.1.3',
   );
-  assert.equal(config.builder.version, '3.1.1');
-  assert.equal(config.builder.commit, '585368f3c31e7bece3e4cc926e6fcf35225cce4a');
+  assert.equal(config.builder.version, '3.1.3');
+  assert.equal(config.builder.commit, '51a2b466327b43b31e3d6b78db363ca5d1ad33f5');
   assert.equal(config.baseSb3.profile, 'generic');
   assert.equal(
     config.baseSb3.source,
-    'github:kubohiroya/tmpose-kamishibai#17246c6d2a7e3b357d55112af766f68743a37ba9',
+    'github:kubohiroya/tmpose-kamishibai#v3.1.3',
   );
   assert.equal(
     config.baseSb3.commit,
-    '17246c6d2a7e3b357d55112af766f68743a37ba9',
+    '51a2b466327b43b31e3d6b78db363ca5d1ad33f5',
   );
   assert.equal(config.baseSb3.size, baseSb3.length);
   assert.equal(config.baseSb3.sha256, sha256(baseSb3));
@@ -121,12 +121,49 @@ test('pins the generic, editor, and player profile contract', async () => {
   const patchedArchive = unzipSync(new Uint8Array(patchedBaseSb3));
   const patchedProject = JSON.parse(strFromU8(patchedArchive['project.json']));
   const assetManagerSource = Buffer.from(
-    patchedProject.extensionURLs.twAssetManager.split(',')[1],
+    patchedProject.extensionURLs.kubohiroyaassetmanager.split(',')[1],
     'base64',
   ).toString('utf8');
   assert(assetManagerSource.includes(actorCloneRuntimePatch.extensionVersion));
   assert(assetManagerSource.includes('this.actorNameOf(target2) === actor'));
   assert(assetManagerSource.includes('&& target.isOriginal'));
+  const patchedStage = patchedProject.targets.find((target) => target.isStage);
+  const patchedBlocks = Object.values(patchedStage.blocks);
+  const transitionProcedures = new Set(
+    patchedBlocks
+      .filter((block) => block.opcode === 'procedures_prototype')
+      .map((block) => block.mutation?.proccode),
+  );
+  const transitionDispatchNames = new Set(
+    patchedBlocks
+      .filter((block) => block.opcode === 'operator_equals')
+      .map((block) => block.inputs.OPERAND2?.[1]?.[1]),
+  );
+  for (const transitionAction of ['fadeToWhite', 'fadeFromWhite']) {
+    assert(transitionProcedures.has(`exec transition ${transitionAction}`));
+    assert(transitionDispatchNames.has(transitionAction));
+  }
+  const finalBrightnessByTransition = Object.fromEntries(
+    ['fadeOut', 'fadeUp', 'fadeToWhite', 'fadeFromWhite'].map((transitionAction) => {
+      const prototypeEntry = Object.entries(patchedStage.blocks).find(
+        ([, block]) =>
+          block.opcode === 'procedures_prototype' &&
+          block.mutation?.proccode === `exec transition ${transitionAction}`,
+      );
+      assert.ok(prototypeEntry, `${transitionAction} prototype is missing`);
+      const definition = patchedStage.blocks[prototypeEntry[1].parent];
+      const repeat = patchedStage.blocks[definition.next];
+      const finalBrightness = patchedStage.blocks[repeat.next];
+      assert.equal(finalBrightness.opcode, 'looks_seteffectto');
+      return [transitionAction, Number(finalBrightness.inputs.VALUE[1][1])];
+    }),
+  );
+  assert.deepEqual(finalBrightnessByTransition, {
+    fadeOut: -100,
+    fadeUp: 0,
+    fadeToWhite: 100,
+    fadeFromWhite: 0,
+  });
   assert.equal(artifactsLock.formatVersion, 2);
   assert.deepEqual(config.profiles, {
     editor: {outputName: '_urashima', script: 'external', assets: 'embedded'},

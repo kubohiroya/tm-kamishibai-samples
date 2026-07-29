@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {strFromU8, strToU8, unzipSync, zipSync} from 'fflate';
 
 const dataUrlPrefix = 'data:text/javascript;base64,';
+const assetManagerExtensionId = 'kubohiroyaassetmanager';
 const fixedZipTimestamp = new Date(1980, 0, 1, 0, 0, 0, 0);
 const originalVersion = 'const EXTENSION_VERSION = "2026-07-26";';
 const patchedVersion =
@@ -67,7 +68,7 @@ const patchedResolver = `    actorNameOf(target) {
     }`;
 
 export const actorCloneRuntimePatch = Object.freeze({
-  id: 'tw-asset-manager-actor-clone-compatibility',
+  id: 'kubohiroya-asset-manager-actor-clone-compatibility',
   outputName: 'kamishibai-actor-clone-runtime.sb3',
   extensionVersion: '2026-07-27-actor-clone-compatibility',
 });
@@ -93,7 +94,7 @@ function orderedArchive(archive) {
 export function patchActorCloneRuntime(baseSb3) {
   const archive = unzipSync(new Uint8Array(baseSb3));
   const project = JSON.parse(strFromU8(archive['project.json']));
-  const dataUrl = project.extensionURLs?.twAssetManager;
+  const dataUrl = project.extensionURLs?.[assetManagerExtensionId];
   assert.equal(
     typeof dataUrl === 'string' && dataUrl.startsWith(dataUrlPrefix),
     true,
@@ -119,7 +120,7 @@ export function patchActorCloneRuntime(baseSb3) {
     patchedSizeCorrection,
     'Asset Manager costume source size correction',
   );
-  project.extensionURLs.twAssetManager =
+  project.extensionURLs[assetManagerExtensionId] =
     `${dataUrlPrefix}${Buffer.from(source).toString('base64')}`;
   archive['project.json'] = strToU8(`${JSON.stringify(project)}\n`);
 
