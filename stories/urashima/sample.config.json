@@ -45,6 +45,9 @@
     "maxOutputBytes": 104857600,
     "scriptMode": "embedded",
     "assets": "embedded",
+    "audioUnlock": {
+      "enabled": true
+    },
     "packager": {
       "package": "@turbowarp/packager",
       "version": "3.13.0",

@@ -10,8 +10,8 @@
     "name": "urashima",
     "config": {
       "path": "../urashima/sample.config.json",
-      "size": 2544,
-      "sha256": "8fa96e2addfbf8567a058338a0b9c288d2497aac969544dcf8475452f298f83e"
+      "size": 2594,
+      "sha256": "7c61ced7a14a3f47027135b5afca6e0d51eb32f5c30de56fc4e045fb5f48770d"
     },
     "sourceScript": {
       "path": "../urashima/source.txt",

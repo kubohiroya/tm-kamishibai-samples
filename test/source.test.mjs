@@ -170,12 +170,16 @@ test('pins the generic, editor, and player profile contract', async () => {
     player: {outputName: 'urashima', script: 'embedded', assets: 'embedded'},
   });
   assert.deepEqual(Object.keys(artifactsLock.profiles).sort(), ['editor', 'player']);
-  assert.deepEqual(DEFAULT_WEB_CONFIGURATION, {enabled: false});
+  assert.deepEqual(DEFAULT_WEB_CONFIGURATION, {
+    enabled: false,
+    audioUnlock: {enabled: false},
+  });
   assert.equal(packageJson.devDependencies['@turbowarp/packager'], '3.13.0');
   assert.equal(config.web.enabled, true);
   assert.equal(config.web.inputProfile, 'player');
   assert.equal(config.web.scriptMode, 'embedded');
   assert.equal(config.web.assets, 'embedded');
+  assert.deepEqual(config.web.audioUnlock, {enabled: true});
   assert.equal(config.web.packager.version, '3.13.0');
   assert.equal(config.web.packager.options.target, 'html');
   assert.equal(config.web.packager.options.autoplay, true);

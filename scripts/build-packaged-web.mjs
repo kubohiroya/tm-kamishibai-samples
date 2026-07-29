@@ -11,7 +11,61 @@ const require = createRequire(import.meta.url);
 const Packager = require('@turbowarp/packager');
 const installedPackager = require('@turbowarp/packager/package.json');
 
-export const DEFAULT_WEB_CONFIGURATION = Object.freeze({enabled: false});
+export const DEFAULT_WEB_CONFIGURATION = Object.freeze({
+  enabled: false,
+  audioUnlock: Object.freeze({enabled: false}),
+});
+export const AUDIO_UNLOCK_EVENTS = Object.freeze([
+  'pointerdown',
+  'touchstart',
+  'mousedown',
+  'keydown',
+]);
+
+const AUDIO_UNLOCK_SCRIPT = `
+(() => {
+  const eventNames = ${JSON.stringify(AUDIO_UNLOCK_EVENTS)};
+  const state = {installed: true, attempts: 0, completed: false};
+  window.__tmposeAudioUnlockState = state;
+
+  function removeUnlockListeners() {
+    for (const eventName of eventNames) {
+      document.removeEventListener(eventName, unlockAudio, true);
+    }
+  }
+
+  function completeIfRunning(audioContext) {
+    if (audioContext.state !== 'running') return;
+    state.completed = true;
+    removeUnlockListeners();
+  }
+
+  function unlockAudio() {
+    const audioContext = window.scaffolding?.vm?.runtime?.audioEngine?.audioContext;
+    if (!audioContext) return;
+    state.attempts += 1;
+    if (audioContext.state === 'running') {
+      completeIfRunning(audioContext);
+      return;
+    }
+    try {
+      Promise.resolve(audioContext.resume())
+        .then(() => completeIfRunning(audioContext))
+        .catch((error) => {
+          state.lastError = String(error);
+          console.warn('Unable to unlock Web Audio from user activation.', error);
+        });
+    } catch (error) {
+      state.lastError = String(error);
+      console.warn('Unable to unlock Web Audio from user activation.', error);
+    }
+  }
+
+  for (const eventName of eventNames) {
+    document.addEventListener(eventName, unlockAudio, {capture: true, passive: true});
+  }
+})();
+`;
 
 function sha256(contents) {
   return createHash('sha256').update(contents).digest('hex');
@@ -44,6 +98,9 @@ function configurePackager(loadedProject, webConfig, extensionUrls) {
   packager.options.cloudVariables.mode = webConfig.packager.options.cloudVariables.mode;
   packager.options.bakeExtensions = true;
   packager.options.extensions = extensionUrls;
+  if (webConfig.audioUnlock?.enabled === true) {
+    packager.options.custom.js = AUDIO_UNLOCK_SCRIPT;
+  }
   return packager;
 }
 
@@ -86,6 +143,7 @@ export async function buildPackagedWeb({
   assert.equal(webConfig.packager.options.target, 'html');
   assert.equal(webConfig.packager.options.autoplay, true);
   assert.equal(webConfig.packager.options.cloudVariables.mode, 'disabled');
+  assert.equal(typeof (webConfig.audioUnlock?.enabled ?? false), 'boolean');
   assert.equal(path.basename(webConfig.outputDirectory), webConfig.outputDirectory);
   assert.equal(path.basename(webConfig.outputFilename), webConfig.outputFilename);
   assert.equal(webConfig.outputFilename, 'index.html');
@@ -151,6 +209,10 @@ export async function buildPackagedWeb({
     },
     scriptMode: webConfig.scriptMode,
     assets: webConfig.assets,
+    audioUnlock: {
+      enabled: webConfig.audioUnlock?.enabled === true,
+      events: webConfig.audioUnlock?.enabled === true ? [...AUDIO_UNLOCK_EVENTS] : [],
+    },
     allowedOnlineDependencies: webConfig.allowedOnlineDependencies,
     runtimeCapabilities: webConfig.runtimeCapabilities,
     reproducibility: {runs: 2, identical: true},

@@ -37,8 +37,17 @@ try {
   const rejectedRequests = [];
   let fileChooserCount = 0;
 
-  browser = await chromium.launch({headless: true});
-  const page = await browser.newPage({viewport: {width: 960, height: 720}});
+  browser = await chromium.launch({
+    headless: true,
+    args: ['--autoplay-policy=user-gesture-required'],
+  });
+  const page = await browser.newPage({
+    viewport: {width: 820, height: 1180},
+    hasTouch: true,
+    isMobile: true,
+    userAgent:
+      'Mozilla/5.0 (iPad; CPU OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/138.0.7204.119 Mobile/15E148 Safari/604.1',
+  });
   await page.addInitScript(() => {
     window.__tmposeUnexpectedFilePicker = 0;
     window.showOpenFilePicker = async () => {
@@ -81,6 +90,7 @@ try {
     undefined,
     {timeout: 120000},
   );
+  await page.evaluate(() => window.scaffolding.vm.runtime.audioEngine.audioContext.suspend());
   const titleState = await page.evaluate(() => {
     const runtime = window.scaffolding.vm.runtime;
     const stage = runtime.getTargetForStage();
@@ -88,13 +98,28 @@ try {
       costume: stage.getCostumes()[stage.currentCostume]?.name,
       embeddedScript: String(stage.variables.tmposeEmbeddedScript?.value ?? ''),
       skipMode: runtime.ext_lmsTempVars2?.runtimeVariables?.skipMode,
+      audioContextState: runtime.audioEngine.audioContext.state,
+      audioUnlockState: window.__tmposeAudioUnlockState,
     };
   });
   assert.equal(titleState.costume, 'Title');
   assert(titleState.embeddedScript.startsWith('kamishibai=3.1'));
   assert.equal(titleState.skipMode, 'title');
+  assert.equal(titleState.audioContextState, 'suspended');
+  assert.deepEqual(titleState.audioUnlockState, {
+    installed: true,
+    attempts: 0,
+    completed: false,
+  });
 
-  await page.locator('canvas.sc-canvas').click({position: {x: 480, y: 360}});
+  await page.locator('canvas.sc-canvas').tap({position: {x: 240, y: 180}});
+  await page.waitForFunction(
+    () =>
+      window.scaffolding?.vm?.runtime?.audioEngine?.audioContext?.state === 'running' &&
+      window.__tmposeAudioUnlockState?.completed === true,
+    undefined,
+    {timeout: 120000},
+  );
   await page.waitForFunction(
     () => {
       const variables = window.scaffolding?.vm?.runtime?.ext_lmsTempVars2?.runtimeVariables;
@@ -116,6 +141,8 @@ try {
       assetCount: stageVariable('assetList')?.length,
       sceneIndex: Number(variables.sceneIndex),
       skipModePresent: Object.hasOwn(variables, 'skipMode'),
+      audioContextState: runtime.audioEngine.audioContext.state,
+      audioUnlockState: window.__tmposeAudioUnlockState,
       uiText: {
         prompt: variables['text:ui.prompt'],
         invalidScript: variables['text:ui.invalidScript'],
@@ -131,6 +158,11 @@ try {
   assert.equal(startedState.assetCount, 45);
   assert.equal(startedState.sceneIndex, 1);
   assert.equal(startedState.skipModePresent, false);
+  assert.equal(startedState.audioContextState, 'running');
+  assert.equal(startedState.audioUnlockState.installed, true);
+  assert(startedState.audioUnlockState.attempts >= 1);
+  assert.equal(startedState.audioUnlockState.completed, true);
+  assert.equal(startedState.audioUnlockState.lastError, undefined);
   assert.deepEqual(startedState.uiText, {
     prompt: 'ポーズをとろう！',
     invalidScript: 'エラー：不正な台本ファイル',
@@ -232,7 +264,6 @@ try {
     const sounds = stage.getSounds();
     const soundBank = stage.sprite.soundBank;
     const testSound = sounds.find((sound) => sound.name === 'Jump');
-    await runtime.audioEngine.audioContext.resume();
     runtime.ext_scratch3_sound.playSound({SOUND_MENU: testSound.name}, {target: stage});
     await new Promise((resolve) => setTimeout(resolve, 100));
     return {
