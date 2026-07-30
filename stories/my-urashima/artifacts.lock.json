@@ -10,8 +10,8 @@
     "name": "urashima",
     "config": {
       "path": "../urashima/sample.config.json",
-      "size": 2594,
-      "sha256": "7c61ced7a14a3f47027135b5afca6e0d51eb32f5c30de56fc4e045fb5f48770d"
+      "size": 3001,
+      "sha256": "d7d1756b73d2ac1426384c7d4cf47e04940ba18f4719e3de7185e005df83fc8a"
     },
     "sourceScript": {
       "path": "../urashima/source.txt",
@@ -38,8 +38,8 @@
     "outputName": "my-urashima",
     "sb3": {
       "filename": "my-urashima.sb3",
-      "sha256": "421e44e76b14cfb85e06dcc278aa9f90f9dc6fd14ebb39ef15e6f4adb595d168",
-      "size": 15024301
+      "sha256": "f84f56d38d7ef979679a1cf733c4615d4afcae165a7371414de9ff68969b4c27",
+      "size": 15024304
     },
     "script": {
       "filename": "my-urashima.txt",
@@ -49,7 +49,7 @@
     "manifest": {
       "filename": "my-urashima.manifest.json",
       "size": 28783,
-      "sha256": "d026ad1b217696c97051a772d5102e6e0dc184026620498e39e64a8a06339619"
+      "sha256": "2950f1d1b5d20a2c662650f7a0ad6c0bb11e9993fc3f9d27b7842e4e00cffc37"
     }
   }
 }

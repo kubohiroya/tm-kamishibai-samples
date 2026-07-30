@@ -21,6 +21,10 @@ import {
   actorCloneRuntimePatch,
   patchActorCloneRuntime,
 } from '../scripts/patch-actor-clone-runtime.mjs';
+import {
+  patchPromptPosition,
+  promptPositionPatch,
+} from '../scripts/patch-prompt-position.mjs';
 
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 const sampleDirectory = path.join(projectRoot, 'stories/urashima');
@@ -50,6 +54,20 @@ function assertLoadingBubbleAnchor(project, description) {
     `${description}: LoadingBubbleAnchor does not contain looks_say`,
   );
   assert.deepEqual([anchor.x, anchor.y], [1, -20]);
+}
+
+function assertPromptPosition(project, description) {
+  const prompt = project.targets.find((target) => target.name === 'prompt');
+  assert.ok(prompt, `${description}: prompt target is missing`);
+  assert.deepEqual(
+    {x: prompt.x, y: prompt.y, size: prompt.size},
+    {
+      x: promptPositionPatch.x,
+      y: promptPositionPatch.toY,
+      size: promptPositionPatch.size,
+    },
+    `${description}: prompt target layout differs`,
+  );
 }
 
 test('licenses the repository, Urashima content, and Packager notices', async () => {
@@ -120,10 +138,25 @@ test('pins the generic, editor, and player profile contract', async () => {
     config.baseSb3.runtimePatch.outputName,
     actorCloneRuntimePatch.outputName,
   );
-  const patchedBaseSb3 = patchActorCloneRuntime(baseSb3);
-  assert.equal(config.baseSb3.runtimePatch.size, patchedBaseSb3.length);
-  assert.equal(config.baseSb3.runtimePatch.sha256, sha256(patchedBaseSb3));
-  const patchedArchive = unzipSync(new Uint8Array(patchedBaseSb3));
+  assert.deepEqual(
+    {
+      id: config.baseSb3.promptPositionPatch.id,
+      issue: config.baseSb3.promptPositionPatch.issue,
+      outputName: config.baseSb3.promptPositionPatch.outputName,
+      x: config.baseSb3.promptPositionPatch.x,
+      fromY: config.baseSb3.promptPositionPatch.fromY,
+      toY: config.baseSb3.promptPositionPatch.toY,
+      size: config.baseSb3.promptPositionPatch.size,
+    },
+    promptPositionPatch,
+  );
+  const runtimePatchedBaseSb3 = patchActorCloneRuntime(baseSb3);
+  assert.equal(config.baseSb3.runtimePatch.size, runtimePatchedBaseSb3.length);
+  assert.equal(config.baseSb3.runtimePatch.sha256, sha256(runtimePatchedBaseSb3));
+  const patchedBaseSb3 = patchPromptPosition(runtimePatchedBaseSb3);
+  assert.equal(config.baseSb3.promptPositionPatch.outputSize, patchedBaseSb3.length);
+  assert.equal(config.baseSb3.promptPositionPatch.sha256, sha256(patchedBaseSb3));
+  const patchedArchive = unzipSync(new Uint8Array(runtimePatchedBaseSb3));
   const patchedProject = JSON.parse(strFromU8(patchedArchive['project.json']));
   const assetManagerSource = Buffer.from(
     patchedProject.extensionURLs.kubohiroyaassetmanager.split(',')[1],
@@ -213,6 +246,7 @@ test('pins the generic, editor, and player profile contract', async () => {
     ],
   );
   assertLoadingBubbleAnchor(project, 'Urashima base');
+  assertPromptPosition(readSb3Project(patchedBaseSb3), 'patched Urashima base');
 });
 
 test('keeps my-urashima external-script-only with Princess assets isolated by sprite', async () => {
@@ -233,6 +267,7 @@ test('keeps my-urashima external-script-only with Princess assets isolated by sp
   const princess = project.targets.find((target) => target.name === 'Princess');
 
   assertLoadingBubbleAnchor(project, 'my-urashima');
+  assertPromptPosition(project, 'my-urashima');
   assert.ok(princess, 'my-urashima: Princess target is missing');
   assert.deepEqual(
     princess.costumes.map(({name, dataFormat}) => ({name, dataFormat})),

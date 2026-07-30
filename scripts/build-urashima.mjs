@@ -12,6 +12,10 @@ import {
   actorCloneRuntimePatch,
   patchActorCloneRuntime,
 } from './patch-actor-clone-runtime.mjs';
+import {
+  patchPromptPosition,
+  promptPositionPatch,
+} from './patch-prompt-position.mjs';
 
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 const sampleDirectory = path.join(projectRoot, 'stories/urashima');
@@ -67,6 +71,24 @@ function verifyConfiguration(config) {
     config.baseSb3.runtimePatch.outputName,
     actorCloneRuntimePatch.outputName,
   );
+  assert.equal(config.baseSb3.promptPositionPatch.id, promptPositionPatch.id);
+  assert.equal(
+    config.baseSb3.promptPositionPatch.outputName,
+    promptPositionPatch.outputName,
+  );
+  assert.equal(config.baseSb3.promptPositionPatch.x, promptPositionPatch.x);
+  assert.equal(
+    config.baseSb3.promptPositionPatch.fromY,
+    promptPositionPatch.fromY,
+  );
+  assert.equal(
+    config.baseSb3.promptPositionPatch.toY,
+    promptPositionPatch.toY,
+  );
+  assert.equal(
+    config.baseSb3.promptPositionPatch.size,
+    promptPositionPatch.size,
+  );
 }
 
 function verifyArtifactResult(result, profile, profileConfig) {
@@ -120,6 +142,17 @@ export async function buildUrashima(outputDirectory, {verifyArtifacts = true} = 
     config.baseSb3.runtimePatch.sha256,
     'patched base SB3 SHA-256 differs from its lock.',
   );
+  const positionedBaseSb3 = patchPromptPosition(patchedBaseSb3);
+  assert.equal(
+    positionedBaseSb3.length,
+    config.baseSb3.promptPositionPatch.outputSize,
+    'positioned base SB3 size differs from its lock.',
+  );
+  assert.equal(
+    sha256(positionedBaseSb3),
+    config.baseSb3.promptPositionPatch.sha256,
+    'positioned base SB3 SHA-256 differs from its lock.',
+  );
 
   const temporaryDirectory = await mkdtemp(
     path.join(tmpdir(), 'tmpose-kamishibai-patched-base-'),
@@ -128,9 +161,9 @@ export async function buildUrashima(outputDirectory, {verifyArtifacts = true} = 
   try {
     const patchedBaseSb3Path = path.join(
       temporaryDirectory,
-      config.baseSb3.runtimePatch.outputName,
+      config.baseSb3.promptPositionPatch.outputName,
     );
-    await writeFile(patchedBaseSb3Path, patchedBaseSb3);
+    await writeFile(patchedBaseSb3Path, positionedBaseSb3);
     results = Object.fromEntries(
       await Promise.all(
         Object.entries(config.profiles).map(async ([profile, profileConfig]) => [
