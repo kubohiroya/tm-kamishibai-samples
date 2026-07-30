@@ -129,6 +129,25 @@ try {
   assert.equal(titleState.audioUnlockState.clockAdvanced, false);
   assert.equal(titleState.audioUnlockState.listenersInstalled, true);
 
+  await page.evaluate(() => {
+    const runtime = window.scaffolding.vm.runtime;
+    const stage = runtime.getTargetForStage();
+    const loading = runtime.targets.find(
+      (target) => target.isOriginal && target.sprite?.name === 'Loading',
+    );
+    window.__tmposeLoadingBackdropSamples = [];
+    window.__tmposeLoadingBackdropTimer = window.setInterval(() => {
+      const drawable = runtime.renderer._allDrawables[stage.drawableID];
+      const skinId = drawable?._skin?._id;
+      const costume = stage
+        .getCostumes()
+        .find((candidate) => candidate.skinId === skinId)?.name;
+      window.__tmposeLoadingBackdropSamples.push({
+        costume,
+        loadingVisible: loading?.visible === true,
+      });
+    }, 5);
+  });
   await page.locator('canvas.sc-canvas').tap({position: {x: 240, y: 180}});
   await page.waitForFunction(
     () =>
@@ -141,7 +160,7 @@ try {
     await page.waitForFunction(
       () => {
         const variables = window.scaffolding?.vm?.runtime?.ext_lmsTempVars2?.runtimeVariables;
-        return variables?.message === '43 / 43' && variables?.sceneIndex !== undefined;
+        return variables?.message === '42 / 42' && variables?.sceneIndex !== undefined;
       },
       undefined,
       {timeout: 120000},
@@ -161,6 +180,26 @@ try {
     console.error(`[${browserName} startup diagnostics] ${JSON.stringify(diagnostics)}`);
     throw error;
   }
+  const loadingBackdropState = await page.evaluate(() => {
+    window.clearInterval(window.__tmposeLoadingBackdropTimer);
+    return {
+      displayedStarsWhileLoading: window.__tmposeLoadingBackdropSamples.some(
+        ({costume, loadingVisible}) => costume === 'Stars' && loadingVisible,
+      ),
+      sampledCostumes: [
+        ...new Set(
+          window.__tmposeLoadingBackdropSamples
+            .map(({costume}) => costume)
+            .filter(Boolean),
+        ),
+      ],
+    };
+  });
+  assert.equal(
+    loadingBackdropState.displayedStarsWhileLoading,
+    true,
+    `Stars was not displayed while Loading was visible: ${loadingBackdropState.sampledCostumes.join(', ')}`,
+  );
   const startedState = await page.evaluate(() => {
     const runtime = window.scaffolding.vm.runtime;
     const stage = runtime.getTargetForStage();

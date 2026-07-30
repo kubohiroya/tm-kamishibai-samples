@@ -13,6 +13,10 @@ import {
   patchActorCloneRuntime,
 } from './patch-actor-clone-runtime.mjs';
 import {
+  loadingSkinPositionPatch,
+  patchLoadingSkinPosition,
+} from './patch-loading-skin-position.mjs';
+import {
   patchPromptPosition,
   promptPositionPatch,
 } from './patch-prompt-position.mjs';
@@ -89,6 +93,22 @@ function verifyConfiguration(config) {
     config.baseSb3.promptPositionPatch.size,
     promptPositionPatch.size,
   );
+  assert.equal(
+    config.baseSb3.loadingSkinPositionPatch.id,
+    loadingSkinPositionPatch.id,
+  );
+  assert.equal(
+    config.baseSb3.loadingSkinPositionPatch.outputName,
+    loadingSkinPositionPatch.outputName,
+  );
+  assert.equal(
+    config.baseSb3.loadingSkinPositionPatch.fromY,
+    loadingSkinPositionPatch.fromY,
+  );
+  assert.equal(
+    config.baseSb3.loadingSkinPositionPatch.toY,
+    loadingSkinPositionPatch.toY,
+  );
 }
 
 function verifyArtifactResult(result, profile, profileConfig) {
@@ -142,15 +162,26 @@ export async function buildUrashima(outputDirectory, {verifyArtifacts = true} = 
     config.baseSb3.runtimePatch.sha256,
     'patched base SB3 SHA-256 differs from its lock.',
   );
-  const positionedBaseSb3 = patchPromptPosition(patchedBaseSb3);
+  const promptPositionedBaseSb3 = patchPromptPosition(patchedBaseSb3);
+  assert.equal(
+    promptPositionedBaseSb3.length,
+    config.baseSb3.promptPositionPatch.outputSize,
+    'prompt-positioned base SB3 size differs from its lock.',
+  );
+  assert.equal(
+    sha256(promptPositionedBaseSb3),
+    config.baseSb3.promptPositionPatch.sha256,
+    'prompt-positioned base SB3 SHA-256 differs from its lock.',
+  );
+  const positionedBaseSb3 = patchLoadingSkinPosition(promptPositionedBaseSb3);
   assert.equal(
     positionedBaseSb3.length,
-    config.baseSb3.promptPositionPatch.outputSize,
+    config.baseSb3.loadingSkinPositionPatch.size,
     'positioned base SB3 size differs from its lock.',
   );
   assert.equal(
     sha256(positionedBaseSb3),
-    config.baseSb3.promptPositionPatch.sha256,
+    config.baseSb3.loadingSkinPositionPatch.sha256,
     'positioned base SB3 SHA-256 differs from its lock.',
   );
 
@@ -161,7 +192,7 @@ export async function buildUrashima(outputDirectory, {verifyArtifacts = true} = 
   try {
     const patchedBaseSb3Path = path.join(
       temporaryDirectory,
-      config.baseSb3.promptPositionPatch.outputName,
+      config.baseSb3.loadingSkinPositionPatch.outputName,
     );
     await writeFile(patchedBaseSb3Path, positionedBaseSb3);
     results = Object.fromEntries(

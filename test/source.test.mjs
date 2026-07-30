@@ -22,6 +22,10 @@ import {
   patchActorCloneRuntime,
 } from '../scripts/patch-actor-clone-runtime.mjs';
 import {
+  loadingSkinPositionPatch,
+  patchLoadingSkinPosition,
+} from '../scripts/patch-loading-skin-position.mjs';
+import {
   patchPromptPosition,
   promptPositionPatch,
 } from '../scripts/patch-prompt-position.mjs';
@@ -67,6 +71,16 @@ function assertPromptPosition(project, description) {
       size: promptPositionPatch.size,
     },
     `${description}: prompt target layout differs`,
+  );
+}
+
+function assertLoadingSkinPosition(project, description) {
+  const loading = project.targets.find((target) => target.name === 'Loading');
+  assert.ok(loading, `${description}: Loading target is missing`);
+  assert.deepEqual(
+    [loading.x, loading.y],
+    [1, loadingSkinPositionPatch.toY],
+    `${description}: Loading target position differs`,
   );
 }
 
@@ -125,11 +139,11 @@ test('pins the generic, editor, and player profile contract', async () => {
   assert.equal(config.baseSb3.profile, 'generic');
   assert.equal(
     config.baseSb3.source,
-    'github:kubohiroya/tmpose-kamishibai#v3.1.3',
+    'github:kubohiroya/tmpose-kamishibai#184b91eb56db0ede0ccc4404ff7583ab36629277',
   );
   assert.equal(
     config.baseSb3.commit,
-    '51a2b466327b43b31e3d6b78db363ca5d1ad33f5',
+    '184b91eb56db0ede0ccc4404ff7583ab36629277',
   );
   assert.equal(config.baseSb3.size, baseSb3.length);
   assert.equal(config.baseSb3.sha256, sha256(baseSb3));
@@ -150,12 +164,31 @@ test('pins the generic, editor, and player profile contract', async () => {
     },
     promptPositionPatch,
   );
+  assert.deepEqual(
+    {
+      id: config.baseSb3.loadingSkinPositionPatch.id,
+      issue: config.baseSb3.loadingSkinPositionPatch.issue,
+      outputName: config.baseSb3.loadingSkinPositionPatch.outputName,
+      fromY: config.baseSb3.loadingSkinPositionPatch.fromY,
+      toY: config.baseSb3.loadingSkinPositionPatch.toY,
+    },
+    loadingSkinPositionPatch,
+  );
   const runtimePatchedBaseSb3 = patchActorCloneRuntime(baseSb3);
   assert.equal(config.baseSb3.runtimePatch.size, runtimePatchedBaseSb3.length);
   assert.equal(config.baseSb3.runtimePatch.sha256, sha256(runtimePatchedBaseSb3));
-  const patchedBaseSb3 = patchPromptPosition(runtimePatchedBaseSb3);
-  assert.equal(config.baseSb3.promptPositionPatch.outputSize, patchedBaseSb3.length);
-  assert.equal(config.baseSb3.promptPositionPatch.sha256, sha256(patchedBaseSb3));
+  const promptPatchedBaseSb3 = patchPromptPosition(runtimePatchedBaseSb3);
+  assert.equal(
+    config.baseSb3.promptPositionPatch.outputSize,
+    promptPatchedBaseSb3.length,
+  );
+  assert.equal(
+    config.baseSb3.promptPositionPatch.sha256,
+    sha256(promptPatchedBaseSb3),
+  );
+  const patchedBaseSb3 = patchLoadingSkinPosition(promptPatchedBaseSb3);
+  assert.equal(config.baseSb3.loadingSkinPositionPatch.size, patchedBaseSb3.length);
+  assert.equal(config.baseSb3.loadingSkinPositionPatch.sha256, sha256(patchedBaseSb3));
   const patchedArchive = unzipSync(new Uint8Array(runtimePatchedBaseSb3));
   const patchedProject = JSON.parse(strFromU8(patchedArchive['project.json']));
   const assetManagerSource = Buffer.from(
@@ -247,6 +280,7 @@ test('pins the generic, editor, and player profile contract', async () => {
   );
   assertLoadingBubbleAnchor(project, 'Urashima base');
   assertPromptPosition(readSb3Project(patchedBaseSb3), 'patched Urashima base');
+  assertLoadingSkinPosition(readSb3Project(patchedBaseSb3), 'patched Urashima base');
 });
 
 test('keeps my-urashima external-script-only with Princess assets isolated by sprite', async () => {
@@ -268,6 +302,7 @@ test('keeps my-urashima external-script-only with Princess assets isolated by sp
 
   assertLoadingBubbleAnchor(project, 'my-urashima');
   assertPromptPosition(project, 'my-urashima');
+  assertLoadingSkinPosition(project, 'my-urashima');
   assert.ok(princess, 'my-urashima: Princess target is missing');
   assert.deepEqual(
     princess.costumes.map(({name, dataFormat}) => ({name, dataFormat})),
@@ -469,6 +504,8 @@ test('locks every external script asset and publishes one transformed script', a
   assert.equal(published.includes('asset=Stars,backdrop'), true);
   assert.equal(published.includes('asset=Narration,text'), true);
   assert.equal(published.includes('asset=EndingText,text'), true);
+  assert.equal(source.includes('setLoadingBackdrop=Stars'), true);
+  assert.equal(published.includes('setLoadingBackdrop=Stars'), true);
   assert.equal(source.includes('setLoadingCostume=Fish1,Fish2'), true);
   assert.equal(published.includes('setLoadingCostume=Fish1,Fish2'), true);
   for (const definition of [

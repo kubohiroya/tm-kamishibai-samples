@@ -25,6 +25,7 @@ asset=Princess,costume
 #asset=p4,costume:Princess
 asset=Fish1,costume:Actor
 asset=Fish2,costume:Actor
+setLoadingBackdrop=Stars
 setLoadingCostume=Fish1,Fish2
 asset=Beach1,backdrop:Beach1
 asset=Beach2,backdrop:Beach2

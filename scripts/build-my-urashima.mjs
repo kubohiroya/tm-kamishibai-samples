@@ -9,6 +9,7 @@ import {buildSb3Bundle} from '@kubohiroya/tmpose-kamishibai/builder';
 import {strFromU8, strToU8, unzipSync, zipSync} from 'fflate';
 
 import {patchActorCloneRuntime} from './patch-actor-clone-runtime.mjs';
+import {patchLoadingSkinPosition} from './patch-loading-skin-position.mjs';
 import {patchPromptPosition} from './patch-prompt-position.mjs';
 
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
@@ -247,7 +248,8 @@ export async function buildMyUrashima(outputDirectory, {verifyArtifacts = true} 
   };
   const baseSb3 = await readFile(path.join(parentDirectory, parentConfig.baseSb3.path));
   const runtimePatchedBase = patchActorCloneRuntime(baseSb3);
-  const patchedBase = patchPromptPosition(runtimePatchedBase);
+  const promptPatchedBase = patchPromptPosition(runtimePatchedBase);
+  const patchedBase = patchLoadingSkinPosition(promptPatchedBase);
   const derivedBase = await createDerivedBase(
     patchedBase,
     parentDirectory,
