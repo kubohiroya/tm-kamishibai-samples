@@ -20,6 +20,17 @@
       "outputName": "kamishibai-actor-clone-runtime.sb3",
       "size": 468382,
       "sha256": "0e9f3027cb8bb211f53934c450743aecdf3e3a6b0220cec0800c3235314db0ef"
+    },
+    "promptPositionPatch": {
+      "id": "urashima-prompt-text-position",
+      "issue": "https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/43",
+      "outputName": "kamishibai-prompt-text-position.sb3",
+      "x": -8,
+      "fromY": 167,
+      "toY": 150,
+      "size": 100,
+      "outputSize": 468384,
+      "sha256": "81490213d2d0bed61c219c1983f9a47e1de7f54bfbc4f0aa18a46c5a274ff923"
     }
   },
   "sourceScript": "source.txt",

@@ -274,25 +274,48 @@ try {
       BROADCAST_OPTION: 'showPrompt',
     });
     await new Promise((resolve) => setTimeout(resolve, 100));
-    const displayedAsset = (name) => {
-      const target = runtime.targets.find(
+    const displayedTarget = (name) =>
+      runtime.targets.find(
         (candidate) => candidate.isOriginal && candidate.sprite?.name === name,
       );
-      return target.visible;
-    };
+    const displayedAsset = (name) => displayedTarget(name).visible;
+    const prompt = displayedTarget('prompt');
+    const promptBounds =
+      runtime.renderer._allDrawables[prompt.drawableID].getFastBounds();
     return {
-      prompt: displayedAsset('prompt'),
+      prompt: {
+        visible: displayedAsset('prompt'),
+        x: prompt.x,
+        y: prompt.y,
+        size: prompt.size,
+        top: promptBounds.top,
+        stageTop: runtime.stageHeight / 2,
+      },
       open: displayedAsset('openButton'),
       reload: displayedAsset('reloadButton'),
       about: displayedAsset('showTitleButton'),
     };
   });
-  assert.deepEqual(uiAssetState, {
-    prompt: true,
-    open: true,
-    reload: true,
-    about: true,
-  });
+  const {top: promptTop, ...promptLayout} = uiAssetState.prompt;
+  assert.deepEqual(
+    {...uiAssetState, prompt: promptLayout},
+    {
+      prompt: {
+        visible: true,
+        x: -8,
+        y: 150,
+        size: 100,
+        stageTop: 180,
+      },
+      open: true,
+      reload: true,
+      about: true,
+    },
+  );
+  assert(
+    promptTop <= promptLayout.stageTop,
+    `prompt top ${promptTop} exceeds stage top`,
+  );
 
   const audioState = await page.evaluate(async () => {
     const runtime = window.scaffolding.vm.runtime;
