@@ -160,7 +160,7 @@ try {
     await page.waitForFunction(
       () => {
         const variables = window.scaffolding?.vm?.runtime?.ext_lmsTempVars2?.runtimeVariables;
-        return variables?.message === '42 / 42' && variables?.sceneIndex !== undefined;
+        return variables?.message === '43 / 43' && variables?.sceneIndex !== undefined;
       },
       undefined,
       {timeout: 120000},
@@ -212,6 +212,7 @@ try {
       sceneCount: stageVariable('sceneList')?.length,
       assetCount: stageVariable('assetList')?.length,
       sceneIndex: Number(variables.sceneIndex),
+      poseRecognitionSound: variables.poseRecognitionSound,
       skipModePresent: Object.hasOwn(variables, 'skipMode'),
       audioContextState: runtime.audioEngine.audioContext.state,
       audioUnlockState: window.__tmposeAudioUnlockState,
@@ -227,8 +228,9 @@ try {
   });
   assert.equal(startedState.runtimeScript, startedState.embeddedScript);
   assert.equal(startedState.sceneCount, 11);
-  assert.equal(startedState.assetCount, 45);
+  assert.equal(startedState.assetCount, 46);
   assert.equal(startedState.sceneIndex, 1);
+  assert.equal(startedState.poseRecognitionSound, 'Clock Ticking');
   assert.equal(startedState.skipModePresent, false);
   assert.equal(startedState.audioContextState, 'running');
   assert.equal(startedState.audioUnlockState.installed, true);
@@ -361,7 +363,7 @@ try {
     const stage = runtime.getTargetForStage();
     const sounds = stage.getSounds();
     const soundBank = stage.sprite.soundBank;
-    const testSound = sounds.find((sound) => sound.name === 'Jump');
+    const testSound = sounds.find((sound) => sound.name === 'Clock Ticking');
     const clockStart = runtime.audioEngine.audioContext.currentTime;
     runtime.ext_scratch3_sound.playSound({SOUND_MENU: testSound.name}, {target: stage});
     await new Promise((resolve) => setTimeout(resolve, 300));
@@ -377,9 +379,9 @@ try {
   assert.deepEqual(audioState, {
     contextState: 'running',
     clockAdvanced: true,
-    soundCount: 18,
-    mp3SoundCount: 18,
-    decodedSoundCount: 18,
+    soundCount: 19,
+    mp3SoundCount: 19,
+    decodedSoundCount: 19,
     testSoundPlaying: true,
   });
 
@@ -657,7 +659,7 @@ try {
   );
 
   console.log(
-    `Verified ${browserName}: title, scene-0 UI text assets, scene-3 Fish loop behind Princess, scene-7 white transition to Smoke, visible Narration and EndingText, 18 decoded MP3 sounds with playback, no file picker, and ${uniqueRequests.length} allowed requests.`,
+    `Verified ${browserName}: title, scene-0 UI text assets, scene-3 Fish loop behind Princess, scene-7 white transition to Smoke, visible Narration and EndingText, 19 decoded MP3 sounds including Clock Ticking with playback, no file picker, and ${uniqueRequests.length} allowed requests.`,
   );
 } finally {
   await browser?.close();

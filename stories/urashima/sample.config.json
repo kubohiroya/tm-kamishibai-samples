@@ -10,16 +10,16 @@
   "baseSb3": {
     "path": "base/kamishibai.sb3",
     "profile": "generic",
-    "source": "github:kubohiroya/tmpose-kamishibai#184b91eb56db0ede0ccc4404ff7583ab36629277",
-    "commit": "184b91eb56db0ede0ccc4404ff7583ab36629277",
-    "size": 468886,
-    "sha256": "daa602b333eaa2a066d0fa3b8be4f0403c860e8bef686851cdfedafc0bda3a78",
+    "source": "github:kubohiroya/tmpose-kamishibai#c82f8cb5e4cd14bafcb3e1bd49c1adb826fdf273",
+    "commit": "c82f8cb5e4cd14bafcb3e1bd49c1adb826fdf273",
+    "size": 465944,
+    "sha256": "b1cf55668a3288795128ce220de61174c8de5387a364116d89676381eafee5da",
     "runtimePatch": {
       "id": "kubohiroya-asset-manager-actor-clone-compatibility",
       "issue": "https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/18",
       "outputName": "kamishibai-actor-clone-runtime.sb3",
-      "size": 469233,
-      "sha256": "027078fb3dfa7cf65881e857b0871055492acb7509aefa2aa62e2ad38e676567"
+      "size": 466293,
+      "sha256": "7fdfa96506baaaca153d54ab4606ce317633ed4e7a6fa8f06b3d3ddf7db5f4df"
     },
     "promptPositionPatch": {
       "id": "urashima-prompt-text-position",
@@ -29,8 +29,8 @@
       "fromY": 167,
       "toY": 150,
       "size": 100,
-      "outputSize": 469235,
-      "sha256": "1b1fafe3a45232a86e9130ddcc6f6e433963f37d24346b88179211237e311b50"
+      "outputSize": 466295,
+      "sha256": "4c2b2cae570073a1802a9018ca55985d3a9c9b1665b3f8cfae0f968b946d5a9a"
     },
     "loadingSkinPositionPatch": {
       "id": "urashima-loading-skin-position",
@@ -38,8 +38,8 @@
       "outputName": "kamishibai-loading-skin-position.sb3",
       "fromY": -92,
       "toY": -62,
-      "size": 469235,
-      "sha256": "217c482d5c6188922157426bd176164dad87cf1fce47b8d2bfad4a4e4cb82860"
+      "size": 466294,
+      "sha256": "2974f4d2acd46e3e6a166184d9f1ace3edf5aa400d467ac59bfce9479c158bc0"
     }
   },
   "sourceScript": "source.txt",

@@ -139,11 +139,11 @@ test('pins the generic, editor, and player profile contract', async () => {
   assert.equal(config.baseSb3.profile, 'generic');
   assert.equal(
     config.baseSb3.source,
-    'github:kubohiroya/tmpose-kamishibai#184b91eb56db0ede0ccc4404ff7583ab36629277',
+    'github:kubohiroya/tmpose-kamishibai#c82f8cb5e4cd14bafcb3e1bd49c1adb826fdf273',
   );
   assert.equal(
     config.baseSb3.commit,
-    '184b91eb56db0ede0ccc4404ff7583ab36629277',
+    'c82f8cb5e4cd14bafcb3e1bd49c1adb826fdf273',
   );
   assert.equal(config.baseSb3.size, baseSb3.length);
   assert.equal(config.baseSb3.sha256, sha256(baseSb3));
@@ -488,8 +488,8 @@ test('locks every external script asset and publishes one transformed script', a
   const externalLines = source
     .split(/\r?\n/u)
     .filter((line) => /^asset=.*,(?:file|https?):/u.test(line));
-  assert.equal(externalLines.length, 42);
-  assert.equal(assetManifest.assets.length, 42);
+  assert.equal(externalLines.length, 43);
+  assert.equal(assetManifest.assets.length, 43);
   assert.equal(
     assetManifest.assets
       .filter((asset) => asset.kind === 'stageSound')
@@ -508,6 +508,8 @@ test('locks every external script asset and publishes one transformed script', a
   assert.equal(published.includes('setLoadingBackdrop=Stars'), true);
   assert.equal(source.includes('setLoadingCostume=Fish1,Fish2'), true);
   assert.equal(published.includes('setLoadingCostume=Fish1,Fish2'), true);
+  assert.equal(source.includes('setPoseRecognitionSound=Clock Ticking'), true);
+  assert.equal(published.includes('setPoseRecognitionSound=Clock Ticking'), true);
   for (const definition of [
     'text=ui.prompt:ポーズをとろう！',
     'text=ui.invalidScript:エラー：不正な台本ファイル',
