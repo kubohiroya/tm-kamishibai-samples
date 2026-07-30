@@ -14,25 +14,27 @@
 
 `editor`と`player`は同じ `source.txt` と `assets.lock.json` から生成します。両者の変換済み台本は同一バイト列です。`player`ではタイトル画面をクリックすると、ファイル選択を開かず、SB3内の台本とアセットだけで紙芝居を開始します。
 
-冒頭のテキストは `action=text:Narration:...` と `action=wait:...` を交互に記述し、シーン内の時系列に沿って更新します。汎用ベースは、同アクション、表示済みテキストの再描画、scene 0 のUI文言定義、白フェードtransitionに対応した本体 `v3.1.3` のコミット `51a2b466327b43b31e3d6b78db363ca5d1ad33f5` から生成しています。
+冒頭のテキストは `action=text:Narration:...` と `action=wait:...` を交互に記述し、シーン内の時系列に沿って更新します。汎用ベースは、Loading背景と`setPoseRecognitionSound`に対応した本体コミット `c82f8cb5e4cd14bafcb3e1bd49c1adb826fdf273` から生成しています。
 
 ## ビルド元データ
 
 - `source.txt`: 元アセットを `file:` URIで参照する台本
 - `urashima.txt`: 生成結果と一致させる変換済み公開用台本
 - `assets/images/`: 画像元データ24ファイル
-- `assets/sounds/`: MP3音声元データ21ファイル（組み込み対象18、来歴保存3）
-- `assets.lock.json`: 組み込み対象42件の名前、target、Scratchメタデータ、サイズ、SHA-256
+- `assets/sounds/`: MP3音声元データ21ファイル（組み込み対象19、来歴保存2）
+- `assets.lock.json`: 組み込み対象43件の名前、target、Scratchメタデータ、サイズ、SHA-256
 - `sample.config.json`: ベース、ビルダー、プロファイル、出力名、既定OFFのWeb生成機能を浦島太郎で有効にする設定
 - `artifacts.lock.json`: `_urashima` / `urashima` / `web/index.html` の再現可能な出力ハッシュ
-- `base/kamishibai.sb3`: `tmpose-kamishibai` `v3.1.3` / `51a2b466327b43b31e3d6b78db363ca5d1ad33f5` の `generic` 成果物
+- `base/kamishibai.sb3`: `tmpose-kamishibai` / `c82f8cb5e4cd14bafcb3e1bd49c1adb826fdf273` の `generic` 成果物
 - `scripts/patch-actor-clone-runtime.mjs`: 元のベースを変更せず、Asset Managerの`actorName`クローン解決だけを生成時に追加する互換パッチ
 
 `source.txt`などの入力を意図的に変更したときは、リポジトリルートで`pnpm update:artifacts-lock`を実行すると、両プロファイルとWeb版を実際に生成して`artifacts.lock.json`を再作成できます。その後の`pnpm build`では、再生成したロックとの一致を通常どおり検証します。
 
-コスチューム18件は汎用アプリの `Actor`、背景6件と音声18件は `Stage` に組み込みます。これにより、汎用ベースへ浦島太郎専用のScratch targetを追加せず、台本のactor定義からクローンを生成できます。
+コスチューム18件は汎用アプリの `Actor`、背景6件と音声19件は `Stage` に組み込みます。これにより、汎用ベースへ浦島太郎専用のScratch targetを追加せず、台本のactor定義からクローンを生成できます。
 
 `Fish1`と`Fish2`は、`setLoadingCostume=Fish1,Fish2`により通常アセット読込中のLoading画像として交互に表示します。Loading用の2画像は読込進捗の分子・分母から除外されます。
+
+`Clock Ticking`はMP3音声アセットとして組み込み、`setPoseRecognitionSound=Clock Ticking`で各ポーズの認識開始から終了まで再生します。
 
 scene 3の魚アニメーションでは、`Fish`クローンを乙姫と同じ中心座標に置き、背面レイヤーで`Fish1`と`Fish2`をloop再生します。固定済み汎用ベースのAsset ManagerはScratch target名だけを検索し、コスチューム元のサイズをクローンへ再適用するため、生成時の互換パッチで`actorName`変数も検索対象に加え、クローンの表示サイズを保持します。
 

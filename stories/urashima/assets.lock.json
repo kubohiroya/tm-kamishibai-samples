@@ -714,6 +714,23 @@
         "rate": 44100,
         "sampleCount": 168658
       }
+    },
+    {
+      "name": "Clock Ticking",
+      "uri": "file:assets/sounds/13561fa02a628ea56859f72a90a3bfab.mp3",
+      "kind": "stageSound",
+      "target": "@stage",
+      "sb3Name": "Clock Ticking",
+      "contentType": "audio/mpeg",
+      "dataFormat": "mp3",
+      "size": 80710,
+      "sha256": "506e842289d2c3497ae148a1ab7ef9442109d5c079076e3528a38b79cd131585",
+      "license": "MPL-2.0: LICENSES.md",
+      "metadata": {
+        "format": "",
+        "rate": 44100,
+        "sampleCount": 219672
+      }
     }
   ]
 }

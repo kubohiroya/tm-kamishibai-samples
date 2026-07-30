@@ -11,22 +11,22 @@
     "config": {
       "path": "../urashima/sample.config.json",
       "size": 3409,
-      "sha256": "03b790957156e04fcd5d56632544835959a8c7482029d44f183a06381b0ea3c4"
+      "sha256": "b4417015c26700c60f3fef74484dd2a2404607b774470eaf1b4f44a91fce66ef"
     },
     "sourceScript": {
       "path": "../urashima/source.txt",
-      "size": 10052,
-      "sha256": "a32130fd9c4b12d91175fd02857771a90ef97f07909beb31ec92068c475665c6"
+      "size": 10166,
+      "sha256": "4e5953d30987daa7d93b37c2ffd653cfab9433593db2253cfe840eee7f6adfa4"
     },
     "assetManifest": {
       "path": "../urashima/assets.lock.json",
-      "size": 21817,
-      "sha256": "ad247393756978efcc6513a641e6b77e72607cae767da44d00e13f7392dbecbf"
+      "size": 22332,
+      "sha256": "22b0bb721151dbe413711268cdb8d2f1543f990223f210e8d27c6ed17d190c3e"
     },
     "baseSb3": {
       "path": "../urashima/base/kamishibai.sb3",
-      "size": 468886,
-      "sha256": "daa602b333eaa2a066d0fa3b8be4f0403c860e8bef686851cdfedafc0bda3a78"
+      "size": 465944,
+      "sha256": "b1cf55668a3288795128ce220de61174c8de5387a364116d89676381eafee5da"
     }
   },
   "configuration": {
@@ -38,18 +38,18 @@
     "outputName": "my-urashima",
     "sb3": {
       "filename": "my-urashima.sb3",
-      "sha256": "72f7a1db7967309af2e5dbb480223e1efa46f95d55d8dd48cde35328bf5c3fd7",
-      "size": 15025159
+      "sha256": "683bd89089ac3b8f379f9bbf6741aa1d75b528583e768009775f3e757be40c7f",
+      "size": 15101415
     },
     "script": {
       "filename": "my-urashima.txt",
-      "sha256": "52c1586bc2dc903dd4969bf6a277e886c71e055665bbcd70838fa1fa68d4d2b2",
-      "size": 8268
+      "sha256": "9445a378afaa229c7b17a04cdfa8e5b7e84a28757ffe33e3455b195e69006893",
+      "size": 8353
     },
     "manifest": {
       "filename": "my-urashima.manifest.json",
-      "size": 28783,
-      "sha256": "04730659d0fe87cfc881d875f8af90365649e4f9fa39310ef1795f873ffbd299"
+      "size": 29471,
+      "sha256": "c695aed53fde8a6aab92c09b708aea127105dedd542cc0f1cc8537c423f51d45"
     }
   }
 }
