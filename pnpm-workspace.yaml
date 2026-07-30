@@ -2,4 +2,4 @@ packages:
   - .
 
 minimumReleaseAgeExclude:
-  - '@kubohiroya/tmpose-kamishibai@3.1.3'
+  - '@kubohiroya/tmpose-kamishibai@3.1.4'
