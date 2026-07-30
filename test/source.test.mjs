@@ -132,18 +132,18 @@ test('pins the generic, editor, and player profile contract', async () => {
   ]);
   assert.equal(
     packageJson.dependencies['@kubohiroya/tmpose-kamishibai'],
-    '3.1.3',
+    '3.1.4',
   );
-  assert.equal(config.builder.version, '3.1.3');
-  assert.equal(config.builder.commit, '51a2b466327b43b31e3d6b78db363ca5d1ad33f5');
+  assert.equal(config.builder.version, '3.1.4');
+  assert.equal(config.builder.commit, 'c8d268e15e1f83a9398c4f6df7c99e9fb8f7372e');
   assert.equal(config.baseSb3.profile, 'generic');
   assert.equal(
     config.baseSb3.source,
-    'github:kubohiroya/tmpose-kamishibai#c82f8cb5e4cd14bafcb3e1bd49c1adb826fdf273',
+    'github:kubohiroya/tmpose-kamishibai#c8d268e15e1f83a9398c4f6df7c99e9fb8f7372e',
   );
   assert.equal(
     config.baseSb3.commit,
-    'c82f8cb5e4cd14bafcb3e1bd49c1adb826fdf273',
+    'c8d268e15e1f83a9398c4f6df7c99e9fb8f7372e',
   );
   assert.equal(config.baseSb3.size, baseSb3.length);
   assert.equal(config.baseSb3.sha256, sha256(baseSb3));
