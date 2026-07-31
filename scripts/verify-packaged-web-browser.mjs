@@ -88,7 +88,10 @@ try {
       const runtime = window.scaffolding?.vm?.runtime;
       const stage = runtime?.getTargetForStage();
       const costume = stage?.getCostumes()[stage.currentCostume]?.name;
-      return costume === 'Title' && runtime.ext_lmsTempVars2?.runtimeVariables?.skipMode === 'title';
+      return (
+        costume === 'TitleRuntime' &&
+        runtime.ext_lmsTempVars2?.runtimeVariables?.skipMode === 'title'
+      );
     },
     undefined,
     {timeout: 120000},
@@ -116,7 +119,7 @@ try {
       audioUnlockState: window.__tmposeAudioUnlockState,
     };
   });
-  assert.equal(titleState.costume, 'Title');
+  assert.equal(titleState.costume, 'TitleRuntime');
   assert(titleState.embeddedScript.startsWith('kamishibai=3.1'));
   assert.equal(titleState.skipMode, 'title');
   assert(
@@ -434,8 +437,8 @@ try {
       const stage = runtime?.getTargetForStage();
       const costume = stage?.getCostumes()[stage.currentCostume]?.name;
       return (
-        costume === 'Title'
-        && runtime?.ext_lmsTempVars2?.runtimeVariables?.skipMode === 'title'
+        costume === 'TitleRuntime' &&
+        runtime?.ext_lmsTempVars2?.runtimeVariables?.skipMode === 'title'
       );
     },
     undefined,
@@ -459,7 +462,7 @@ try {
         .replace(/^action=Urashima:pose:.*$/mu, 'action=wait:30'),
     ].join('\n');
   });
-  await page.locator('canvas.sc-canvas').click({position: {x: 480, y: 360}});
+  await page.locator('canvas.sc-canvas').tap({position: {x: 240, y: 180}});
   await page.waitForFunction(
     () => {
       const runtime = window.scaffolding?.vm?.runtime;
@@ -524,7 +527,7 @@ try {
       const stage = runtime?.getTargetForStage();
       const costume = stage?.getCostumes()[stage.currentCostume]?.name;
       return (
-        costume === 'Title'
+        costume === 'TitleRuntime'
         && runtime?.ext_lmsTempVars2?.runtimeVariables?.skipMode === 'title'
       );
     },
@@ -559,7 +562,7 @@ try {
       });
     }, 10);
   });
-  await page.locator('canvas.sc-canvas').click({position: {x: 480, y: 360}});
+  await page.locator('canvas.sc-canvas').tap({position: {x: 240, y: 180}});
   await page.waitForFunction(
     () => {
       const runtime = window.scaffolding?.vm?.runtime;
@@ -609,7 +612,7 @@ try {
       const stage = runtime?.getTargetForStage();
       const costume = stage?.getCostumes()[stage.currentCostume]?.name;
       return (
-        costume === 'Title'
+        costume === 'TitleRuntime'
         && runtime?.ext_lmsTempVars2?.runtimeVariables?.skipMode === 'title'
       );
     },
@@ -630,7 +633,7 @@ try {
       'action=wait:30',
     ].join('\n');
   });
-  await page.locator('canvas.sc-canvas').click({position: {x: 480, y: 360}});
+  await page.locator('canvas.sc-canvas').tap({position: {x: 240, y: 180}});
   await page.waitForFunction(
     () => {
       const runtime = window.scaffolding?.vm?.runtime;

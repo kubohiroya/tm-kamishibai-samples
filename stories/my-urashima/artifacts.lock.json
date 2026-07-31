@@ -2,16 +2,16 @@
   "formatVersion": 1,
   "builder": {
     "package": "@kubohiroya/tmpose-kamishibai",
-    "version": "3.1.6",
-    "source": "npm:@kubohiroya/tmpose-kamishibai@3.1.6",
-    "commit": "05c0e290998af2e35de9c7623c231c33d518d3f2"
+    "version": "3.1.7",
+    "source": "npm:@kubohiroya/tmpose-kamishibai@3.1.7",
+    "commit": "91ca1dadbfdd037e6f0e0f45e80941c777ab242e"
   },
   "parentStory": {
     "name": "urashima",
     "config": {
       "path": "../urashima/sample.config.json",
       "size": 3409,
-      "sha256": "9f35eef4d62168481f43250d358ab26fcfa98b5b34843f132f25768a7291f8a2"
+      "sha256": "f3ece4b528902595613a8457056670fe7eaaf2edf6ca67b43a910612094c2a67"
     },
     "sourceScript": {
       "path": "../urashima/source.txt",
@@ -25,8 +25,8 @@
     },
     "baseSb3": {
       "path": "../urashima/base/kamishibai.sb3",
-      "size": 604705,
-      "sha256": "3c57977fa6c771bbc8b9e7457d8ecc52c2b6f49165d1f61e22e135bceb1c0139"
+      "size": 606290,
+      "sha256": "2d2686eaa76bfae0929ce147e0ef574f6b3f13728114c311182dffd6d4f85d1a"
     }
   },
   "configuration": {
@@ -38,8 +38,8 @@
     "outputName": "my-urashima",
     "sb3": {
       "filename": "my-urashima.sb3",
-      "sha256": "16c714db09f21d2b0b2f48ed94a896b60800fc3a0325d6b5ae31fb2ae7e8182c",
-      "size": 15318273
+      "sha256": "0dea391ee5eb40751dbac4dbff6b4f160f84eecfdae36b648b97efbebf15d954",
+      "size": 15319888
     },
     "script": {
       "filename": "my-urashima.txt",
@@ -49,7 +49,7 @@
     "manifest": {
       "filename": "my-urashima.manifest.json",
       "size": 30190,
-      "sha256": "7b00c5e0d87c6c6afcb396966613741e7dddfcee955cb32bacd2b712ae52d74f"
+      "sha256": "89e5369e7f5250c925854642167ce4233ceca6e105bd51fd1d48c3f17bf5e546"
     }
   }
 }

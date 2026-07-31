@@ -2,36 +2,36 @@
   "formatVersion": 2,
   "builder": {
     "package": "@kubohiroya/tmpose-kamishibai",
-    "version": "3.1.6",
-    "commit": "05c0e290998af2e35de9c7623c231c33d518d3f2"
+    "version": "3.1.7",
+    "commit": "91ca1dadbfdd037e6f0e0f45e80941c777ab242e"
   },
   "profiles": {
     "editor": {
       "outputName": "_urashima",
       "sb3": {
-        "size": 15318233,
-        "sha256": "562b0212c7a47db9dd3b4757a90e3bb1a483db038dc7bbb1ab0b21f52b2987ce"
+        "size": 15319843,
+        "sha256": "ae03086f93dcddc80d9c38f3de6379dfb426c360f7749b180c77fbb6c0d272c7"
       },
       "script": {
         "size": 8435,
         "sha256": "fb923338d06346f22dfeb955cdf55e0c02a18d4fb6c08571d92b2b812687e892"
       },
       "manifest": {
-        "sha256": "7cb4f55ca6ee8c72fca1b499b5e2a93a5ba61ddd08f25ec211d08ccefa0b81a9"
+        "sha256": "573508f5a7c6d3f15a615a2c95f62d6522443345259237d85049073276bf044d"
       }
     },
     "player": {
       "outputName": "urashima",
       "sb3": {
-        "size": 15320529,
-        "sha256": "5ab99ce20b5ab7950fa1ca42eaa70eafea938806c980f019a6d062860a2013c0"
+        "size": 15322223,
+        "sha256": "ddaa5ac8d4b5385c5ad41eee336d2b074dc156d6d8e85172604a88d8108ea3bd"
       },
       "script": {
         "size": 8435,
         "sha256": "fb923338d06346f22dfeb955cdf55e0c02a18d4fb6c08571d92b2b812687e892"
       },
       "manifest": {
-        "sha256": "1cb484b50979c069faca06167a631de960c63a73deb76d643e8f2aa5d431b941"
+        "sha256": "2e0aae4913c0d7cdd72fc4d69736a5853e888f8684aa957b5b35ba6ef9f64905"
       }
     }
   },
@@ -43,14 +43,14 @@
     "input": {
       "profile": "player",
       "path": "urashima.sb3",
-      "size": 15320529,
-      "sha256": "5ab99ce20b5ab7950fa1ca42eaa70eafea938806c980f019a6d062860a2013c0"
+      "size": 15322223,
+      "sha256": "ddaa5ac8d4b5385c5ad41eee336d2b074dc156d6d8e85172604a88d8108ea3bd"
     },
     "output": {
       "path": "web/index.html",
       "contentType": "text/html",
-      "size": 21555138,
-      "sha256": "56dee3d4163be0dfcc753cef853ea1a08dfc9882e393049424133513bf7884fe"
+      "size": 21556918,
+      "sha256": "172e77d8d94958a481cc266303fdbd35f6acd7153fa4fa2c0b7e4e9b538a246f"
     }
   }
 }

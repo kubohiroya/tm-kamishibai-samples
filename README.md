@@ -17,7 +17,7 @@
 
 `stories/my-urashima/`はワークショップ用の依存ストーリーです。`urashima`の`source.txt`、アセットロック、generic baseを親入力として、Princess PNGを独立した`Princess`スプライトへ直接組み込んだ、台本非埋め込みの`my-urashima.sb3`を生成します。生成規約と更新方法は[`stories/my-urashima/README.md`](stories/my-urashima/README.md)に記載しています。
 
-`pnpm build` は、完全固定した `@kubohiroya/tmpose-kamishibai` `3.1.6` のnpmビルダー、`v3.1.6`から生成してハッシュ固定した汎用ベース、`@turbowarp/packager` `3.13.0` を使い、次の成果物を生成します。
+`pnpm build` は、完全固定した `@kubohiroya/tmpose-kamishibai` `3.1.7` のnpmビルダー、`v3.1.7`から生成してハッシュ固定した汎用ベース、`@turbowarp/packager` `3.13.0` を使い、次の成果物を生成します。
 
 - `_urashima.sb3` (`editor`): 台本非埋め込み・アセット埋め込み。物語作成者の編集用
 - `urashima.sb3` (`player`): 台本・アセット埋め込み。配布・再生用

@@ -8,7 +8,7 @@
 - `assets.lock.json`、`artifacts.lock.json`、`sample.config.json`
 - 本ディレクトリの説明と生成・公開用コード
 
-生成される `_urashima.sb3` と `urashima.sb3` は、上記のMPL-2.0対象コンテンツに加えて、`tmpose-kamishibai` `v3.1.6` のMITライセンス対象ランタイムと、次節のCC BY-SA 2.0対象音声を含む結合物です。汎用ベース `base/kamishibai.sb3` と本体由来部分には、[`licenses/tmpose-kamishibai-MIT.txt`](licenses/tmpose-kamishibai-MIT.txt) のMIT Licenseが引き続き適用されます。
+生成される `_urashima.sb3` と `urashima.sb3` は、上記のMPL-2.0対象コンテンツに加えて、`tmpose-kamishibai` `v3.1.7` のMITライセンス対象ランタイムと、次節のCC BY-SA 2.0対象音声を含む結合物です。汎用ベース `base/kamishibai.sb3` と本体由来部分には、[`licenses/tmpose-kamishibai-MIT.txt`](licenses/tmpose-kamishibai-MIT.txt) のMIT Licenseが引き続き適用されます。
 
 ## Scratch Sewing Machine {#scratch-sewing-machine}
 

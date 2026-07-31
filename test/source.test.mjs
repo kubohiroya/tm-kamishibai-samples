@@ -134,18 +134,18 @@ test('pins the generic, editor, and player profile contract', async () => {
   ]);
   assert.equal(
     packageJson.dependencies['@kubohiroya/tmpose-kamishibai'],
-    '3.1.6',
+    '3.1.7',
   );
-  assert.equal(config.builder.version, '3.1.6');
-  assert.equal(config.builder.commit, '05c0e290998af2e35de9c7623c231c33d518d3f2');
+  assert.equal(config.builder.version, '3.1.7');
+  assert.equal(config.builder.commit, '91ca1dadbfdd037e6f0e0f45e80941c777ab242e');
   assert.equal(config.baseSb3.profile, 'generic');
   assert.equal(
     config.baseSb3.source,
-    'github:kubohiroya/tmpose-kamishibai#05c0e290998af2e35de9c7623c231c33d518d3f2',
+    'github:kubohiroya/tmpose-kamishibai#91ca1dadbfdd037e6f0e0f45e80941c777ab242e',
   );
   assert.equal(
     config.baseSb3.commit,
-    '05c0e290998af2e35de9c7623c231c33d518d3f2',
+    '91ca1dadbfdd037e6f0e0f45e80941c777ab242e',
   );
   assert.equal(config.baseSb3.size, baseSb3.length);
   assert.equal(config.baseSb3.sha256, sha256(baseSb3));
@@ -267,15 +267,25 @@ test('pins the generic, editor, and player profile contract', async () => {
   const project = readSb3Project(baseSb3);
   const stage = project.targets.find((target) => target.isStage);
   const baseArchive = unzipSync(new Uint8Array(baseSb3));
-  for (const costumeName of ['Title', 'Title-en']) {
-    const costume = stage.costumes.find(({name}) => name === costumeName);
-    assert.ok(costume, `Urashima base: ${costumeName} costume is missing`);
-    assert.match(
-      strFromU8(baseArchive[costume.md5ext]),
-      /Version 3\.1\.6 \(2026\/07\/31\)/,
-      `Urashima base: ${costumeName} has an unexpected version label`,
-    );
-  }
+  const titleCostume = stage.costumes.find(({name}) => name === 'Title');
+  const runtimeTitleCostume = stage.costumes.find(({name}) => name === 'TitleRuntime');
+  assert.ok(titleCostume, 'Urashima base: Title costume is missing');
+  assert.ok(runtimeTitleCostume, 'Urashima base: TitleRuntime costume is missing');
+  assert.equal(
+    stage.costumes.some(({name}) => name === 'Title-en'),
+    false,
+    'Urashima base: retired Title-en costume remains',
+  );
+  assert.match(
+    strFromU8(baseArchive[titleCostume.md5ext]),
+    /Version 3\.1\.7 \(2026\/08\/01\)/,
+    'Urashima base: Title has an unexpected fallback version label',
+  );
+  assert.doesNotMatch(
+    strFromU8(baseArchive[runtimeTitleCostume.md5ext]),
+    /<text\b/u,
+    'Urashima base: TitleRuntime must remain blank',
+  );
   assert.deepEqual(stage.variables.tmposeEmbeddedScript, ['__tmpose_embedded_script', '']);
   assert.deepEqual(
     project.targets.map((target) => target.name),
@@ -289,6 +299,13 @@ test('pins the generic, editor, and player profile contract', async () => {
       'languageButton',
       'japaneseLanguageButton',
       'englishLanguageButton',
+      'titleHeading',
+      'titleVersion',
+      'titleLicenseApp',
+      'titleLicenseStory',
+      'titleAuthorOrganization',
+      'titleAuthorName',
+      'officialWebsiteLabel',
       'officialWebsiteButton',
       'closeTitleButton',
       'Loading',
