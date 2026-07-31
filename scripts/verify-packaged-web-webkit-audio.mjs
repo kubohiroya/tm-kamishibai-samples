@@ -49,7 +49,10 @@ try {
       const runtime = window.scaffolding?.vm?.runtime;
       const stage = runtime?.getTargetForStage();
       const costume = stage?.getCostumes()[stage.currentCostume]?.name;
-      return costume === 'Title' && runtime.ext_lmsTempVars2?.runtimeVariables?.skipMode === 'title';
+      return (
+        costume === 'TitleRuntime'
+        && runtime.ext_lmsTempVars2?.runtimeVariables?.skipMode === 'title'
+      );
     },
     undefined,
     {timeout: 120000},
@@ -64,7 +67,7 @@ try {
       unlock: window.__tmposeAudioUnlockState,
     };
   });
-  assert.equal(initialState.costume, 'Title');
+  assert.equal(initialState.costume, 'TitleRuntime');
   assert(
     ['suspended', 'interrupted'].includes(initialState.contextState),
     `Unexpected initial WebKit audio state: ${initialState.contextState}`,

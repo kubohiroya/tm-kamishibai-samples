@@ -134,18 +134,18 @@ test('pins the generic, editor, and player profile contract', async () => {
   ]);
   assert.equal(
     packageJson.dependencies['@kubohiroya/tmpose-kamishibai'],
-    '3.1.5',
+    '3.1.7',
   );
-  assert.equal(config.builder.version, '3.1.5');
-  assert.equal(config.builder.commit, '53bfb1418da176f86420d28177a16ed156e43f37');
+  assert.equal(config.builder.version, '3.1.7');
+  assert.equal(config.builder.commit, '91ca1dadbfdd037e6f0e0f45e80941c777ab242e');
   assert.equal(config.baseSb3.profile, 'generic');
   assert.equal(
     config.baseSb3.source,
-    'github:kubohiroya/tmpose-kamishibai#53bfb1418da176f86420d28177a16ed156e43f37',
+    'github:kubohiroya/tmpose-kamishibai#91ca1dadbfdd037e6f0e0f45e80941c777ab242e',
   );
   assert.equal(
     config.baseSb3.commit,
-    '53bfb1418da176f86420d28177a16ed156e43f37',
+    '91ca1dadbfdd037e6f0e0f45e80941c777ab242e',
   );
   assert.equal(config.baseSb3.size, baseSb3.length);
   assert.equal(config.baseSb3.sha256, sha256(baseSb3));
@@ -266,6 +266,26 @@ test('pins the generic, editor, and player profile contract', async () => {
 
   const project = readSb3Project(baseSb3);
   const stage = project.targets.find((target) => target.isStage);
+  const baseArchive = unzipSync(new Uint8Array(baseSb3));
+  const titleCostume = stage.costumes.find(({name}) => name === 'Title');
+  const runtimeTitleCostume = stage.costumes.find(({name}) => name === 'TitleRuntime');
+  assert.ok(titleCostume, 'Urashima base: Title costume is missing');
+  assert.ok(runtimeTitleCostume, 'Urashima base: TitleRuntime costume is missing');
+  assert.equal(
+    stage.costumes.some(({name}) => name === 'Title-en'),
+    false,
+    'Urashima base: retired Title-en costume remains',
+  );
+  assert.match(
+    strFromU8(baseArchive[titleCostume.md5ext]),
+    /Version 3\.1\.7 \(2026\/08\/01\)/,
+    'Urashima base: Title has an unexpected fallback version label',
+  );
+  assert.doesNotMatch(
+    strFromU8(baseArchive[runtimeTitleCostume.md5ext]),
+    /<text\b/u,
+    'Urashima base: TitleRuntime must remain blank',
+  );
   assert.deepEqual(stage.variables.tmposeEmbeddedScript, ['__tmpose_embedded_script', '']);
   assert.deepEqual(
     project.targets.map((target) => target.name),
@@ -276,6 +296,18 @@ test('pins the generic, editor, and player profile contract', async () => {
       'openButton',
       'reloadButton',
       'showTitleButton',
+      'languageButton',
+      'japaneseLanguageButton',
+      'englishLanguageButton',
+      'titleHeading',
+      'titleVersion',
+      'titleLicenseApp',
+      'titleLicenseStory',
+      'titleAuthorOrganization',
+      'titleAuthorName',
+      'officialWebsiteLabel',
+      'officialWebsiteButton',
+      'closeTitleButton',
       'Loading',
       'LoadingBubbleAnchor',
     ],
