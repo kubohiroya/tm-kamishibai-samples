@@ -533,13 +533,18 @@ test('locks every external script asset and publishes one transformed script', a
   );
   for (const definition of [
     'text=ui.prompt:ポーズをとろう！',
-    'text=ui.invalidScript:エラー：不正な台本ファイル',
-    'text=ui.open:ファイルをひらく',
-    'text=ui.reload:もういちど',
-    'text=ui.about:このアプリについて',
     'text=EndingText:お し ま い',
   ]) {
     assert.equal(published.includes(definition), true, definition);
+  }
+  for (const obsoleteDefinition of [
+    'text=ui.invalidScript:',
+    'text=ui.open:',
+    'text=ui.reload:',
+    'text=ui.about:',
+  ]) {
+    assert.equal(source.includes(obsoleteDefinition), false, obsoleteDefinition);
+    assert.equal(published.includes(obsoleteDefinition), false, obsoleteDefinition);
   }
   assert.equal(published.includes('action=text:Narration:むかし'), true);
   assert.equal(

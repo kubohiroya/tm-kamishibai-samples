@@ -219,10 +219,6 @@ try {
       audioUnlockState: window.__tmposeAudioUnlockState,
       uiText: {
         prompt: variables['text:ui.prompt'],
-        invalidScript: variables['text:ui.invalidScript'],
-        open: variables['text:ui.open'],
-        reload: variables['text:ui.reload'],
-        about: variables['text:ui.about'],
       },
       unexpectedFilePicker: window.__tmposeUnexpectedFilePicker,
     };
@@ -244,10 +240,6 @@ try {
   assert.equal(startedState.audioUnlockState.lastError, undefined);
   assert.deepEqual(startedState.uiText, {
     prompt: 'ポーズをとろう！',
-    invalidScript: 'エラー：不正な台本ファイル',
-    open: 'ファイルをひらく',
-    reload: 'もういちど',
-    about: 'このアプリについて',
   });
   assert.equal(startedState.unexpectedFilePicker, 0);
   assert.equal(fileChooserCount, 0);
