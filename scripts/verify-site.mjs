@@ -59,9 +59,9 @@ async function verifyProfile(outputSampleDirectory, profile, record) {
   const builderManifest = JSON.parse(builderManifestContents.toString('utf8'));
   assert.equal(builderManifest.profile, profile);
   assert.equal(builderManifest.outputName, record.outputName);
-  assert.equal(builderManifest.assets.length, 43);
+  assert.equal(builderManifest.assets.length, 44);
   assert.equal(builderManifest.builder.package, '@kubohiroya/tmpose-kamishibai');
-  assert.equal(builderManifest.builder.version, '3.1.4');
+  assert.equal(builderManifest.builder.version, '3.1.5');
   validateBundle({sb3Bytes: sb3Contents, scriptBytes: scriptContents, manifest: builderManifest});
   assert.equal(/^(?:asset=.*,(?:file|https?):)/mu.test(scriptContents.toString('utf8')), false);
   return {builderManifest, sb3Contents, scriptContents};
@@ -150,12 +150,12 @@ export async function verifyPublishedSite(options = {}) {
     'https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/',
   );
   assert.equal(manifest.license, 'MPL-2.0');
-  assert.equal(manifest.builder.version, '3.1.4');
+  assert.equal(manifest.builder.version, '3.1.5');
   assert.equal(packageJson.devDependencies['@turbowarp/packager'], '3.13.0');
   assert.equal(manifest.baseSb3.profile, 'generic');
   assert.equal(manifest.baseSb3.published, true);
-  assert.deepEqual(manifest.assetCounts, {images: 24, sounds: 21, embedded: 43});
-  assert.equal(manifest.assets.length, 45);
+  assert.deepEqual(manifest.assetCounts, {images: 24, sounds: 22, embedded: 44});
+  assert.equal(manifest.assets.length, 46);
   assert.deepEqual(manifest.unusedSourceAssets, [
     'assets/sounds/9d01505050dea4f782cd59635bcbab63.mp3',
     'assets/sounds/ab4760e0c9f0db6d1f5e83e3a0e9bf4f.mp3',
@@ -186,7 +186,7 @@ export async function verifyPublishedSite(options = {}) {
   assert.equal(player.builderManifest.script.embeddedVariableId, 'tmposeEmbeddedScript');
   assert.equal(baseSb3.length, manifest.baseSb3.size);
   assert(sourceScript.includes(Buffer.from('file:assets/')));
-  assert.equal(JSON.parse(assetManifest.toString('utf8')).assets.length, 43);
+  assert.equal(JSON.parse(assetManifest.toString('utf8')).assets.length, 44);
 
   assert.equal(manifest.web.enabled, true);
   assert.equal(manifest.web.publicPath, 'web/');

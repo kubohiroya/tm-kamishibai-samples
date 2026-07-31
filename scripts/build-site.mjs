@@ -245,7 +245,7 @@ function profileRecord(profile, build, lock) {
 export async function buildSite() {
   const images = await assetRecords(path.join(sourceDirectory, 'assets/images'), 'images');
   const sounds = await assetRecords(path.join(sourceDirectory, 'assets/sounds'), 'sounds');
-  if (images.length !== 24 || sounds.length !== 21) {
+  if (images.length !== 24 || sounds.length !== 22) {
     throw new Error(`Unexpected Urashima asset counts: ${images.length} images, ${sounds.length} sounds.`);
   }
 
