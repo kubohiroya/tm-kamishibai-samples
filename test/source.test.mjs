@@ -95,6 +95,8 @@ test('licenses the repository, Urashima content, and Packager notices', async ()
   assert.equal(packageJson.license, 'MPL-2.0');
   assert(license.startsWith('Mozilla Public License Version 2.0'));
   assert(licenseSummary.includes('MPL-2.0'));
+  assert(licenseSummary.includes('CC BY-SA 2.0'));
+  assert(licenseSummary.includes('7bd800cb66d6fb18886a4c5cea1b76a6'));
   assert(licenseSummary.includes('tmpose-kamishibai-MIT.txt'));
   assert(runtimeLicense.startsWith('MIT License'));
   assert(licenseSummary.includes('turbowarp-packager-NOTICE.md'));
@@ -105,7 +107,7 @@ test('licenses the repository, Urashima content, and Packager notices', async ()
 test('keeps the migrated Scratch assets complete and content-addressed', async () => {
   const directories = [
     ['images', 24],
-    ['sounds', 21],
+    ['sounds', 22],
   ];
   for (const [directory, expectedCount] of directories) {
     const assetDirectory = path.join(sampleDirectory, 'assets', directory);
@@ -132,18 +134,18 @@ test('pins the generic, editor, and player profile contract', async () => {
   ]);
   assert.equal(
     packageJson.dependencies['@kubohiroya/tmpose-kamishibai'],
-    '3.1.4',
+    '3.1.5',
   );
-  assert.equal(config.builder.version, '3.1.4');
-  assert.equal(config.builder.commit, 'c8d268e15e1f83a9398c4f6df7c99e9fb8f7372e');
+  assert.equal(config.builder.version, '3.1.5');
+  assert.equal(config.builder.commit, '53bfb1418da176f86420d28177a16ed156e43f37');
   assert.equal(config.baseSb3.profile, 'generic');
   assert.equal(
     config.baseSb3.source,
-    'github:kubohiroya/tmpose-kamishibai#c8d268e15e1f83a9398c4f6df7c99e9fb8f7372e',
+    'github:kubohiroya/tmpose-kamishibai#53bfb1418da176f86420d28177a16ed156e43f37',
   );
   assert.equal(
     config.baseSb3.commit,
-    'c8d268e15e1f83a9398c4f6df7c99e9fb8f7372e',
+    '53bfb1418da176f86420d28177a16ed156e43f37',
   );
   assert.equal(config.baseSb3.size, baseSb3.length);
   assert.equal(config.baseSb3.sha256, sha256(baseSb3));
@@ -324,6 +326,11 @@ test('keeps my-urashima external-script-only with Princess assets isolated by sp
   );
   assert.equal(script.includes('asset=Princess,costume\n'), true);
   assert.equal(script.includes('asset=Princess,costume:Actor'), false);
+  assert.equal(script.includes('asset=Sewing Machine,sound:@stage:Sewing Machine'), true);
+  assert.equal(
+    script.includes('setPoseRecognitionSound=Clock Ticking,Sewing Machine'),
+    true,
+  );
   assert.equal(script.includes('action=Princess:show:Princess:-130,-27,70'), true);
   assert.equal(script.includes('action=Princess:setSkin:p1:70'), true);
   assert.equal(script.includes('action=Urashima:pose:Urashima-dance-1'), false);
@@ -488,8 +495,8 @@ test('locks every external script asset and publishes one transformed script', a
   const externalLines = source
     .split(/\r?\n/u)
     .filter((line) => /^asset=.*,(?:file|https?):/u.test(line));
-  assert.equal(externalLines.length, 43);
-  assert.equal(assetManifest.assets.length, 43);
+  assert.equal(externalLines.length, 44);
+  assert.equal(assetManifest.assets.length, 44);
   assert.equal(
     assetManifest.assets
       .filter((asset) => asset.kind === 'stageSound')
@@ -508,8 +515,22 @@ test('locks every external script asset and publishes one transformed script', a
   assert.equal(published.includes('setLoadingBackdrop=Stars'), true);
   assert.equal(source.includes('setLoadingCostume=Fish1,Fish2'), true);
   assert.equal(published.includes('setLoadingCostume=Fish1,Fish2'), true);
-  assert.equal(source.includes('setPoseRecognitionSound=Clock Ticking'), true);
-  assert.equal(published.includes('setPoseRecognitionSound=Clock Ticking'), true);
+  assert.equal(
+    source.includes('asset=Sewing Machine,file:assets/sounds/cfc75b8ec10d522a49e754cee372fcb9.mp3'),
+    true,
+  );
+  assert.equal(
+    published.includes('asset=Sewing Machine,sound:@stage:Sewing Machine'),
+    true,
+  );
+  assert.equal(
+    source.includes('setPoseRecognitionSound=Clock Ticking,Sewing Machine'),
+    true,
+  );
+  assert.equal(
+    published.includes('setPoseRecognitionSound=Clock Ticking,Sewing Machine'),
+    true,
+  );
   for (const definition of [
     'text=ui.prompt:ポーズをとろう！',
     'text=ui.invalidScript:エラー：不正な台本ファイル',

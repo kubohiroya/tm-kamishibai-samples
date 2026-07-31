@@ -731,6 +731,23 @@
         "rate": 44100,
         "sampleCount": 219672
       }
+    },
+    {
+      "name": "Sewing Machine",
+      "uri": "file:assets/sounds/cfc75b8ec10d522a49e754cee372fcb9.mp3",
+      "kind": "stageSound",
+      "target": "@stage",
+      "sb3Name": "Sewing Machine",
+      "contentType": "audio/mpeg",
+      "dataFormat": "mp3",
+      "size": 79874,
+      "sha256": "dd200be1df9bd82d62599c3e127e6f8867a63ba58d80c5a8375f61a798224cd5",
+      "license": "CC-BY-SA-2.0: LICENSES.md#scratch-sewing-machine",
+      "metadata": {
+        "format": "",
+        "rate": 44100,
+        "sampleCount": 217638
+      }
     }
   ]
 }

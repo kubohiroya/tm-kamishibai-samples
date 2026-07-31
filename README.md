@@ -9,15 +9,15 @@
 - `source.txt`: 元アセットを `file:` 参照するビルド元台本
 - `urashima.txt`: editor/playerで共通の変換済み公開用台本
 - `assets/images/`: 画像元データ 24ファイル
-- `assets/sounds/`: Web再生互換性のためMP3へ統一した音声元データ 21ファイル
-- `assets.lock.json`: 組み込み対象42件の名前・target・ハッシュ・メタデータ
+- `assets/sounds/`: Web再生互換性のためMP3へ統一した音声元データ 22ファイル
+- `assets.lock.json`: 組み込み対象44件の名前・target・ハッシュ・メタデータ
 - `sample.config.json`: `generic` / `editor` / `player` とWeb版の生成設定
 - `artifacts.lock.json`: 再現可能な生成物のサイズとSHA-256
-- `base/kamishibai.sb3`: テキストアクション対応済み本体コミットから生成した `generic` ベース
+- `base/kamishibai.sb3`: ポーズ認識成立音対応済み本体コミットから生成した `generic` ベース
 
 `stories/my-urashima/`はワークショップ用の依存ストーリーです。`urashima`の`source.txt`、アセットロック、generic baseを親入力として、Princess PNGを独立した`Princess`スプライトへ直接組み込んだ、台本非埋め込みの`my-urashima.sb3`を生成します。生成規約と更新方法は[`stories/my-urashima/README.md`](stories/my-urashima/README.md)に記載しています。
 
-`pnpm build` は、完全固定した `@kubohiroya/tmpose-kamishibai` `3.1.4` のnpmビルダー、`v3.1.4`から生成してハッシュ固定した汎用ベース、`@turbowarp/packager` `3.13.0` を使い、次の成果物を生成します。
+`pnpm build` は、完全固定した `@kubohiroya/tmpose-kamishibai` `3.1.5` のnpmビルダー、`v3.1.5`から生成してハッシュ固定した汎用ベース、`@turbowarp/packager` `3.13.0` を使い、次の成果物を生成します。
 
 - `_urashima.sb3` (`editor`): 台本非埋め込み・アセット埋め込み。物語作成者の編集用
 - `urashima.sb3` (`player`): 台本・アセット埋め込み。配布・再生用

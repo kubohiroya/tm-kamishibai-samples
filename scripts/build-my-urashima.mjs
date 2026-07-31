@@ -322,7 +322,7 @@ export async function verifyMyUrashimaOutput(outputDirectory) {
   const manifest = JSON.parse(manifestContents.toString('utf8'));
   assert.equal(manifest.profile, 'editor');
   assert.equal(manifest.script.mode, 'external');
-  assert.equal(manifest.assets.length, 42);
+  assert.equal(manifest.assets.length, 43);
   assert.equal(
     manifest.assets.some(({name}) => name === 'Princess'),
     false,

@@ -3,23 +3,23 @@
   "sample": "urashima",
   "builder": {
     "package": "@kubohiroya/tmpose-kamishibai",
-    "version": "3.1.4",
-    "source": "npm:@kubohiroya/tmpose-kamishibai@3.1.4",
-    "commit": "c8d268e15e1f83a9398c4f6df7c99e9fb8f7372e"
+    "version": "3.1.5",
+    "source": "npm:@kubohiroya/tmpose-kamishibai@3.1.5",
+    "commit": "53bfb1418da176f86420d28177a16ed156e43f37"
   },
   "baseSb3": {
     "path": "base/kamishibai.sb3",
     "profile": "generic",
-    "source": "github:kubohiroya/tmpose-kamishibai#c8d268e15e1f83a9398c4f6df7c99e9fb8f7372e",
-    "commit": "c8d268e15e1f83a9398c4f6df7c99e9fb8f7372e",
-    "size": 465944,
-    "sha256": "b1cf55668a3288795128ce220de61174c8de5387a364116d89676381eafee5da",
+    "source": "github:kubohiroya/tmpose-kamishibai#53bfb1418da176f86420d28177a16ed156e43f37",
+    "commit": "53bfb1418da176f86420d28177a16ed156e43f37",
+    "size": 466393,
+    "sha256": "576e6bbe1cba82e64c34a149a32aa0fd42789f6a8465c69f7c5b2dbf20480835",
     "runtimePatch": {
       "id": "kubohiroya-asset-manager-actor-clone-compatibility",
       "issue": "https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/18",
       "outputName": "kamishibai-actor-clone-runtime.sb3",
-      "size": 466293,
-      "sha256": "7fdfa96506baaaca153d54ab4606ce317633ed4e7a6fa8f06b3d3ddf7db5f4df"
+      "size": 466737,
+      "sha256": "7bd3880a648feec9cc011614eb7dcdf7f950ca3dac30e47e896b864a1087c242"
     },
     "promptPositionPatch": {
       "id": "urashima-prompt-text-position",
@@ -29,8 +29,8 @@
       "fromY": 167,
       "toY": 150,
       "size": 100,
-      "outputSize": 466295,
-      "sha256": "4c2b2cae570073a1802a9018ca55985d3a9c9b1665b3f8cfae0f968b946d5a9a"
+      "outputSize": 466739,
+      "sha256": "c415491bc812a3ad820888c1a63cf8dc12dcbb038c3d6adbfe534196c5733d75"
     },
     "loadingSkinPositionPatch": {
       "id": "urashima-loading-skin-position",
@@ -38,8 +38,8 @@
       "outputName": "kamishibai-loading-skin-position.sb3",
       "fromY": -92,
       "toY": -62,
-      "size": 466294,
-      "sha256": "2974f4d2acd46e3e6a166184d9f1ace3edf5aa400d467ac59bfce9479c158bc0"
+      "size": 466739,
+      "sha256": "dd775e18c0ffa3d430a222cddb63da0155e17af722903b5f7a46bf8a69a767c8"
     }
   },
   "sourceScript": "source.txt",
