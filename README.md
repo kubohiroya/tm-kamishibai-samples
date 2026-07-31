@@ -28,7 +28,9 @@
 
 ## ライセンス
 
-本リポジトリのコンテンツは [Mozilla Public License 2.0](LICENSE)（SPDX: `MPL-2.0`）で提供します。浦島太郎サンプルの適用範囲は [`stories/urashima/LICENSES.md`](stories/urashima/LICENSES.md) に明記しています。
+本リポジトリのソースコードと、個別のライセンス表示がないコンテンツは[Mozilla Public License 2.0](LICENSE)（SPDX: `MPL-2.0`）で提供します。浦島太郎サンプルの適用範囲は[`stories/urashima/LICENSES.md`](stories/urashima/LICENSES.md)に明記しています。
+
+`resources/20260801/`の画像とTeachable MachineプロジェクトにはCC BY-SA 4.0が適用されます。ワークショップ配布物にビルド時に加えるPDF教材はHiroya KuboのAll rights reservedです。詳細な境界は[`resources/20260801/LICENSES.md`](resources/20260801/LICENSES.md)を参照してください。
 
 ## ビルドと検証
 
@@ -47,6 +49,16 @@ pnpm verify
 `source.txt`、アセット、生成設定など、成果物へ影響する入力を意図的に変更した場合は、`pnpm update:artifacts-lock` で `stories/urashima/artifacts.lock.json` を再生成してから `pnpm build` を実行します。更新コマンドはSB3とWeb版を実際に生成し、Web版の2回生成が一致した後にだけロックファイルを置き換えます。通常の `pnpm build` はロックを更新せず、入力や生成環境の意図しない変化をエラーとして検出します。
 
 Pull Requestでは `.github/workflows/ci.yml` が生成と検証だけを行います。`main` へのマージ後は `.github/workflows/deploy.yml` が同じ検証を再実行し、成功した `dist/` だけをGitHub Pagesへ公開します。
+
+## 2026年8月1日ワークショップ配布物
+
+ワークショップ用の元素材は`resources/20260801/`で管理します。次のコマンドは公開サイトを再生成した後、教材PDF、浦島太郎とmy-urashimaの台本・SB3、ライセンス表示を集め、ディレクトリとZIPを作成します。
+
+```bash
+pnpm run build-workshop-20260801
+```
+
+出力先は`dist/workshop/20260801/`と`dist/workshop/20260801.zip`です。教材PDFの既定入力は、隣接する`tmpose-kamishibai`リポジトリの`output/pdf/workshops/2026-08-01/tmpose-kamishibai-20260801.pdf`です。別の場所を使う場合は`TMPOSE_KAMISHIBAI_WORKSHOP_PDF`に絶対パスを指定します。
 
 ## 手動デプロイ
 
