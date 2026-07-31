@@ -134,18 +134,18 @@ test('pins the generic, editor, and player profile contract', async () => {
   ]);
   assert.equal(
     packageJson.dependencies['@kubohiroya/tmpose-kamishibai'],
-    '3.1.5',
+    '3.1.6',
   );
-  assert.equal(config.builder.version, '3.1.5');
-  assert.equal(config.builder.commit, '53bfb1418da176f86420d28177a16ed156e43f37');
+  assert.equal(config.builder.version, '3.1.6');
+  assert.equal(config.builder.commit, '05c0e290998af2e35de9c7623c231c33d518d3f2');
   assert.equal(config.baseSb3.profile, 'generic');
   assert.equal(
     config.baseSb3.source,
-    'github:kubohiroya/tmpose-kamishibai#53bfb1418da176f86420d28177a16ed156e43f37',
+    'github:kubohiroya/tmpose-kamishibai#05c0e290998af2e35de9c7623c231c33d518d3f2',
   );
   assert.equal(
     config.baseSb3.commit,
-    '53bfb1418da176f86420d28177a16ed156e43f37',
+    '05c0e290998af2e35de9c7623c231c33d518d3f2',
   );
   assert.equal(config.baseSb3.size, baseSb3.length);
   assert.equal(config.baseSb3.sha256, sha256(baseSb3));
@@ -266,6 +266,16 @@ test('pins the generic, editor, and player profile contract', async () => {
 
   const project = readSb3Project(baseSb3);
   const stage = project.targets.find((target) => target.isStage);
+  const baseArchive = unzipSync(new Uint8Array(baseSb3));
+  for (const costumeName of ['Title', 'Title-en']) {
+    const costume = stage.costumes.find(({name}) => name === costumeName);
+    assert.ok(costume, `Urashima base: ${costumeName} costume is missing`);
+    assert.match(
+      strFromU8(baseArchive[costume.md5ext]),
+      /Version 3\.1\.6 \(2026\/07\/31\)/,
+      `Urashima base: ${costumeName} has an unexpected version label`,
+    );
+  }
   assert.deepEqual(stage.variables.tmposeEmbeddedScript, ['__tmpose_embedded_script', '']);
   assert.deepEqual(
     project.targets.map((target) => target.name),
@@ -276,6 +286,11 @@ test('pins the generic, editor, and player profile contract', async () => {
       'openButton',
       'reloadButton',
       'showTitleButton',
+      'languageButton',
+      'japaneseLanguageButton',
+      'englishLanguageButton',
+      'officialWebsiteButton',
+      'closeTitleButton',
       'Loading',
       'LoadingBubbleAnchor',
     ],
