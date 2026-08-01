@@ -117,6 +117,7 @@ export async function verifyPublishedSite(options = {}) {
     packageJson,
     license,
     licenseSummary,
+    runtimeLicense,
     packagerNotice,
   ] =
     await Promise.all([
@@ -129,6 +130,13 @@ export async function verifyPublishedSite(options = {}) {
       readFile(path.join(projectRoot, 'package.json'), 'utf8').then(JSON.parse),
       readFile(path.join(outputDirectory, 'LICENSE'), 'utf8'),
       readFile(path.join(outputSampleDirectory, 'LICENSES.md'), 'utf8'),
+      readFile(
+        path.join(
+          outputSampleDirectory,
+          'licenses/tmpose-kamishibai-MPL-2.0.txt',
+        ),
+        'utf8',
+      ),
       readFile(
         path.join(outputSampleDirectory, 'licenses/turbowarp-packager-NOTICE.md'),
         'utf8',
@@ -239,7 +247,11 @@ export async function verifyPublishedSite(options = {}) {
   );
 
   assert(license.startsWith('Mozilla Public License Version 2.0'));
+  assert(runtimeLicense.startsWith('Mozilla Public License Version 2.0'));
+  assert.equal(runtimeLicense, license);
   assert(licenseSummary.includes('MPL-2.0'));
+  assert(licenseSummary.includes('tmpose-kamishibai-MPL-2.0.txt'));
+  assert(!licenseSummary.includes('tmpose-kamishibai-MIT.txt'));
   assert(licenseSummary.includes('turbowarp-packager-NOTICE.md'));
   assert(licenseSummary.includes('完全オフライン版ではありません'));
   assert(packagerNotice.includes('Copyright (C) 2021-2024 Thomas Weber'));
@@ -261,6 +273,14 @@ export async function verifyPublishedSite(options = {}) {
   assert(publishedFiles.includes('site-shell.css'));
   assert(publishedFiles.includes('stories/my-urashima/my-urashima.sb3'));
   assert(publishedFiles.includes('stories/my-urashima/my-urashima.txt'));
+  assert(
+    publishedFiles.includes(
+      'stories/urashima/licenses/tmpose-kamishibai-MPL-2.0.txt',
+    ),
+  );
+  assert(
+    !publishedFiles.includes('stories/urashima/licenses/tmpose-kamishibai-MIT.txt'),
+  );
   await verifyMyUrashimaOutput(path.join(outputDirectory, 'stories/my-urashima'));
 
   const [siteCss, faviconMetadata, favicon] = await Promise.all([

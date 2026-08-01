@@ -150,8 +150,11 @@ test("assembles a deterministic workshop directory and ZIP with explicit license
         "Story licenses",
       ),
       writeFixture(
-        path.join(siteOutputDirectory, "stories/urashima/licenses/runtime.txt"),
-        "MIT",
+        path.join(
+          siteOutputDirectory,
+          "stories/urashima/licenses/tmpose-kamishibai-MPL-2.0.txt",
+        ),
+        "Mozilla Public License Version 2.0",
       ),
     ]);
 
@@ -178,7 +181,7 @@ test("assembles a deterministic workshop directory and ZIP with explicit license
     assert(
       Object.hasOwn(
         archive,
-        `${workshopEdition}/stories/urashima/licenses/runtime.txt`,
+        `${workshopEdition}/stories/urashima/licenses/tmpose-kamishibai-MPL-2.0.txt`,
       ),
     );
     assert.equal(

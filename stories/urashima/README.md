@@ -46,7 +46,7 @@ Web版は `player` の `urashima.sb3` だけをTurboWarp Packager 3.13.0へ渡�
 
 ## ライセンスと来歴
 
-台本、画像、音声、生成設定はMozilla Public License 2.0（SPDX: `MPL-2.0`）で提供します。適用範囲と、MITライセンスの本体ランタイムを含む生成物の構成は [`LICENSES.md`](LICENSES.md) を参照してください。
+台本、画像、音声、生成設定はMozilla Public License 2.0（SPDX: `MPL-2.0`）で提供します。本体ランタイムを含む生成物の適用範囲は [`LICENSES.md`](LICENSES.md) を参照してください。
 
 - 移設元: [`kubohiroya/tmpose-kamishibai`](https://github.com/kubohiroya/tmpose-kamishibai) PR #44
 - 移設元コミット: `9526c9d6391622ee261b8d7c0778b1fbbd2e6745`

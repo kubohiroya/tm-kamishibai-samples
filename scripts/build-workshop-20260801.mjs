@@ -124,6 +124,7 @@ export async function verifyWorkshopArchive(zipPath) {
     `${workshopEdition}/tmpose-kamishibai-20260801.pdf`,
     `${workshopEdition}/stories/urashima/urashima.sb3`,
     `${workshopEdition}/stories/urashima/urashima.txt`,
+    `${workshopEdition}/stories/urashima/licenses/tmpose-kamishibai-MPL-2.0.txt`,
     `${workshopEdition}/stories/my-urashima/my-urashima.sb3`,
     `${workshopEdition}/stories/my-urashima/my-urashima.txt`,
     ...workshopResourceDirectories.map((name) => `${workshopEdition}/${name}/`),
@@ -139,6 +140,10 @@ export async function verifyWorkshopArchive(zipPath) {
     assert(
       !entry.includes("/.gitkeep"),
       `Workshop ZIP contains .gitkeep: ${entry}`,
+    );
+    assert(
+      !entry.endsWith("/licenses/tmpose-kamishibai-MIT.txt"),
+      `Workshop ZIP contains the retired runtime license: ${entry}`,
     );
   }
   return Object.freeze({
