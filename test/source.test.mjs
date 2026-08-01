@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {readFile, readdir} from 'node:fs/promises';
+import {createRequire} from 'node:module';
 import path from 'node:path';
 import test from 'node:test';
 import {fileURLToPath} from 'node:url';
@@ -32,6 +33,7 @@ import {
 
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 const sampleDirectory = path.join(projectRoot, 'stories/urashima');
+const require = createRequire(import.meta.url);
 
 function sha256(contents) {
   return createHash('sha256').update(contents).digest('hex');
@@ -84,21 +86,40 @@ function assertLoadingSkinPosition(project, description) {
   );
 }
 
-test('licenses the repository, Urashima content, and Packager notices', async () => {
-  const [packageJson, license, licenseSummary, runtimeLicense, packagerNotice] = await Promise.all([
+test('licenses the repository, runtime, Urashima content, and Packager notices', async () => {
+  const runtimePackagePath = require.resolve('@kubohiroya/tmpose-kamishibai/package.json');
+  const runtimePackageLicensePath = path.join(path.dirname(runtimePackagePath), 'LICENSE');
+  const [
+    packageJson,
+    runtimePackageJson,
+    license,
+    runtimePackageLicense,
+    licenseSummary,
+    runtimeLicense,
+    packagerNotice,
+  ] = await Promise.all([
     readFile(path.join(projectRoot, 'package.json'), 'utf8').then(JSON.parse),
+    readFile(runtimePackagePath, 'utf8').then(JSON.parse),
     readFile(path.join(projectRoot, 'LICENSE'), 'utf8'),
+    readFile(runtimePackageLicensePath, 'utf8'),
     readFile(path.join(sampleDirectory, 'LICENSES.md'), 'utf8'),
-    readFile(path.join(sampleDirectory, 'licenses/tmpose-kamishibai-MIT.txt'), 'utf8'),
+    readFile(
+      path.join(sampleDirectory, 'licenses/tmpose-kamishibai-MPL-2.0.txt'),
+      'utf8',
+    ),
     readFile(path.join(sampleDirectory, 'licenses/turbowarp-packager-NOTICE.md'), 'utf8'),
   ]);
   assert.equal(packageJson.license, 'MPL-2.0');
+  assert.equal(runtimePackageJson.license, 'MPL-2.0');
   assert(license.startsWith('Mozilla Public License Version 2.0'));
+  assert(runtimePackageLicense.startsWith('Mozilla Public License Version 2.0'));
   assert(licenseSummary.includes('MPL-2.0'));
   assert(licenseSummary.includes('CC BY-SA 2.0'));
   assert(licenseSummary.includes('7bd800cb66d6fb18886a4c5cea1b76a6'));
-  assert(licenseSummary.includes('tmpose-kamishibai-MIT.txt'));
-  assert(runtimeLicense.startsWith('MIT License'));
+  assert(licenseSummary.includes('tmpose-kamishibai-MPL-2.0.txt'));
+  assert(runtimeLicense.startsWith('Mozilla Public License Version 2.0'));
+  assert.equal(runtimeLicense, runtimePackageLicense);
+  assert.equal(runtimeLicense, license);
   assert(licenseSummary.includes('turbowarp-packager-NOTICE.md'));
   assert(packagerNotice.includes('TurboWarp Packager 3.13.0'));
   assert(packagerNotice.includes('MPL-2.0'));
