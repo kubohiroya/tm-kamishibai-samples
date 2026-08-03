@@ -2,36 +2,36 @@
   "formatVersion": 2,
   "builder": {
     "package": "@kubohiroya/tmpose-kamishibai",
-    "version": "3.1.8",
-    "commit": "443236d939d29d645fd456233c516d119d0d913b"
+    "version": "3.1.9",
+    "commit": "96b1fe66e052f10da2938389f98fd15c95fcfdee"
   },
   "profiles": {
     "editor": {
       "outputName": "_urashima",
       "sb3": {
-        "size": 15346967,
-        "sha256": "39beb7280063123d3792d8bc9e1228ce4010e1c79f727674e795f38e92fef18a"
+        "size": 15346960,
+        "sha256": "9bc0ea662978f46f6da02c8c9e7997903f42efbfffe0dee0911c45c2aacdc4e0"
       },
       "script": {
         "size": 8435,
         "sha256": "254552849683d397702a25a30bda9515db2b0d0b252ae252650079d0a11ef00b"
       },
       "manifest": {
-        "sha256": "f6c0ebcf3cb0305ac8d19e8da29115ce09b12dd4ccf06b0c78ee8679f2962ff4"
+        "sha256": "a6cf29ce95912c50473d2a7fd73dbe21206fb8a8f271268a59107b6bf3040a13"
       }
     },
     "player": {
       "outputName": "urashima",
       "sb3": {
-        "size": 15349327,
-        "sha256": "54a993ca299e677c8c575b5d7d26f3ae749e6af6d82c4d2198bed30d339546b6"
+        "size": 15349321,
+        "sha256": "29814c43e7c61c783b9660434501609bb07a01660749a21ba4948f17b49bb02b"
       },
       "script": {
         "size": 8435,
         "sha256": "254552849683d397702a25a30bda9515db2b0d0b252ae252650079d0a11ef00b"
       },
       "manifest": {
-        "sha256": "1ad025d9b7568e4ec0246efc886612b0594a3a332017dfb66f6701e6e27894e7"
+        "sha256": "3f5e4e4513d779bc8b4d8043073d9902009362b27529aad5fee405aa9c20468a"
       }
     }
   },
@@ -43,14 +43,14 @@
     "input": {
       "profile": "player",
       "path": "urashima.sb3",
-      "size": 15349327,
-      "sha256": "54a993ca299e677c8c575b5d7d26f3ae749e6af6d82c4d2198bed30d339546b6"
+      "size": 15349321,
+      "sha256": "29814c43e7c61c783b9660434501609bb07a01660749a21ba4948f17b49bb02b"
     },
     "output": {
       "path": "web/index.html",
       "contentType": "text/html",
       "size": 21679159,
-      "sha256": "9b9486a1130be0fe9e5abe30bf3a5ba02f0d256cba64982d624b29705d0977d7"
+      "sha256": "4ff0b2922e1971b467556e695f45c6ac6e8b45ce6b50206502bdc02b423fd7cb"
     }
   }
 }
