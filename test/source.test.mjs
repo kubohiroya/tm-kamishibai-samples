@@ -18,19 +18,6 @@ import {
   buildPackagedWeb,
   DEFAULT_WEB_CONFIGURATION,
 } from '../scripts/build-packaged-web.mjs';
-import {
-  actorCloneRuntimePatch,
-  patchActorCloneRuntime,
-} from '../scripts/patch-actor-clone-runtime.mjs';
-import {
-  loadingSkinPositionPatch,
-  patchLoadingSkinPosition,
-} from '../scripts/patch-loading-skin-position.mjs';
-import {
-  patchPromptPosition,
-  promptPositionPatch,
-} from '../scripts/patch-prompt-position.mjs';
-
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 const sampleDirectory = path.join(projectRoot, 'stories/urashima');
 const require = createRequire(import.meta.url);
@@ -67,11 +54,7 @@ function assertPromptPosition(project, description) {
   assert.ok(prompt, `${description}: prompt target is missing`);
   assert.deepEqual(
     {x: prompt.x, y: prompt.y, size: prompt.size},
-    {
-      x: promptPositionPatch.x,
-      y: promptPositionPatch.toY,
-      size: promptPositionPatch.size,
-    },
+    {x: -8, y: 150, size: 100},
     `${description}: prompt target layout differs`,
   );
 }
@@ -81,7 +64,7 @@ function assertLoadingSkinPosition(project, description) {
   assert.ok(loading, `${description}: Loading target is missing`);
   assert.deepEqual(
     [loading.x, loading.y],
-    [1, loadingSkinPositionPatch.toY],
+    [1, -62],
     `${description}: Loading target position differs`,
   );
 }
@@ -117,7 +100,7 @@ test('licenses the repository, runtime, Urashima content, and Packager notices',
   assert(licenseSummary.includes('CC BY-SA 2.0'));
   assert(licenseSummary.includes('7bd800cb66d6fb18886a4c5cea1b76a6'));
   assert(licenseSummary.includes('tmpose-kamishibai-MPL-2.0.txt'));
-  assert(licenseSummary.includes('1aae65f5af986320b5078c9e560e7945ee1b4fde'));
+  assert(licenseSummary.includes('96b1fe66e052f10da2938389f98fd15c95fcfdee'));
   assert(runtimeLicense.startsWith('Mozilla Public License Version 2.0'));
   assert.equal(runtimeLicense, runtimePackageLicense);
   assert.equal(runtimeLicense, license);
@@ -156,83 +139,43 @@ test('pins the generic, editor, and player profile contract', async () => {
   ]);
   assert.equal(
     packageJson.dependencies['@kubohiroya/tmpose-kamishibai'],
-    '3.1.7',
+    '3.1.9',
   );
-  assert.equal(config.builder.version, '3.1.7');
-  assert.equal(config.builder.commit, '91ca1dadbfdd037e6f0e0f45e80941c777ab242e');
+  assert.equal(config.builder.version, '3.1.9');
+  assert.equal(config.builder.commit, '96b1fe66e052f10da2938389f98fd15c95fcfdee');
   assert.equal(config.baseSb3.profile, 'generic');
   assert.equal(
     config.baseSb3.source,
-    'github:kubohiroya/tmpose-kamishibai#1aae65f5af986320b5078c9e560e7945ee1b4fde',
+    'github:kubohiroya/tmpose-kamishibai#96b1fe66e052f10da2938389f98fd15c95fcfdee',
   );
   assert.equal(
     config.baseSb3.commit,
-    '1aae65f5af986320b5078c9e560e7945ee1b4fde',
+    '96b1fe66e052f10da2938389f98fd15c95fcfdee',
   );
   assert.equal(config.baseSb3.size, baseSb3.length);
   assert.equal(config.baseSb3.sha256, sha256(baseSb3));
-  assert.equal(config.baseSb3.runtimePatch.id, actorCloneRuntimePatch.id);
-  assert.equal(
-    config.baseSb3.runtimePatch.outputName,
-    actorCloneRuntimePatch.outputName,
-  );
-  assert.deepEqual(
-    {
-      id: config.baseSb3.promptPositionPatch.id,
-      issue: config.baseSb3.promptPositionPatch.issue,
-      outputName: config.baseSb3.promptPositionPatch.outputName,
-      x: config.baseSb3.promptPositionPatch.x,
-      fromY: config.baseSb3.promptPositionPatch.fromY,
-      toY: config.baseSb3.promptPositionPatch.toY,
-      size: config.baseSb3.promptPositionPatch.size,
-    },
-    promptPositionPatch,
-  );
-  assert.deepEqual(
-    {
-      id: config.baseSb3.loadingSkinPositionPatch.id,
-      issue: config.baseSb3.loadingSkinPositionPatch.issue,
-      outputName: config.baseSb3.loadingSkinPositionPatch.outputName,
-      fromY: config.baseSb3.loadingSkinPositionPatch.fromY,
-      toY: config.baseSb3.loadingSkinPositionPatch.toY,
-    },
-    loadingSkinPositionPatch,
-  );
-  const runtimePatchedBaseSb3 = patchActorCloneRuntime(baseSb3);
-  assert.equal(config.baseSb3.runtimePatch.size, runtimePatchedBaseSb3.length);
-  assert.equal(config.baseSb3.runtimePatch.sha256, sha256(runtimePatchedBaseSb3));
-  const promptPatchedBaseSb3 = patchPromptPosition(runtimePatchedBaseSb3);
-  assert.equal(
-    config.baseSb3.promptPositionPatch.outputSize,
-    promptPatchedBaseSb3.length,
-  );
-  assert.equal(
-    config.baseSb3.promptPositionPatch.sha256,
-    sha256(promptPatchedBaseSb3),
-  );
-  const patchedBaseSb3 = patchLoadingSkinPosition(promptPatchedBaseSb3);
-  assert.equal(config.baseSb3.loadingSkinPositionPatch.size, patchedBaseSb3.length);
-  assert.equal(config.baseSb3.loadingSkinPositionPatch.sha256, sha256(patchedBaseSb3));
-  const patchedArchive = unzipSync(new Uint8Array(runtimePatchedBaseSb3));
-  const patchedProject = JSON.parse(strFromU8(patchedArchive['project.json']));
+  const baseArchive = unzipSync(new Uint8Array(baseSb3));
+  const baseProject = JSON.parse(strFromU8(baseArchive['project.json']));
   const assetManagerSource = Buffer.from(
-    patchedProject.extensionURLs.kubohiroyaassetmanager.split(',')[1],
+    baseProject.extensionURLs.kubohiroyaassetmanager.split(',')[1],
     'base64',
   ).toString('utf8');
-  assert(assetManagerSource.includes(actorCloneRuntimePatch.extensionVersion));
+  assert(assetManagerSource.includes('const EXTENSION_VERSION = "0.4.1"'));
   assert(assetManagerSource.includes('this.actorNameOf(target2) === actor'));
-  assert(assetManagerSource.includes('&& target.isOriginal'));
+  assert(assetManagerSource.includes('target.isOriginal'));
   assert(assetManagerSource.includes('this.displayedAssets.delete(target.id)'));
   assert(assetManagerSource.includes('findProjectTargetByName(runtime, name)'));
-  const patchedStage = patchedProject.targets.find((target) => target.isStage);
-  const patchedBlocks = Object.values(patchedStage.blocks);
+  assertPromptPosition(baseProject, 'generic base');
+  assertLoadingSkinPosition(baseProject, 'generic base');
+  const baseStage = baseProject.targets.find((target) => target.isStage);
+  const baseBlocks = Object.values(baseStage.blocks);
   const transitionProcedures = new Set(
-    patchedBlocks
+    baseBlocks
       .filter((block) => block.opcode === 'procedures_prototype')
       .map((block) => block.mutation?.proccode),
   );
   const transitionDispatchNames = new Set(
-    patchedBlocks
+    baseBlocks
       .filter((block) => block.opcode === 'operator_equals')
       .map((block) => block.inputs.OPERAND2?.[1]?.[1]),
   );
@@ -242,15 +185,15 @@ test('pins the generic, editor, and player profile contract', async () => {
   }
   const finalBrightnessByTransition = Object.fromEntries(
     ['fadeOut', 'fadeUp', 'fadeToWhite', 'fadeFromWhite'].map((transitionAction) => {
-      const prototypeEntry = Object.entries(patchedStage.blocks).find(
+      const prototypeEntry = Object.entries(baseStage.blocks).find(
         ([, block]) =>
           block.opcode === 'procedures_prototype' &&
           block.mutation?.proccode === `exec transition ${transitionAction}`,
       );
       assert.ok(prototypeEntry, `${transitionAction} prototype is missing`);
-      const definition = patchedStage.blocks[prototypeEntry[1].parent];
-      const repeat = patchedStage.blocks[definition.next];
-      const finalBrightness = patchedStage.blocks[repeat.next];
+      const definition = baseStage.blocks[prototypeEntry[1].parent];
+      const repeat = baseStage.blocks[definition.next];
+      const finalBrightness = baseStage.blocks[repeat.next];
       assert.equal(finalBrightness.opcode, 'looks_seteffectto');
       return [transitionAction, Number(finalBrightness.inputs.VALUE[1][1])];
     }),
@@ -290,7 +233,7 @@ test('pins the generic, editor, and player profile contract', async () => {
 
   const project = readSb3Project(baseSb3);
   const stage = project.targets.find((target) => target.isStage);
-  const baseArchive = unzipSync(new Uint8Array(baseSb3));
+  const titleArchive = unzipSync(new Uint8Array(baseSb3));
   const titleCostume = stage.costumes.find(({name}) => name === 'Title');
   const runtimeTitleCostume = stage.costumes.find(({name}) => name === 'TitleRuntime');
   assert.ok(titleCostume, 'Urashima base: Title costume is missing');
@@ -301,12 +244,12 @@ test('pins the generic, editor, and player profile contract', async () => {
     'Urashima base: retired Title-en costume remains',
   );
   assert.match(
-    strFromU8(baseArchive[titleCostume.md5ext]),
-    /Version 3\.1\.7 \(2026\/08\/03\)/,
+    strFromU8(titleArchive[titleCostume.md5ext]),
+    /Version 3\.1\.9 \(2026\/08\/04\)/,
     'Urashima base: Title has an unexpected fallback version label',
   );
   assert.doesNotMatch(
-    strFromU8(baseArchive[runtimeTitleCostume.md5ext]),
+    strFromU8(titleArchive[runtimeTitleCostume.md5ext]),
     /<text\b/u,
     'Urashima base: TitleRuntime must remain blank',
   );
@@ -330,8 +273,8 @@ test('pins the generic, editor, and player profile contract', async () => {
   );
   assert.deepEqual(stage.variables.cloneUiItemsEnabled, ['cloneUiItemsEnabled', true]);
   assertLoadingBubbleAnchor(project, 'Urashima base');
-  assertPromptPosition(readSb3Project(patchedBaseSb3), 'patched Urashima base');
-  assertLoadingSkinPosition(readSb3Project(patchedBaseSb3), 'patched Urashima base');
+  assertPromptPosition(project, 'Urashima base');
+  assertLoadingSkinPosition(project, 'Urashima base');
 });
 
 test('keeps my-urashima external-script-only with Princess assets isolated by sprite', async () => {
@@ -381,8 +324,19 @@ test('keeps my-urashima external-script-only with Princess assets isolated by sp
     true,
   );
   assert.equal(script.includes('action=Princess:show:Princess:-130,-27,70'), true);
-  assert.equal(script.includes('action=Princess:setSkin:p1:70'), true);
+  assert.equal(script.includes('action=Princess:setSkin:p1:70'), false);
+  assert.equal(
+    script.includes(
+      [
+        'action=Urashima:setSkin:Urashima-dance-1:45',
+        'action=wait:1',
+        '#action=Princess:pose:p1,p2,p1,p2:p1,p2,p1,p2:Drum Funky,Drum Funky,Drum Funky,Drum Funky',
+      ].join('\n'),
+    ),
+    true,
+  );
   assert.equal(script.includes('action=Urashima:pose:Urashima-dance-1'), false);
+  assert.equal(config.scriptReplacements[0].to, 'action=wait:1');
   assert.deepEqual(config.parentStory, {
     name: 'urashima',
     config: '../urashima/sample.config.json',
@@ -541,6 +495,13 @@ test('locks every external script asset and publishes one transformed script', a
     readFile(path.join(sampleDirectory, 'assets.lock.json'), 'utf8').then(JSON.parse),
   ]);
   const assetManifest = validateAssetManifest(rawAssetManifest);
+  const expectedSceneComments = Array.from(
+    {length: 10},
+    (_, index) => `# scene ${index}`,
+  );
+  for (const script of [source, published]) {
+    assert.deepEqual(script.match(/^# scene \d+$/gmu), expectedSceneComments);
+  }
   const externalLines = source
     .split(/\r?\n/u)
     .filter((line) => /^asset=.*,(?:file|https?):/u.test(line));

@@ -3,44 +3,17 @@
   "sample": "urashima",
   "builder": {
     "package": "@kubohiroya/tmpose-kamishibai",
-    "version": "3.1.7",
-    "source": "npm:@kubohiroya/tmpose-kamishibai@3.1.7",
-    "commit": "91ca1dadbfdd037e6f0e0f45e80941c777ab242e"
+    "version": "3.1.9",
+    "source": "npm:@kubohiroya/tmpose-kamishibai@3.1.9",
+    "commit": "96b1fe66e052f10da2938389f98fd15c95fcfdee"
   },
   "baseSb3": {
     "path": "base/kamishibai.sb3",
     "profile": "generic",
-    "source": "github:kubohiroya/tmpose-kamishibai#1aae65f5af986320b5078c9e560e7945ee1b4fde",
-    "commit": "1aae65f5af986320b5078c9e560e7945ee1b4fde",
-    "size": 622609,
-    "sha256": "b0d0809baadbbe406f26eefcf678035bfc3ed24cd4bdd80b7c05d87982419719",
-    "runtimePatch": {
-      "id": "kubohiroya-asset-manager-actor-clone-compatibility",
-      "issue": "https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/18",
-      "outputName": "kamishibai-actor-clone-runtime.sb3",
-      "size": 622880,
-      "sha256": "372a69c46183a78cb312e6a27b6693758fb72dd48a02dac6e4b42f817585b8f4"
-    },
-    "promptPositionPatch": {
-      "id": "urashima-prompt-text-position",
-      "issue": "https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/43",
-      "outputName": "kamishibai-prompt-text-position.sb3",
-      "x": -8,
-      "fromY": 167,
-      "toY": 150,
-      "size": 100,
-      "outputSize": 622880,
-      "sha256": "2a9d1c73414783c47cdf4f9b9d61759334d8dba8653aec928b6d978027482b05"
-    },
-    "loadingSkinPositionPatch": {
-      "id": "urashima-loading-skin-position",
-      "issue": "https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/42",
-      "outputName": "kamishibai-loading-skin-position.sb3",
-      "fromY": -92,
-      "toY": -62,
-      "size": 622880,
-      "sha256": "03ce8c2492e3004bf8d3e0b94ae58e899b845a72057f78495170e62ece6cc34c"
-    }
+    "source": "github:kubohiroya/tmpose-kamishibai#96b1fe66e052f10da2938389f98fd15c95fcfdee",
+    "commit": "96b1fe66e052f10da2938389f98fd15c95fcfdee",
+    "size": 633465,
+    "sha256": "31a4358a459407624aabe748e9b3ba74d08667d0550f06078a72da100d3ae018"
   },
   "sourceScript": "source.txt",
   "assetManifest": "assets.lock.json",

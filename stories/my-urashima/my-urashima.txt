@@ -66,7 +66,7 @@ actor=Fish,Fish1
 actor=Narration,Narration
 cover=Beach1,Ocean Wave
 ---
-# scene 1
+# scene 0
 sceneLabel=opening
 action=transition:fadeOut
 action=stage:Stars
@@ -165,7 +165,7 @@ action=Fish:show:Fish1:-130,-27,70
 action=Fish:setLayer:back
 action=Fish:loop:Fish1,Fish2:0.3,0.3
 action=Urashima:setSkin:Urashima-dance-1:45
-action=Princess:setSkin:p1:70
+action=wait:1
 #action=Princess:pose:p1,p2,p1,p2:p1,p2,p1,p2:Drum Funky,Drum Funky,Drum Funky,Drum Funky
 #action=Princess:pose:p1,p2,p3,p1,p2,p3:p1,p2,p3,p1,p2,p3:Drum Funky,Drum Funky,Drum Funky,Drum Funky,Drum Funky,Drum Funky
 #action=Princess:pose:p1,p2,p3,p4,p1,p2,p3,p4:p1,p2,p3,p4,p1,p2,p3,p4:Drum Funky,Drum Funky,Drum Funky,Drum Funky,Drum Funky,Drum Funky,Drum Funky,Drum Funky

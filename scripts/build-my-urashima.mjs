@@ -8,10 +8,6 @@ import {fileURLToPath} from 'node:url';
 import {buildSb3Bundle} from '@kubohiroya/tmpose-kamishibai/builder';
 import {strFromU8, strToU8, unzipSync, zipSync} from 'fflate';
 
-import {patchActorCloneRuntime} from './patch-actor-clone-runtime.mjs';
-import {patchLoadingSkinPosition} from './patch-loading-skin-position.mjs';
-import {patchPromptPosition} from './patch-prompt-position.mjs';
-
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 const storyDirectory = path.join(projectRoot, 'stories/my-urashima');
 const fixedZipTimestamp = new Date(1980, 0, 1, 0, 0, 0, 0);
@@ -247,11 +243,8 @@ export async function buildMyUrashima(outputDirectory, {verifyArtifacts = true} 
     assets: parentManifest.assets.filter(({name}) => !derivedAssetNames.has(name)),
   };
   const baseSb3 = await readFile(path.join(parentDirectory, parentConfig.baseSb3.path));
-  const runtimePatchedBase = patchActorCloneRuntime(baseSb3);
-  const promptPatchedBase = patchPromptPosition(runtimePatchedBase);
-  const patchedBase = patchLoadingSkinPosition(promptPatchedBase);
   const derivedBase = await createDerivedBase(
-    patchedBase,
+    baseSb3,
     parentDirectory,
     parentManifest,
     config.targets,
