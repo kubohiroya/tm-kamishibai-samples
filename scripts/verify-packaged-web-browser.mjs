@@ -35,6 +35,7 @@ try {
   );
   const requests = [];
   const rejectedRequests = [];
+  const assetRegistrationErrors = [];
   let fileChooserCount = 0;
 
   browser = await chromium.launch({
@@ -50,6 +51,15 @@ try {
   });
   page.on('pageerror', (error) => {
     console.error(`[${browserName} page error] ${error.stack ?? error}`);
+    if (/AssetRegistrationError|Costume not found:/u.test(String(error))) {
+      assetRegistrationErrors.push(String(error));
+    }
+  });
+  page.on('console', (message) => {
+    const text = message.text();
+    if (/AssetRegistrationError|Costume not found:/u.test(text)) {
+      assetRegistrationErrors.push(text);
+    }
   });
   await page.addInitScript(() => {
     window.__tmposeUnexpectedFilePicker = 0;
@@ -88,9 +98,24 @@ try {
       const runtime = window.scaffolding?.vm?.runtime;
       const stage = runtime?.getTargetForStage();
       const costume = stage?.getCostumes()[stage.currentCostume]?.name;
+      const uiItemIds = runtime?.targets
+        .filter((target) => !target.isOriginal && target.sprite?.name === 'UiItem')
+        .map(
+          (target) =>
+            target.lookupVariableByNameAndType?.('uiId', '')?.value,
+        );
       return (
         costume === 'TitleRuntime' &&
-        runtime.ext_lmsTempVars2?.runtimeVariables?.skipMode === 'title'
+        runtime.ext_lmsTempVars2?.runtimeVariables?.skipMode === 'title' &&
+        [
+          'officialWebsiteLabel',
+          'titleAuthorName',
+          'titleAuthorOrganization',
+          'titleHeading',
+          'titleLicenseApp',
+          'titleLicenseStory',
+          'titleVersion',
+        ].every((id) => uiItemIds?.includes(id))
       );
     },
     undefined,
@@ -111,12 +136,23 @@ try {
   const titleState = await page.evaluate(() => {
     const runtime = window.scaffolding.vm.runtime;
     const stage = runtime.getTargetForStage();
+    const uiItems = runtime.targets.filter(
+      (target) => !target.isOriginal && target.sprite?.name === 'UiItem',
+    );
+    window.__tmposeTitleUiTargetIds = uiItems.map((target) => target.id);
+    window.__tmposeTitleUiDrawableIds = uiItems.map((target) => target.drawableID);
     return {
       costume: stage.getCostumes()[stage.currentCostume]?.name,
       embeddedScript: String(stage.variables.tmposeEmbeddedScript?.value ?? ''),
       skipMode: runtime.ext_lmsTempVars2?.runtimeVariables?.skipMode,
       audioContextState: runtime.audioEngine.audioContext.state,
       audioUnlockState: window.__tmposeAudioUnlockState,
+      uiItemIds: uiItems
+        .map(
+          (target) =>
+            target.lookupVariableByNameAndType?.('uiId', '')?.value,
+        )
+        .toSorted(),
     };
   });
   assert.equal(titleState.costume, 'TitleRuntime');
@@ -131,6 +167,15 @@ try {
   assert.equal(titleState.audioUnlockState.completed, false);
   assert.equal(titleState.audioUnlockState.clockAdvanced, false);
   assert.equal(titleState.audioUnlockState.listenersInstalled, true);
+  assert.deepEqual(titleState.uiItemIds, [
+    'officialWebsiteLabel',
+    'titleAuthorName',
+    'titleAuthorOrganization',
+    'titleHeading',
+    'titleLicenseApp',
+    'titleLicenseStory',
+    'titleVersion',
+  ]);
 
   await page.evaluate(() => {
     const runtime = window.scaffolding.vm.runtime;
@@ -312,26 +357,44 @@ try {
       BROADCAST_OPTION: 'showPrompt',
     });
     await new Promise((resolve) => setTimeout(resolve, 100));
-    const displayedTarget = (name) =>
+    const originalTarget = (name) =>
       runtime.targets.find(
         (candidate) => candidate.isOriginal && candidate.sprite?.name === name,
       );
-    const displayedAsset = (name) => displayedTarget(name).visible;
-    const prompt = displayedTarget('prompt');
+    const uiItemTarget = (name) =>
+      runtime.targets.find(
+        (candidate) =>
+          !candidate.isOriginal &&
+          candidate.sprite?.name === 'UiItem' &&
+          candidate.lookupVariableByNameAndType?.('uiId', '')?.value === name,
+      );
+    const displayedUiItem = (name) => uiItemTarget(name)?.visible === true;
+    const prompt = originalTarget('prompt');
     const promptBounds =
       runtime.renderer._allDrawables[prompt.drawableID].getFastBounds();
+    const currentTargetIds = new Set(runtime.targets.map((target) => target.id));
     return {
       prompt: {
-        visible: displayedAsset('prompt'),
+        visible: prompt.visible,
         x: prompt.x,
         y: prompt.y,
         size: prompt.size,
         top: promptBounds.top,
         stageTop: runtime.stageHeight / 2,
       },
-      open: displayedAsset('openButton'),
-      reload: displayedAsset('reloadButton'),
-      about: displayedAsset('showTitleButton'),
+      open: displayedUiItem('openButton'),
+      reload: displayedUiItem('reloadButton'),
+      about: displayedUiItem('showTitleButton'),
+      language: displayedUiItem('languageButton'),
+      staleTitleTargets: window.__tmposeTitleUiTargetIds.filter((id) =>
+        currentTargetIds.has(id),
+      ),
+      staleTitleDrawables: window.__tmposeTitleUiDrawableIds.filter(
+        (drawableId) => {
+          const drawable = runtime.renderer._allDrawables[drawableId];
+          return drawable !== null && drawable !== undefined;
+        },
+      ),
     };
   });
   const {top: promptTop, ...promptLayout} = uiAssetState.prompt;
@@ -348,12 +411,16 @@ try {
       open: true,
       reload: true,
       about: true,
+      language: true,
+      staleTitleTargets: [],
+      staleTitleDrawables: [],
     },
   );
   assert(
     promptTop <= promptLayout.stageTop,
     `prompt top ${promptTop} exceeds stage top`,
   );
+  assert.deepEqual(assetRegistrationErrors, []);
 
   const audioState = await page.evaluate(async () => {
     const runtime = window.scaffolding.vm.runtime;
@@ -656,7 +723,7 @@ try {
   );
 
   console.log(
-    `Verified ${browserName}: title, scene-0 UI text assets, scene-3 Fish loop behind Princess, scene-7 white transition to Smoke, visible Narration and EndingText, 20 decoded MP3 sounds including Sewing Machine with playback, no file picker, and ${uniqueRequests.length} allowed requests.`,
+    `Verified ${browserName}: clone-only title/menu UI and cleanup, scene-0 UI text assets, scene-3 Fish loop behind Princess, scene-7 white transition to Smoke, visible Narration and EndingText, 20 decoded MP3 sounds including Sewing Machine with playback, no asset registration errors, no file picker, and ${uniqueRequests.length} allowed requests.`,
   );
 } finally {
   await browser?.close();
