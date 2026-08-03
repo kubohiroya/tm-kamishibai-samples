@@ -70,7 +70,7 @@ async function verifyProfile(outputSampleDirectory, profile, record) {
 function verifySiteHeader(html, assetPrefix) {
   const destinations = [
     'https://kubohiroya.github.io/tmpose-kamishibai/',
-    'https://kubohiroya.github.io/tmpose-kamishibai/docs/',
+    'https://kubohiroya.github.io/tmpose-kamishibai-docs/',
     'https://kubohiroya.github.io/tmpose-kamishibai-samples/',
     'https://kubohiroya.github.io/tmpose-kamishibai/downloads/',
   ];
