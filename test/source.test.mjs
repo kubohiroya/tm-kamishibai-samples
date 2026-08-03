@@ -117,6 +117,7 @@ test('licenses the repository, runtime, Urashima content, and Packager notices',
   assert(licenseSummary.includes('CC BY-SA 2.0'));
   assert(licenseSummary.includes('7bd800cb66d6fb18886a4c5cea1b76a6'));
   assert(licenseSummary.includes('tmpose-kamishibai-MPL-2.0.txt'));
+  assert(licenseSummary.includes('1aae65f5af986320b5078c9e560e7945ee1b4fde'));
   assert(runtimeLicense.startsWith('Mozilla Public License Version 2.0'));
   assert.equal(runtimeLicense, runtimePackageLicense);
   assert.equal(runtimeLicense, license);
@@ -162,11 +163,11 @@ test('pins the generic, editor, and player profile contract', async () => {
   assert.equal(config.baseSb3.profile, 'generic');
   assert.equal(
     config.baseSb3.source,
-    'github:kubohiroya/tmpose-kamishibai#91ca1dadbfdd037e6f0e0f45e80941c777ab242e',
+    'github:kubohiroya/tmpose-kamishibai#1aae65f5af986320b5078c9e560e7945ee1b4fde',
   );
   assert.equal(
     config.baseSb3.commit,
-    '91ca1dadbfdd037e6f0e0f45e80941c777ab242e',
+    '1aae65f5af986320b5078c9e560e7945ee1b4fde',
   );
   assert.equal(config.baseSb3.size, baseSb3.length);
   assert.equal(config.baseSb3.sha256, sha256(baseSb3));
@@ -221,6 +222,8 @@ test('pins the generic, editor, and player profile contract', async () => {
   assert(assetManagerSource.includes(actorCloneRuntimePatch.extensionVersion));
   assert(assetManagerSource.includes('this.actorNameOf(target2) === actor'));
   assert(assetManagerSource.includes('&& target.isOriginal'));
+  assert(assetManagerSource.includes('this.displayedAssets.delete(target.id)'));
+  assert(assetManagerSource.includes('findProjectTargetByName(runtime, name)'));
   const patchedStage = patchedProject.targets.find((target) => target.isStage);
   const patchedBlocks = Object.values(patchedStage.blocks);
   const transitionProcedures = new Set(
@@ -299,7 +302,7 @@ test('pins the generic, editor, and player profile contract', async () => {
   );
   assert.match(
     strFromU8(baseArchive[titleCostume.md5ext]),
-    /Version 3\.1\.7 \(2026\/08\/01\)/,
+    /Version 3\.1\.7 \(2026\/08\/03\)/,
     'Urashima base: Title has an unexpected fallback version label',
   );
   assert.doesNotMatch(
@@ -314,25 +317,18 @@ test('pins the generic, editor, and player profile contract', async () => {
       'Stage',
       'Actor',
       'prompt',
-      'openButton',
-      'reloadButton',
-      'showTitleButton',
-      'languageButton',
-      'japaneseLanguageButton',
-      'englishLanguageButton',
-      'titleHeading',
-      'titleVersion',
-      'titleLicenseApp',
-      'titleLicenseStory',
-      'titleAuthorOrganization',
-      'titleAuthorName',
-      'officialWebsiteLabel',
+      'UiItem',
       'officialWebsiteButton',
       'closeTitleButton',
       'Loading',
       'LoadingBubbleAnchor',
     ],
   );
+  assert.equal(
+    Object.values(stage.variables).some(([name]) => name === 'featureCloneUiItems'),
+    false,
+  );
+  assert.deepEqual(stage.variables.cloneUiItemsEnabled, ['cloneUiItemsEnabled', true]);
   assertLoadingBubbleAnchor(project, 'Urashima base');
   assertPromptPosition(readSb3Project(patchedBaseSb3), 'patched Urashima base');
   assertLoadingSkinPosition(readSb3Project(patchedBaseSb3), 'patched Urashima base');

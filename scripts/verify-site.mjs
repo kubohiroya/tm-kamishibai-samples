@@ -217,7 +217,7 @@ export async function verifyPublishedSite(options = {}) {
       primesOutput: true,
     },
   });
-  assert.equal(manifest.web.packager.projectExtensions.length, 13);
+  assert.equal(manifest.web.packager.projectExtensions.length, 14);
   assert.equal(manifest.web.scriptMode, 'embedded');
   assert.equal(manifest.web.assets, 'embedded');
   assert.deepEqual(manifest.web.reproducibility, {runs: 2, identical: true});

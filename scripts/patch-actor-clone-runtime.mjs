@@ -5,9 +5,10 @@ import {strFromU8, strToU8, unzipSync, zipSync} from 'fflate';
 const dataUrlPrefix = 'data:text/javascript;base64,';
 const assetManagerExtensionId = 'kubohiroyaassetmanager';
 const fixedZipTimestamp = new Date(1980, 0, 1, 0, 0, 0, 0);
-const originalVersion = 'const EXTENSION_VERSION = "2026-07-26";';
+const originalVersion =
+  'const EXTENSION_VERSION = "2026-08-03-project-asset-validation-v1";';
 const patchedVersion =
-  'const EXTENSION_VERSION = "2026-07-27-actor-clone-compatibility";';
+  'const EXTENSION_VERSION = "2026-08-03-project-asset-validation-v1-actor-clone-compatibility";';
 const originalSizeCorrection = `      if (!target.isStage && skin.sourceSize !== null && target.size !== skin.sourceSize) {
         target.setSize(skin.sourceSize);
       }`;
@@ -70,7 +71,8 @@ const patchedResolver = `    actorNameOf(target) {
 export const actorCloneRuntimePatch = Object.freeze({
   id: 'kubohiroya-asset-manager-actor-clone-compatibility',
   outputName: 'kamishibai-actor-clone-runtime.sb3',
-  extensionVersion: '2026-07-27-actor-clone-compatibility',
+  extensionVersion:
+    '2026-08-03-project-asset-validation-v1-actor-clone-compatibility',
 });
 
 function replaceExactlyOnce(source, before, after, description) {
