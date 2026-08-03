@@ -39,7 +39,7 @@ function renderSiteHeader(assetPrefix) {
     </a>
     <nav class="site-nav" aria-label="サイトナビゲーション">
       <a class="site-nav__link" href="https://kubohiroya.github.io/tmpose-kamishibai/">トップ</a>
-      <a class="site-nav__link" href="https://kubohiroya.github.io/tmpose-kamishibai/docs/">ドキュメント</a>
+      <a class="site-nav__link" href="https://kubohiroya.github.io/tmpose-kamishibai-docs/">ドキュメント</a>
       <a class="site-nav__link" href="https://kubohiroya.github.io/tmpose-kamishibai-samples/" aria-current="page">サンプル</a>
       <a class="site-nav__link" href="https://kubohiroya.github.io/tmpose-kamishibai/downloads/">ダウンロード</a>
     </nav>
