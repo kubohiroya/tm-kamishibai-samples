@@ -2,36 +2,36 @@
   "formatVersion": 2,
   "builder": {
     "package": "@kubohiroya/tmpose-kamishibai",
-    "version": "3.1.7",
-    "commit": "91ca1dadbfdd037e6f0e0f45e80941c777ab242e"
+    "version": "3.1.8",
+    "commit": "443236d939d29d645fd456233c516d119d0d913b"
   },
   "profiles": {
     "editor": {
       "outputName": "_urashima",
       "sb3": {
-        "size": 15336228,
-        "sha256": "f3d3f2834960e72cda6320ea45d4444f804f1f6f994bde5de34c1802d363c635"
+        "size": 15346967,
+        "sha256": "39beb7280063123d3792d8bc9e1228ce4010e1c79f727674e795f38e92fef18a"
       },
       "script": {
         "size": 8435,
-        "sha256": "fb923338d06346f22dfeb955cdf55e0c02a18d4fb6c08571d92b2b812687e892"
+        "sha256": "254552849683d397702a25a30bda9515db2b0d0b252ae252650079d0a11ef00b"
       },
       "manifest": {
-        "sha256": "3c5018c6f7cad39f5538a79eccf22478938c89d2ec5651dfe6fafcca5b27ffd2"
+        "sha256": "f6c0ebcf3cb0305ac8d19e8da29115ce09b12dd4ccf06b0c78ee8679f2962ff4"
       }
     },
     "player": {
       "outputName": "urashima",
       "sb3": {
-        "size": 15338589,
-        "sha256": "546a016a9842f61dc79af6ac4a507fb6793d30ab4b61f4dead1a96af35524db9"
+        "size": 15349327,
+        "sha256": "54a993ca299e677c8c575b5d7d26f3ae749e6af6d82c4d2198bed30d339546b6"
       },
       "script": {
         "size": 8435,
-        "sha256": "fb923338d06346f22dfeb955cdf55e0c02a18d4fb6c08571d92b2b812687e892"
+        "sha256": "254552849683d397702a25a30bda9515db2b0d0b252ae252650079d0a11ef00b"
       },
       "manifest": {
-        "sha256": "b849c5ab8d2033224f8971d8d06833925167c14c0ef1f232f63b0af784961af5"
+        "sha256": "1ad025d9b7568e4ec0246efc886612b0594a3a332017dfb66f6701e6e27894e7"
       }
     }
   },
@@ -43,14 +43,14 @@
     "input": {
       "profile": "player",
       "path": "urashima.sb3",
-      "size": 15338589,
-      "sha256": "546a016a9842f61dc79af6ac4a507fb6793d30ab4b61f4dead1a96af35524db9"
+      "size": 15349327,
+      "sha256": "54a993ca299e677c8c575b5d7d26f3ae749e6af6d82c4d2198bed30d339546b6"
     },
     "output": {
       "path": "web/index.html",
       "contentType": "text/html",
-      "size": 21625004,
-      "sha256": "8c537621c392b42c10ea19e2563f64f95a553d4265949d9c8e84cdee708c9558"
+      "size": 21679159,
+      "sha256": "9b9486a1130be0fe9e5abe30bf3a5ba02f0d256cba64982d624b29705d0977d7"
     }
   }
 }

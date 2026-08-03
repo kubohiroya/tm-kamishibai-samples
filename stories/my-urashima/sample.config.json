@@ -32,9 +32,9 @@
   ],
   "scriptReplacements": [
     {
-      "description": "Princess pose setup",
+      "description": "Pause before Princess pose exercise",
       "from": "action=Urashima:pose:Urashima-dance-1,Urashima-dance-2,Urashima-dance-1,Urashima-dance-2:dance1,dance2,dance1,dance2:Drum Funky,Drum Funky,Drum Funky,Drum Funky",
-      "to": "action=Princess:setSkin:p1:70"
+      "to": "action=wait:1"
     },
     {
       "description": "two-pose class names",

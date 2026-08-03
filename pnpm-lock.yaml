@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@kubohiroya/tmpose-kamishibai':
-        specifier: 3.1.7
-        version: 3.1.7
+        specifier: 3.1.8
+        version: 3.1.8
       fflate:
         specifier: 0.8.3
         version: 0.8.3
@@ -32,8 +32,8 @@ packages:
     resolution: {integrity: sha512-XuhF/edg+iIvXjkCWgfj6fWtRi/KrEPg2ILXj1l86EN4EssuOiPcLKgkMDr9cL8jTGtVd/MKUWW6Y0/ZVf1PGA==}
     engines: {node: '>=8'}
 
-  '@kubohiroya/tmpose-kamishibai@3.1.7':
-    resolution: {integrity: sha512-aE7FEcpL+oKV0FTpnpGbc/TVj+i3+oJUKuvALG5/O2EGqt4uhfdrWVJihPzdf4bOotx65kXccWrsjSMk7KTV1Q==}
+  '@kubohiroya/tmpose-kamishibai@3.1.8':
+    resolution: {integrity: sha512-y6oq2gWhIN+cZ7fNHAq1fnkJiOFyvnXEPJpyOhiOHATDWXBqnHMXf/BNjg/T3fm00Ls3l5XzLzJVx/ywUeEblg==}
     engines: {node: '>=22.12.0'}
     hasBin: true
 
@@ -251,7 +251,7 @@ snapshots:
 
   '@fiahfy/packbits@0.0.6': {}
 
-  '@kubohiroya/tmpose-kamishibai@3.1.7':
+  '@kubohiroya/tmpose-kamishibai@3.1.8':
     dependencies:
       fflate: 0.8.3
 
