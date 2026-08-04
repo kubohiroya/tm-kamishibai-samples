@@ -21,7 +21,7 @@
     "node": ">=22.12.0"
   },
   "dependencies": {
-    "@kubohiroya/tmpose-kamishibai": "3.1.9",
+    "@kubohiroya/tmpose-kamishibai": "3.2.0",
     "fflate": "0.8.3"
   },
   "devDependencies": {

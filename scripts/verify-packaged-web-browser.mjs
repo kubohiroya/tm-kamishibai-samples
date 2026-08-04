@@ -156,7 +156,7 @@ try {
     };
   });
   assert.equal(titleState.costume, 'TitleRuntime');
-  assert(titleState.embeddedScript.startsWith('kamishibai=3.1'));
+  assert(titleState.embeddedScript.startsWith('kamishibai=3.2'));
   assert.equal(titleState.skipMode, 'title');
   assert(
     ['suspended', 'interrupted'].includes(titleState.audioContextState),

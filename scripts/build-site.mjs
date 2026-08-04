@@ -123,7 +123,7 @@ ${renderSiteHeader('')}
   <p class="lead">台本、画像・音声、用途別のSB3を配布しています。</p>
   <article>
     <h2>浦島太郎</h2>
-    <p>紙芝居DSL 3.1の台本と、画像${manifest.assetCounts.images}件・音声${manifest.assetCounts.sounds}件から生成したサンプルです。</p>
+    <p>紙芝居DSL 3.2の台本と、画像${manifest.assetCounts.images}件・音声${manifest.assetCounts.sounds}件から生成したサンプルです。</p>
     ${webDescription}
     <div class="actions">
 ${webAction}      <a class="button secondary" href="stories/urashima/urashima.txt">台本を表示</a>
