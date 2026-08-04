@@ -17,6 +17,8 @@
 
 `stories/my-urashima/`はワークショップ用の依存ストーリーです。`urashima`の`source.txt`、アセットロック、generic baseを親入力として、Princess PNGを独立した`Princess`スプライトへ直接組み込んだ、台本非埋め込みの`my-urashima.sb3`を生成します。生成規約と更新方法は[`stories/my-urashima/README.md`](stories/my-urashima/README.md)に記載しています。
 
+正式な浦島太郎はDSL 3.2のSVG Textを使い、名前付きstyle、相対font size、複数行のNarration actorを実演します。deprecatedな旧Text Assetは正式台本から分離したテストfixtureで互換性を確認します。
+
 `pnpm build` は、完全固定した `@kubohiroya/tmpose-kamishibai` `3.2.0` のnpmビルダー、本体コミット`d1624c9`から生成してハッシュ固定したclone-only UIの汎用ベース、`@turbowarp/packager` `3.13.0` を使い、次の成果物を生成します。
 
 - `_urashima.sb3` (`editor`): 台本非埋め込み・アセット埋め込み。物語作成者の編集用

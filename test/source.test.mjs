@@ -522,8 +522,11 @@ test('locks every external script asset and publishes one transformed script', a
   );
   assert.equal(/^(?:asset=.*,(?:file|https?):)/mu.test(published), false);
   assert.equal(published.includes('asset=Stars,backdrop'), true);
-  assert.equal(published.includes('asset=Narration,text'), true);
-  assert.equal(published.includes('asset=EndingText,text'), true);
+  assert.equal(
+    published.includes('asset=TextPlaceholder,costume:prompt:ui-placeholder'),
+    true,
+  );
+  assert.equal(/^asset=.*?,text$/mu.test(published), false);
   assert.equal(source.includes('setLoadingBackdrop=Stars'), true);
   assert.equal(published.includes('setLoadingBackdrop=Stars'), true);
   assert.equal(source.includes('setLoadingCostume=Fish1,Fish2'), true);
@@ -544,9 +547,13 @@ test('locks every external script asset and publishes one transformed script', a
     published.includes('setPoseRecognitionSound=Clock Ticking,Sewing Machine'),
     true,
   );
+  for (const definition of ['text=ui.prompt:ポーズをとろう！']) {
+    assert.equal(published.includes(definition), true, definition);
+  }
   for (const definition of [
-    'text=ui.prompt:ポーズをとろう！',
-    'text=EndingText:お し ま い',
+    'svgTextStyle=default:#ffffff:#575e75:Helvetica:100:left:up-right',
+    'svgTextStyle=narration:#00000000:#ffffff:Noto Sans JP:200:center:up',
+    'svgTextStyle=ending:#00000000:#ffffff:Noto Sans JP:300:center:up',
   ]) {
     assert.equal(published.includes(definition), true, definition);
   }
@@ -559,19 +566,24 @@ test('locks every external script asset and publishes one transformed script', a
     assert.equal(source.includes(obsoleteDefinition), false, obsoleteDefinition);
     assert.equal(published.includes(obsoleteDefinition), false, obsoleteDefinition);
   }
-  assert.equal(published.includes('action=text:Narration:むかし'), true);
+  assert.equal(/^action=text:/mu.test(published), false);
   assert.equal(
-    published.includes('action=text:Narration:むかし　むかし、あるところに...'),
-    true,
-  );
-  assert.equal(/^action=text:Narration:$/mu.test(published), true);
-  assert.equal(
-    published.includes('action=Narration:show:Narration:0,0,100'),
+    published.includes('action=Narration:setText:むかし:narration'),
     true,
   );
   assert.equal(
-    published.includes('action=Narration:show:EndingText:0,0,100'),
+    published.includes(
+      'action=Narration:setText:むかし　むかし、\\nあるところに...:narration',
+    ),
     true,
+  );
+  assert.equal(
+    published.includes('action=Narration:setText:お し ま い:ending'),
+    true,
+  );
+  assert.equal(
+    published.match(/^action=Narration:show:TextPlaceholder:0,0,100$/gmu)?.length,
+    2,
   );
   const danceScene = published.slice(
     published.indexOf('sceneLabel=welcome to dragon castle'),

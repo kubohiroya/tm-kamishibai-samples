@@ -13,25 +13,25 @@
         "sha256": "b482e25f6bf3863e11b4b34e44e38ac0b7cf0600770fa95ca61adc7f0b9bc226"
       },
       "script": {
-        "size": 8435,
-        "sha256": "f5934bcfd0d9faf1fd63002c0197d67adc57f96731ae6d80feb6686671c87334"
+        "size": 8729,
+        "sha256": "13bca24cc5dae880e6088840e8799621627edda2cb954cf046a79841719f88dc"
       },
       "manifest": {
-        "sha256": "952034fb9e83e506db9f3c9e9c2a60f98a9465c10a491cbcb40e9b657f6bba9a"
+        "sha256": "c3ef33537d6639042eb9616b4b7a44af8b89f0af0ee83ed54c9e9ea7b7a3d38a"
       }
     },
     "player": {
       "outputName": "urashima",
       "sb3": {
-        "size": 15564393,
-        "sha256": "774cf2d031b612409b6c1224722183f5e96d1a08076072f57f2cbd235ed92ee3"
+        "size": 15564505,
+        "sha256": "b214e4fbceb06e45e42fc2a6ff5fe658b45dc0cf40d235664a15a13a6d255657"
       },
       "script": {
-        "size": 8435,
-        "sha256": "f5934bcfd0d9faf1fd63002c0197d67adc57f96731ae6d80feb6686671c87334"
+        "size": 8729,
+        "sha256": "13bca24cc5dae880e6088840e8799621627edda2cb954cf046a79841719f88dc"
       },
       "manifest": {
-        "sha256": "06c7c29877d32ca354141a2cdc96b8a7ccd5508fbd2f1db7c3b213fd8191fc17"
+        "sha256": "e787dbd9e03ac97e1e2342d085e96425317fe2816ebd41e9214e66fb4fc36159"
       }
     }
   },
@@ -43,14 +43,14 @@
     "input": {
       "profile": "player",
       "path": "urashima.sb3",
-      "size": 15564393,
-      "sha256": "774cf2d031b612409b6c1224722183f5e96d1a08076072f57f2cbd235ed92ee3"
+      "size": 15564505,
+      "sha256": "b214e4fbceb06e45e42fc2a6ff5fe658b45dc0cf40d235664a15a13a6d255657"
     },
     "output": {
       "path": "web/index.html",
       "contentType": "text/html",
-      "size": 22418351,
-      "sha256": "2b41fe75a15abb71eeaa54ca82a902b25f4c174414ba4c3924b4f1dc2b8ed858"
+      "size": 22418491,
+      "sha256": "624dd4368fc62d207f3ff51c36e4231ffaf30d87744d13e0af991054cc934a89"
     }
   }
 }

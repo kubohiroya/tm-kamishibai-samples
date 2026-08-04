@@ -1,0 +1,14 @@
+kamishibai=3.2
+asset=Title,backdrop
+asset=Stars,backdrop
+asset=Turtle,file:assets/images/e9440d396734310dae5a63617d312015.svg
+asset=Narration,text
+text=Narration:旧テキスト
+actor=Narration,Narration
+cover=Title,
+---
+sceneLabel=legacy text compatibility
+action=stage:Stars
+action=text:Narration:互換表示
+action=Narration:show:Narration:0,0,100
+action=wait:1

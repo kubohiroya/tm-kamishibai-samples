@@ -14,7 +14,7 @@
 
 `editor`と`player`は同じ `source.txt` と `assets.lock.json` から生成します。両者の変換済み台本は同一バイト列です。`player`ではタイトル画面をクリックすると、ファイル選択を開かず、SB3内の台本とアセットだけで紙芝居を開始します。
 
-冒頭のテキストは、3.2の移行互換性を検証するため、従来の `asset=Narration,text` と `action=text:Narration:...` を残し、`action=wait:...` と交互に記述してシーン内の時系列に沿って更新します。汎用ベースには新しいSVG Text 0.1.0も組み込まれているため、新旧のテキスト方式を同じ3.2ランタイムで併用できます。ベースは、固定英語フォールバックと`UiItem` cloneによるTitle画面の多言語表示に対応した本体コミット `d1624c9ce9464bf696b4bb97851dce9154a09ee6` から生成しています。Title、menu、language UIは画面遷移ごとに必要なcloneだけを生成し、不要になったcloneを削除します。
+冒頭と終幕のテキストは、DSL 3.2の`svgTextStyle`と`setText`を使用します。Narrationアクターをproject-localの透明な`prompt/ui-placeholder`から生成し、SVG Text 0.1.0が名前付きstyleを適用したSVG skinへ置き換えます。冒頭ではリテラル`\n`による2行表示、終幕では別の相対font sizeを実演します。旧Text Assetは正式サンプルから分離し、`test/fixtures/legacy-text-3.2.txt`で3.1／3.2ヘッダーのbuilder互換を検証します。ベースは、固定英語フォールバックと`UiItem` cloneによるTitle画面の多言語表示に対応した本体コミット `d1624c9ce9464bf696b4bb97851dce9154a09ee6` から生成しています。Title、menu、language UIは画面遷移ごとに必要なcloneだけを生成し、不要になったcloneを削除します。
 
 ## ビルド元データ
 

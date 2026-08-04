@@ -15,8 +15,8 @@
     },
     "sourceScript": {
       "path": "../urashima/source.txt",
-      "size": 10085,
-      "sha256": "1d10ecf5ec7a1880cd12314803fc4712ff868f36b74f7ece5fa30ac99fa3079f"
+      "size": 10379,
+      "sha256": "d0f90f2cd6055dea49bce37acb7396a6d8dc6ff38680376fd396554194919fd4"
     },
     "assetManifest": {
       "path": "../urashima/assets.lock.json",
@@ -43,13 +43,13 @@
     },
     "script": {
       "filename": "my-urashima.txt",
-      "sha256": "1df420baf9d3b91351213a1267facd8f4b25f393efd0df8c632c3dbffb52b9fb",
-      "size": 8228
+      "sha256": "9efff90c376350322a459d735aadaf03795c1ca68b9bbd9d7286ffa3f1b59874",
+      "size": 8522
     },
     "manifest": {
       "filename": "my-urashima.manifest.json",
       "size": 30190,
-      "sha256": "6268de2415c8c1c75af7bade8adc3f1d7df802c425265834986fbfa03ef2ed6d"
+      "sha256": "76fb11fc5230c43c8db2c14eb17f884398669719b7e1adf7a5709b43fc53dba1"
     }
   }
 }
