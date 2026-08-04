@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@kubohiroya/tmpose-kamishibai':
-        specifier: 3.1.9
-        version: 3.1.9
+        specifier: 3.2.0
+        version: 3.2.0
       fflate:
         specifier: 0.8.3
         version: 0.8.3
@@ -32,10 +32,13 @@ packages:
     resolution: {integrity: sha512-XuhF/edg+iIvXjkCWgfj6fWtRi/KrEPg2ILXj1l86EN4EssuOiPcLKgkMDr9cL8jTGtVd/MKUWW6Y0/ZVf1PGA==}
     engines: {node: '>=8'}
 
-  '@kubohiroya/tmpose-kamishibai@3.1.9':
-    resolution: {integrity: sha512-vkpj2jNFA4XflnbhnL8x/c4IxEF58dwCcAN4K4BOAThp3QQ7GPRBtMjZROdT5mJuqk4PPQuJ6BtGJwK7AyuO+Q==}
+  '@kubohiroya/tmpose-kamishibai@3.2.0':
+    resolution: {integrity: sha512-HU/rQ1EpQlmeWj0+/vAaPu5WDasRaA3Id7wcHYSkFpwa77SCjJDenn2BaPEQmvaFy9iAKRp5wr7MkPLUKL71Tg==}
     engines: {node: '>=22.12.0'}
     hasBin: true
+
+  '@kubohiroya/turbowarp-svg-text@0.1.0':
+    resolution: {integrity: sha512-TdjyxkTLJbr2A1GUDA6x+IjYEv+DJv+austdSteZrZ8lc0fIAr5WMeEskjdvzRDcLyaGuaxD5E2zgx6nhNryIg==}
 
   '@turbowarp/json@0.1.2':
     resolution: {integrity: sha512-9nWywp+0SH7ROVzQPQQO9gMWBikahsqyMWp1Ku8VV0q+q6bnx6dS0aNPTjqTtF2GHAY55hcREsqKzaoUdWBSwg==}
@@ -251,9 +254,12 @@ snapshots:
 
   '@fiahfy/packbits@0.0.6': {}
 
-  '@kubohiroya/tmpose-kamishibai@3.1.9':
+  '@kubohiroya/tmpose-kamishibai@3.2.0':
     dependencies:
+      '@kubohiroya/turbowarp-svg-text': 0.1.0
       fflate: 0.8.3
+
+  '@kubohiroya/turbowarp-svg-text@0.1.0': {}
 
   '@turbowarp/json@0.1.2': {}
 

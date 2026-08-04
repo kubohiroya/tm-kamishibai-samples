@@ -61,7 +61,7 @@ async function verifyProfile(outputSampleDirectory, profile, record) {
   assert.equal(builderManifest.outputName, record.outputName);
   assert.equal(builderManifest.assets.length, 44);
   assert.equal(builderManifest.builder.package, '@kubohiroya/tmpose-kamishibai');
-  assert.equal(builderManifest.builder.version, '3.1.9');
+  assert.equal(builderManifest.builder.version, '3.2.0');
   validateBundle({sb3Bytes: sb3Contents, scriptBytes: scriptContents, manifest: builderManifest});
   assert.equal(/^(?:asset=.*,(?:file|https?):)/mu.test(scriptContents.toString('utf8')), false);
   return {builderManifest, sb3Contents, scriptContents};
@@ -158,7 +158,7 @@ export async function verifyPublishedSite(options = {}) {
     'https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/',
   );
   assert.equal(manifest.license, 'MPL-2.0');
-  assert.equal(manifest.builder.version, '3.1.9');
+  assert.equal(manifest.builder.version, '3.2.0');
   assert.equal(packageJson.devDependencies['@turbowarp/packager'], '3.13.0');
   assert.equal(manifest.baseSb3.profile, 'generic');
   assert.equal(manifest.baseSb3.published, true);
@@ -217,7 +217,11 @@ export async function verifyPublishedSite(options = {}) {
       primesOutput: true,
     },
   });
-  assert.equal(manifest.web.packager.projectExtensions.length, 14);
+  assert.equal(manifest.web.packager.projectExtensions.length, 12);
+  assert(
+    manifest.web.packager.projectExtensions.some(({id}) => id === 'tmposebundle'),
+    'TMPose extension bundle is missing from the Packager manifest.',
+  );
   assert.equal(manifest.web.scriptMode, 'embedded');
   assert.equal(manifest.web.assets, 'embedded');
   assert.deepEqual(manifest.web.reproducibility, {runs: 2, identical: true});

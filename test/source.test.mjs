@@ -100,7 +100,7 @@ test('licenses the repository, runtime, Urashima content, and Packager notices',
   assert(licenseSummary.includes('CC BY-SA 2.0'));
   assert(licenseSummary.includes('7bd800cb66d6fb18886a4c5cea1b76a6'));
   assert(licenseSummary.includes('tmpose-kamishibai-MPL-2.0.txt'));
-  assert(licenseSummary.includes('96b1fe66e052f10da2938389f98fd15c95fcfdee'));
+  assert(licenseSummary.includes('d1624c9ce9464bf696b4bb97851dce9154a09ee6'));
   assert(runtimeLicense.startsWith('Mozilla Public License Version 2.0'));
   assert.equal(runtimeLicense, runtimePackageLicense);
   assert.equal(runtimeLicense, license);
@@ -139,32 +139,34 @@ test('pins the generic, editor, and player profile contract', async () => {
   ]);
   assert.equal(
     packageJson.dependencies['@kubohiroya/tmpose-kamishibai'],
-    '3.1.9',
+    '3.2.0',
   );
-  assert.equal(config.builder.version, '3.1.9');
-  assert.equal(config.builder.commit, '96b1fe66e052f10da2938389f98fd15c95fcfdee');
+  assert.equal(config.builder.version, '3.2.0');
+  assert.equal(config.builder.commit, 'd1624c9ce9464bf696b4bb97851dce9154a09ee6');
   assert.equal(config.baseSb3.profile, 'generic');
   assert.equal(
     config.baseSb3.source,
-    'github:kubohiroya/tmpose-kamishibai#96b1fe66e052f10da2938389f98fd15c95fcfdee',
+    'github:kubohiroya/tmpose-kamishibai#d1624c9ce9464bf696b4bb97851dce9154a09ee6',
   );
   assert.equal(
     config.baseSb3.commit,
-    '96b1fe66e052f10da2938389f98fd15c95fcfdee',
+    'd1624c9ce9464bf696b4bb97851dce9154a09ee6',
   );
   assert.equal(config.baseSb3.size, baseSb3.length);
   assert.equal(config.baseSb3.sha256, sha256(baseSb3));
   const baseArchive = unzipSync(new Uint8Array(baseSb3));
   const baseProject = JSON.parse(strFromU8(baseArchive['project.json']));
-  const assetManagerSource = Buffer.from(
-    baseProject.extensionURLs.kubohiroyaassetmanager.split(',')[1],
+  assert(baseProject.extensions.includes('tmposebundle'));
+  const tmposeBundleSource = Buffer.from(
+    baseProject.extensionURLs.tmposebundle.split(',')[1],
     'base64',
   ).toString('utf8');
-  assert(assetManagerSource.includes('const EXTENSION_VERSION = "0.4.1"'));
-  assert(assetManagerSource.includes('this.actorNameOf(target2) === actor'));
-  assert(assetManagerSource.includes('target.isOriginal'));
-  assert(assetManagerSource.includes('this.displayedAssets.delete(target.id)'));
-  assert(assetManagerSource.includes('findProjectTargetByName(runtime, name)'));
+  assert(tmposeBundleSource.includes('const EXTENSION_VERSION = "0.4.1"'));
+  assert(tmposeBundleSource.includes('ID: kubohiroyasvgtext'));
+  assert(tmposeBundleSource.includes('this.actorNameOf(target2) === actor'));
+  assert(tmposeBundleSource.includes('target.isOriginal'));
+  assert(tmposeBundleSource.includes('this.displayedAssets.delete(target.id)'));
+  assert(tmposeBundleSource.includes('findProjectTargetByName(runtime, name)'));
   assertPromptPosition(baseProject, 'generic base');
   assertLoadingSkinPosition(baseProject, 'generic base');
   const baseStage = baseProject.targets.find((target) => target.isStage);
@@ -245,7 +247,7 @@ test('pins the generic, editor, and player profile contract', async () => {
   );
   assert.match(
     strFromU8(titleArchive[titleCostume.md5ext]),
-    /Version 3\.1\.9 \(2026\/08\/04\)/,
+    /Version 3\.2\.0 \(2026\/08\/04\)/,
     'Urashima base: Title has an unexpected fallback version label',
   );
   assert.doesNotMatch(
@@ -500,6 +502,7 @@ test('locks every external script asset and publishes one transformed script', a
     (_, index) => `# scene ${index}`,
   );
   for (const script of [source, published]) {
+    assert(script.startsWith('kamishibai=3.2\n'));
     assert.deepEqual(script.match(/^# scene \d+$/gmu), expectedSceneComments);
   }
   const externalLines = source
