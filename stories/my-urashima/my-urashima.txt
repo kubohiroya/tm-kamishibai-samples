@@ -55,15 +55,16 @@ asset=Goal Cheer,sound:@stage:Goal Cheer
 asset=Clock Ticking,sound:@stage:Clock Ticking
 asset=Sewing Machine,sound:@stage:Sewing Machine
 setPoseRecognitionSound=Clock Ticking,Sewing Machine
-asset=Narration,text
-asset=EndingText,text
+asset=TextPlaceholder,costume:prompt:ui-placeholder
 text=ui.prompt:ポーズをとろう！
-text=EndingText:お し ま い
+svgTextStyle=default:#ffffff:#575e75:Helvetica:100:left:up-right
+svgTextStyle=narration:#00000000:#ffffff:Noto Sans JP:200:center:up
+svgTextStyle=ending:#00000000:#ffffff:Noto Sans JP:300:center:up
 actor=Urashima,Urashima-walk-1
 actor=Turtle,Turtle
 actor=Princess,Princess
 actor=Fish,Fish1
-actor=Narration,Narration
+actor=Narration,TextPlaceholder
 cover=Beach1,Ocean Wave
 ---
 # scene 0
@@ -71,14 +72,14 @@ sceneLabel=opening
 action=transition:fadeOut
 action=stage:Stars
 action=transition:fadeUp
-action=text:Narration:むかし
-action=Narration:show:Narration:0,0,100
+action=Narration:show:TextPlaceholder:0,0,100
+action=Narration:setText:むかし:narration
 action=wait:2
-action=text:Narration:むかし　むかし、
+action=Narration:setText:むかし　むかし、:narration
 action=wait:2
-action=text:Narration:むかし　むかし、あるところに...
+action=Narration:setText:むかし　むかし、\nあるところに...:narration
 action=wait:2
-action=text:Narration:
+action=Narration:setText::narration
 ---
 # scene 1
 sceneLabel=beach
@@ -264,7 +265,8 @@ action=wait:0.1
 # scene 9
 sceneLabel=end credit
 action=stage:End
-action=Narration:show:EndingText:0,0,100
+action=Narration:show:TextPlaceholder:0,0,100
+action=Narration:setText:お し ま い:ending
 action=sound:Goal Cheer
 action=wait:4
 action=transition:fadeOut

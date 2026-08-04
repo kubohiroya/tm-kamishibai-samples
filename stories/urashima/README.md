@@ -1,6 +1,6 @@
 # 浦島太郎 — 用途別SB3の生成元
 
-浦島太郎の元台本、画像・音声、アセットロック、生成設定を管理します。公開用SB3は、固定したnpmビルダー `3.2.0` と、本体コミット`d1624c9`の汎用ベースからGitHub Pagesのビルド時に生成します。
+浦島太郎の元台本、画像・音声、アセットロック、生成設定を管理します。公開用SB3は、固定したnpmビルダー `3.2.2` と、本体コミット`2b5005d`の汎用ベースからGitHub Pagesのビルド時に生成します。
 
 ## 3つのプロファイル
 
@@ -14,7 +14,7 @@
 
 `editor`と`player`は同じ `source.txt` と `assets.lock.json` から生成します。両者の変換済み台本は同一バイト列です。`player`ではタイトル画面をクリックすると、ファイル選択を開かず、SB3内の台本とアセットだけで紙芝居を開始します。
 
-冒頭のテキストは、3.2の移行互換性を検証するため、従来の `asset=Narration,text` と `action=text:Narration:...` を残し、`action=wait:...` と交互に記述してシーン内の時系列に沿って更新します。汎用ベースには新しいSVG Text 0.1.0も組み込まれているため、新旧のテキスト方式を同じ3.2ランタイムで併用できます。ベースは、固定英語フォールバックと`UiItem` cloneによるTitle画面の多言語表示に対応した本体コミット `d1624c9ce9464bf696b4bb97851dce9154a09ee6` から生成しています。Title、menu、language UIは画面遷移ごとに必要なcloneだけを生成し、不要になったcloneを削除します。
+冒頭と終幕のテキストは、DSL 3.2の`svgTextStyle`と`setText`を使用します。Narrationアクターをproject-localの透明な`prompt/ui-placeholder`から生成し、SVG Text 0.1.0が名前付きstyleを適用したSVG skinへ置き換えます。冒頭ではリテラル`\n`による2行表示、終幕では別の相対font sizeを実演します。旧Text Assetは正式サンプルから分離し、`test/fixtures/legacy-text-3.2.txt`で3.1／3.2ヘッダーのbuilder互換を検証します。ベースは、予約UIテキストを旧Text Asset警告から除外し、builder manifest版を揃えた本体コミット `2b5005d293a9b63c8ba5da396fd86815d093f975` から生成しています。Title、menu、language UIは画面遷移ごとに必要なcloneだけを生成し、不要になったcloneを削除します。
 
 ## ビルド元データ
 
@@ -37,7 +37,7 @@
 
 scene 3の魚アニメーションでは、`Fish`クローンを乙姫と同じ中心座標に置き、背面レイヤーで`Fish1`と`Fish2`をloop再生します。固定済み汎用ベースのAsset Managerは`actorName`変数からクローンを解決し、クローンの表示サイズを保持します。
 
-scene 7では、本体3.2.0の標準コマンド`fadeToWhite`でステージの明るさを`+100`へ上げたまま保持してから背景をSmokeへ切り替え、`fadeFromWhite`で`0`へ戻して煙を見せます。通常の`fadeOut`（`-100`で保持）と`fadeUp`（`0`へ復帰）は変更しません。本体のAsset Managerにはproject asset検証、clone削除時の表示状態解放、`actorName`クローン解決、cloneサイズ保持が含まれます。samples側ではSB3内のランタイムコードを変更しません。
+scene 7では、本体3.2.2の標準コマンド`fadeToWhite`でステージの明るさを`+100`へ上げたまま保持してから背景をSmokeへ切り替え、`fadeFromWhite`で`0`へ戻して煙を見せます。通常の`fadeOut`（`-100`で保持）と`fadeUp`（`0`へ復帰）は変更しません。本体のAsset Managerにはproject asset検証、clone削除時の表示状態解放、`actorName`クローン解決、cloneサイズ保持が含まれます。samples側ではSB3内のランタイムコードを変更しません。
 
 Web版は `player` の `urashima.sb3` だけをTurboWarp Packager 3.13.0へ渡して生成します。音声はブラウザ互換性を考慮してMP3（44.1kHz、モノラル、128kbps）へ統一しています。`web.audioUnlock.enabled`を有効にすると、WebKitがユーザー操作として扱うタイトル画面のタップ完了をキャプチャしてWeb Audioを再開し、音声クロックの進行まで確認します。バックグラウンドからの復帰時にも再確認するため、iPadOSでもタイトル自動表示と本編開始1タップを維持できます。Packagerは外部URLのScratch拡張も単一HTMLへ取り込みます。実行時にオンライン取得するものはmanifestで許可したTMPoseのTensorFlow.js、Teachable Machine Pose、モデルに限定し、台本固有の画像・音声・台本はSB3内参照のまま利用します。
 
@@ -49,7 +49,7 @@ Web版は `player` の `urashima.sb3` だけをTurboWarp Packager 3.13.0へ渡�
 
 - 移設元: [`kubohiroya/tmpose-kamishibai`](https://github.com/kubohiroya/tmpose-kamishibai) PR #44
 - 移設元コミット: `9526c9d6391622ee261b8d7c0778b1fbbd2e6745`
-- ビルダー: npm `@kubohiroya/tmpose-kamishibai` `3.2.0` / `d1624c9ce9464bf696b4bb97851dce9154a09ee6`
-- 汎用ベース: `tmpose-kamishibai` / `d1624c9ce9464bf696b4bb97851dce9154a09ee6`
+- ビルダー: npm `@kubohiroya/tmpose-kamishibai` `3.2.2` / `2b5005d293a9b63c8ba5da396fd86815d093f975`
+- 汎用ベース: `tmpose-kamishibai` / `2b5005d293a9b63c8ba5da396fd86815d093f975`
 
 生成・検証・公開の実装は [Issue #2](https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/2)、Packager Web版は [Issue #7](https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/7) で管理します。

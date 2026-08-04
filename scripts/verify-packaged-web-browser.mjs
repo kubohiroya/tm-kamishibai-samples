@@ -36,6 +36,7 @@ try {
   const requests = [];
   const rejectedRequests = [];
   const assetRegistrationErrors = [];
+  const legacyTextWarnings = [];
   let fileChooserCount = 0;
 
   browser = await chromium.launch({
@@ -59,6 +60,9 @@ try {
     const text = message.text();
     if (/AssetRegistrationError|Costume not found:/u.test(text)) {
       assetRegistrationErrors.push(text);
+    }
+    if (text.includes('LEGACY_TEXT_ASSET_DEPRECATED')) {
+      legacyTextWarnings.push(text);
     }
   });
   await page.addInitScript(() => {
@@ -183,6 +187,16 @@ try {
     const loading = runtime.targets.find(
       (target) => target.isOriginal && target.sprite?.name === 'Loading',
     );
+    const renderer = runtime.renderer;
+    const createSvgSkin = renderer.createSVGSkin.bind(renderer);
+    window.__tmposeSvgTextSkins = [];
+    renderer.createSVGSkin = (svg, ...args) => {
+      const skinId = createSvgSkin(svg, ...args);
+      if (String(svg).includes('role="img"')) {
+        window.__tmposeSvgTextSkins.push({skinId, svg: String(svg)});
+      }
+      return skinId;
+    };
     window.__tmposeLoadingBackdropSamples = [];
     window.__tmposeLoadingBackdropTimer = window.setInterval(() => {
       const drawable = runtime.renderer._allDrawables[stage.drawableID];
@@ -208,7 +222,8 @@ try {
     await page.waitForFunction(
       () => {
         const variables = window.scaffolding?.vm?.runtime?.ext_lmsTempVars2?.runtimeVariables;
-        return variables?.message === '44 / 44' && variables?.sceneIndex !== undefined;
+        return /^(\d+) \/ \1$/u.test(String(variables?.message))
+          && variables?.sceneIndex !== undefined;
       },
       undefined,
       {timeout: 120000},
@@ -273,7 +288,7 @@ try {
   });
   assert.equal(startedState.runtimeScript, startedState.embeddedScript);
   assert.equal(startedState.sceneCount, 11);
-  assert.equal(startedState.assetCount, 47);
+  assert.equal(startedState.assetCount, 46);
   assert.equal(startedState.sceneIndex, 1);
   assert.equal(startedState.skipModePresent, false);
   assert.equal(startedState.poseRecognitionSound, 'Clock Ticking');
@@ -292,16 +307,21 @@ try {
   assert.equal(startedState.unexpectedFilePicker, 0);
   assert.equal(fileChooserCount, 0);
   assert.deepEqual(rejectedRequests, []);
+  assert.deepEqual(legacyTextWarnings, []);
 
   await page.waitForFunction(
     () => {
       const runtime = window.scaffolding?.vm?.runtime;
-      const variables = runtime?.ext_lmsTempVars2?.runtimeVariables;
       const narration = runtime?.targets.find((target) => {
         const actorName = target.lookupVariableByNameAndType?.('actorName', '')?.value;
         return !target.isStage && actorName === 'Narration';
       });
-      return variables?.['text:Narration'] === 'むかし' && narration?.visible;
+      return (
+        narration?.visible
+        && window.__tmposeSvgTextSkins?.some(({svg}) =>
+          svg.includes('<title>むかし</title>'),
+        )
+      );
     },
     undefined,
     {timeout: 120000},
@@ -312,36 +332,61 @@ try {
       const actorName = target.lookupVariableByNameAndType?.('actorName', '')?.value;
       return !target.isStage && actorName === 'Narration';
     });
+    const svg = window.__tmposeSvgTextSkins
+      .findLast((entry) => entry.svg.includes('<title>むかし</title>'))?.svg;
     return {
-      text: runtime.ext_lmsTempVars2.runtimeVariables['text:Narration'],
       visible: narration.visible,
       x: narration.x,
       y: narration.y,
       size: narration.size,
+      svg,
     };
   });
-  const {size: narrationSize, ...narrationDisplayState} = narrationState;
+  const {size: narrationSize, svg: narrationSvg, ...narrationDisplayState} = narrationState;
   assert.deepEqual(narrationDisplayState, {
-    text: 'むかし',
     visible: true,
     x: 0,
     y: 0,
   });
   assert(Number.isFinite(narrationSize) && narrationSize > 0);
+  assert(narrationSvg.includes('fill="#00000000"'));
+  assert(narrationSvg.includes('fill="#ffffff"'));
+  assert(narrationSvg.includes('font-family="Noto Sans JP"'));
+  assert(narrationSvg.includes('font-size="28"'));
+  assert(narrationSvg.includes('text-anchor="middle"'));
+
+  const resizedNarrationSvg = await page.evaluate(async () => {
+    const runtime = window.scaffolding.vm.runtime;
+    const renderer = runtime.renderer;
+    const getNativeSize = renderer.getNativeSize.bind(renderer);
+    renderer.getNativeSize = () => [960, 720];
+    runtime.emit('STAGE_SIZE_CHANGED', 960, 720);
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    const svg = window.__tmposeSvgTextSkins
+      .findLast((entry) => entry.svg.includes('<title>むかし</title>'))?.svg;
+    renderer.getNativeSize = getNativeSize;
+    runtime.emit('STAGE_SIZE_CHANGED', 480, 360);
+    return svg;
+  });
+  assert(resizedNarrationSvg.includes('font-size="56"'));
 
   for (const expectedText of [
     'むかし　むかし、',
-    'むかし　むかし、あるところに...',
+    'むかし　むかし、\nあるところに...',
   ]) {
     await page.waitForFunction(
       (text) => {
         const runtime = window.scaffolding?.vm?.runtime;
-        const variables = runtime?.ext_lmsTempVars2?.runtimeVariables;
         const narration = runtime?.targets.find((target) => {
           const actorName = target.lookupVariableByNameAndType?.('actorName', '')?.value;
           return !target.isStage && actorName === 'Narration';
         });
-        return variables?.['text:Narration'] === text && narration?.visible;
+        return (
+          narration?.visible
+          && window.__tmposeSvgTextSkins?.some(({svg}) =>
+            svg.includes(`<title>${text}</title>`),
+          )
+        );
       },
       expectedText,
       {timeout: 120000},
@@ -514,6 +559,16 @@ try {
   await page.evaluate(() => {
     const runtime = window.scaffolding.vm.runtime;
     const stage = runtime.getTargetForStage();
+    const renderer = runtime.renderer;
+    const createSvgSkin = renderer.createSVGSkin.bind(renderer);
+    window.__tmposeSvgTextSkins = [];
+    renderer.createSVGSkin = (svg, ...args) => {
+      const skinId = createSvgSkin(svg, ...args);
+      if (String(svg).includes('role="img"')) {
+        window.__tmposeSvgTextSkins.push({skinId, svg: String(svg)});
+      }
+      return skinId;
+    };
     const scriptVariable = stage.variables.tmposeEmbeddedScript;
     const sections = String(scriptVariable.value).split(/\r?\n---\r?\n/u);
     const header = sections[0];
@@ -689,6 +744,16 @@ try {
   await page.evaluate(() => {
     const runtime = window.scaffolding.vm.runtime;
     const stage = runtime.getTargetForStage();
+    const renderer = runtime.renderer;
+    const createSvgSkin = renderer.createSVGSkin.bind(renderer);
+    window.__tmposeSvgTextSkins = [];
+    renderer.createSVGSkin = (svg, ...args) => {
+      const skinId = createSvgSkin(svg, ...args);
+      if (String(svg).includes('role="img"')) {
+        window.__tmposeSvgTextSkins.push({skinId, svg: String(svg)});
+      }
+      return skinId;
+    };
     const scriptVariable = stage.variables.tmposeEmbeddedScript;
     const header = String(scriptVariable.value).split(/\r?\n---\r?\n/u)[0];
     scriptVariable.value = [
@@ -696,7 +761,8 @@ try {
       '---',
       'sceneLabel=end credit',
       'action=stage:End',
-      'action=Narration:show:EndingText:0,0,100',
+      'action=Narration:show:TextPlaceholder:0,0,100',
+      'action=Narration:setText:お し ま い:ending',
       'action=wait:30',
     ].join('\n');
   });
@@ -713,8 +779,10 @@ try {
       });
       return (
         drawable?._skin?._id === endCostume?.skinId
-        && runtime.ext_lmsTempVars2?.runtimeVariables?.['text:EndingText']
-          === 'お し ま い'
+        && window.__tmposeSvgTextSkins?.some(({svg}) =>
+          svg.includes('<title>お し ま い</title>')
+            && svg.includes('font-size="42"'),
+        )
         && narration?.visible
       );
     },
@@ -723,7 +791,7 @@ try {
   );
 
   console.log(
-    `Verified ${browserName}: clone-only title/menu UI and cleanup, scene-0 UI text assets, scene-3 Fish loop behind Princess, scene-7 white transition to Smoke, visible Narration and EndingText, 20 decoded MP3 sounds including Sewing Machine with playback, no asset registration errors, no file picker, and ${uniqueRequests.length} allowed requests.`,
+    `Verified ${browserName}: clone-only title/menu UI and cleanup, responsive multiline SVG Text Narration and ending, scene-3 Fish loop behind Princess, scene-7 white transition to Smoke, 20 decoded MP3 sounds including Sewing Machine with playback, no legacy Text Asset warnings, no asset registration errors, no file picker, and ${uniqueRequests.length} allowed requests.`,
   );
 } finally {
   await browser?.close();
