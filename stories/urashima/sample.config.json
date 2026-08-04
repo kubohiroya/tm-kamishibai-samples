@@ -3,17 +3,17 @@
   "sample": "urashima",
   "builder": {
     "package": "@kubohiroya/tmpose-kamishibai",
-    "version": "3.2.0",
-    "source": "npm:@kubohiroya/tmpose-kamishibai@3.2.0",
-    "commit": "d1624c9ce9464bf696b4bb97851dce9154a09ee6"
+    "version": "3.2.2",
+    "source": "npm:@kubohiroya/tmpose-kamishibai@3.2.2",
+    "commit": "2b5005d293a9b63c8ba5da396fd86815d093f975"
   },
   "baseSb3": {
     "path": "base/kamishibai.sb3",
     "profile": "generic",
-    "source": "github:kubohiroya/tmpose-kamishibai#d1624c9ce9464bf696b4bb97851dce9154a09ee6",
-    "commit": "d1624c9ce9464bf696b4bb97851dce9154a09ee6",
-    "size": 848881,
-    "sha256": "e7f6a74b255b19f3f3210e830d6fe89eac662130cef81450738e8a90a5f13cd6"
+    "source": "github:kubohiroya/tmpose-kamishibai#2b5005d293a9b63c8ba5da396fd86815d093f975",
+    "commit": "2b5005d293a9b63c8ba5da396fd86815d093f975",
+    "size": 849321,
+    "sha256": "ed0f86bc2a975faf68c0250fe1981029fd0e0ab6efcb835046809bcc5d3833b1"
   },
   "sourceScript": "source.txt",
   "assetManifest": "assets.lock.json",

@@ -222,7 +222,8 @@ try {
     await page.waitForFunction(
       () => {
         const variables = window.scaffolding?.vm?.runtime?.ext_lmsTempVars2?.runtimeVariables;
-        return variables?.message === '44 / 44' && variables?.sceneIndex !== undefined;
+        return /^(\d+) \/ \1$/u.test(String(variables?.message))
+          && variables?.sceneIndex !== undefined;
       },
       undefined,
       {timeout: 120000},
@@ -743,6 +744,16 @@ try {
   await page.evaluate(() => {
     const runtime = window.scaffolding.vm.runtime;
     const stage = runtime.getTargetForStage();
+    const renderer = runtime.renderer;
+    const createSvgSkin = renderer.createSVGSkin.bind(renderer);
+    window.__tmposeSvgTextSkins = [];
+    renderer.createSVGSkin = (svg, ...args) => {
+      const skinId = createSvgSkin(svg, ...args);
+      if (String(svg).includes('role="img"')) {
+        window.__tmposeSvgTextSkins.push({skinId, svg: String(svg)});
+      }
+      return skinId;
+    };
     const scriptVariable = stage.variables.tmposeEmbeddedScript;
     const header = String(scriptVariable.value).split(/\r?\n---\r?\n/u)[0];
     scriptVariable.value = [
