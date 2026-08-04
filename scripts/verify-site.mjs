@@ -269,6 +269,26 @@ export async function verifyPublishedSite(options = {}) {
   assert(sampleIndex.includes(manifest.web.output.sha256));
   assert(rootIndex.indexOf('Web版を開く') < rootIndex.indexOf('台本を表示'));
   assert(rootIndex.indexOf('台本を表示') < rootIndex.indexOf('再生用SB3をダウンロード'));
+  assert(rootIndex.includes('<h2>my-urashima（ワークショップにおける作業用）</h2>'));
+  assert(
+    rootIndex.includes(
+      '<a class="button" href="stories/my-urashima/my-urashima.sb3" download>作業用SB3をダウンロード</a>',
+    ),
+  );
+  assert(
+    rootIndex.includes(
+      '<a class="button secondary" href="stories/my-urashima/my-urashima.txt" download>作業用台本をダウンロード</a>',
+    ),
+  );
+  assert(
+    rootIndex.includes(
+      '<a class="button secondary" href="stories/my-urashima/README.md">説明を見る</a>',
+    ),
+  );
+  assert(
+    rootIndex.indexOf('<h2>浦島太郎</h2>')
+      < rootIndex.indexOf('<h2>my-urashima（ワークショップにおける作業用）</h2>'),
+  );
   assert(sampleIndex.indexOf('Web版を開く') < sampleIndex.indexOf('台本を表示'));
   assert(sampleIndex.indexOf('台本を表示') < sampleIndex.indexOf('再生用SB3をダウンロード'));
   assert(publishedFiles.includes('.nojekyll'));
