@@ -6,6 +6,7 @@ import {fileURLToPath} from 'node:url';
 import {buildMyUrashima} from './build-my-urashima.mjs';
 import {buildUrashima} from './build-urashima.mjs';
 import {buildPackagedWeb} from './build-packaged-web.mjs';
+import {refreshChangedStoryArtifacts} from './refresh-story-artifacts.mjs';
 import {verifyPublishedSite} from './verify-site.mjs';
 
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
@@ -252,6 +253,7 @@ function profileRecord(profile, build, lock) {
 }
 
 export async function buildSite() {
+  await refreshChangedStoryArtifacts();
   const images = await assetRecords(path.join(sourceDirectory, 'assets/images'), 'images');
   const sounds = await assetRecords(path.join(sourceDirectory, 'assets/sounds'), 'sounds');
   if (images.length !== 24 || sounds.length !== 22) {

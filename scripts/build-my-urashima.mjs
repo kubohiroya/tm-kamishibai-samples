@@ -8,6 +8,8 @@ import {fileURLToPath} from 'node:url';
 import {buildSb3Bundle} from '@kubohiroya/tmpose-kamishibai/builder';
 import {strFromU8, strToU8, unzipSync, zipSync} from 'fflate';
 
+import {replaceStoryDate, storyDateMetadata} from './story-date.mjs';
+
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 const storyDirectory = path.join(projectRoot, 'stories/my-urashima');
 const fixedZipTimestamp = new Date(1980, 0, 1, 0, 0, 0, 0);
@@ -135,12 +137,14 @@ async function createArtifactLock({
   parentConfigPath,
   parentDirectory,
   result,
+  storyDate,
 }) {
   const manifestPath = result.outputPaths[result.manifest.outputs.manifest.filename];
   const manifestContents = await readFile(manifestPath);
   return {
     formatVersion: 1,
     builder: parentConfig.builder,
+    storyDate,
     parentStory: {
       name: parentConfig.sample,
       config: await dependencyRecord(parentConfigPath, storyDirectory),
@@ -171,39 +175,7 @@ async function createArtifactLock({
   };
 }
 
-export function inspectMyUrashima(sb3Bytes, script) {
-  const archive = unzipSync(new Uint8Array(sb3Bytes));
-  const project = JSON.parse(strFromU8(archive['project.json']));
-  const stage = project.targets.find((target) => target.isStage);
-  const actor = project.targets.find((target) => target.name === 'Actor');
-  const princesses = project.targets.filter((target) => target.name === 'Princess');
-  assert.equal(princesses.length, 1, 'Princess target must exist exactly once.');
-  assert.deepEqual(
-    princesses[0].costumes.map(({name, dataFormat}) => ({
-      name,
-      dataFormat,
-    })),
-    [{name: 'Princess', dataFormat: 'png'}],
-  );
-  assert.equal(
-    actor.costumes.some(({name}) => name === 'Princess'),
-    false,
-  );
-  assert.deepEqual(stage.variables.tmposeEmbeddedScript, ['__tmpose_embedded_script', '']);
-  assert.equal(
-    Object.values(stage.lists).every(([, values]) => values.length === 0),
-    true,
-  );
-  assert.deepEqual(
-    Object.keys(archive).filter((filename) => filename.endsWith('.txt')),
-    [],
-  );
-  assert.equal(script.includes('asset=Princess,costume\n'), true);
-  assert.equal(script.includes('asset=Princess,costume:'), false);
-  return {archive, project};
-}
-
-export async function buildMyUrashima(outputDirectory, {verifyArtifacts = true} = {}) {
+async function deriveMyUrashimaSourceContext() {
   const configPath = path.join(storyDirectory, 'sample.config.json');
   const config = await readJson(configPath);
   assert.equal(config.formatVersion, 1);
@@ -238,6 +210,75 @@ export async function buildMyUrashima(outputDirectory, {verifyArtifacts = true} 
     source = replaceExactlyOnce(source, replacement.from, replacement.to, replacement.description);
   }
 
+  return {
+    config,
+    configPath,
+    derivedAssetNames,
+    parentConfig,
+    parentConfigPath,
+    parentDirectory,
+    parentManifest,
+    source,
+  };
+}
+
+export async function deriveMyUrashimaSource() {
+  return (await deriveMyUrashimaSourceContext()).source;
+}
+
+export function inspectMyUrashima(sb3Bytes, script) {
+  const archive = unzipSync(new Uint8Array(sb3Bytes));
+  const project = JSON.parse(strFromU8(archive['project.json']));
+  const stage = project.targets.find((target) => target.isStage);
+  const actor = project.targets.find((target) => target.name === 'Actor');
+  const princesses = project.targets.filter((target) => target.name === 'Princess');
+  assert.equal(princesses.length, 1, 'Princess target must exist exactly once.');
+  assert.deepEqual(
+    princesses[0].costumes.map(({name, dataFormat}) => ({
+      name,
+      dataFormat,
+    })),
+    [{name: 'Princess', dataFormat: 'png'}],
+  );
+  assert.equal(
+    actor.costumes.some(({name}) => name === 'Princess'),
+    false,
+  );
+  assert.deepEqual(stage.variables.tmposeEmbeddedScript, ['__tmpose_embedded_script', '']);
+  assert.equal(
+    Object.values(stage.lists).every(([, values]) => values.length === 0),
+    true,
+  );
+  assert.deepEqual(
+    Object.keys(archive).filter((filename) => filename.endsWith('.txt')),
+    [],
+  );
+  assert.equal(script.includes('asset=Princess,costume\n'), true);
+  assert.equal(script.includes('asset=Princess,costume:'), false);
+  return {archive, project};
+}
+
+export async function buildMyUrashima(
+  outputDirectory,
+  {scriptDate, verifyArtifacts = true} = {},
+) {
+  const {
+    config,
+    configPath,
+    derivedAssetNames,
+    parentConfig,
+    parentConfigPath,
+    parentDirectory,
+    parentManifest,
+    source: rawSource,
+  } = await deriveMyUrashimaSourceContext();
+  const expectedLock = verifyArtifacts
+    ? await readJson(path.join(storyDirectory, config.artifactsLock))
+    : undefined;
+  const effectiveDate = scriptDate ?? expectedLock?.storyDate?.value;
+  const source = effectiveDate ? replaceStoryDate(rawSource, effectiveDate) : rawSource;
+  const storyDate = storyDateMetadata(source);
+
   const derivedManifest = {
     ...parentManifest,
     assets: parentManifest.assets.filter(({name}) => !derivedAssetNames.has(name)),
@@ -271,6 +312,7 @@ export async function buildMyUrashima(outputDirectory, {verifyArtifacts = true} 
       parentConfigPath,
       parentDirectory,
       result,
+      storyDate,
     });
     const [sb3Bytes, script] = await Promise.all([
       readFile(result.outputPaths[result.manifest.outputs.sb3.filename]),
@@ -279,7 +321,6 @@ export async function buildMyUrashima(outputDirectory, {verifyArtifacts = true} 
     inspectMyUrashima(sb3Bytes, script);
 
     if (verifyArtifacts) {
-      const expectedLock = await readJson(path.join(storyDirectory, config.artifactsLock));
       assert.deepEqual(artifactLock, expectedLock, 'my-urashima artifacts differ from lock.');
       const [checkedSb3, checkedScript] = await Promise.all([
         readFile(path.join(storyDirectory, result.manifest.outputs.sb3.filename)),

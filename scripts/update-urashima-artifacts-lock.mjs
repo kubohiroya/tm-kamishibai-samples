@@ -1,10 +1,11 @@
-import {mkdir, mkdtemp, rename, rm, writeFile} from 'node:fs/promises';
+import {mkdir, mkdtemp, readFile, rename, rm, writeFile} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 
 import {buildPackagedWeb} from './build-packaged-web.mjs';
 import {buildUrashima} from './build-urashima.mjs';
+import {storyDateMetadata} from './story-date.mjs';
 
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 const sampleDirectory = path.join(projectRoot, 'stories/urashima');
@@ -22,6 +23,8 @@ export async function updateUrashimaArtifactsLock() {
       outputSampleDirectory: outputDirectory,
       rawWebConfig: config.web,
     });
+    const sourceScriptPath = path.join(sampleDirectory, config.sourceScript);
+    const sourceScript = await readFile(sourceScriptPath, 'utf8');
     const artifactsLock = {
       formatVersion: 2,
       builder: {
@@ -29,6 +32,7 @@ export async function updateUrashimaArtifactsLock() {
         version: config.builder.version,
         commit: config.builder.commit,
       },
+      storyDate: storyDateMetadata(sourceScript),
       profiles: profileLocks,
       web: {
         packager: {
@@ -41,9 +45,19 @@ export async function updateUrashimaArtifactsLock() {
     };
     const artifactsLockPath = path.join(sampleDirectory, config.artifactsLock);
     const temporaryLockPath = `${artifactsLockPath}.tmp`;
+    const publishedScriptPath = path.join(sampleDirectory, 'urashima.txt');
+    const temporaryScriptPath = `${publishedScriptPath}.tmp`;
+    const generatedScriptPath =
+      results.player.outputPaths[results.player.manifest.outputs.script.filename];
     await mkdir(path.dirname(artifactsLockPath), {recursive: true});
-    await writeFile(temporaryLockPath, `${JSON.stringify(artifactsLock, null, 2)}\n`, 'utf8');
-    await rename(temporaryLockPath, artifactsLockPath);
+    await Promise.all([
+      writeFile(temporaryLockPath, `${JSON.stringify(artifactsLock, null, 2)}\n`, 'utf8'),
+      readFile(generatedScriptPath).then((contents) => writeFile(temporaryScriptPath, contents)),
+    ]);
+    await Promise.all([
+      rename(temporaryLockPath, artifactsLockPath),
+      rename(temporaryScriptPath, publishedScriptPath),
+    ]);
     console.log(`Updated ${path.relative(projectRoot, artifactsLockPath)}.`);
     return artifactsLock;
   } finally {
