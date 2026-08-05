@@ -130,13 +130,15 @@ export async function buildUrashima(outputDirectory, {verifyArtifacts = true} = 
     );
   }
 
-  const [editorScript, playerScript, publishedScript] = await Promise.all([
+  const [editorScript, playerScript] = await Promise.all([
     readFile(results.editor.outputPaths[results.editor.manifest.outputs.script.filename]),
     readFile(results.player.outputPaths[results.player.manifest.outputs.script.filename]),
-    readFile(path.join(sampleDirectory, 'urashima.txt')),
   ]);
   assert(editorScript.equals(playerScript), 'editor and player transformed scripts differ.');
-  assert(playerScript.equals(publishedScript), 'urashima.txt differs from the generated script.');
+  if (verifyArtifacts) {
+    const publishedScript = await readFile(path.join(sampleDirectory, 'urashima.txt'));
+    assert(playerScript.equals(publishedScript), 'urashima.txt differs from the generated script.');
+  }
   assert.equal(editorScript.toString('utf8').includes('file:'), false);
 
   return {artifactsLock, config, profileLocks, results};

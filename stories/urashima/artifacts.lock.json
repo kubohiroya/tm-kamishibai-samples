@@ -5,6 +5,10 @@
     "version": "3.2.2",
     "commit": "2b5005d293a9b63c8ba5da396fd86815d093f975"
   },
+  "storyDate": {
+    "value": "2026-08-05",
+    "contentSha256": "1f4422d35166f31850a90c6058906606f8276fe0050e68624cc91c4e57b3da22"
+  },
   "profiles": {
     "editor": {
       "outputName": "_urashima",
@@ -14,24 +18,24 @@
       },
       "script": {
         "size": 8729,
-        "sha256": "13bca24cc5dae880e6088840e8799621627edda2cb954cf046a79841719f88dc"
+        "sha256": "a32638cf2a55e578e2b0e779a13c6e4de6e8d1de97626d363ebcdd175e5bd825"
       },
       "manifest": {
-        "sha256": "c5d05894aee9cd1bcf6b51178da4a438286620d518f2feb8d0a86c6cc9f29654"
+        "sha256": "81bb26853a9caed7799c456afa465034ca1f1460539c775d4369ecc446b9f21e"
       }
     },
     "player": {
       "outputName": "urashima",
       "sb3": {
         "size": 15564937,
-        "sha256": "c9515dcbcc0f250a3b298d45da0fd6f9fa08b22ba170b68d5a2ee49df4121555"
+        "sha256": "ffc2e9bba78445764efdc3e259c52f6dc349fa4960a125eb8450671d382f6237"
       },
       "script": {
         "size": 8729,
-        "sha256": "13bca24cc5dae880e6088840e8799621627edda2cb954cf046a79841719f88dc"
+        "sha256": "a32638cf2a55e578e2b0e779a13c6e4de6e8d1de97626d363ebcdd175e5bd825"
       },
       "manifest": {
-        "sha256": "da3c5d9d1002137cd59856cbba29d0bb0eef6990a9c9217ce56e4e7972763532"
+        "sha256": "358e1e3ddc8ba7ce97d3db32c6b29585b745e86ecbe44163b791dcda9f9de2fa"
       }
     }
   },
@@ -44,13 +48,13 @@
       "profile": "player",
       "path": "urashima.sb3",
       "size": 15564937,
-      "sha256": "c9515dcbcc0f250a3b298d45da0fd6f9fa08b22ba170b68d5a2ee49df4121555"
+      "sha256": "ffc2e9bba78445764efdc3e259c52f6dc349fa4960a125eb8450671d382f6237"
     },
     "output": {
       "path": "web/index.html",
       "contentType": "text/html",
       "size": 22419462,
-      "sha256": "c8940fceea9ab5d79e6f6e939e3a30e8952058a7720ec2b15e0e74ae8ed85b2d"
+      "sha256": "b4548bdb5dc52f6beb9239460fdb33a70ea87416c3c4f79459e65cb798abd65c"
     }
   }
 }

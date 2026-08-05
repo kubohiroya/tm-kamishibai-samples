@@ -48,7 +48,9 @@ pnpm verify
 
 `pnpm build` は空の `dist/` から両プロファイルのSB3、Packager Web版、公開サイトを生成し、台本・SB3・HTML・全アセット・ライセンス・リンク・SHA-256を検証します。同じ入力からWeb版を2回生成してハッシュが一致することも確認します。`pnpm test:web` はPages相当のHTTPサーバでWeb版を開き、タイトル画面の1クリック後に、ファイル選択や台本固有アセットの外部取得なしで組み込み台本が開始することをheadless Chromiumで検証します。
 
-`source.txt`、アセット、生成設定など、成果物へ影響する入力を意図的に変更した場合は、`pnpm update:artifacts-lock` で `stories/urashima/artifacts.lock.json` を再生成してから `pnpm build` を実行します。更新コマンドはSB3とWeb版を実際に生成し、Web版の2回生成が一致した後にだけロックファイルを置き換えます。通常の `pnpm build` はロックを更新せず、入力や生成環境の意図しない変化をエラーとして検出します。
+台本の`# date:`は手動更新しません。`pnpm build`は日付行を除いた台本内容のSHA-256をartifact lockと比較し、実質内容が変わった台本だけ、ビルド実行環境のローカル年月日へ更新します。内容が同じなら翌日の再ビルドでも既存日付と成果物ハッシュを維持します。台本変更に伴う公開台本、SB3、artifact lockは同じビルドで更新されます。ローカル実行ではOSのタイムゾーンを使い、GitHub ActionsのCI／Pagesリリースでは`Asia/Tokyo`を明示します。
+
+アセット、生成設定など、台本以外の成果物入力を意図的に変更した場合は、`pnpm update:artifacts-lock` で `stories/urashima/artifacts.lock.json`を再生成してから`pnpm build`を実行します。更新コマンドはSB3とWeb版を実際に生成し、Web版の2回生成が一致した後にだけロックファイルを置き換えます。通常のビルドでは、日付以外の意図しない生成環境差分を引き続きエラーとして検出します。
 
 Pull Requestでは `.github/workflows/ci.yml` が生成と検証だけを行います。`main` へのマージ後は `.github/workflows/deploy.yml` が同じ検証を再実行し、成功した `dist/` だけをGitHub Pagesへ公開します。
 
