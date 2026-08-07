@@ -71,6 +71,7 @@ function verifySiteHeader(html, assetPrefix) {
   const destinations = [
     'https://kubohiroya.github.io/tmpose-kamishibai/',
     'https://kubohiroya.github.io/tmpose-kamishibai-docs/',
+    'https://kubohiroya.github.io/tmpose-kamishibai-docs/workshops/',
     'https://kubohiroya.github.io/tmpose-kamishibai-samples/',
     'https://kubohiroya.github.io/tmpose-kamishibai/downloads/',
   ];
@@ -88,6 +89,11 @@ function verifySiteHeader(html, assetPrefix) {
     assert(html.includes(`href="${destination}"`), `Missing site destination: ${destination}`);
   }
   assert.equal((html.match(/aria-current="page"/gu) ?? []).length, 1);
+  assert(
+    html.includes(
+      '<a class="site-nav__link" href="https://kubohiroya.github.io/tmpose-kamishibai-docs/workshops/">ワークショップ</a>',
+    ),
+  );
   assert(
     html.includes(
       '<a class="site-nav__link" href="https://kubohiroya.github.io/tmpose-kamishibai-samples/" aria-current="page">サンプル</a>',
