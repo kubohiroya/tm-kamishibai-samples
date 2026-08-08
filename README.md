@@ -1,8 +1,10 @@
 # tmpose-kamishibai-samples
 
-`tmpose-kamishibai` の台本、サンプル固有アセット、生成設定、検証、公開物を管理するリポジトリです。
+`tmpose-kamishibai` の作品カタログ、台本、作品固有アセット、生成設定、検証、公開物を管理するリポジトリです。リポジトリ名と公開URLは互換性のため維持し、公開ページでは「TMPose紙芝居 作品ライブラリ」として提供します。
 
-公開サイト: <https://kubohiroya.github.io/tmpose-kamishibai-samples/>
+作品ライブラリ: <https://kubohiroya.github.io/tmpose-kamishibai-samples/>
+
+作品の掲載区分、権利情報、配布形態は[`site/works.json`](site/works.json)で管理し、その形式を[`site/works.schema.json`](site/works.schema.json)で定義します。公式サンプル、コミュニティ作品、外部作品の扱いは[`WORKS_POLICY.md`](WORKS_POLICY.md)を参照してください。外部作品はリンクのみを掲載し、このサイトでは作品データを再配布しません。
 
 浦島太郎サンプルの台本、元アセット、生成設定は `stories/urashima/` に配置しています。
 

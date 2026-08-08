@@ -1,0 +1,107 @@
+{
+  "$schema": "./works.schema.json",
+  "formatVersion": 1,
+  "categories": [
+    {
+      "id": "official",
+      "title": "公式サンプル",
+      "description": "TMPose紙芝居の学習・改変・動作確認に利用できる、公式に保守している作品です。",
+      "emptyMessage": "現在掲載中の公式サンプルはありません。"
+    },
+    {
+      "id": "community",
+      "title": "コミュニティ作品",
+      "description": "contributorが権利とライセンスを明示し、このサイトで配布する作品です。",
+      "emptyMessage": "現在掲載中のコミュニティ作品はありません。"
+    },
+    {
+      "id": "external",
+      "title": "外部作品",
+      "description": "第三者が著作権を持ち、外部サイトで公開している作品へのリンクです。このサイトでは作品データを再配布しません。",
+      "emptyMessage": "現在掲載中の外部作品はありません。掲載時には権利者と利用条件を明示します。"
+    }
+  ],
+  "works": [
+    {
+      "id": "urashima",
+      "category": "official",
+      "title": "浦島太郎",
+      "summary": "紙芝居DSL 3.2の台本と画像・音声から生成した、Web版でもプレイできる公式サンプルです。",
+      "creator": "Hiroya Kubo",
+      "rightsHolder": "Hiroya Kuboおよび個別素材の権利者",
+      "dslSeries": ["3.2"],
+      "distribution": "hosted",
+      "license": {
+        "label": "MPL-2.0、CC BY-SA 2.0ほか",
+        "href": "stories/urashima/LICENSES.md"
+      },
+      "actions": [
+        {
+          "label": "Web版を開く",
+          "href": "stories/urashima/web/",
+          "style": "primary",
+          "requires": "urashimaWeb"
+        },
+        {
+          "label": "台本を表示",
+          "href": "stories/urashima/urashima.txt",
+          "style": "secondary"
+        },
+        {
+          "label": "再生用SB3をダウンロード",
+          "href": "stories/urashima/urashima.sb3",
+          "style": "secondary",
+          "download": true
+        },
+        {
+          "label": "manifest",
+          "href": "stories/urashima/manifest.json",
+          "style": "secondary"
+        },
+        {
+          "label": "ライセンス",
+          "href": "stories/urashima/LICENSES.md",
+          "style": "secondary"
+        },
+        {
+          "label": "詳細を見る",
+          "href": "stories/urashima/",
+          "style": "secondary"
+        }
+      ]
+    },
+    {
+      "id": "my-urashima",
+      "category": "official",
+      "title": "my-urashima（ワークショップにおける作業用）",
+      "summary": "2026年8月1日のワークショップで、ポーズと物語を変更するために使用した公式サンプルです。",
+      "creator": "Hiroya Kubo",
+      "rightsHolder": "Hiroya Kuboおよび親作品に含まれる個別素材の権利者",
+      "dslSeries": ["3.2"],
+      "distribution": "hosted",
+      "license": {
+        "label": "MPL-2.0、CC BY-SA 2.0ほか",
+        "href": "stories/urashima/LICENSES.md"
+      },
+      "actions": [
+        {
+          "label": "作業用SB3をダウンロード",
+          "href": "stories/my-urashima/my-urashima.sb3",
+          "style": "primary",
+          "download": true
+        },
+        {
+          "label": "作業用台本をダウンロード",
+          "href": "stories/my-urashima/my-urashima.txt",
+          "style": "secondary",
+          "download": true
+        },
+        {
+          "label": "説明を見る",
+          "href": "stories/my-urashima/README.md",
+          "style": "secondary"
+        }
+      ]
+    }
+  ]
+}
