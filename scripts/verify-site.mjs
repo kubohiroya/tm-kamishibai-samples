@@ -7,6 +7,7 @@ import {fileURLToPath, pathToFileURL} from 'node:url';
 import {validateBundle} from '@kubohiroya/tmpose-kamishibai/builder';
 
 import {verifyMyUrashimaOutput} from './build-my-urashima.mjs';
+import {validateWorksCatalog} from './works-catalog.mjs';
 
 function sha256(contents) {
   return createHash('sha256').update(contents).digest('hex');
@@ -96,7 +97,7 @@ function verifySiteHeader(html, assetPrefix) {
   );
   assert(
     html.includes(
-      '<a class="site-nav__link" href="https://kubohiroya.github.io/tmpose-kamishibai-samples/" aria-current="page">サンプル</a>',
+      '<a class="site-nav__link" href="https://kubohiroya.github.io/tmpose-kamishibai-samples/" aria-current="page">作品</a>',
     ),
   );
   assert(
@@ -125,6 +126,9 @@ export async function verifyPublishedSite(options = {}) {
     licenseSummary,
     runtimeLicense,
     packagerNotice,
+    worksCatalog,
+    worksSchema,
+    worksPolicy,
   ] =
     await Promise.all([
       listFiles(sourceDirectory),
@@ -147,7 +151,19 @@ export async function verifyPublishedSite(options = {}) {
         path.join(outputSampleDirectory, 'licenses/turbowarp-packager-NOTICE.md'),
         'utf8',
       ),
+      readFile(path.join(outputDirectory, 'works.json'), 'utf8').then(JSON.parse),
+      readFile(path.join(outputDirectory, 'works.schema.json'), 'utf8').then(JSON.parse),
+      readFile(path.join(outputDirectory, 'WORKS_POLICY.md'), 'utf8'),
     ]);
+
+  validateWorksCatalog(worksCatalog);
+  assert.equal(
+    worksSchema.$id,
+    'https://kubohiroya.github.io/tmpose-kamishibai-samples/works.schema.json',
+  );
+  assert(worksPolicy.includes('## 公式サンプル'));
+  assert(worksPolicy.includes('## コミュニティ作品'));
+  assert(worksPolicy.includes('## 外部作品'));
 
   for (const relativePath of sourceFiles) {
     const [source, published] = await Promise.all([
@@ -268,6 +284,11 @@ export async function verifyPublishedSite(options = {}) {
   assert(packagerNotice.includes('MPL-2.0'));
   verifySiteHeader(rootIndex, '');
   verifySiteHeader(sampleIndex, '../../');
+  assert(rootIndex.includes('<title>TMPose紙芝居 作品ライブラリ</title>'));
+  assert(rootIndex.includes('<h1>TMPose紙芝居 作品ライブラリ</h1>'));
+  assert(sampleIndex.includes('<title>浦島太郎 | TMPose紙芝居 作品ライブラリ</title>'));
+  assert(sampleIndex.includes('aria-label="作品内ナビゲーション"'));
+  assert(sampleIndex.includes('>作品一覧へ戻る</a>'));
   assert(!rootIndex.includes('>GitHubリポジトリ</a>'));
   assert(!rootIndex.includes('https://kubohiroya.github.io/tmpose-kamishibai/stories/'));
   assert(sampleIndex.includes(manifest.profiles.player.sb3.sha256));
@@ -275,7 +296,7 @@ export async function verifyPublishedSite(options = {}) {
   assert(sampleIndex.includes(manifest.web.output.sha256));
   assert(rootIndex.indexOf('Web版を開く') < rootIndex.indexOf('台本を表示'));
   assert(rootIndex.indexOf('台本を表示') < rootIndex.indexOf('再生用SB3をダウンロード'));
-  assert(rootIndex.includes('<h2>my-urashima（ワークショップにおける作業用）</h2>'));
+  assert(rootIndex.includes('<h3>my-urashima（ワークショップにおける作業用）</h3>'));
   assert(
     rootIndex.includes(
       '<a class="button" href="stories/my-urashima/my-urashima.sb3" download>作業用SB3をダウンロード</a>',
@@ -292,15 +313,29 @@ export async function verifyPublishedSite(options = {}) {
     ),
   );
   assert(
-    rootIndex.indexOf('<h2>浦島太郎</h2>')
-      < rootIndex.indexOf('<h2>my-urashima（ワークショップにおける作業用）</h2>'),
+    rootIndex.indexOf('<h3>浦島太郎</h3>')
+      < rootIndex.indexOf('<h3>my-urashima（ワークショップにおける作業用）</h3>'),
   );
+  assert(
+    rootIndex.indexOf('<h2 id="category-official">公式サンプル</h2>')
+      < rootIndex.indexOf('<h2 id="category-community">コミュニティ作品</h2>') &&
+      rootIndex.indexOf('<h2 id="category-community">コミュニティ作品</h2>')
+        < rootIndex.indexOf('<h2 id="category-external">外部作品</h2>'),
+  );
+  assert(rootIndex.includes('現在掲載中のコミュニティ作品はありません。'));
+  assert(rootIndex.includes('現在掲載中の外部作品はありません。'));
+  assert(rootIndex.includes('<dt>著作権者</dt>'));
+  assert(rootIndex.includes('<dt>ライセンス・利用条件</dt>'));
+  assert(rootIndex.includes('<a href="WORKS_POLICY.md">作品掲載方針</a>'));
   assert(sampleIndex.indexOf('Web版を開く') < sampleIndex.indexOf('台本を表示'));
   assert(sampleIndex.indexOf('台本を表示') < sampleIndex.indexOf('再生用SB3をダウンロード'));
   assert(publishedFiles.includes('.nojekyll'));
   assert(publishedFiles.includes('favicon.png'));
   assert(publishedFiles.includes('favicon.source.json'));
   assert(publishedFiles.includes('site-shell.css'));
+  assert(publishedFiles.includes('works.json'));
+  assert(publishedFiles.includes('works.schema.json'));
+  assert(publishedFiles.includes('WORKS_POLICY.md'));
   assert(publishedFiles.includes('stories/my-urashima/my-urashima.sb3'));
   assert(publishedFiles.includes('stories/my-urashima/my-urashima.txt'));
   assert(

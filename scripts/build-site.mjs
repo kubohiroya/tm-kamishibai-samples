@@ -8,6 +8,7 @@ import {buildUrashima} from './build-urashima.mjs';
 import {buildPackagedWeb} from './build-packaged-web.mjs';
 import {refreshChangedStoryArtifacts} from './refresh-story-artifacts.mjs';
 import {verifyPublishedSite} from './verify-site.mjs';
+import {readWorksCatalog} from './works-catalog.mjs';
 
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 const sourceDirectory = path.join(projectRoot, 'stories/urashima');
@@ -17,6 +18,8 @@ const outputDirectory = path.join(projectRoot, 'dist');
 const outputSampleDirectory = path.join(outputDirectory, 'stories/urashima');
 const myOutputSampleDirectory = path.join(outputDirectory, 'stories/my-urashima');
 const publicUrl = 'https://kubohiroya.github.io/tmpose-kamishibai-samples/';
+const worksCatalogPath = path.join(siteDirectory, 'works.json');
+const worksSchemaPath = path.join(siteDirectory, 'works.schema.json');
 
 function sha256(contents) {
   return createHash('sha256').update(contents).digest('hex');
@@ -42,7 +45,7 @@ function renderSiteHeader(assetPrefix) {
       <a class="site-nav__link" href="https://kubohiroya.github.io/tmpose-kamishibai/">トップ</a>
       <a class="site-nav__link" href="https://kubohiroya.github.io/tmpose-kamishibai-docs/">ドキュメント</a>
       <a class="site-nav__link" href="https://kubohiroya.github.io/tmpose-kamishibai-docs/workshops/">ワークショップ</a>
-      <a class="site-nav__link" href="https://kubohiroya.github.io/tmpose-kamishibai-samples/" aria-current="page">サンプル</a>
+      <a class="site-nav__link" href="https://kubohiroya.github.io/tmpose-kamishibai-samples/" aria-current="page">作品</a>
       <a class="site-nav__link" href="https://kubohiroya.github.io/tmpose-kamishibai/downloads/">ダウンロード</a>
     </nav>
     <a class="site-repository" href="https://github.com/kubohiroya/tmpose-kamishibai-samples" target="_blank" rel="noopener" aria-label="tmpose-kamishibai-samplesをGitHubで開く" title="tmpose-kamishibai-samplesをGitHubで開く">
@@ -87,20 +90,63 @@ async function assetRecords(directory, kind) {
   );
 }
 
-function renderRootIndex(manifest) {
-  const webDescription = manifest.web.enabled
-    ? '<p>Web版には画像・音声・台本を組み込み済みです。TMPoseのライブラリ・モデル取得とカメラ利用にはネットワーク接続が必要です。</p>'
+function renderWorkAction(action, manifest) {
+  if (action.requires === 'urashimaWeb' && !manifest.web.enabled) return '';
+  const className = action.style === 'secondary' ? 'button secondary' : 'button';
+  const download = action.download ? ' download' : '';
+  const external = action.external ? ' target="_blank" rel="noopener external"' : '';
+  const externalLabel = action.external ? '（外部サイト）' : '';
+  return `        <a class="${className}" href="${escapeHtml(action.href)}"${download}${external}>${escapeHtml(action.label)}${externalLabel}</a>`;
+}
+
+function renderWorkCard(work, manifest) {
+  const actions = work.actions
+    .map((action) => renderWorkAction(action, manifest))
+    .filter(Boolean)
+    .join('\n');
+  const distribution = work.distribution === 'link-only' ? '外部リンクのみ' : '当サイトで配布';
+  const licenseExternal = work.license.href.startsWith('https://')
+    ? ' target="_blank" rel="noopener external"'
     : '';
-  const webAction = manifest.web.enabled
-    ? '      <a class="button" href="stories/urashima/web/">Web版を開く</a>\n'
-    : '';
+  return `      <article data-work-id="${escapeHtml(work.id)}" data-distribution="${escapeHtml(work.distribution)}">
+        <h3>${escapeHtml(work.title)}</h3>
+        <p>${escapeHtml(work.summary)}</p>
+        <dl class="work-meta">
+          <div><dt>作者</dt><dd>${escapeHtml(work.creator)}</dd></div>
+          <div><dt>著作権者</dt><dd>${escapeHtml(work.rightsHolder)}</dd></div>
+          <div><dt>対応DSL</dt><dd>${work.dslSeries.map(escapeHtml).join('／')}</dd></div>
+          <div><dt>掲載形態</dt><dd>${distribution}</dd></div>
+          <div><dt>ライセンス・利用条件</dt><dd><a href="${escapeHtml(work.license.href)}"${licenseExternal}>${escapeHtml(work.license.label)}</a></dd></div>
+        </dl>
+        <div class="actions">
+${actions}
+        </div>
+      </article>`;
+}
+
+function renderWorkCategory(category, works, manifest) {
+  const categoryWorks = works.filter((work) => work.category === category.id);
+  const contents = categoryWorks.length
+    ? `<div class="work-list">\n${categoryWorks.map((work) => renderWorkCard(work, manifest)).join('\n')}\n      </div>`
+    : `<p class="empty-state">${escapeHtml(category.emptyMessage)}</p>`;
+  return `    <section class="work-category" aria-labelledby="category-${escapeHtml(category.id)}">
+      <h2 id="category-${escapeHtml(category.id)}">${escapeHtml(category.title)}</h2>
+      <p>${escapeHtml(category.description)}</p>
+      ${contents}
+    </section>`;
+}
+
+function renderRootIndex(manifest, worksCatalog) {
+  const categories = worksCatalog.categories
+    .map((category) => renderWorkCategory(category, worksCatalog.works, manifest))
+    .join('\n');
   return `<!doctype html>
 <html lang="ja">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="TMPose紙芝居の公開サンプル">
-  <title>TMPose紙芝居サンプル</title>
+  <meta name="description" content="TMPose紙芝居の公式サンプル、コミュニティ作品、外部作品を掲載する作品ライブラリ">
+  <title>TMPose紙芝居 作品ライブラリ</title>
   <link rel="icon" href="favicon.png" type="image/png">
   <link rel="stylesheet" href="site-shell.css">
   <style>
@@ -110,7 +156,15 @@ function renderRootIndex(manifest) {
     main { max-width: 920px; margin: auto; padding: 48px 24px 72px; }
     h1 { font-size: clamp(2rem, 6vw, 3.5rem); margin-bottom: .35rem; }
     .lead { color: var(--muted); font-size: 1.15rem; }
-    article { margin-top: 32px; padding: 24px; border: 1px solid var(--line); border-radius: 14px; background: var(--paper); box-shadow: 0 8px 24px rgb(89 61 43 / 10%); }
+    .work-category { margin-top: 42px; }
+    .work-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 20px; }
+    article { display: flex; min-width: 0; flex-direction: column; padding: 24px; border: 1px solid var(--line); border-radius: 14px; background: var(--paper); box-shadow: 0 8px 24px rgb(89 61 43 / 10%); }
+    article h3 { margin-top: 0; }
+    .work-meta { display: grid; gap: .65rem; margin: 1rem 0 0; }
+    .work-meta div { display: grid; grid-template-columns: minmax(7.5rem, auto) 1fr; gap: .75rem; }
+    .work-meta dt { color: var(--muted); font-weight: 700; }
+    .work-meta dd { min-width: 0; margin: 0; overflow-wrap: anywhere; }
+    .empty-state { padding: 18px; border: 1px dashed var(--line); border-radius: 10px; background: var(--paper); color: var(--muted); }
     .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 1.25rem; }
     .button { display: inline-block; padding: 10px 14px; border-radius: 8px; background: var(--accent); color: white; text-decoration: none; font-weight: 700; }
     .button.secondary { border: 1px solid var(--accent); background: white; color: var(--accent); }
@@ -121,31 +175,12 @@ function renderRootIndex(manifest) {
 <body>
 ${renderSiteHeader('')}
 <main id="main-content">
-  <h1>TMPose紙芝居サンプル</h1>
-  <p class="lead">台本、画像・音声、用途別のSB3を配布しています。</p>
-  <article>
-    <h2>浦島太郎</h2>
-    <p>紙芝居DSL 3.2の台本と、画像${manifest.assetCounts.images}件・音声${manifest.assetCounts.sounds}件から生成したサンプルです。</p>
-    ${webDescription}
-    <div class="actions">
-${webAction}      <a class="button secondary" href="stories/urashima/urashima.txt">台本を表示</a>
-      <a class="button secondary" href="stories/urashima/urashima.sb3" download>再生用SB3をダウンロード</a>
-      <a class="button secondary" href="stories/urashima/manifest.json">manifest</a>
-      <a class="button secondary" href="stories/urashima/LICENSES.md">ライセンス</a>
-      <a class="button secondary" href="stories/urashima/">詳細を見る</a>
-    </div>
-  </article>
-  <article>
-    <h2>my-urashima（ワークショップにおける作業用）</h2>
-    <p>2026年8月1日のワークショップで、ポーズと物語を変更するためのサンプルです。SB3を開いたあと、外部台本の<code>my-urashima.txt</code>を読み込んで使用します。</p>
-    <div class="actions">
-      <a class="button" href="stories/my-urashima/my-urashima.sb3" download>作業用SB3をダウンロード</a>
-      <a class="button secondary" href="stories/my-urashima/my-urashima.txt" download>作業用台本をダウンロード</a>
-      <a class="button secondary" href="stories/my-urashima/README.md">説明を見る</a>
-    </div>
-  </article>
+  <h1>TMPose紙芝居 作品ライブラリ</h1>
+  <p class="lead">公式サンプル、コミュニティ作品、外部サイトで公開されている作品を、掲載形態と権利情報を区別して紹介します。</p>
+  <p>区分、ライセンス、外部作品の扱いについては<a href="WORKS_POLICY.md">作品掲載方針</a>をご確認ください。</p>
+${categories}
   <footer>
-    <p>サンプルコンテンツは <a href="LICENSE">Mozilla Public License 2.0</a> で提供します。</p>
+    <p>作品ごとのライセンス・利用条件は各カードに表示しています。サイト生成コードと個別表示のないファイルには<a href="LICENSE">Mozilla Public License 2.0</a>が適用されます。</p>
   </footer>
 </main>
 </body>
@@ -178,8 +213,8 @@ function renderSampleIndex(manifest) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="TMPose紙芝居 浦島太郎サンプル">
-  <title>浦島太郎 | TMPose紙芝居サンプル</title>
+  <meta name="description" content="TMPose紙芝居 公式サンプル 浦島太郎">
+  <title>浦島太郎 | TMPose紙芝居 作品ライブラリ</title>
   <link rel="icon" href="../../favicon.png" type="image/png">
   <link rel="stylesheet" href="../../site-shell.css">
   <style>
@@ -199,7 +234,7 @@ function renderSampleIndex(manifest) {
 <body>
 ${renderSiteHeader('../../')}
 <main id="main-content">
-  <nav class="local-nav" aria-label="サンプル内ナビゲーション"><a href="../../">サンプル一覧へ戻る</a></nav>
+  <nav class="local-nav" aria-label="作品内ナビゲーション"><a href="../../">作品一覧へ戻る</a></nav>
   <h1>浦島太郎</h1>
   <p>同じ台本とアセットロックから、編集用と再生用の2種類のSB3を生成しています。</p>
   ${webDescription}
@@ -255,8 +290,11 @@ function profileRecord(profile, build, lock) {
 
 export async function buildSite() {
   await refreshChangedStoryArtifacts();
-  const images = await assetRecords(path.join(sourceDirectory, 'assets/images'), 'images');
-  const sounds = await assetRecords(path.join(sourceDirectory, 'assets/sounds'), 'sounds');
+  const [worksCatalog, images, sounds] = await Promise.all([
+    readWorksCatalog(worksCatalogPath),
+    assetRecords(path.join(sourceDirectory, 'assets/images'), 'images'),
+    assetRecords(path.join(sourceDirectory, 'assets/sounds'), 'sounds'),
+  ]);
   if (images.length !== 24 || sounds.length !== 22) {
     throw new Error(`Unexpected Urashima asset counts: ${images.length} images, ${sounds.length} sounds.`);
   }
@@ -273,6 +311,9 @@ export async function buildSite() {
       path.join(siteDirectory, 'site-shell.css'),
       path.join(outputDirectory, 'site-shell.css'),
     ),
+    copyFile(worksCatalogPath, path.join(outputDirectory, 'works.json')),
+    copyFile(worksSchemaPath, path.join(outputDirectory, 'works.schema.json')),
+    copyFile(path.join(projectRoot, 'WORKS_POLICY.md'), path.join(outputDirectory, 'WORKS_POLICY.md')),
   ]);
   await cp(sourceDirectory, outputSampleDirectory, {recursive: true});
   await cp(mySourceDirectory, myOutputSampleDirectory, {recursive: true});
@@ -330,7 +371,11 @@ export async function buildSite() {
 
   await copyFile(path.join(projectRoot, 'LICENSE'), path.join(outputDirectory, 'LICENSE'));
   await writeFile(path.join(outputDirectory, '.nojekyll'), '');
-  await writeFile(path.join(outputDirectory, 'index.html'), renderRootIndex(manifest), 'utf8');
+  await writeFile(
+    path.join(outputDirectory, 'index.html'),
+    renderRootIndex(manifest, worksCatalog),
+    'utf8',
+  );
   await writeFile(
     path.join(outputSampleDirectory, 'manifest.json'),
     `${JSON.stringify(manifest, null, 2)}\n`,

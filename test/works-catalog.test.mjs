@@ -1,0 +1,115 @@
+import assert from 'node:assert/strict';
+import path from 'node:path';
+import test from 'node:test';
+import {fileURLToPath} from 'node:url';
+
+import {readWorksCatalog, validateWorksCatalog} from '../scripts/works-catalog.mjs';
+import {verifyExternalWorkLinks} from '../scripts/verify-external-works.mjs';
+
+const projectRoot = fileURLToPath(new URL('../', import.meta.url));
+
+test('publishes the approved works-library categories and rights metadata', async () => {
+  const catalog = await readWorksCatalog(path.join(projectRoot, 'site/works.json'));
+
+  assert.deepEqual(
+    catalog.categories.map(({id, title}) => [id, title]),
+    [
+      ['official', '公式サンプル'],
+      ['community', 'コミュニティ作品'],
+      ['external', '外部作品'],
+    ],
+  );
+  assert(catalog.works.length >= 2);
+  for (const work of catalog.works) {
+    assert(work.creator);
+    assert(work.rightsHolder);
+    assert(work.license.label);
+    assert(work.license.href);
+    assert(work.dslSeries.length > 0);
+  }
+});
+
+test('allows external works only as one HTTPS link with rights and terms', () => {
+  const catalog = {
+    $schema: './works.schema.json',
+    formatVersion: 1,
+    categories: [
+      {id: 'official', title: '公式', description: '公式作品', emptyMessage: 'なし'},
+      {id: 'community', title: 'コミュニティ', description: '投稿作品', emptyMessage: 'なし'},
+      {id: 'external', title: '外部', description: '外部作品', emptyMessage: 'なし'},
+    ],
+    works: [
+      {
+        id: 'linked-work',
+        category: 'external',
+        title: '外部作品',
+        summary: '権利者のサイトで公開されている作品です。',
+        creator: 'Example Creator',
+        rightsHolder: 'Example Rights Holder',
+        dslSeries: ['4.0'],
+        distribution: 'link-only',
+        license: {label: '利用条件', href: 'https://example.com/terms'},
+        actions: [
+          {
+            label: '作品を開く',
+            href: 'https://example.com/work',
+            style: 'primary',
+            external: true,
+          },
+        ],
+      },
+    ],
+  };
+
+  assert.doesNotThrow(() => validateWorksCatalog(structuredClone(catalog)));
+
+  const downloadable = structuredClone(catalog);
+  downloadable.works[0].actions[0].download = true;
+  assert.throws(() => validateWorksCatalog(downloadable), /must not offer a download/u);
+
+  const hosted = structuredClone(catalog);
+  hosted.works[0].distribution = 'hosted';
+  assert.throws(() => validateWorksCatalog(hosted), /must be link-only/u);
+
+  const missingRights = structuredClone(catalog);
+  missingRights.works[0].rightsHolder = '';
+  assert.throws(() => validateWorksCatalog(missingRights), /rightsHolder/u);
+});
+
+test('detects unavailable external work and terms links', async () => {
+  const catalog = await readWorksCatalog(path.join(projectRoot, 'site/works.json'));
+  const externalCatalog = structuredClone(catalog);
+  externalCatalog.works.push({
+    id: 'linked-work',
+    category: 'external',
+    title: '外部作品',
+    summary: '外部サイトで公開されている作品です。',
+    creator: 'Example Creator',
+    rightsHolder: 'Example Rights Holder',
+    dslSeries: ['4.0'],
+    distribution: 'link-only',
+    license: {label: '利用条件', href: 'https://example.com/terms'},
+    actions: [
+      {
+        label: '作品を開く',
+        href: 'https://example.com/work',
+        style: 'primary',
+        external: true,
+      },
+    ],
+  });
+
+  const requests = [];
+  const fetchOk = async (url) => {
+    requests.push(url);
+    return {ok: true, status: 200};
+  };
+  assert.equal(await verifyExternalWorkLinks(externalCatalog, fetchOk), 2);
+  assert.deepEqual(requests.sort(), ['https://example.com/terms', 'https://example.com/work']);
+
+  const fetchBroken = async (url) => ({ok: !url.endsWith('/work'), status: 404});
+  await assert.rejects(
+    verifyExternalWorkLinks(externalCatalog, fetchBroken),
+    /https:\/\/example\.com\/work: HTTP 404/u,
+  );
+});
