@@ -57,6 +57,22 @@ function renderSiteHeader(assetPrefix) {
 </header>`;
 }
 
+function renderSiteFooter(assetPrefix) {
+  return `<footer class="site-footer" data-site-footer-version="1">
+  <div class="site-footer__inner">
+    <a class="site-footer__brand" href="https://kubohiroya.github.io/tmpose-kamishibai/">
+      <img class="site-footer__symbol" src="${assetPrefix}favicon.png" width="36" height="36" alt="">
+      <span>TMPose紙芝居</span>
+    </a>
+    <div class="site-footer__legal">
+      <p>© 2026 Hiroya Kubo</p>
+      <p class="site-footer__notice">各文書・作品・素材には個別の利用条件が適用されます。</p>
+      <a class="site-footer__rights" href="https://kubohiroya.github.io/tmpose-kamishibai-samples/licenses/">ライセンス・権利表示</a>
+    </div>
+  </div>
+</footer>`;
+}
+
 function contentType(filename) {
   if (filename.endsWith('.png')) return 'image/png';
   if (filename.endsWith('.svg')) return 'image/svg+xml';
@@ -179,10 +195,11 @@ ${renderSiteHeader('')}
   <p class="lead">公式サンプル、コミュニティ作品、外部サイトで公開されている作品を、掲載形態と権利情報を区別して紹介します。</p>
   <p>区分、ライセンス、外部作品の扱いについては<a href="WORKS_POLICY.md">作品掲載方針</a>をご確認ください。</p>
 ${categories}
-  <footer>
+  <aside class="catalog-rights">
     <p>作品ごとのライセンス・利用条件は各カードに表示しています。サイト生成コードと個別表示のないファイルには<a href="LICENSE">Mozilla Public License 2.0</a>が適用されます。</p>
-  </footer>
+  </aside>
 </main>
+${renderSiteFooter('')}
 </body>
 </html>
 `;
@@ -259,6 +276,73 @@ ${webHash}  <h2>成果物プロファイル</h2>
 ${assetItems}
   </ul>
 ${webCredits}</main>
+${renderSiteFooter('../../')}
+</body>
+</html>
+`;
+}
+
+function renderRightsIndex() {
+  return `<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="TMPose紙芝居 作品ライブラリの作品、素材、サイトに適用されるライセンスと権利表示を案内します">
+  <title>ライセンス・権利表示 | TMPose紙芝居 作品ライブラリ</title>
+  <link rel="icon" href="../favicon.png" type="image/png">
+  <link rel="stylesheet" href="../site-shell.css">
+  <style>
+    :root { color-scheme: light; font-family: system-ui, sans-serif; --ink: #3f302b; --muted: #756960; --paper: #fffdf8; --canvas: #fff8ee; --accent: #963f2f; --line: #dbc9bb; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--canvas); color: var(--ink); }
+    main { max-width: 880px; margin: auto; padding: 48px 24px 72px; }
+    h1 { margin-bottom: .35rem; font-size: clamp(2rem, 5vw, 3.4rem); }
+    .lead { margin-top: 0; color: var(--muted); font-size: 1.2rem; line-height: 1.7; }
+    section { margin-top: 28px; padding: 22px; border: 1px solid var(--line); border-radius: 12px; background: var(--paper); }
+    section h2 { margin-top: 0; }
+    p, li, dd { line-height: 1.75; }
+    dt { margin-top: .8rem; font-weight: 800; }
+    dd { margin-left: 0; }
+    a { color: var(--accent); }
+  </style>
+</head>
+<body>
+${renderSiteHeader('../')}
+<main id="main-content">
+  <h1>ライセンス・権利表示</h1>
+  <p class="lead">作品ライブラリでは、当サイトで配布する作品と、第三者サイトで公開される作品へのリンクを区別しています。作品・素材に個別表示がある場合は、その条件を優先してください。</p>
+
+  <section aria-labelledby="site-license">
+    <h2 id="site-license">サイト実装</h2>
+    <p>サイト生成コードと個別表示のない本プロジェクトのファイルは、<a href="../LICENSE">Mozilla Public License 2.0（MPL-2.0）</a>で提供します。</p>
+  </section>
+
+  <section aria-labelledby="works-license">
+    <h2 id="works-license">掲載作品</h2>
+    <ul>
+      <li><strong>公式サンプル</strong>: 作品カードと作品ディレクトリの個別表示を適用します。「浦島太郎」にはMPL-2.0対象の台本・画像・音声と、CC BY-SA 2.0対象のScratch音声が含まれます。</li>
+      <li><strong>コミュニティ作品</strong>: contributorが明示した権利者、再配布可能なライセンス、素材ごとの条件を適用します。</li>
+      <li><strong>外部作品</strong>: 権利者のサイトへのリンクだけを掲載し、当サイトでは作品データや画像を再配布しません。</li>
+    </ul>
+    <p><a href="../WORKS_POLICY.md">作品掲載方針</a>と、<a href="../stories/urashima/LICENSES.md">「浦島太郎」のライセンス情報</a>も参照してください。</p>
+  </section>
+
+  <section aria-labelledby="symbol-rights">
+    <h2 id="symbol-rights">サイトアイコン</h2>
+    <dl>
+      <dt>元画像</dt>
+      <dd>公式サンプル「浦島太郎」の<code>Urashima-walk-1</code>（権利者: Hiroya Kubo）</dd>
+      <dt>派生方法</dt>
+      <dd>頭部と上半身を中心とする、背景を透明にした256×256ピクセルの切り抜き</dd>
+      <dt>ライセンス</dt>
+      <dd><a href="https://www.mozilla.org/MPL/2.0/">Mozilla Public License 2.0</a></dd>
+      <dt>出典</dt>
+      <dd><a href="../stories/urashima/assets/images/963e926995791fde1b335fd4ba60d6d7.png">作品内の元画像</a></dd>
+    </dl>
+  </section>
+</main>
+${renderSiteFooter('../')}
 </body>
 </html>
 `;
@@ -301,6 +385,7 @@ export async function buildSite() {
 
   await rm(outputDirectory, {recursive: true, force: true});
   await mkdir(path.dirname(outputSampleDirectory), {recursive: true});
+  await mkdir(path.join(outputDirectory, 'licenses'), {recursive: true});
   await Promise.all([
     copyFile(path.join(siteDirectory, 'favicon.png'), path.join(outputDirectory, 'favicon.png')),
     copyFile(
@@ -376,6 +461,7 @@ export async function buildSite() {
     renderRootIndex(manifest, worksCatalog),
     'utf8',
   );
+  await writeFile(path.join(outputDirectory, 'licenses/index.html'), renderRightsIndex(), 'utf8');
   await writeFile(
     path.join(outputSampleDirectory, 'manifest.json'),
     `${JSON.stringify(manifest, null, 2)}\n`,
