@@ -108,6 +108,27 @@ function verifySiteHeader(html, assetPrefix) {
   assert(html.includes('<svg class="site-repository__icon"'));
 }
 
+function verifySiteFooter(html, assetPrefix) {
+  assert.equal(
+    (html.match(/<footer class="site-footer" data-site-footer-version="1">/gu) ?? []).length,
+    1,
+  );
+  const footer = html.match(/<footer class="site-footer"[\s\S]*?<\/footer>/u)?.[0] ?? '';
+  assert(footer.includes('© 2026 Hiroya Kubo'));
+  assert(footer.includes('各文書・作品・素材には個別の利用条件が適用されます。'));
+  assert(
+    footer.includes(
+      '<a class="site-footer__rights" href="https://kubohiroya.github.io/tmpose-kamishibai-samples/licenses/">ライセンス・権利表示</a>',
+    ),
+  );
+  assert(
+    footer.includes(
+      `<img class="site-footer__symbol" src="${assetPrefix}favicon.png" width="36" height="36" alt="">`,
+    ),
+  );
+  assert(!footer.includes('github.com'));
+}
+
 export async function verifyPublishedSite(options = {}) {
   const projectRoot = options.projectRoot ?? fileURLToPath(new URL('../', import.meta.url));
   const outputDirectory = options.outputDirectory ?? path.join(projectRoot, 'dist');
@@ -120,6 +141,7 @@ export async function verifyPublishedSite(options = {}) {
     webFiles,
     rootIndex,
     sampleIndex,
+    rightsIndex,
     manifest,
     packageJson,
     license,
@@ -136,6 +158,7 @@ export async function verifyPublishedSite(options = {}) {
       listFiles(path.join(outputSampleDirectory, 'web')),
       verifyLinks(path.join(outputDirectory, 'index.html')),
       verifyLinks(path.join(outputSampleDirectory, 'index.html')),
+      verifyLinks(path.join(outputDirectory, 'licenses/index.html')),
       readFile(path.join(outputSampleDirectory, 'manifest.json'), 'utf8').then(JSON.parse),
       readFile(path.join(projectRoot, 'package.json'), 'utf8').then(JSON.parse),
       readFile(path.join(outputDirectory, 'LICENSE'), 'utf8'),
@@ -259,6 +282,7 @@ export async function verifyPublishedSite(options = {}) {
   assert(webHtml.length <= 104857600);
   assert(webHtml.toString('utf8', 0, 128).startsWith('<!DOCTYPE html>'));
   assert(webHtml.includes(Buffer.from('<title>浦島太郎 | TMPose紙芝居</title>')));
+  assert(!webHtml.includes(Buffer.from('class="site-footer"')));
   assert.deepEqual(
     manifest.web.allowedOnlineDependencies.map(({urlPrefix}) => urlPrefix),
     [
@@ -284,8 +308,17 @@ export async function verifyPublishedSite(options = {}) {
   assert(packagerNotice.includes('MPL-2.0'));
   verifySiteHeader(rootIndex, '');
   verifySiteHeader(sampleIndex, '../../');
+  verifySiteHeader(rightsIndex, '../');
+  verifySiteFooter(rootIndex, '');
+  verifySiteFooter(sampleIndex, '../../');
+  verifySiteFooter(rightsIndex, '../');
   assert(rootIndex.includes('<title>TMPose紙芝居 作品ライブラリ</title>'));
   assert(rootIndex.includes('<h1>TMPose紙芝居 作品ライブラリ</h1>'));
+  assert(rightsIndex.includes('<h1>ライセンス・権利表示</h1>'));
+  assert(rightsIndex.includes('外部作品'));
+  assert(rightsIndex.includes('Urashima-walk-1'));
+  assert(rightsIndex.includes('Mozilla Public License 2.0'));
+  assert(rightsIndex.includes('CC BY-SA 2.0'));
   assert(sampleIndex.includes('<title>浦島太郎 | TMPose紙芝居 作品ライブラリ</title>'));
   assert(sampleIndex.includes('aria-label="作品内ナビゲーション"'));
   assert(sampleIndex.includes('>作品一覧へ戻る</a>'));
@@ -336,6 +369,7 @@ export async function verifyPublishedSite(options = {}) {
   assert(publishedFiles.includes('works.json'));
   assert(publishedFiles.includes('works.schema.json'));
   assert(publishedFiles.includes('WORKS_POLICY.md'));
+  assert(publishedFiles.includes('licenses/index.html'));
   assert(publishedFiles.includes('stories/my-urashima/my-urashima.sb3'));
   assert(publishedFiles.includes('stories/my-urashima/my-urashima.txt'));
   assert(
@@ -357,6 +391,9 @@ export async function verifyPublishedSite(options = {}) {
     siteCss,
     /\.site-brand__symbol\s*\{[\s\S]*?border:\s*0;[\s\S]*?border-radius:\s*0;[\s\S]*?background:\s*transparent;/u,
   );
+  assert.match(siteCss, /\.site-footer\s*\{[\s\S]*?border-top:/u);
+  assert.match(siteCss, /\.site-footer__rights\s*\{[\s\S]*?min-height:\s*44px;/u);
+  assert.match(siteCss, /@media print[\s\S]*?\.site-footer\s*\{[\s\S]*?display:\s*none/u);
   assert.equal(faviconMetadata.sourceName, 'Urashima-walk-1');
   assert.equal(
     faviconMetadata.sourcePath,
