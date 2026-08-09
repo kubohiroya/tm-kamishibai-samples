@@ -135,19 +135,15 @@ ${actions.join('\n')}
 
 function renderWorkCard(work, manifest) {
   const actions = renderWorkActions(work, manifest);
-  const distribution = work.distribution === 'link-only' ? '外部リンクのみ' : '当サイトで配布';
-  const licenseExternal = work.license.href.startsWith('https://')
-    ? ' target="_blank" rel="noopener external"'
-    : '';
+  const title = work.detailHref
+    ? `<a class="work-card__title-link" href="${escapeHtml(work.detailHref)}">${escapeHtml(work.title)}</a>`
+    : escapeHtml(work.title);
   return `      <article data-work-id="${escapeHtml(work.id)}" data-distribution="${escapeHtml(work.distribution)}">
-        <h3>${escapeHtml(work.title)}</h3>
+        <h3>${title}</h3>
         <p>${escapeHtml(work.summary)}</p>
         <dl class="work-meta">
           <div><dt>作者</dt><dd>${escapeHtml(work.creator)}</dd></div>
           <div><dt>著作権者</dt><dd>${escapeHtml(work.rightsHolder)}</dd></div>
-          <div><dt>対応DSL</dt><dd>${work.dslSeries.map(escapeHtml).join('／')}</dd></div>
-          <div><dt>掲載形態</dt><dd>${distribution}</dd></div>
-          <div><dt>ライセンス・利用条件</dt><dd><a href="${escapeHtml(work.license.href)}"${licenseExternal}>${escapeHtml(work.license.label)}</a></dd></div>
         </dl>
 ${actions}
       </article>`;
@@ -189,6 +185,8 @@ function renderRootIndex(manifest, worksCatalog) {
     .work-list { display: grid; grid-template-columns: 1fr; gap: 20px; }
     article { display: flex; min-width: 0; flex-direction: column; padding: 24px; border: 1px solid var(--line); border-radius: 14px; background: var(--paper); box-shadow: 0 8px 24px rgb(89 61 43 / 10%); }
     article h3 { margin-top: 0; }
+    .work-card__title-link { color: var(--accent); text-decoration-thickness: .08em; text-underline-offset: .16em; }
+    .work-card__title-link:hover { text-decoration-thickness: .12em; }
     .work-meta { display: grid; gap: .65rem; margin: 1rem 0 0; }
     .work-meta div { display: grid; grid-template-columns: minmax(7.5rem, auto) 1fr; gap: .75rem; }
     .work-meta dt { color: var(--muted); font-weight: 700; }
@@ -214,7 +212,7 @@ ${renderSiteHeader('')}
   <p>区分、ライセンス、外部作品の扱いについては<a href="WORKS_POLICY.md">作品掲載方針</a>をご確認ください。</p>
 ${categories}
   <aside class="catalog-rights">
-    <p>作品ごとのライセンス・利用条件は各カードに表示しています。サイト生成コードと個別表示のないファイルには<a href="LICENSE">Mozilla Public License 2.0</a>が適用されます。</p>
+    <p>作品ごとの対応DSL・掲載形態・ライセンスは、作品タイトルから開く詳細画面で確認できます。サイト生成コードと個別表示のないファイルには<a href="LICENSE">Mozilla Public License 2.0</a>が適用されます。</p>
   </aside>
 </main>
 ${renderSiteFooter('')}
@@ -262,6 +260,10 @@ function renderSampleIndex(manifest) {
     .artifact-group { padding: 20px; border: 1px solid #dbc9bb; border-radius: 12px; background: #fffdf8; }
     .artifact-group h2 { margin-top: 0; }
     .artifact-group p { line-height: 1.7; }
+    .work-meta { display: grid; gap: .65rem; margin: 1.25rem 0; }
+    .work-meta div { display: grid; grid-template-columns: minmax(7.5rem, auto) 1fr; gap: .75rem; }
+    .work-meta dt { color: var(--muted); font-weight: 700; }
+    .work-meta dd { min-width: 0; margin: 0; overflow-wrap: anywhere; }
     .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
     .button { display: inline-block; padding: 10px 14px; border-radius: 8px; background: var(--accent); color: white; text-decoration: none; font-weight: 700; }
     .button.secondary { border: 1px solid var(--accent); background: white; color: var(--accent); }
@@ -277,6 +279,11 @@ ${renderSiteHeader('../../')}
   <nav class="local-nav" aria-label="作品内ナビゲーション"><a href="../../">作品一覧へ戻る</a></nav>
   <h1>浦島太郎</h1>
   <p>DSL 3.2の実行用成果物と、そこから変換したDSL 4.0 YAMLを区別して公開しています。</p>
+  <dl class="work-meta">
+    <div><dt>対応DSL</dt><dd>3.2／4.0</dd></div>
+    <div><dt>掲載形態</dt><dd>当サイトで配布</dd></div>
+    <div><dt>ライセンス・利用条件</dt><dd><a href="LICENSES.md">MPL-2.0、CC BY-SA 2.0ほか</a></dd></div>
+  </dl>
   <div class="artifact-groups">
     <section class="artifact-group" data-dsl-series="3.2" aria-labelledby="dsl-32-heading">
       <h2 id="dsl-32-heading">DSL 3.2 実行版</h2>
@@ -319,6 +326,77 @@ ${webHash}  <h2>成果物プロファイル</h2>
 ${assetItems}
   </ul>
 ${webCredits}</main>
+${renderSiteFooter('../../')}
+</body>
+</html>
+`;
+}
+
+function renderMyUrashimaIndex(work) {
+  return `<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="TMPose紙芝居 公式サンプル my-urashima">
+  <title>${escapeHtml(work.title)} | TMPose紙芝居 作品ライブラリ</title>
+  <link rel="icon" href="../../favicon.png" type="image/png">
+  <link rel="stylesheet" href="../../site-shell.css">
+  <style>
+    :root { color-scheme: light; font-family: system-ui, sans-serif; --ink: #3f302b; --muted: #756960; --canvas: #fff8ee; --paper: #fffdf8; --accent: #963f2f; --line: #dbc9bb; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--canvas); color: var(--ink); }
+    main { max-width: 920px; margin: auto; padding: 40px 24px 72px; }
+    .local-nav { margin-bottom: 32px; }
+    a { color: var(--accent); }
+    .work-meta { display: grid; gap: .65rem; margin: 1.25rem 0; }
+    .work-meta div { display: grid; grid-template-columns: minmax(7.5rem, auto) 1fr; gap: .75rem; }
+    .work-meta dt { color: var(--muted); font-weight: 700; }
+    .work-meta dd { min-width: 0; margin: 0; overflow-wrap: anywhere; }
+    .artifact-groups { display: grid; gap: 18px; margin: 28px 0; }
+    .artifact-group { padding: 20px; border: 1px solid var(--line); border-radius: 12px; background: var(--paper); }
+    .artifact-group h2 { margin-top: 0; }
+    .artifact-group p { line-height: 1.7; }
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+    .button { display: inline-block; padding: 10px 14px; border-radius: 8px; background: var(--accent); color: white; text-decoration: none; font-weight: 700; }
+    .button.secondary { border: 1px solid var(--accent); background: white; color: var(--accent); }
+    .button:disabled { cursor: not-allowed; opacity: .55; }
+  </style>
+</head>
+<body>
+${renderSiteHeader('../../')}
+<main id="main-content">
+  <nav class="local-nav" aria-label="作品内ナビゲーション"><a href="../../">作品一覧へ戻る</a></nav>
+  <h1>${escapeHtml(work.title)}</h1>
+  <p>${escapeHtml(work.summary)}</p>
+  <dl class="work-meta">
+    <div><dt>作者</dt><dd>${escapeHtml(work.creator)}</dd></div>
+    <div><dt>著作権者</dt><dd>${escapeHtml(work.rightsHolder)}</dd></div>
+    <div><dt>対応DSL</dt><dd>${work.dslSeries.map(escapeHtml).join('／')}</dd></div>
+    <div><dt>掲載形態</dt><dd>当サイトで配布</dd></div>
+    <div><dt>ライセンス・利用条件</dt><dd><a href="../urashima/LICENSES.md">${escapeHtml(work.license.label)}</a></dd></div>
+  </dl>
+  <div class="artifact-groups">
+    <section class="artifact-group" data-dsl-series="3.2" aria-labelledby="my-dsl-32-heading">
+      <h2 id="my-dsl-32-heading">DSL 3.2 作業版</h2>
+      <p>ワークショップでポーズと物語を編集するための外部台本と作業用SB3です。</p>
+      <div class="actions">
+        <a class="button" href="my-urashima.sb3" download>作業用SB3をダウンロード</a>
+        <a class="button secondary" href="my-urashima.txt" download>作業用台本をダウンロード</a>
+      </div>
+    </section>
+    <section class="artifact-group" data-dsl-series="4.0" aria-labelledby="my-dsl-40-heading">
+      <h2 id="my-dsl-40-heading">DSL 4.0 変換版</h2>
+      <p>DSL 3.2作業用台本を公式変換ツールで変換・検証したYAMLです。</p>
+      <div class="actions">
+        <button class="button secondary" type="button" disabled aria-disabled="true">Web版（準備中）</button>
+        <a class="button secondary" href="my-urashima.k4.yml" download>DSL 4.0 YAMLをダウンロード</a>
+        <button class="button secondary" type="button" disabled aria-disabled="true">作業用SB3（準備中）</button>
+      </div>
+    </section>
+  </div>
+  <p><a href="README.md">生成・変換の説明を見る</a></p>
+</main>
 ${renderSiteFooter('../../')}
 </body>
 </html>
@@ -425,6 +503,8 @@ export async function buildSite() {
   if (images.length !== 24 || sounds.length !== 22) {
     throw new Error(`Unexpected Urashima asset counts: ${images.length} images, ${sounds.length} sounds.`);
   }
+  const myUrashimaWork = worksCatalog.works.find(({id}) => id === 'my-urashima');
+  if (!myUrashimaWork) throw new Error('my-urashima is missing from the works catalog.');
 
   await rm(outputDirectory, {recursive: true, force: true});
   await mkdir(path.dirname(outputSampleDirectory), {recursive: true});
@@ -519,6 +599,11 @@ export async function buildSite() {
     'utf8',
   );
   await writeFile(path.join(outputSampleDirectory, 'index.html'), renderSampleIndex(manifest), 'utf8');
+  await writeFile(
+    path.join(myOutputSampleDirectory, 'index.html'),
+    renderMyUrashimaIndex(myUrashimaWork),
+    'utf8',
+  );
 
   const verification = await verifyPublishedSite({
     projectRoot,
