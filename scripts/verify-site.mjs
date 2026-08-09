@@ -316,6 +316,8 @@ export async function verifyPublishedSite(options = {}) {
   verifySiteFooter(rightsIndex, '../');
   assert(rootIndex.includes('<title>TMPose紙芝居 作品ライブラリ</title>'));
   assert(rootIndex.includes('<h1>TMPose紙芝居 作品ライブラリ</h1>'));
+  assert(rootIndex.includes('.work-list { display: grid; grid-template-columns: 1fr;'));
+  assert(!rootIndex.includes('repeat(auto-fit'));
   assert(rightsIndex.includes('<h1>ライセンス・権利表示</h1>'));
   assert(rightsIndex.includes('外部作品'));
   assert(rightsIndex.includes('Urashima-walk-1'));

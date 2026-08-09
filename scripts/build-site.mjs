@@ -186,7 +186,7 @@ function renderRootIndex(manifest, worksCatalog) {
     h1 { font-size: clamp(2rem, 6vw, 3.5rem); margin-bottom: .35rem; }
     .lead { color: var(--muted); font-size: 1.15rem; }
     .work-category { margin-top: 42px; }
-    .work-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 20px; }
+    .work-list { display: grid; grid-template-columns: 1fr; gap: 20px; }
     article { display: flex; min-width: 0; flex-direction: column; padding: 24px; border: 1px solid var(--line); border-radius: 14px; background: var(--paper); box-shadow: 0 8px 24px rgb(89 61 43 / 10%); }
     article h3 { margin-top: 0; }
     .work-meta { display: grid; gap: .65rem; margin: 1rem 0 0; }
