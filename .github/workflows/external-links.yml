@@ -1,16 +1,16 @@
-name: CI
+name: Verify external work links
 
 on:
-  pull_request:
+  schedule:
+    - cron: '23 1 * * 1'
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  test:
+  verify:
     runs-on: ubuntu-latest
-    env:
-      TZ: Asia/Tokyo
     steps:
       - uses: actions/checkout@v7
       - run: corepack enable
@@ -19,8 +19,4 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm exec playwright install --with-deps chromium webkit
-      - run: pnpm test
-      - run: pnpm build
-      - run: pnpm test:web
-      - run: pnpm verify
+      - run: pnpm verify:external-links

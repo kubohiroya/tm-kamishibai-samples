@@ -6,6 +6,10 @@
     "source": "npm:@kubohiroya/tmpose-kamishibai@3.2.2",
     "commit": "2b5005d293a9b63c8ba5da396fd86815d093f975"
   },
+  "storyDate": {
+    "value": "2026-08-05",
+    "contentSha256": "c13e7fca30f4fdc3ad2786e1a2ea8708dc8d05cef46e08fde1ada7d37eb9ea1e"
+  },
   "parentStory": {
     "name": "urashima",
     "config": {
@@ -16,7 +20,7 @@
     "sourceScript": {
       "path": "../urashima/source.txt",
       "size": 10379,
-      "sha256": "d0f90f2cd6055dea49bce37acb7396a6d8dc6ff38680376fd396554194919fd4"
+      "sha256": "ef6d00c45165793d3ebfd09329d43ac6cd0d9410661015df79f64501e1c3cb0b"
     },
     "assetManifest": {
       "path": "../urashima/assets.lock.json",
@@ -43,13 +47,13 @@
     },
     "script": {
       "filename": "my-urashima.txt",
-      "sha256": "9efff90c376350322a459d735aadaf03795c1ca68b9bbd9d7286ffa3f1b59874",
+      "sha256": "90dbe0988629cc05f19869bdfbb57358868f62f376bac1f9a9e9f327ba516c48",
       "size": 8522
     },
     "manifest": {
       "filename": "my-urashima.manifest.json",
       "size": 30190,
-      "sha256": "02eb2ec14974cf79a10ce6e554dac942a10e35bec8d7e52e6dd25fa5b4cd95fa"
+      "sha256": "8735491a18d630f142023e6db7119c3bfaa90ef8abee5d08fceba9a526256657"
     }
   }
 }

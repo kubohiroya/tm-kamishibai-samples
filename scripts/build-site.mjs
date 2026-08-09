@@ -7,7 +7,9 @@ import {buildMyUrashima} from './build-my-urashima.mjs';
 import {buildUrashima} from './build-urashima.mjs';
 import {buildPackagedWeb} from './build-packaged-web.mjs';
 import {renderSiteHeader as renderContractSiteHeader} from './site-navigation.mjs';
+import {refreshChangedStoryArtifacts} from './refresh-story-artifacts.mjs';
 import {verifyPublishedSite} from './verify-site.mjs';
+import {readWorksCatalog} from './works-catalog.mjs';
 
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 const sourceDirectory = path.join(projectRoot, 'stories/urashima');
@@ -17,6 +19,8 @@ const outputDirectory = path.join(projectRoot, 'dist');
 const outputSampleDirectory = path.join(outputDirectory, 'stories/urashima');
 const myOutputSampleDirectory = path.join(outputDirectory, 'stories/my-urashima');
 const publicUrl = 'https://kubohiroya.github.io/tmpose-kamishibai-samples/';
+const worksCatalogPath = path.join(siteDirectory, 'works.json');
+const worksSchemaPath = path.join(siteDirectory, 'works.schema.json');
 
 function sha256(contents) {
   return createHash('sha256').update(contents).digest('hex');
@@ -36,6 +40,22 @@ function renderSiteHeader(assetPrefix, pathname = '/tmpose-kamishibai-samples/')
     site: 'tmpose-kamishibai-samples',
     pathname,
   });
+}
+
+function renderSiteFooter(assetPrefix) {
+  return `<footer class="site-footer" data-site-footer-version="1">
+  <div class="site-footer__inner">
+    <a class="site-footer__brand" href="https://kubohiroya.github.io/tmpose-kamishibai/">
+      <img class="site-footer__symbol" src="${assetPrefix}favicon.png" width="36" height="36" alt="">
+      <span>TMPose紙芝居</span>
+    </a>
+    <div class="site-footer__legal">
+      <p>© 2026 Hiroya Kubo</p>
+      <p class="site-footer__notice">各文書・作品・素材には個別の利用条件が適用されます。</p>
+      <a class="site-footer__rights" href="https://kubohiroya.github.io/tmpose-kamishibai-samples/licenses/">ライセンス・権利表示</a>
+    </div>
+  </div>
+</footer>`;
 }
 
 function contentType(filename) {
@@ -71,20 +91,63 @@ async function assetRecords(directory, kind) {
   );
 }
 
-function renderRootIndex(manifest) {
-  const webDescription = manifest.web.enabled
-    ? '<p>Web版には画像・音声・台本を組み込み済みです。TMPoseのライブラリ・モデル取得とカメラ利用にはネットワーク接続が必要です。</p>'
+function renderWorkAction(action, manifest) {
+  if (action.requires === 'urashimaWeb' && !manifest.web.enabled) return '';
+  const className = action.style === 'secondary' ? 'button secondary' : 'button';
+  const download = action.download ? ' download' : '';
+  const external = action.external ? ' target="_blank" rel="noopener external"' : '';
+  const externalLabel = action.external ? '（外部サイト）' : '';
+  return `        <a class="${className}" href="${escapeHtml(action.href)}"${download}${external}>${escapeHtml(action.label)}${externalLabel}</a>`;
+}
+
+function renderWorkCard(work, manifest) {
+  const actions = work.actions
+    .map((action) => renderWorkAction(action, manifest))
+    .filter(Boolean)
+    .join('\n');
+  const distribution = work.distribution === 'link-only' ? '外部リンクのみ' : '当サイトで配布';
+  const licenseExternal = work.license.href.startsWith('https://')
+    ? ' target="_blank" rel="noopener external"'
     : '';
-  const webAction = manifest.web.enabled
-    ? '      <a class="button" href="stories/urashima/web/">Web版を開く</a>\n'
-    : '';
+  return `      <article data-work-id="${escapeHtml(work.id)}" data-distribution="${escapeHtml(work.distribution)}">
+        <h3>${escapeHtml(work.title)}</h3>
+        <p>${escapeHtml(work.summary)}</p>
+        <dl class="work-meta">
+          <div><dt>作者</dt><dd>${escapeHtml(work.creator)}</dd></div>
+          <div><dt>著作権者</dt><dd>${escapeHtml(work.rightsHolder)}</dd></div>
+          <div><dt>対応DSL</dt><dd>${work.dslSeries.map(escapeHtml).join('／')}</dd></div>
+          <div><dt>掲載形態</dt><dd>${distribution}</dd></div>
+          <div><dt>ライセンス・利用条件</dt><dd><a href="${escapeHtml(work.license.href)}"${licenseExternal}>${escapeHtml(work.license.label)}</a></dd></div>
+        </dl>
+        <div class="actions">
+${actions}
+        </div>
+      </article>`;
+}
+
+function renderWorkCategory(category, works, manifest) {
+  const categoryWorks = works.filter((work) => work.category === category.id);
+  const contents = categoryWorks.length
+    ? `<div class="work-list">\n${categoryWorks.map((work) => renderWorkCard(work, manifest)).join('\n')}\n      </div>`
+    : `<p class="empty-state">${escapeHtml(category.emptyMessage)}</p>`;
+  return `    <section class="work-category" aria-labelledby="category-${escapeHtml(category.id)}">
+      <h2 id="category-${escapeHtml(category.id)}">${escapeHtml(category.title)}</h2>
+      <p>${escapeHtml(category.description)}</p>
+      ${contents}
+    </section>`;
+}
+
+function renderRootIndex(manifest, worksCatalog) {
+  const categories = worksCatalog.categories
+    .map((category) => renderWorkCategory(category, worksCatalog.works, manifest))
+    .join('\n');
   return `<!doctype html>
 <html lang="ja">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="TMPose紙芝居の公開サンプル">
-  <title>TMPose紙芝居サンプル</title>
+  <meta name="description" content="TMPose紙芝居の公式サンプル、コミュニティ作品、外部作品を掲載する作品ライブラリ">
+  <title>TMPose紙芝居 作品ライブラリ</title>
   <link rel="icon" href="favicon.png" type="image/png">
   <link rel="stylesheet" href="site-shell.css">
   <style>
@@ -94,7 +157,15 @@ function renderRootIndex(manifest) {
     main { max-width: 920px; margin: auto; padding: 48px 24px 72px; }
     h1 { font-size: clamp(2rem, 6vw, 3.5rem); margin-bottom: .35rem; }
     .lead { color: var(--muted); font-size: 1.15rem; }
-    article { margin-top: 32px; padding: 24px; border: 1px solid var(--line); border-radius: 14px; background: var(--paper); box-shadow: 0 8px 24px rgb(89 61 43 / 10%); }
+    .work-category { margin-top: 42px; }
+    .work-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 20px; }
+    article { display: flex; min-width: 0; flex-direction: column; padding: 24px; border: 1px solid var(--line); border-radius: 14px; background: var(--paper); box-shadow: 0 8px 24px rgb(89 61 43 / 10%); }
+    article h3 { margin-top: 0; }
+    .work-meta { display: grid; gap: .65rem; margin: 1rem 0 0; }
+    .work-meta div { display: grid; grid-template-columns: minmax(7.5rem, auto) 1fr; gap: .75rem; }
+    .work-meta dt { color: var(--muted); font-weight: 700; }
+    .work-meta dd { min-width: 0; margin: 0; overflow-wrap: anywhere; }
+    .empty-state { padding: 18px; border: 1px dashed var(--line); border-radius: 10px; background: var(--paper); color: var(--muted); }
     .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 1.25rem; }
     .button { display: inline-block; padding: 10px 14px; border-radius: 8px; background: var(--accent); color: white; text-decoration: none; font-weight: 700; }
     .button.secondary { border: 1px solid var(--accent); background: white; color: var(--accent); }
@@ -105,33 +176,15 @@ function renderRootIndex(manifest) {
 <body>
 ${renderSiteHeader('')}
 <main id="main-content">
-  <h1>TMPose紙芝居サンプル</h1>
-  <p class="lead">台本、画像・音声、用途別のSB3を配布しています。</p>
-  <article>
-    <h2>浦島太郎</h2>
-    <p>紙芝居DSL 3.2の台本と、画像${manifest.assetCounts.images}件・音声${manifest.assetCounts.sounds}件から生成したサンプルです。</p>
-    ${webDescription}
-    <div class="actions">
-${webAction}      <a class="button secondary" href="stories/urashima/urashima.txt">台本を表示</a>
-      <a class="button secondary" href="stories/urashima/urashima.sb3" download>再生用SB3をダウンロード</a>
-      <a class="button secondary" href="stories/urashima/manifest.json">manifest</a>
-      <a class="button secondary" href="stories/urashima/LICENSES.md">ライセンス</a>
-      <a class="button secondary" href="stories/urashima/">詳細を見る</a>
-    </div>
-  </article>
-  <article>
-    <h2>my-urashima（ワークショップにおける作業用）</h2>
-    <p>2026年8月1日のワークショップで、ポーズと物語を変更するためのサンプルです。SB3を開いたあと、外部台本の<code>my-urashima.txt</code>を読み込んで使用します。</p>
-    <div class="actions">
-      <a class="button" href="stories/my-urashima/my-urashima.sb3" download>作業用SB3をダウンロード</a>
-      <a class="button secondary" href="stories/my-urashima/my-urashima.txt" download>作業用台本をダウンロード</a>
-      <a class="button secondary" href="stories/my-urashima/README.md">説明を見る</a>
-    </div>
-  </article>
-  <footer>
-    <p>サンプルコンテンツは <a href="LICENSE">Mozilla Public License 2.0</a> で提供します。</p>
-  </footer>
+  <h1>TMPose紙芝居 作品ライブラリ</h1>
+  <p class="lead">公式サンプル、コミュニティ作品、外部サイトで公開されている作品を、掲載形態と権利情報を区別して紹介します。</p>
+  <p>区分、ライセンス、外部作品の扱いについては<a href="WORKS_POLICY.md">作品掲載方針</a>をご確認ください。</p>
+${categories}
+  <aside class="catalog-rights">
+    <p>作品ごとのライセンス・利用条件は各カードに表示しています。サイト生成コードと個別表示のないファイルには<a href="LICENSE">Mozilla Public License 2.0</a>が適用されます。</p>
+  </aside>
 </main>
+${renderSiteFooter('')}
 </body>
 </html>
 `;
@@ -162,8 +215,8 @@ function renderSampleIndex(manifest) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="TMPose紙芝居 浦島太郎サンプル">
-  <title>浦島太郎 | TMPose紙芝居サンプル</title>
+  <meta name="description" content="TMPose紙芝居 公式サンプル 浦島太郎">
+  <title>浦島太郎 | TMPose紙芝居 作品ライブラリ</title>
   <link rel="icon" href="../../favicon.png" type="image/png">
   <link rel="stylesheet" href="../../site-shell.css">
   <style>
@@ -183,7 +236,7 @@ function renderSampleIndex(manifest) {
 <body>
 ${renderSiteHeader('../../')}
 <main id="main-content">
-  <nav class="local-nav" aria-label="サンプル内ナビゲーション"><a href="../../">サンプル一覧へ戻る</a></nav>
+  <nav class="local-nav" aria-label="作品内ナビゲーション"><a href="../../">作品一覧へ戻る</a></nav>
   <h1>浦島太郎</h1>
   <p>同じ台本とアセットロックから、編集用と再生用の2種類のSB3を生成しています。</p>
   ${webDescription}
@@ -208,6 +261,73 @@ ${webHash}  <h2>成果物プロファイル</h2>
 ${assetItems}
   </ul>
 ${webCredits}</main>
+${renderSiteFooter('../../')}
+</body>
+</html>
+`;
+}
+
+function renderRightsIndex() {
+  return `<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="TMPose紙芝居 作品ライブラリの作品、素材、サイトに適用されるライセンスと権利表示を案内します">
+  <title>ライセンス・権利表示 | TMPose紙芝居 作品ライブラリ</title>
+  <link rel="icon" href="../favicon.png" type="image/png">
+  <link rel="stylesheet" href="../site-shell.css">
+  <style>
+    :root { color-scheme: light; font-family: system-ui, sans-serif; --ink: #3f302b; --muted: #756960; --paper: #fffdf8; --canvas: #fff8ee; --accent: #963f2f; --line: #dbc9bb; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--canvas); color: var(--ink); }
+    main { max-width: 880px; margin: auto; padding: 48px 24px 72px; }
+    h1 { margin-bottom: .35rem; font-size: clamp(2rem, 5vw, 3.4rem); }
+    .lead { margin-top: 0; color: var(--muted); font-size: 1.2rem; line-height: 1.7; }
+    section { margin-top: 28px; padding: 22px; border: 1px solid var(--line); border-radius: 12px; background: var(--paper); }
+    section h2 { margin-top: 0; }
+    p, li, dd { line-height: 1.75; }
+    dt { margin-top: .8rem; font-weight: 800; }
+    dd { margin-left: 0; }
+    a { color: var(--accent); }
+  </style>
+</head>
+<body>
+${renderSiteHeader('../')}
+<main id="main-content">
+  <h1>ライセンス・権利表示</h1>
+  <p class="lead">作品ライブラリでは、当サイトで配布する作品と、第三者サイトで公開される作品へのリンクを区別しています。作品・素材に個別表示がある場合は、その条件を優先してください。</p>
+
+  <section aria-labelledby="site-license">
+    <h2 id="site-license">サイト実装</h2>
+    <p>サイト生成コードと個別表示のない本プロジェクトのファイルは、<a href="../LICENSE">Mozilla Public License 2.0（MPL-2.0）</a>で提供します。</p>
+  </section>
+
+  <section aria-labelledby="works-license">
+    <h2 id="works-license">掲載作品</h2>
+    <ul>
+      <li><strong>公式サンプル</strong>: 作品カードと作品ディレクトリの個別表示を適用します。「浦島太郎」にはMPL-2.0対象の台本・画像・音声と、CC BY-SA 2.0対象のScratch音声が含まれます。</li>
+      <li><strong>コミュニティ作品</strong>: contributorが明示した権利者、再配布可能なライセンス、素材ごとの条件を適用します。</li>
+      <li><strong>外部作品</strong>: 権利者のサイトへのリンクだけを掲載し、当サイトでは作品データや画像を再配布しません。</li>
+    </ul>
+    <p><a href="../WORKS_POLICY.md">作品掲載方針</a>と、<a href="../stories/urashima/LICENSES.md">「浦島太郎」のライセンス情報</a>も参照してください。</p>
+  </section>
+
+  <section aria-labelledby="symbol-rights">
+    <h2 id="symbol-rights">サイトアイコン</h2>
+    <dl>
+      <dt>元画像</dt>
+      <dd>公式サンプル「浦島太郎」の<code>Urashima-walk-1</code>（権利者: Hiroya Kubo）</dd>
+      <dt>派生方法</dt>
+      <dd>頭部と上半身を中心とする、背景を透明にした256×256ピクセルの切り抜き</dd>
+      <dt>ライセンス</dt>
+      <dd><a href="https://www.mozilla.org/MPL/2.0/">Mozilla Public License 2.0</a></dd>
+      <dt>出典</dt>
+      <dd><a href="../stories/urashima/assets/images/963e926995791fde1b335fd4ba60d6d7.png">作品内の元画像</a></dd>
+    </dl>
+  </section>
+</main>
+${renderSiteFooter('../')}
 </body>
 </html>
 `;
@@ -238,14 +358,19 @@ function profileRecord(profile, build, lock) {
 }
 
 export async function buildSite() {
-  const images = await assetRecords(path.join(sourceDirectory, 'assets/images'), 'images');
-  const sounds = await assetRecords(path.join(sourceDirectory, 'assets/sounds'), 'sounds');
+  await refreshChangedStoryArtifacts();
+  const [worksCatalog, images, sounds] = await Promise.all([
+    readWorksCatalog(worksCatalogPath),
+    assetRecords(path.join(sourceDirectory, 'assets/images'), 'images'),
+    assetRecords(path.join(sourceDirectory, 'assets/sounds'), 'sounds'),
+  ]);
   if (images.length !== 24 || sounds.length !== 22) {
     throw new Error(`Unexpected Urashima asset counts: ${images.length} images, ${sounds.length} sounds.`);
   }
 
   await rm(outputDirectory, {recursive: true, force: true});
   await mkdir(path.dirname(outputSampleDirectory), {recursive: true});
+  await mkdir(path.join(outputDirectory, 'licenses'), {recursive: true});
   await Promise.all([
     copyFile(path.join(siteDirectory, 'favicon.png'), path.join(outputDirectory, 'favicon.png')),
     copyFile(
@@ -256,6 +381,9 @@ export async function buildSite() {
       path.join(siteDirectory, 'site-shell.css'),
       path.join(outputDirectory, 'site-shell.css'),
     ),
+    copyFile(worksCatalogPath, path.join(outputDirectory, 'works.json')),
+    copyFile(worksSchemaPath, path.join(outputDirectory, 'works.schema.json')),
+    copyFile(path.join(projectRoot, 'WORKS_POLICY.md'), path.join(outputDirectory, 'WORKS_POLICY.md')),
   ]);
   await cp(sourceDirectory, outputSampleDirectory, {recursive: true});
   await cp(mySourceDirectory, myOutputSampleDirectory, {recursive: true});
@@ -313,7 +441,12 @@ export async function buildSite() {
 
   await copyFile(path.join(projectRoot, 'LICENSE'), path.join(outputDirectory, 'LICENSE'));
   await writeFile(path.join(outputDirectory, '.nojekyll'), '');
-  await writeFile(path.join(outputDirectory, 'index.html'), renderRootIndex(manifest), 'utf8');
+  await writeFile(
+    path.join(outputDirectory, 'index.html'),
+    renderRootIndex(manifest, worksCatalog),
+    'utf8',
+  );
+  await writeFile(path.join(outputDirectory, 'licenses/index.html'), renderRightsIndex(), 'utf8');
   await writeFile(
     path.join(outputSampleDirectory, 'manifest.json'),
     `${JSON.stringify(manifest, null, 2)}\n`,

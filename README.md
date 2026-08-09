@@ -1,8 +1,10 @@
 # tmpose-kamishibai-samples
 
-`tmpose-kamishibai` の台本、サンプル固有アセット、生成設定、検証、公開物を管理するリポジトリです。
+`tmpose-kamishibai` の作品カタログ、台本、作品固有アセット、生成設定、検証、公開物を管理するリポジトリです。リポジトリ名と公開URLは互換性のため維持し、公開ページでは「TMPose紙芝居 作品ライブラリ」として提供します。
 
-公開サイト: <https://kubohiroya.github.io/tmpose-kamishibai-samples/>
+作品ライブラリ: <https://kubohiroya.github.io/tmpose-kamishibai-samples/>
+
+作品の掲載区分、権利情報、配布形態は[`site/works.json`](site/works.json)で管理し、その形式を[`site/works.schema.json`](site/works.schema.json)で定義します。公式サンプル、コミュニティ作品、外部作品の扱いは[`WORKS_POLICY.md`](WORKS_POLICY.md)を参照してください。外部作品はリンクのみを掲載し、このサイトでは作品データを再配布しません。
 
 浦島太郎サンプルの台本、元アセット、生成設定は `stories/urashima/` に配置しています。
 
@@ -48,7 +50,9 @@ pnpm verify
 
 `pnpm build` は空の `dist/` から両プロファイルのSB3、Packager Web版、公開サイトを生成し、台本・SB3・HTML・全アセット・ライセンス・リンク・SHA-256を検証します。同じ入力からWeb版を2回生成してハッシュが一致することも確認します。`pnpm test:web` はPages相当のHTTPサーバでWeb版を開き、タイトル画面の1クリック後に、ファイル選択や台本固有アセットの外部取得なしで組み込み台本が開始することをheadless Chromiumで検証します。
 
-`source.txt`、アセット、生成設定など、成果物へ影響する入力を意図的に変更した場合は、`pnpm update:artifacts-lock` で `stories/urashima/artifacts.lock.json` を再生成してから `pnpm build` を実行します。更新コマンドはSB3とWeb版を実際に生成し、Web版の2回生成が一致した後にだけロックファイルを置き換えます。通常の `pnpm build` はロックを更新せず、入力や生成環境の意図しない変化をエラーとして検出します。
+台本の`# date:`は手動更新しません。`pnpm build`は日付行を除いた台本内容のSHA-256をartifact lockと比較し、実質内容が変わった台本だけ、ビルド実行環境のローカル年月日へ更新します。内容が同じなら翌日の再ビルドでも既存日付と成果物ハッシュを維持します。台本変更に伴う公開台本、SB3、artifact lockは同じビルドで更新されます。ローカル実行ではOSのタイムゾーンを使い、GitHub ActionsのCI／Pagesリリースでは`Asia/Tokyo`を明示します。
+
+アセット、生成設定など、台本以外の成果物入力を意図的に変更した場合は、`pnpm update:artifacts-lock` で `stories/urashima/artifacts.lock.json`を再生成してから`pnpm build`を実行します。更新コマンドはSB3とWeb版を実際に生成し、Web版の2回生成が一致した後にだけロックファイルを置き換えます。通常のビルドでは、日付以外の意図しない生成環境差分を引き続きエラーとして検出します。
 
 Pull Requestでは `.github/workflows/ci.yml` が生成と検証だけを行います。`main` へのマージ後は `.github/workflows/deploy.yml` が同じ検証を再実行し、成功した `dist/` だけをGitHub Pagesへ公開します。
 
