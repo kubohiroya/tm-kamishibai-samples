@@ -279,10 +279,11 @@ test('pins the generic, editor, and player profile contract', async () => {
   assertLoadingSkinPosition(project, 'Urashima base');
 });
 
-test('keeps my-urashima external-script-only with Princess assets isolated by sprite', async () => {
-  const [myUrashima, script, config, artifactsLock] = await Promise.all([
+test('keeps my-urashima external-script-only and publishes its converted DSL 4.0 source', async () => {
+  const [myUrashima, script, dsl4, config, artifactsLock] = await Promise.all([
     readFile(path.join(projectRoot, 'stories/my-urashima/my-urashima.sb3')),
     readFile(path.join(projectRoot, 'stories/my-urashima/my-urashima.txt'), 'utf8'),
+    readFile(path.join(projectRoot, 'stories/my-urashima/my-urashima.k4.yml'), 'utf8'),
     readFile(path.join(projectRoot, 'stories/my-urashima/sample.config.json'), 'utf8').then(
       JSON.parse,
     ),
@@ -354,6 +355,14 @@ test('keeps my-urashima external-script-only with Princess assets isolated by sp
   assert.equal(artifactsLock.parentStory.assetManifest.path, '../urashima/assets.lock.json');
   assert.equal(artifactsLock.output.sb3.sha256, sha256(myUrashima));
   assert.equal(artifactsLock.output.script.sha256, sha256(script));
+  assert(dsl4.startsWith('kamishibai: "4.0"\n'));
+  assert.match(dsl4, /^\s{2}Princess: costume:Princess$/mu);
+  assert.match(dsl4, /^\s{2}Princess: Princess$/mu);
+  assert.match(dsl4, /^\s{2}welcome to dragon castle:\n\s{4}poseModel: PoseModel2$/mu);
+  assert.match(
+    dsl4,
+    /^\s{6}- Urashima\.setSkin:\n\s{10}skin: Urashima-dance-1\n\s{10}scale: 45\n\s{6}- wait: 1\n\s{6}- wait: 2$/mu,
+  );
 });
 
 test('keeps shared Packager output disabled unless a sample enables it', async () => {

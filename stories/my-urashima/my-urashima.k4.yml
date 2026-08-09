@@ -1,0 +1,543 @@
+kamishibai: "4.0"
+controls:
+  keymaps:
+    production:
+      Space: navigation.nextAction
+assets:
+  Urashima-walk-1: costume:Urashima
+  Urashima-help-1: costume:Urashima
+  Urashima-dance-1: costume:Urashima
+  Urashima-dance-2: costume:Actor
+  Urashima-ride-1: costume:Urashima
+  Urashima-ride-2: costume:Urashima
+  Urashima-box-1: costume:Urashima
+  Urashima-box-2: costume:Urashima
+  Urashima-surprised: costume:Urashima
+  Urashima-open-1: costume:Urashima
+  Urashima-open-2: costume:Urashima
+  Urashima-open-3: costume:Urashima
+  Urashima-old-1: costume:Urashima
+  Urashima-old-2: costume:Urashima
+  Turtle: costume:Turtle
+  Princess: costume:Princess
+  Fish1: costume:Fish
+  Fish2: costume:Fish
+  Beach1: backdrop
+  Beach2: backdrop
+  Ocean: backdrop
+  Dragon Castle: backdrop
+  Smoke: backdrop
+  End: backdrop
+  Stars: backdrop
+  Guitar Chords2: sound
+  Rip: sound
+  Squish Pop: sound
+  Squeaky Toy: sound
+  Jump: sound
+  Odesong: sound
+  Splash: sound
+  Drum Funky: sound
+  Medieval2: sound
+  Medieval1: sound
+  Lo Gliss Tabla: sound
+  Low Conga: sound
+  Lo Geh Tabla: sound
+  Gong: sound
+  Crowd Gasp: sound
+  Ocean Wave: sound
+  Xylo2: sound
+  Goal Cheer: sound
+  Clock Ticking: sound
+  Sewing Machine: sound
+  TextPlaceholder:
+    kind: costume
+    target: Narration
+    name: ui-placeholder
+  PoseModel1:
+    kind: poseModel
+    delivery: remote
+    source:
+      url: https://sqs.prof.cuc.ac.jp/kamishibai/20260630/1and2/
+    loading: lazy
+  PoseModel2:
+    kind: poseModel
+    delivery: remote
+    source:
+      url: https://sqs.prof.cuc.ac.jp/kamishibai/20260630/3and4/
+    loading: lazy
+  PoseModel3:
+    kind: poseModel
+    delivery: remote
+    source:
+      url: https://sqs.prof.cuc.ac.jp/kamishibai/20260630/6and7/
+    loading: lazy
+actors:
+  Urashima: Urashima-walk-1
+  Turtle: Turtle
+  Princess: Princess
+  Fish: Fish1
+  Narration: TextPlaceholder
+cover:
+  backdrop: Beach1
+  bgm: Ocean Wave
+textStyles:
+  default:
+    background: "#ffffff"
+    color: "#575e75"
+    font: Helvetica
+    size: 100
+    align: left
+  narration:
+    background: "#00000000"
+    color: "#ffffff"
+    font: Noto Sans JP
+    size: 200
+    align: center
+  ending:
+    background: "#00000000"
+    color: "#ffffff"
+    font: Noto Sans JP
+    size: 300
+    align: center
+variables:
+  startSceneIndex: 1
+loading:
+  backdrop: Stars
+  costumes:
+    - Fish1
+    - Fish2
+poseRecognition:
+  idleSound: Clock Ticking
+  chargeSound: Sewing Machine
+scenes:
+  opening:
+    - transition:
+        effect: fadeOut
+        seconds: 0
+    - stage: Stars
+    - transition:
+        effect: fadeUp
+        seconds: 0
+    - Narration.show:
+        skin: TextPlaceholder
+        x: 0
+        y: 0
+        scale: 100
+    - Narration.setText:
+        text: むかし
+        style: narration
+    - wait: 2
+    - Narration.setText:
+        text: むかし　むかし、
+        style: narration
+    - wait: 2
+    - Narration.setText:
+        text: |-
+          むかし　むかし、
+          あるところに...
+        style: narration
+    - wait: 2
+    - Narration.setText:
+        text: ""
+        style: narration
+  beach:
+    poseModel: PoseModel1
+    actions:
+      - transition:
+          effect: fadeOut
+          seconds: 0
+      - stage: Beach1
+      - transition:
+          effect: fadeUp
+          seconds: 0
+      - wait: 0.5
+      - bgm: Guitar Chords2
+      - wait: 0.3
+      - Urashima.show:
+          skin: Urashima-walk-1
+          x: 172
+          y: -77
+          scale: 45
+      - wait: 1.5
+      - Urashima.say:
+          text: 今日は浜辺を散歩しよう。
+          seconds: 2
+      - wait: 1
+      - Urashima.moveTo:
+          x: 40
+          y: -77
+          seconds: 1.5
+      - wait: 0.25
+      - Turtle.show:
+          skin: Turtle
+          x: -190
+          y: -110
+          scale: 35
+      - Turtle.moveTo:
+          x: -165
+          y: -110
+          seconds: 0.5
+      - wait: 0.75
+      - Urashima.say:
+          text: あっカメだ！どうしたの？
+          seconds: 2
+      - wait: 1
+      - Turtle.say:
+          text: ............
+          seconds: 2
+      - wait: 1
+      - bgm: Squeaky Toy
+      - Turtle.say:
+          text: 助けてください！
+          seconds: 2
+      - wait: 2
+      - Urashima.say:
+          text: ""
+          seconds: 0
+      - Turtle.say:
+          text: ""
+          seconds: 0
+      - Urashima.show:
+          skin: Urashima-help-1
+          x: 40
+          y: -77
+          scale: 45
+      - Urashima.moveTo:
+          x: 0
+          y: -77
+          seconds: 0.5
+      - Urashima.pose:
+          steps:
+            - pose: help
+              skin: Urashima-help-1
+              sound: Squish Pop
+      - Urashima.setSkin:
+          skin: Urashima-walk-1
+          scale: 45
+      - wait: 1.5
+      - Urashima.moveTo:
+          x: 120
+          y: -77
+          seconds: 1.5
+      - bgm: Squeaky Toy
+      - Turtle.say:
+          text: ありがとうございます！
+          seconds: 1
+      - wait: 1
+      - bgm: Squeaky Toy
+      - Turtle.say:
+          text: お礼に竜宮城へご案内します。
+          seconds: 2
+      - wait: 1
+      - bgm: Jump
+      - Urashima.setSkin:
+          skin: Urashima-dance-1
+          scale: 45
+      - Urashima.say:
+          text: わーい🎵
+          seconds: 2
+      - wait: 1.5
+      - Urashima.say:
+          text: ""
+          seconds: 0
+      - bgm: Odesong
+      - wait: 1.2
+  ocean:
+    poseModel: PoseModel1
+    actions:
+      - stage: Ocean
+      - wait: 1.5
+      - Urashima.show:
+          skin: Urashima-ride-1
+          x: 170
+          y: 5
+          scale: 40
+      - Urashima.moveTo:
+          x: 140
+          y: -5
+          seconds: 0.25
+      - Urashima.moveTo:
+          x: 110
+          y: 5
+          seconds: 0.25
+      - Urashima.moveTo:
+          x: 80
+          y: -5
+          seconds: 0.25
+      - Urashima.moveTo:
+          x: 50
+          y: 5
+          seconds: 0.25
+      - Urashima.moveTo:
+          x: 20
+          y: -5
+          seconds: 0.25
+      - Urashima.pose:
+          steps:
+            - pose: ride2
+              skin: Urashima-ride-2
+              sound: Splash
+            - pose: ride1
+              skin: Urashima-ride-1
+              sound: Splash
+            - pose: ride2
+              skin: Urashima-ride-2
+              sound: Splash
+            - pose: ride1
+              skin: Urashima-ride-1
+              sound: Splash
+      - bgm: Odesong
+      - wait: 2
+      - Urashima.moveTo:
+          x: -10
+          y: 5
+          seconds: 0.25
+      - Urashima.moveTo:
+          x: -40
+          y: -5
+          seconds: 0.25
+      - Urashima.moveTo:
+          x: -70
+          y: 5
+          seconds: 0.25
+      - Urashima.moveTo:
+          x: -100
+          y: -5
+          seconds: 0.25
+  welcome to dragon castle:
+    poseModel: PoseModel2
+    actions:
+      - stage: Dragon Castle
+      - wait: 0.5
+      - Urashima.show:
+          skin: Urashima-walk-1
+          x: 172
+          y: -57
+          scale: 45
+      - wait: 1
+      - Urashima.moveTo:
+          x: 40
+          y: -57
+          seconds: 1.5
+      - Princess.show:
+          skin: Princess
+          x: -130
+          y: -27
+          scale: 70
+      - wait: 1
+      - Princess.say:
+          text: ようこそ竜宮城へ。
+          seconds: 2.5
+      - wait: 0.1
+      - Princess.say:
+          text: 楽しんでいってくださいね。
+          seconds: 2.5
+      - wait: 1
+      - bgm: Jump
+      - Fish.show:
+          skin: Fish1
+          x: -130
+          y: -27
+          scale: 70
+      - Fish.setLayer: back
+      - Fish.loop:
+          steps:
+            - skin: Fish1
+              seconds: 0.3
+            - skin: Fish2
+              seconds: 0.3
+      - Urashima.setSkin:
+          skin: Urashima-dance-1
+          scale: 45
+      - wait: 1
+      - wait: 2
+  goodbye dragon castle:
+    poseModel: PoseModel2
+    actions:
+      - stage: Dragon Castle
+      - wait: 2
+      - bgm: Medieval2
+      - wait: 1.4
+      - Princess.show:
+          skin: Princess
+          x: -130
+          y: -27
+          scale: 70
+      - wait: 1.9
+      - Urashima.show:
+          skin: Urashima-walk-1
+          x: 80
+          y: -77
+          scale: 45
+      - wait: 1.9
+      - Princess.say:
+          text: お帰りになる前に、この玉手箱をどうぞ。
+          seconds: 2.2
+      - wait: 2.4
+      - Urashima.moveTo:
+          x: 55
+          y: -77
+          seconds: 0.5
+      - Urashima.setSkin:
+          skin: Urashima-box-1
+          scale: 45
+      - Urashima.pose:
+          steps:
+            - pose: receive
+              skin: Urashima-box-1
+              sound: Rip
+            - pose: goodbye
+              skin: Urashima-box-2
+              sound: Rip
+      - Urashima.moveTo:
+          x: 170
+          y: -77
+          seconds: 2.5
+      - wait: 1
+      - Urashima.hide: {}
+      - wait: 1
+      - Princess.think:
+          text: ............
+          seconds: 2.5
+      - Princess.hide: {}
+      - wait: 2
+  home village:
+    - transition:
+        effect: fadeOut
+        seconds: 0
+    - stage: Beach2
+    - transition:
+        effect: fadeUp
+        seconds: 0
+    - wait: 1
+    - bgm: Medieval1
+    - wait: 3
+    - Urashima.show:
+        skin: Urashima-walk-1
+        x: 172
+        y: -57
+        scale: 45
+    - wait: 2
+    - Urashima.moveTo:
+        x: 0
+        y: -57
+        seconds: 2
+    - wait: 0.5
+    - Urashima.setSkin:
+        skin: Urashima-surprised
+        scale: 45
+    - wait: 1
+    - bgm: Ocean Wave
+    - Urashima.say:
+        text: 村の様子が変わっている
+        seconds: 3
+    - wait: 1
+  open the box:
+    poseModel: PoseModel3
+    actions:
+      - stage: Beach2
+      - Urashima.show:
+          skin: Urashima-open-1
+          x: 0
+          y: -57
+          scale: 45
+      - wait: 2
+      - Urashima.say:
+          text: 開けてはいけないと言われたけれど......
+          seconds: 4
+      - Urashima.pose:
+          steps:
+            - pose: open1
+              skin: Urashima-open-1
+              sound: Lo Geh Tabla
+            - pose: open2
+              skin: Urashima-open-2
+              sound: Lo Gliss Tabla
+            - pose: open3
+              skin: Urashima-open-3
+              sound: Low Conga
+      - Urashima.say:
+          text: ""
+          seconds: 0
+      - wait: 2
+  regret:
+    poseModel: PoseModel3
+    actions:
+      - transition:
+          effect: fadeToWhite
+          seconds: 0
+      - stage: Smoke
+      - transition:
+          effect: fadeFromWhite
+          seconds: 0
+      - sound: Gong
+      - Urashima.show:
+          skin: Urashima-old-1
+          x: 0
+          y: -57
+          scale: 45
+      - bgm: Crowd Gasp
+      - wait: 2
+      - Urashima.setSkin: Urashima-old-2
+      - wait: 1
+      - Urashima.think:
+          text: あっという間におじいさんになってしまった…
+          seconds: 3
+      - Urashima.pose:
+          steps:
+            - pose: despair
+              skin: Urashima-old-2
+              sound: Ocean Wave
+      - bgm: Medieval1
+      - wait: 4
+      - Urashima.hide: {}
+      - wait: 1
+  curtain call:
+    - transition:
+        effect: fadeOut
+        seconds: 0
+    - stage: Dragon Castle
+    - transition:
+        effect: fadeUp
+        seconds: 0
+    - sound: Ocean Wave
+    - wait: 1.5
+    - bgm: Xylo2
+    - wait: 2.7
+    - Turtle.show:
+        skin: Turtle
+        x: -170
+        y: -20
+        scale: 40
+    - wait: 1.2
+    - Princess.show:
+        skin: Princess
+        x: 0
+        y: -27
+        scale: 70
+    - wait: 1.2
+    - Urashima.show:
+        skin: Urashima-walk-1
+        x: 155
+        y: -10
+        scale: 45
+    - wait: 1.2
+    - Princess.say:
+        text: バイバイ！
+        seconds: 4.6
+    - wait: 0.1
+  end credit:
+    - stage: End
+    - Narration.show:
+        skin: TextPlaceholder
+        x: 0
+        y: 0
+        scale: 100
+    - Narration.setText:
+        text: お し ま い
+        style: ending
+    - sound: Goal Cheer
+    - wait: 4
+    - transition:
+        effect: fadeOut
+        seconds: 0

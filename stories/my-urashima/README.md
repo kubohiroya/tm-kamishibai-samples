@@ -13,3 +13,21 @@ pnpm update:my-urashima
 ```
 
 通常の`pnpm build`は同じ成果物を一時生成し、チェックイン済みSB3・台本・ロックとの一致を検証します。
+
+## DSL 4.0 YAMLへの変換
+
+`my-urashima.k4.yml`は、チェックイン済みの`my-urashima.txt`を`tmpose-kamishibai`の公式`convert-dsl4`で変換した公開用DSL 4.0 YAMLです。変換にはcommit `694df4095c336199eb73362523ee23dd241606ba`を使用し、同じ処理系の`validate-dsl4`で検証しています。生成後のYAMLは手修正していません。
+
+```bash
+node ../tmpose-kamishibai/bin/tmpose-kamishibai.mjs convert-dsl4 \
+  --input stories/my-urashima/my-urashima.txt \
+  --output stories/my-urashima/my-urashima.k4.yml
+node ../tmpose-kamishibai/bin/tmpose-kamishibai.mjs validate-dsl4 \
+  --input stories/my-urashima/my-urashima.k4.yml \
+  --max-source-bytes 262144 \
+  --format pretty
+```
+
+変換時のwarningとして、`startSceneIndex`のnumber型推論、costumeのlogical actorへの付け替え、Stage音声名の一意性確認、秒数指定のないtransitionの0秒化、app shell用`text`の省略を確認しています。変換停止errorはなく、検証結果は`my-urashima.k4.yml: valid`です。DSL 3.2の作業用SB3と外部台本は変更せず、従来どおり利用できます。
+
+ライセンスと素材の来歴は、親作品の[`LICENSES.md`](../urashima/LICENSES.md)を参照してください。

@@ -33,6 +33,22 @@ test('publishes the approved works-library categories and rights metadata', asyn
     [...new Set(urashima.actions.map(({group}) => group))],
     ['DSL 3.2 実行版', 'DSL 4.0 変換版', '作品情報'],
   );
+  const myUrashima = catalog.works.find(({id}) => id === 'my-urashima');
+  assert.deepEqual(myUrashima.dslSeries, ['3.2', '4.0']);
+  assert.deepEqual(
+    [...new Set(myUrashima.actions.map(({group}) => group))],
+    ['DSL 3.2 作業版', 'DSL 4.0 変換版', '作品情報'],
+  );
+  assert.deepEqual(
+    myUrashima.actions
+      .filter(({group}) => group === 'DSL 4.0 変換版')
+      .map(({label, disabled = false}) => [label, disabled]),
+    [
+      ['Web版（準備中）', true],
+      ['DSL 4.0 YAMLをダウンロード', false],
+      ['作業用SB3（準備中）', true],
+    ],
+  );
   const partiallyGrouped = structuredClone(catalog);
   delete partiallyGrouped.works.find(({id}) => id === 'urashima').actions[0].group;
   assert.throws(
