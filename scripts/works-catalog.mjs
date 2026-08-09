@@ -32,13 +32,23 @@ function deepFreeze(value) {
 function validateAction(action, label) {
   assertKeys(
     action,
-    ['label', 'href', 'style', 'download', 'external', 'requires'],
-    ['label', 'href', 'style'],
+    ['label', 'href', 'style', 'download', 'external', 'requires', 'group', 'disabled'],
+    ['label', 'style'],
     label,
   );
   assertString(action.label, `${label}.label`);
-  assertString(action.href, `${label}.href`);
   assert(['primary', 'secondary'].includes(action.style), `${label}.style is invalid.`);
+  if (Object.hasOwn(action, 'group')) assertString(action.group, `${label}.group`);
+  if (Object.hasOwn(action, 'disabled')) {
+    assert.equal(action.disabled, true, `${label}.disabled must be true when present.`);
+  }
+  if (action.disabled) {
+    for (const key of ['href', 'download', 'external', 'requires']) {
+      assert(!Object.hasOwn(action, key), `${label}.${key} is not allowed when disabled.`);
+    }
+  } else {
+    assertString(action.href, `${label}.href`);
+  }
   if (Object.hasOwn(action, 'download')) assert.equal(typeof action.download, 'boolean');
   if (Object.hasOwn(action, 'external')) assert.equal(typeof action.external, 'boolean');
   if (Object.hasOwn(action, 'requires')) {
@@ -140,6 +150,11 @@ export function validateWorksCatalog(catalog) {
     work.actions.forEach((action, actionIndex) =>
       validateAction(action, `${label}.actions[${actionIndex}]`),
     );
+    const groupedActionCount = work.actions.filter((action) => action.group).length;
+    assert(
+      groupedActionCount === 0 || groupedActionCount === work.actions.length,
+      `${label}.actions must either all define group or all omit it.`,
+    );
     if (work.thumbnail) validateThumbnail(work.thumbnail, `${label}.thumbnail`);
 
     if (work.category === 'external') {
@@ -147,6 +162,7 @@ export function validateWorksCatalog(catalog) {
       assert(work.license.href.startsWith('https://'), `${label}.license.href must use HTTPS.`);
       assert.equal(work.actions.length, 1, `${label} must expose exactly one external action.`);
       const [action] = work.actions;
+      assert(!action.disabled, `${label} external action must be enabled.`);
       assert(action.href.startsWith('https://'), `${label} action must use HTTPS.`);
       assert.equal(action.external, true, `${label} action must be marked external.`);
       assert.notEqual(action.download, true, `${label} must not offer a download.`);
@@ -154,6 +170,7 @@ export function validateWorksCatalog(catalog) {
     } else {
       assert.equal(work.distribution, 'hosted', `${label} must be hosted.`);
       for (const action of work.actions) {
+        if (action.disabled) continue;
         assert(!action.external, `${label} must not mark a hosted action as external.`);
         assert(!/^(?:[a-z]+:|\/|\.\.)/iu.test(action.href), `${label} action must be site-relative.`);
       }

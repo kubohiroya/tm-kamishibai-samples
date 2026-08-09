@@ -42,15 +42,21 @@
     "action": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["label", "href", "style"],
+      "required": ["label", "style"],
       "properties": {
         "label": {"type": "string", "minLength": 1},
         "href": {"type": "string", "minLength": 1},
         "style": {"enum": ["primary", "secondary"]},
         "download": {"type": "boolean"},
         "external": {"type": "boolean"},
-        "requires": {"enum": ["urashimaWeb"]}
-      }
+        "requires": {"enum": ["urashimaWeb"]},
+        "group": {"type": "string", "minLength": 1},
+        "disabled": {"const": true}
+      },
+      "oneOf": [
+        {"required": ["href"], "not": {"required": ["disabled"]}},
+        {"required": ["disabled"], "not": {"required": ["href"]}}
+      ]
     },
     "thumbnail": {
       "type": "object",

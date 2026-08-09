@@ -316,6 +316,8 @@ export async function verifyPublishedSite(options = {}) {
   verifySiteFooter(rightsIndex, '../');
   assert(rootIndex.includes('<title>TMPose紙芝居 作品ライブラリ</title>'));
   assert(rootIndex.includes('<h1>TMPose紙芝居 作品ライブラリ</h1>'));
+  assert(rootIndex.includes('.work-list { display: grid; grid-template-columns: 1fr;'));
+  assert(!rootIndex.includes('repeat(auto-fit'));
   assert(rightsIndex.includes('<h1>ライセンス・権利表示</h1>'));
   assert(rightsIndex.includes('外部作品'));
   assert(rightsIndex.includes('Urashima-walk-1'));
@@ -329,15 +331,33 @@ export async function verifyPublishedSite(options = {}) {
   assert(sampleIndex.includes(manifest.profiles.player.sb3.sha256));
   assert(sampleIndex.includes(manifest.profiles.editor.sb3.sha256));
   assert(sampleIndex.includes(manifest.web.output.sha256));
-  assert(rootIndex.indexOf('Web版を開く') < rootIndex.indexOf('DSL 3.2台本を表示'));
+  const rootDsl32Actions = rootIndex.slice(
+    rootIndex.indexOf('data-action-group="DSL 3.2 実行版"'),
+    rootIndex.indexOf('data-action-group="DSL 4.0 変換版"'),
+  );
+  const rootDsl40Actions = rootIndex.slice(
+    rootIndex.indexOf('data-action-group="DSL 4.0 変換版"'),
+    rootIndex.indexOf('data-action-group="作品情報"'),
+  );
+  assert(rootDsl32Actions.includes('<h4>DSL 3.2 実行版</h4>'));
+  assert(rootDsl32Actions.includes('Web版を開く'));
+  assert(rootDsl32Actions.includes('DSL 3.2台本を表示'));
+  assert(rootDsl32Actions.includes('再生用SB3をダウンロード'));
+  assert(!rootDsl32Actions.includes('urashima.k4.yml'));
+  assert(rootDsl40Actions.includes('<h4>DSL 4.0 変換版</h4>'));
+  assert(rootDsl40Actions.includes('urashima.k4.yml'));
+  assert(!rootDsl40Actions.includes('urashima.sb3'));
   assert(
-    rootIndex.indexOf('DSL 3.2台本を表示')
-      < rootIndex.indexOf('DSL 4.0 YAMLをダウンロード'),
+    rootDsl40Actions.includes(
+      '<button class="button secondary" type="button" disabled aria-disabled="true">Web版（準備中）</button>',
+    ),
   );
   assert(
-    rootIndex.indexOf('DSL 4.0 YAMLをダウンロード')
-      < rootIndex.indexOf('再生用SB3をダウンロード'),
+    rootDsl40Actions.includes(
+      '<button class="button secondary" type="button" disabled aria-disabled="true">再生用SB3（準備中）</button>',
+    ),
   );
+  assert(rootIndex.includes('data-action-group="作品情報"'));
   assert(rootIndex.includes('<h3>my-urashima（ワークショップにおける作業用）</h3>'));
   assert(
     rootIndex.includes(
@@ -369,15 +389,23 @@ export async function verifyPublishedSite(options = {}) {
   assert(rootIndex.includes('<dt>著作権者</dt>'));
   assert(rootIndex.includes('<dt>ライセンス・利用条件</dt>'));
   assert(rootIndex.includes('<a href="WORKS_POLICY.md">作品掲載方針</a>'));
-  assert(sampleIndex.indexOf('Web版を開く') < sampleIndex.indexOf('DSL 3.2台本を表示'));
-  assert(
-    sampleIndex.indexOf('DSL 3.2台本を表示')
-      < sampleIndex.indexOf('DSL 4.0 YAMLをダウンロード'),
+  const sampleDsl32Actions = sampleIndex.slice(
+    sampleIndex.indexOf('data-dsl-series="3.2"'),
+    sampleIndex.indexOf('data-dsl-series="4.0"'),
   );
-  assert(
-    sampleIndex.indexOf('DSL 4.0 YAMLをダウンロード')
-      < sampleIndex.indexOf('再生用SB3をダウンロード'),
+  const sampleDsl40Actions = sampleIndex.slice(
+    sampleIndex.indexOf('data-dsl-series="4.0"'),
+    sampleIndex.indexOf('aria-labelledby="work-info-heading"'),
   );
+  assert(sampleDsl32Actions.includes('<h2 id="dsl-32-heading">DSL 3.2 実行版</h2>'));
+  assert(sampleDsl32Actions.includes('Web版を開く'));
+  assert(sampleDsl32Actions.includes('再生用SB3をダウンロード'));
+  assert(!sampleDsl32Actions.includes('urashima.k4.yml'));
+  assert(sampleDsl40Actions.includes('<h2 id="dsl-40-heading">DSL 4.0 変換版</h2>'));
+  assert(sampleDsl40Actions.includes('urashima.k4.yml'));
+  assert(!sampleDsl40Actions.includes('urashima.sb3'));
+  assert(sampleDsl40Actions.includes('disabled aria-disabled="true">Web版（準備中）'));
+  assert(sampleDsl40Actions.includes('disabled aria-disabled="true">再生用SB3（準備中）'));
   assert(publishedFiles.includes('.nojekyll'));
   assert(publishedFiles.includes('favicon.png'));
   assert(publishedFiles.includes('favicon.source.json'));
