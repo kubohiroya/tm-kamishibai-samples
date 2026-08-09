@@ -99,10 +99,10 @@
       "id": "my-urashima",
       "category": "official",
       "title": "my-urashima（ワークショップにおける作業用）",
-      "summary": "2026年8月1日のワークショップで、ポーズと物語を変更するために使用した公式サンプルです。",
+      "summary": "2026年8月1日のワークショップで、ポーズと物語を変更するために使用した公式サンプルです。DSL 3.2の作業用成果物と、公式CLIで変換したDSL 4.0 YAMLを公開しています。",
       "creator": "Hiroya Kubo",
       "rightsHolder": "Hiroya Kuboおよび親作品に含まれる個別素材の権利者",
-      "dslSeries": ["3.2"],
+      "dslSeries": ["3.2", "4.0"],
       "distribution": "hosted",
       "license": {
         "label": "MPL-2.0、CC BY-SA 2.0ほか",
@@ -113,18 +113,40 @@
           "label": "作業用SB3をダウンロード",
           "href": "stories/my-urashima/my-urashima.sb3",
           "style": "primary",
-          "download": true
+          "download": true,
+          "group": "DSL 3.2 作業版"
         },
         {
           "label": "作業用台本をダウンロード",
           "href": "stories/my-urashima/my-urashima.txt",
           "style": "secondary",
-          "download": true
+          "download": true,
+          "group": "DSL 3.2 作業版"
+        },
+        {
+          "label": "Web版（準備中）",
+          "style": "secondary",
+          "disabled": true,
+          "group": "DSL 4.0 変換版"
+        },
+        {
+          "label": "DSL 4.0 YAMLをダウンロード",
+          "href": "stories/my-urashima/my-urashima.k4.yml",
+          "style": "secondary",
+          "download": true,
+          "group": "DSL 4.0 変換版"
+        },
+        {
+          "label": "作業用SB3（準備中）",
+          "style": "secondary",
+          "disabled": true,
+          "group": "DSL 4.0 変換版"
         },
         {
           "label": "説明を見る",
           "href": "stories/my-urashima/README.md",
-          "style": "secondary"
+          "style": "secondary",
+          "group": "作品情報"
         }
       ]
     }

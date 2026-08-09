@@ -133,6 +133,8 @@ export async function verifyPublishedSite(options = {}) {
   const outputDirectory = options.outputDirectory ?? path.join(projectRoot, 'dist');
   const sourceDirectory = options.sourceDirectory ?? path.join(projectRoot, 'stories/urashima');
   const outputSampleDirectory = path.join(outputDirectory, 'stories/urashima');
+  const myUrashimaSourceDirectory = path.join(projectRoot, 'stories/my-urashima');
+  const myUrashimaOutputDirectory = path.join(outputDirectory, 'stories/my-urashima');
 
   const [
     sourceFiles,
@@ -194,6 +196,15 @@ export async function verifyPublishedSite(options = {}) {
     ]);
     assert(source.equals(published), `Published file differs from source: ${relativePath}`);
   }
+  const [myUrashimaDsl4Source, myUrashimaDsl4Published] = await Promise.all([
+    readFile(path.join(myUrashimaSourceDirectory, 'my-urashima.k4.yml')),
+    readFile(path.join(myUrashimaOutputDirectory, 'my-urashima.k4.yml')),
+  ]);
+  assert(
+    myUrashimaDsl4Source.equals(myUrashimaDsl4Published),
+    'Published my-urashima DSL 4.0 YAML differs from source.',
+  );
+  assert(myUrashimaDsl4Published.toString('utf8').startsWith('kamishibai: "4.0"\n'));
 
   assert.equal(manifest.formatVersion, 3);
   assert.equal(manifest.sample, 'urashima');
@@ -359,18 +370,37 @@ export async function verifyPublishedSite(options = {}) {
   );
   assert(rootIndex.includes('data-action-group="作品情報"'));
   assert(rootIndex.includes('<h3>my-urashima（ワークショップにおける作業用）</h3>'));
+  const myUrashimaActions = rootIndex.slice(
+    rootIndex.indexOf('<h3>my-urashima（ワークショップにおける作業用）</h3>'),
+    rootIndex.indexOf('<h2 id="category-community">コミュニティ作品</h2>'),
+  );
+  const myUrashimaDsl32Actions = myUrashimaActions.slice(
+    myUrashimaActions.indexOf('data-action-group="DSL 3.2 作業版"'),
+    myUrashimaActions.indexOf('data-action-group="DSL 4.0 変換版"'),
+  );
+  const myUrashimaDsl40Actions = myUrashimaActions.slice(
+    myUrashimaActions.indexOf('data-action-group="DSL 4.0 変換版"'),
+    myUrashimaActions.indexOf('data-action-group="作品情報"'),
+  );
+  assert(myUrashimaDsl32Actions.includes('<h4>DSL 3.2 作業版</h4>'));
+  assert(myUrashimaDsl32Actions.includes('my-urashima.sb3'));
+  assert(myUrashimaDsl32Actions.includes('my-urashima.txt'));
+  assert(!myUrashimaDsl32Actions.includes('my-urashima.k4.yml'));
+  assert(myUrashimaDsl40Actions.includes('<h4>DSL 4.0 変換版</h4>'));
+  assert(myUrashimaDsl40Actions.includes('my-urashima.k4.yml'));
+  assert(!myUrashimaDsl40Actions.includes('href="stories/my-urashima/my-urashima.sb3"'));
   assert(
-    rootIndex.includes(
-      '<a class="button" href="stories/my-urashima/my-urashima.sb3" download>作業用SB3をダウンロード</a>',
+    myUrashimaDsl40Actions.includes(
+      '<button class="button secondary" type="button" disabled aria-disabled="true">Web版（準備中）</button>',
     ),
   );
   assert(
-    rootIndex.includes(
-      '<a class="button secondary" href="stories/my-urashima/my-urashima.txt" download>作業用台本をダウンロード</a>',
+    myUrashimaDsl40Actions.includes(
+      '<button class="button secondary" type="button" disabled aria-disabled="true">作業用SB3（準備中）</button>',
     ),
   );
   assert(
-    rootIndex.includes(
+    myUrashimaActions.includes(
       '<a class="button secondary" href="stories/my-urashima/README.md">説明を見る</a>',
     ),
   );
@@ -416,6 +446,7 @@ export async function verifyPublishedSite(options = {}) {
   assert(publishedFiles.includes('licenses/index.html'));
   assert(publishedFiles.includes('stories/my-urashima/my-urashima.sb3'));
   assert(publishedFiles.includes('stories/my-urashima/my-urashima.txt'));
+  assert(publishedFiles.includes('stories/my-urashima/my-urashima.k4.yml'));
   assert(publishedFiles.includes('stories/urashima/urashima.k4.yml'));
   assert(
     publishedFiles.includes(
