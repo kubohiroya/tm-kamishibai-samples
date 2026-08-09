@@ -108,6 +108,7 @@ export function validateWorksCatalog(catalog) {
         'id',
         'category',
         'title',
+        'detailHref',
         'summary',
         'creator',
         'rightsHolder',
@@ -138,6 +139,9 @@ export function validateWorksCatalog(catalog) {
     for (const key of ['title', 'summary', 'creator', 'rightsHolder']) {
       assertString(work[key], `${label}.${key}`);
     }
+    if (Object.hasOwn(work, 'detailHref')) {
+      assertString(work.detailHref, `${label}.detailHref`);
+    }
     assert(Array.isArray(work.dslSeries) && work.dslSeries.length > 0, `${label}.dslSeries is empty.`);
     for (const [seriesIndex, series] of work.dslSeries.entries()) {
       assertString(series, `${label}.dslSeries[${seriesIndex}]`);
@@ -160,6 +164,12 @@ export function validateWorksCatalog(catalog) {
     if (work.category === 'external') {
       assert.equal(work.distribution, 'link-only', `${label} must be link-only.`);
       assert(work.license.href.startsWith('https://'), `${label}.license.href must use HTTPS.`);
+      if (work.detailHref) {
+        assert(
+          work.detailHref.startsWith('https://'),
+          `${label}.detailHref must use HTTPS.`,
+        );
+      }
       assert.equal(work.actions.length, 1, `${label} must expose exactly one external action.`);
       const [action] = work.actions;
       assert(!action.disabled, `${label} external action must be enabled.`);
@@ -169,6 +179,12 @@ export function validateWorksCatalog(catalog) {
       assert(!action.requires, `${label} must not depend on a local build feature.`);
     } else {
       assert.equal(work.distribution, 'hosted', `${label} must be hosted.`);
+      if (work.detailHref) {
+        assert(
+          !/^(?:[a-z]+:|\/|\.\.)/iu.test(work.detailHref),
+          `${label}.detailHref must be site-relative.`,
+        );
+      }
       for (const action of work.actions) {
         if (action.disabled) continue;
         assert(!action.external, `${label} must not mark a hosted action as external.`);

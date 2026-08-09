@@ -142,6 +142,7 @@ export async function verifyPublishedSite(options = {}) {
     webFiles,
     rootIndex,
     sampleIndex,
+    myUrashimaIndex,
     rightsIndex,
     manifest,
     packageJson,
@@ -159,6 +160,7 @@ export async function verifyPublishedSite(options = {}) {
       listFiles(path.join(outputSampleDirectory, 'web')),
       verifyLinks(path.join(outputDirectory, 'index.html')),
       verifyLinks(path.join(outputSampleDirectory, 'index.html')),
+      verifyLinks(path.join(myUrashimaOutputDirectory, 'index.html')),
       verifyLinks(path.join(outputDirectory, 'licenses/index.html')),
       readFile(path.join(outputSampleDirectory, 'manifest.json'), 'utf8').then(JSON.parse),
       readFile(path.join(projectRoot, 'package.json'), 'utf8').then(JSON.parse),
@@ -337,18 +339,40 @@ export async function verifyPublishedSite(options = {}) {
   assert(sampleIndex.includes('<title>浦島太郎 | TMPose紙芝居 作品ライブラリ</title>'));
   assert(sampleIndex.includes('aria-label="作品内ナビゲーション"'));
   assert(sampleIndex.includes('>作品一覧へ戻る</a>'));
+  assert(sampleIndex.includes('<dt>対応DSL</dt><dd>3.2／4.0</dd>'));
+  assert(sampleIndex.includes('<dt>掲載形態</dt><dd>当サイトで配布</dd>'));
+  assert(sampleIndex.includes('<dt>ライセンス・利用条件</dt>'));
+  assert(
+    myUrashimaIndex.includes(
+      '<title>my-urashima（ワークショップにおける作業用） | TMPose紙芝居 作品ライブラリ</title>',
+    ),
+  );
+  assert(myUrashimaIndex.includes('<dt>対応DSL</dt><dd>3.2／4.0</dd>'));
+  assert(myUrashimaIndex.includes('<dt>掲載形態</dt><dd>当サイトで配布</dd>'));
+  assert(myUrashimaIndex.includes('<dt>ライセンス・利用条件</dt>'));
+  assert(myUrashimaIndex.includes('data-dsl-series="3.2"'));
+  assert(myUrashimaIndex.includes('data-dsl-series="4.0"'));
+  assert(myUrashimaIndex.includes('my-urashima.k4.yml'));
   assert(!rootIndex.includes('>GitHubリポジトリ</a>'));
   assert(!rootIndex.includes('https://kubohiroya.github.io/tmpose-kamishibai/stories/'));
   assert(sampleIndex.includes(manifest.profiles.player.sb3.sha256));
   assert(sampleIndex.includes(manifest.profiles.editor.sb3.sha256));
   assert(sampleIndex.includes(manifest.web.output.sha256));
-  const rootDsl32Actions = rootIndex.slice(
-    rootIndex.indexOf('data-action-group="DSL 3.2 実行版"'),
-    rootIndex.indexOf('data-action-group="DSL 4.0 変換版"'),
+  const urashimaCard = rootIndex.slice(
+    rootIndex.indexOf('data-work-id="urashima"'),
+    rootIndex.indexOf('data-work-id="my-urashima"'),
   );
-  const rootDsl40Actions = rootIndex.slice(
-    rootIndex.indexOf('data-action-group="DSL 4.0 変換版"'),
-    rootIndex.indexOf('data-action-group="作品情報"'),
+  const rootDsl32Actions = urashimaCard.slice(
+    urashimaCard.indexOf('data-action-group="DSL 3.2 実行版"'),
+    urashimaCard.indexOf('data-action-group="DSL 4.0 変換版"'),
+  );
+  const rootDsl40Actions = urashimaCard.slice(
+    urashimaCard.indexOf('data-action-group="DSL 4.0 変換版"'),
+  );
+  assert(
+    urashimaCard.includes(
+      '<h3><a class="work-card__title-link" href="stories/urashima/">浦島太郎</a></h3>',
+    ),
   );
   assert(rootDsl32Actions.includes('<h4>DSL 3.2 実行版</h4>'));
   assert(rootDsl32Actions.includes('Web版を開く'));
@@ -368,19 +392,24 @@ export async function verifyPublishedSite(options = {}) {
       '<button class="button secondary" type="button" disabled aria-disabled="true">再生用SB3（準備中）</button>',
     ),
   );
-  assert(rootIndex.includes('data-action-group="作品情報"'));
-  assert(rootIndex.includes('<h3>my-urashima（ワークショップにおける作業用）</h3>'));
-  const myUrashimaActions = rootIndex.slice(
-    rootIndex.indexOf('<h3>my-urashima（ワークショップにおける作業用）</h3>'),
+  assert(!urashimaCard.includes('data-action-group="作品情報"'));
+  assert(!urashimaCard.includes('>manifest</a>'));
+  assert(!urashimaCard.includes('>詳細を見る</a>'));
+  const myUrashimaCard = rootIndex.slice(
+    rootIndex.indexOf('data-work-id="my-urashima"'),
     rootIndex.indexOf('<h2 id="category-community">コミュニティ作品</h2>'),
   );
-  const myUrashimaDsl32Actions = myUrashimaActions.slice(
-    myUrashimaActions.indexOf('data-action-group="DSL 3.2 作業版"'),
-    myUrashimaActions.indexOf('data-action-group="DSL 4.0 変換版"'),
+  assert(
+    myUrashimaCard.includes(
+      '<h3><a class="work-card__title-link" href="stories/my-urashima/">my-urashima（ワークショップにおける作業用）</a></h3>',
+    ),
   );
-  const myUrashimaDsl40Actions = myUrashimaActions.slice(
-    myUrashimaActions.indexOf('data-action-group="DSL 4.0 変換版"'),
-    myUrashimaActions.indexOf('data-action-group="作品情報"'),
+  const myUrashimaDsl32Actions = myUrashimaCard.slice(
+    myUrashimaCard.indexOf('data-action-group="DSL 3.2 作業版"'),
+    myUrashimaCard.indexOf('data-action-group="DSL 4.0 変換版"'),
+  );
+  const myUrashimaDsl40Actions = myUrashimaCard.slice(
+    myUrashimaCard.indexOf('data-action-group="DSL 4.0 変換版"'),
   );
   assert(myUrashimaDsl32Actions.includes('<h4>DSL 3.2 作業版</h4>'));
   assert(myUrashimaDsl32Actions.includes('my-urashima.sb3'));
@@ -399,14 +428,11 @@ export async function verifyPublishedSite(options = {}) {
       '<button class="button secondary" type="button" disabled aria-disabled="true">作業用SB3（準備中）</button>',
     ),
   );
+  assert(!myUrashimaCard.includes('data-action-group="作品情報"'));
+  assert(!myUrashimaCard.includes('>説明を見る</a>'));
   assert(
-    myUrashimaActions.includes(
-      '<a class="button secondary" href="stories/my-urashima/README.md">説明を見る</a>',
-    ),
-  );
-  assert(
-    rootIndex.indexOf('<h3>浦島太郎</h3>')
-      < rootIndex.indexOf('<h3>my-urashima（ワークショップにおける作業用）</h3>'),
+    rootIndex.indexOf('>浦島太郎</a></h3>')
+      < rootIndex.indexOf('>my-urashima（ワークショップにおける作業用）</a></h3>'),
   );
   assert(
     rootIndex.indexOf('<h2 id="category-official">公式サンプル</h2>')
@@ -417,7 +443,9 @@ export async function verifyPublishedSite(options = {}) {
   assert(rootIndex.includes('現在掲載中のコミュニティ作品はありません。'));
   assert(rootIndex.includes('現在掲載中の外部作品はありません。'));
   assert(rootIndex.includes('<dt>著作権者</dt>'));
-  assert(rootIndex.includes('<dt>ライセンス・利用条件</dt>'));
+  assert(!rootIndex.includes('<dt>対応DSL</dt>'));
+  assert(!rootIndex.includes('<dt>掲載形態</dt>'));
+  assert(!rootIndex.includes('<dt>ライセンス・利用条件</dt>'));
   assert(rootIndex.includes('<a href="WORKS_POLICY.md">作品掲載方針</a>'));
   const sampleDsl32Actions = sampleIndex.slice(
     sampleIndex.indexOf('data-dsl-series="3.2"'),
@@ -447,6 +475,7 @@ export async function verifyPublishedSite(options = {}) {
   assert(publishedFiles.includes('stories/my-urashima/my-urashima.sb3'));
   assert(publishedFiles.includes('stories/my-urashima/my-urashima.txt'));
   assert(publishedFiles.includes('stories/my-urashima/my-urashima.k4.yml'));
+  assert(publishedFiles.includes('stories/my-urashima/index.html'));
   assert(publishedFiles.includes('stories/urashima/urashima.k4.yml'));
   assert(
     publishedFiles.includes(

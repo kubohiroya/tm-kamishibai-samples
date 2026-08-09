@@ -29,16 +29,20 @@ test('publishes the approved works-library categories and rights metadata', asyn
   }
 
   const urashima = catalog.works.find(({id}) => id === 'urashima');
+  assert.equal(urashima.detailHref, 'stories/urashima/');
   assert.deepEqual(
     [...new Set(urashima.actions.map(({group}) => group))],
-    ['DSL 3.2 実行版', 'DSL 4.0 変換版', '作品情報'],
+    ['DSL 3.2 実行版', 'DSL 4.0 変換版'],
   );
+  assert.equal(urashima.actions.some(({group}) => group === '作品情報'), false);
   const myUrashima = catalog.works.find(({id}) => id === 'my-urashima');
+  assert.equal(myUrashima.detailHref, 'stories/my-urashima/');
   assert.deepEqual(myUrashima.dslSeries, ['3.2', '4.0']);
   assert.deepEqual(
     [...new Set(myUrashima.actions.map(({group}) => group))],
-    ['DSL 3.2 作業版', 'DSL 4.0 変換版', '作品情報'],
+    ['DSL 3.2 作業版', 'DSL 4.0 変換版'],
   );
+  assert.equal(myUrashima.actions.some(({group}) => group === '作品情報'), false);
   assert.deepEqual(
     myUrashima.actions
       .filter(({group}) => group === 'DSL 4.0 変換版')
@@ -54,6 +58,13 @@ test('publishes the approved works-library categories and rights metadata', asyn
   assert.throws(
     () => validateWorksCatalog(partiallyGrouped),
     /must either all define group or all omit it/u,
+  );
+  const absoluteDetailHref = structuredClone(catalog);
+  absoluteDetailHref.works.find(({id}) => id === 'urashima').detailHref =
+    'https://example.com/urashima';
+  assert.throws(
+    () => validateWorksCatalog(absoluteDetailHref),
+    /detailHref must be site-relative/u,
   );
 });
 
