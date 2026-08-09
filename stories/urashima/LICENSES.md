@@ -2,7 +2,7 @@
 
 浦島太郎サンプルとして本リポジトリで配布する次のファイルは、Mozilla Public License 2.0（SPDX: `MPL-2.0`）で提供します。
 
-- `source.txt` と `urashima.txt`
+- `source.txt`、`urashima.txt`、`urashima.k4.yml`
 - `assets/images/` 配下の画像24ファイル
 - `assets/sounds/` 配下の音声のうち、`cfc75b8ec10d522a49e754cee372fcb9.mp3`を除く21ファイル
 - `assets.lock.json`、`artifacts.lock.json`、`sample.config.json`

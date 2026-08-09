@@ -10,6 +10,7 @@
 
 - `source.txt`: 元アセットを `file:` 参照するビルド元台本
 - `urashima.txt`: editor/playerで共通の変換済み公開用台本
+- `urashima.k4.yml`: 公式CLIで`urashima.txt`から変換したDSL 4.0 YAML
 - `assets/images/`: 画像元データ 24ファイル
 - `assets/sounds/`: Web再生互換性のためMP3へ統一した音声元データ 22ファイル
 - `assets.lock.json`: 組み込み対象44件の名前・target・ハッシュ・メタデータ
@@ -19,7 +20,7 @@
 
 `stories/my-urashima/`はワークショップ用の依存ストーリーです。`urashima`の`source.txt`、アセットロック、generic baseを親入力として、Princess PNGを独立した`Princess`スプライトへ直接組み込んだ、台本非埋め込みの`my-urashima.sb3`を生成します。生成規約と更新方法は[`stories/my-urashima/README.md`](stories/my-urashima/README.md)に記載しています。
 
-正式な浦島太郎はDSL 3.2のSVG Textを使い、名前付きstyle、相対font size、複数行のNarration actorを実演します。deprecatedな旧Text Assetは正式台本から分離したテストfixtureで互換性を確認します。
+正式な浦島太郎の実行用成果物はDSL 3.2のSVG Textを使い、名前付きstyle、相対font size、複数行のNarration actorを実演します。作品ライブラリでは、公式CLIで変換・検証したDSL 4.0 YAMLも併せて配布します。deprecatedな旧Text Assetは正式台本から分離したテストfixtureで互換性を確認します。
 
 `pnpm build` は、完全固定した `@kubohiroya/tmpose-kamishibai` `3.2.2` のnpmビルダー、本体コミット`2b5005d`から生成してハッシュ固定したclone-only UIの汎用ベース、`@turbowarp/packager` `3.13.0` を使い、次の成果物を生成します。
 

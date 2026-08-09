@@ -241,7 +241,8 @@ ${renderSiteHeader('../../')}
   <p>同じ台本とアセットロックから、編集用と再生用の2種類のSB3を生成しています。</p>
   ${webDescription}
   <div class="actions">
-${webAction}    <a class="button secondary" href="urashima.txt">台本を表示</a>
+${webAction}    <a class="button secondary" href="urashima.txt">DSL 3.2台本を表示</a>
+    <a class="button secondary" href="urashima.k4.yml" download>DSL 4.0 YAMLをダウンロード</a>
     <a class="button secondary" href="urashima.sb3" download>再生用SB3をダウンロード</a>
     <a class="button secondary" href="_urashima.sb3" download>編集用SB3をダウンロード</a>
     <a class="button secondary" href="manifest.json">manifest</a>
@@ -389,11 +390,18 @@ export async function buildSite() {
   await cp(mySourceDirectory, myOutputSampleDirectory, {recursive: true});
   const {artifactsLock, config, results} = await buildUrashima(outputSampleDirectory);
   await buildMyUrashima(myOutputSampleDirectory);
-  const [sourceScript, assetManifest, assetManifestRecord, sourceScriptRecord] = await Promise.all([
+  const [
+    sourceScript,
+    assetManifest,
+    assetManifestRecord,
+    sourceScriptRecord,
+    dsl4ScriptRecord,
+  ] = await Promise.all([
     readFile(path.join(sourceDirectory, config.sourceScript)),
     readFile(path.join(sourceDirectory, config.assetManifest), 'utf8').then(JSON.parse),
     fileRecord(path.join(sourceDirectory, config.assetManifest), config.assetManifest),
     fileRecord(path.join(sourceDirectory, config.sourceScript), config.sourceScript),
+    fileRecord(path.join(sourceDirectory, 'urashima.k4.yml'), 'urashima.k4.yml'),
   ]);
   const embeddedPaths = new Set(
     assetManifest.assets.map((asset) => asset.uri.replace(/^file:/u, '')),
@@ -417,6 +425,7 @@ export async function buildSite() {
     baseSb3: {...config.baseSb3, published: true},
     source: {
       script: sourceScriptRecord,
+      dsl4Script: dsl4ScriptRecord,
       assetManifest: assetManifestRecord,
     },
     script: {

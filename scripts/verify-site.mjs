@@ -222,14 +222,16 @@ export async function verifyPublishedSite(options = {}) {
     await verifyFile(outputSampleDirectory, asset, asset.path);
   }
 
-  const [editor, player, publicScript, baseSb3, sourceScript, assetManifest] = await Promise.all([
-    verifyProfile(outputSampleDirectory, 'editor', manifest.profiles.editor),
-    verifyProfile(outputSampleDirectory, 'player', manifest.profiles.player),
-    verifyFile(outputSampleDirectory, manifest.script, 'public script'),
-    verifyFile(outputSampleDirectory, manifest.baseSb3, 'generic base SB3'),
-    verifyFile(outputSampleDirectory, manifest.source.script, 'source script'),
-    verifyFile(outputSampleDirectory, manifest.source.assetManifest, 'asset manifest'),
-  ]);
+  const [editor, player, publicScript, baseSb3, sourceScript, dsl4Script, assetManifest] =
+    await Promise.all([
+      verifyProfile(outputSampleDirectory, 'editor', manifest.profiles.editor),
+      verifyProfile(outputSampleDirectory, 'player', manifest.profiles.player),
+      verifyFile(outputSampleDirectory, manifest.script, 'public script'),
+      verifyFile(outputSampleDirectory, manifest.baseSb3, 'generic base SB3'),
+      verifyFile(outputSampleDirectory, manifest.source.script, 'source script'),
+      verifyFile(outputSampleDirectory, manifest.source.dsl4Script, 'DSL 4.0 script'),
+      verifyFile(outputSampleDirectory, manifest.source.assetManifest, 'asset manifest'),
+    ]);
   assert(editor.scriptContents.equals(player.scriptContents));
   assert(player.scriptContents.equals(publicScript));
   assert.equal(editor.builderManifest.script.mode, 'external');
@@ -238,6 +240,7 @@ export async function verifyPublishedSite(options = {}) {
   assert.equal(player.builderManifest.script.embeddedVariableId, 'tmposeEmbeddedScript');
   assert.equal(baseSb3.length, manifest.baseSb3.size);
   assert(sourceScript.includes(Buffer.from('file:assets/')));
+  assert(dsl4Script.toString('utf8').startsWith('kamishibai: "4.0"\n'));
   assert.equal(JSON.parse(assetManifest.toString('utf8')).assets.length, 44);
 
   assert.equal(manifest.web.enabled, true);
@@ -326,8 +329,15 @@ export async function verifyPublishedSite(options = {}) {
   assert(sampleIndex.includes(manifest.profiles.player.sb3.sha256));
   assert(sampleIndex.includes(manifest.profiles.editor.sb3.sha256));
   assert(sampleIndex.includes(manifest.web.output.sha256));
-  assert(rootIndex.indexOf('Web版を開く') < rootIndex.indexOf('台本を表示'));
-  assert(rootIndex.indexOf('台本を表示') < rootIndex.indexOf('再生用SB3をダウンロード'));
+  assert(rootIndex.indexOf('Web版を開く') < rootIndex.indexOf('DSL 3.2台本を表示'));
+  assert(
+    rootIndex.indexOf('DSL 3.2台本を表示')
+      < rootIndex.indexOf('DSL 4.0 YAMLをダウンロード'),
+  );
+  assert(
+    rootIndex.indexOf('DSL 4.0 YAMLをダウンロード')
+      < rootIndex.indexOf('再生用SB3をダウンロード'),
+  );
   assert(rootIndex.includes('<h3>my-urashima（ワークショップにおける作業用）</h3>'));
   assert(
     rootIndex.includes(
@@ -359,8 +369,15 @@ export async function verifyPublishedSite(options = {}) {
   assert(rootIndex.includes('<dt>著作権者</dt>'));
   assert(rootIndex.includes('<dt>ライセンス・利用条件</dt>'));
   assert(rootIndex.includes('<a href="WORKS_POLICY.md">作品掲載方針</a>'));
-  assert(sampleIndex.indexOf('Web版を開く') < sampleIndex.indexOf('台本を表示'));
-  assert(sampleIndex.indexOf('台本を表示') < sampleIndex.indexOf('再生用SB3をダウンロード'));
+  assert(sampleIndex.indexOf('Web版を開く') < sampleIndex.indexOf('DSL 3.2台本を表示'));
+  assert(
+    sampleIndex.indexOf('DSL 3.2台本を表示')
+      < sampleIndex.indexOf('DSL 4.0 YAMLをダウンロード'),
+  );
+  assert(
+    sampleIndex.indexOf('DSL 4.0 YAMLをダウンロード')
+      < sampleIndex.indexOf('再生用SB3をダウンロード'),
+  );
   assert(publishedFiles.includes('.nojekyll'));
   assert(publishedFiles.includes('favicon.png'));
   assert(publishedFiles.includes('favicon.source.json'));
@@ -371,6 +388,7 @@ export async function verifyPublishedSite(options = {}) {
   assert(publishedFiles.includes('licenses/index.html'));
   assert(publishedFiles.includes('stories/my-urashima/my-urashima.sb3'));
   assert(publishedFiles.includes('stories/my-urashima/my-urashima.txt'));
+  assert(publishedFiles.includes('stories/urashima/urashima.k4.yml'));
   assert(
     publishedFiles.includes(
       'stories/urashima/licenses/tmpose-kamishibai-MPL-2.0.txt',
