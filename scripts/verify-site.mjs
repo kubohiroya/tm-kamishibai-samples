@@ -7,6 +7,7 @@ import {fileURLToPath, pathToFileURL} from 'node:url';
 import {validateBundle} from '@kubohiroya/tmpose-kamishibai/builder';
 
 import {verifyMyUrashimaOutput} from './build-my-urashima.mjs';
+import {NAVIGATION_CONTRACT, renderSiteNavigation} from './site-navigation.mjs';
 
 function sha256(contents) {
   return createHash('sha256').update(contents).digest('hex');
@@ -68,12 +69,7 @@ async function verifyProfile(outputSampleDirectory, profile, record) {
 }
 
 function verifySiteHeader(html, assetPrefix) {
-  const destinations = [
-    'https://kubohiroya.github.io/tmpose-kamishibai/',
-    'https://kubohiroya.github.io/tmpose-kamishibai-docs/',
-    'https://kubohiroya.github.io/tmpose-kamishibai-samples/',
-    'https://kubohiroya.github.io/tmpose-kamishibai/downloads/',
-  ];
+  const destinations = NAVIGATION_CONTRACT.items.map(({href}) => href);
 
   assert(html.includes('<a class="skip-link" href="#main-content">本文へ移動</a>'));
   assert(html.includes('<header class="site-header">'));
@@ -84,13 +80,22 @@ function verifySiteHeader(html, assetPrefix) {
     ),
   );
   assert(html.includes('<main id="main-content">'));
+  assert(html.includes(`data-navigation-contract-version="${NAVIGATION_CONTRACT.contractVersion}"`));
   for (const destination of destinations) {
     assert(html.includes(`href="${destination}"`), `Missing site destination: ${destination}`);
   }
   assert.equal((html.match(/aria-current="page"/gu) ?? []).length, 1);
   assert(
     html.includes(
-      '<a class="site-nav__link" href="https://kubohiroya.github.io/tmpose-kamishibai-samples/" aria-current="page">サンプル</a>',
+      '<a class="site-nav__link" href="https://kubohiroya.github.io/tmpose-kamishibai-samples/" aria-current="page">作品</a>',
+    ),
+  );
+  assert(
+    html.includes(
+      renderSiteNavigation({
+        site: 'tmpose-kamishibai-samples',
+        pathname: '/tmpose-kamishibai-samples/',
+      }),
     ),
   );
   assert(
