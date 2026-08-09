@@ -490,10 +490,11 @@ test('recovers interrupted or stalled-running WebKit audio after touch completio
   assert.equal(window.__tmposeAudioUnlockState.primeCompletions, 6);
 });
 
-test('locks every external script asset and publishes one transformed script', async () => {
-  const [source, published, rawAssetManifest] = await Promise.all([
+test('locks every external script asset and publishes DSL 3.2 and converted DSL 4.0 scripts', async () => {
+  const [source, published, dsl4, rawAssetManifest] = await Promise.all([
     readFile(path.join(sampleDirectory, 'source.txt'), 'utf8'),
     readFile(path.join(sampleDirectory, 'urashima.txt'), 'utf8'),
+    readFile(path.join(sampleDirectory, 'urashima.k4.yml'), 'utf8'),
     readFile(path.join(sampleDirectory, 'assets.lock.json'), 'utf8').then(JSON.parse),
   ]);
   const assetManifest = validateAssetManifest(rawAssetManifest);
@@ -505,6 +506,12 @@ test('locks every external script asset and publishes one transformed script', a
     assert(script.startsWith('kamishibai=3.2\n'));
     assert.deepEqual(script.match(/^# scene \d+$/gmu), expectedSceneComments);
   }
+  assert(dsl4.startsWith('kamishibai: "4.0"\n'));
+  assert.match(dsl4, /^\s{2}PoseModel1:\n\s{4}kind: poseModel\n\s{4}delivery: remote$/mu);
+  assert.match(dsl4, /^\s{2}opening:\n/mu);
+  assert.match(dsl4, /^\s{2}beach:\n\s{4}poseModel: PoseModel1\n\s{4}actions:$/mu);
+  assert.match(dsl4, /^\s{6}- Urashima\.pose:\n\s{10}steps:\n/mu);
+  assert.match(dsl4, /^\s{4}production:\n\s{6}Space: navigation\.nextAction$/mu);
   const externalLines = source
     .split(/\r?\n/u)
     .filter((line) => /^asset=.*,(?:file|https?):/u.test(line));

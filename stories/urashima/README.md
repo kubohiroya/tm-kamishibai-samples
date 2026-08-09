@@ -20,6 +20,7 @@
 
 - `source.txt`: 元アセットを `file:` URIで参照する台本
 - `urashima.txt`: 生成結果と一致させる変換済み公開用台本
+- `urashima.k4.yml`: `urashima.txt`を公式CLIで変換したDSL 4.0 YAML
 - `assets/images/`: 画像元データ24ファイル
 - `assets/sounds/`: MP3音声元データ22ファイル（組み込み対象20、来歴保存2）
 - `assets.lock.json`: 組み込み対象44件の名前、target、Scratchメタデータ、サイズ、SHA-256
@@ -28,6 +29,22 @@
 - `base/kamishibai.sb3`: `tmpose-kamishibai` のclone-only UI `generic` 成果物
 
 `source.txt`の`# date:`はビルドが自動管理します。日付行を除いた内容fingerprintが`artifacts.lock.json`の記録から変わった場合だけ、ビルド環境のローカル今日へ更新し、`urashima.txt`、両プロファイル、Web版、my-urashimaを再生成します。内容が同じ再ビルドでは日付も成果物も更新しません。
+
+## DSL 4.0 YAMLへの変換
+
+`urashima.k4.yml`は、`tmpose-kamishibai`の`convert-dsl4`を含むcommit `444956bfbf8d00b966f3870c49b42e53b4808f36`を隣接directoryの`../tmpose-kamishibai`へcheckoutし、次のように生成しています。同じ処理系の`validate-dsl4`で検証し、生成後のYAMLは手修正していません。
+
+```bash
+node ../tmpose-kamishibai/bin/tmpose-kamishibai.mjs convert-dsl4 \
+  --input stories/urashima/urashima.txt \
+  --output stories/urashima/urashima.k4.yml
+node ../tmpose-kamishibai/bin/tmpose-kamishibai.mjs validate-dsl4 \
+  --input stories/urashima/urashima.k4.yml \
+  --max-source-bytes 262144 \
+  --format pretty
+```
+
+変換時のwarningとして、`startSceneIndex`のnumber型推論、costumeのlogical actorへの付け替え、Stage音声名の一意性確認、秒数指定のないtransitionの0秒化、app shell用`text`の省略を確認しています。変換停止errorはなく、検証結果は`urashima.k4.yml: valid`です。DSL 3.2のSB3・Web版は従来どおり`source.txt`と`urashima.txt`から生成し、DSL 4.0 YAMLの追加では変更しません。
 
 アセットや生成設定など、台本以外の入力を意図的に変更したときは、リポジトリルートで`pnpm update:artifacts-lock`を実行すると、両プロファイルとWeb版を実際に生成して`artifacts.lock.json`を再作成できます。その後の`pnpm build`では、再生成したロックとの一致を通常どおり検証します。
 
