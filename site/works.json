@@ -40,39 +40,58 @@
           "label": "Web版を開く",
           "href": "stories/urashima/web/",
           "style": "primary",
-          "requires": "urashimaWeb"
+          "requires": "urashimaWeb",
+          "group": "DSL 3.2 実行版"
         },
         {
           "label": "DSL 3.2台本を表示",
           "href": "stories/urashima/urashima.txt",
-          "style": "secondary"
-        },
-        {
-          "label": "DSL 4.0 YAMLをダウンロード",
-          "href": "stories/urashima/urashima.k4.yml",
           "style": "secondary",
-          "download": true
+          "group": "DSL 3.2 実行版"
         },
         {
           "label": "再生用SB3をダウンロード",
           "href": "stories/urashima/urashima.sb3",
           "style": "secondary",
-          "download": true
+          "download": true,
+          "group": "DSL 3.2 実行版"
+        },
+        {
+          "label": "Web版（準備中）",
+          "style": "secondary",
+          "disabled": true,
+          "group": "DSL 4.0 変換版"
+        },
+        {
+          "label": "DSL 4.0 YAMLをダウンロード",
+          "href": "stories/urashima/urashima.k4.yml",
+          "style": "secondary",
+          "download": true,
+          "group": "DSL 4.0 変換版"
+        },
+        {
+          "label": "再生用SB3（準備中）",
+          "style": "secondary",
+          "disabled": true,
+          "group": "DSL 4.0 変換版"
         },
         {
           "label": "manifest",
           "href": "stories/urashima/manifest.json",
-          "style": "secondary"
+          "style": "secondary",
+          "group": "作品情報"
         },
         {
           "label": "ライセンス",
           "href": "stories/urashima/LICENSES.md",
-          "style": "secondary"
+          "style": "secondary",
+          "group": "作品情報"
         },
         {
           "label": "詳細を見る",
           "href": "stories/urashima/",
-          "style": "secondary"
+          "style": "secondary",
+          "group": "作品情報"
         }
       ]
     },

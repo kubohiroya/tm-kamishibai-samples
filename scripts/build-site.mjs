@@ -92,19 +92,49 @@ async function assetRecords(directory, kind) {
 }
 
 function renderWorkAction(action, manifest) {
-  if (action.requires === 'urashimaWeb' && !manifest.web.enabled) return '';
   const className = action.style === 'secondary' ? 'button secondary' : 'button';
+  if (action.disabled) {
+    return `        <button class="${className}" type="button" disabled aria-disabled="true">${escapeHtml(action.label)}</button>`;
+  }
+  if (action.requires === 'urashimaWeb' && !manifest.web.enabled) return '';
   const download = action.download ? ' download' : '';
   const external = action.external ? ' target="_blank" rel="noopener external"' : '';
   const externalLabel = action.external ? '（外部サイト）' : '';
   return `        <a class="${className}" href="${escapeHtml(action.href)}"${download}${external}>${escapeHtml(action.label)}${externalLabel}</a>`;
 }
 
+function renderWorkActions(work, manifest) {
+  const renderedActions = work.actions
+    .map((action) => ({action, html: renderWorkAction(action, manifest)}))
+    .filter(({html}) => html);
+  if (!renderedActions.some(({action}) => action.group)) {
+    return `        <div class="actions">
+${renderedActions.map(({html}) => html).join('\n')}
+        </div>`;
+  }
+
+  const groups = new Map();
+  for (const renderedAction of renderedActions) {
+    const group = renderedAction.action.group;
+    if (!groups.has(group)) groups.set(group, []);
+    groups.get(group).push(renderedAction.html);
+  }
+  return `        <div class="action-groups">
+${[...groups.entries()]
+  .map(
+    ([group, actions]) => `          <section class="action-group" data-action-group="${escapeHtml(group)}">
+            <h4>${escapeHtml(group)}</h4>
+            <div class="actions">
+${actions.join('\n')}
+            </div>
+          </section>`,
+  )
+  .join('\n')}
+        </div>`;
+}
+
 function renderWorkCard(work, manifest) {
-  const actions = work.actions
-    .map((action) => renderWorkAction(action, manifest))
-    .filter(Boolean)
-    .join('\n');
+  const actions = renderWorkActions(work, manifest);
   const distribution = work.distribution === 'link-only' ? '外部リンクのみ' : '当サイトで配布';
   const licenseExternal = work.license.href.startsWith('https://')
     ? ' target="_blank" rel="noopener external"'
@@ -119,9 +149,7 @@ function renderWorkCard(work, manifest) {
           <div><dt>掲載形態</dt><dd>${distribution}</dd></div>
           <div><dt>ライセンス・利用条件</dt><dd><a href="${escapeHtml(work.license.href)}"${licenseExternal}>${escapeHtml(work.license.label)}</a></dd></div>
         </dl>
-        <div class="actions">
 ${actions}
-        </div>
       </article>`;
 }
 
@@ -166,9 +194,14 @@ function renderRootIndex(manifest, worksCatalog) {
     .work-meta dt { color: var(--muted); font-weight: 700; }
     .work-meta dd { min-width: 0; margin: 0; overflow-wrap: anywhere; }
     .empty-state { padding: 18px; border: 1px dashed var(--line); border-radius: 10px; background: var(--paper); color: var(--muted); }
-    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 1.25rem; }
+    .action-groups { display: grid; gap: 12px; margin-top: 1.25rem; }
+    .action-group { padding: 14px; border: 1px solid var(--line); border-radius: 10px; background: var(--canvas); }
+    .action-group h4 { margin: 0; font-size: 1rem; }
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: .75rem; }
+    article > .actions { margin-top: 1.25rem; }
     .button { display: inline-block; padding: 10px 14px; border-radius: 8px; background: var(--accent); color: white; text-decoration: none; font-weight: 700; }
     .button.secondary { border: 1px solid var(--accent); background: white; color: var(--accent); }
+    .button:disabled { cursor: not-allowed; opacity: .55; }
     footer { margin-top: 40px; color: var(--muted); }
     code { overflow-wrap: anywhere; }
   </style>
@@ -225,9 +258,14 @@ function renderSampleIndex(manifest) {
     main { max-width: 920px; margin: auto; padding: 40px 24px 72px; }
     .local-nav { margin-bottom: 32px; }
     a { color: var(--accent); }
-    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 24px 0; }
+    .artifact-groups { display: grid; gap: 18px; margin: 28px 0; }
+    .artifact-group { padding: 20px; border: 1px solid #dbc9bb; border-radius: 12px; background: #fffdf8; }
+    .artifact-group h2 { margin-top: 0; }
+    .artifact-group p { line-height: 1.7; }
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
     .button { display: inline-block; padding: 10px 14px; border-radius: 8px; background: var(--accent); color: white; text-decoration: none; font-weight: 700; }
     .button.secondary { border: 1px solid var(--accent); background: white; color: var(--accent); }
+    .button:disabled { cursor: not-allowed; opacity: .55; }
     li { margin: .45rem 0; }
     small { color: var(--muted); }
     code { overflow-wrap: anywhere; }
@@ -238,15 +276,34 @@ ${renderSiteHeader('../../')}
 <main id="main-content">
   <nav class="local-nav" aria-label="作品内ナビゲーション"><a href="../../">作品一覧へ戻る</a></nav>
   <h1>浦島太郎</h1>
-  <p>同じ台本とアセットロックから、編集用と再生用の2種類のSB3を生成しています。</p>
-  ${webDescription}
-  <div class="actions">
-${webAction}    <a class="button secondary" href="urashima.txt">DSL 3.2台本を表示</a>
-    <a class="button secondary" href="urashima.k4.yml" download>DSL 4.0 YAMLをダウンロード</a>
-    <a class="button secondary" href="urashima.sb3" download>再生用SB3をダウンロード</a>
-    <a class="button secondary" href="_urashima.sb3" download>編集用SB3をダウンロード</a>
-    <a class="button secondary" href="manifest.json">manifest</a>
-    <a class="button secondary" href="LICENSES.md">ライセンス</a>
+  <p>DSL 3.2の実行用成果物と、そこから変換したDSL 4.0 YAMLを区別して公開しています。</p>
+  <div class="artifact-groups">
+    <section class="artifact-group" data-dsl-series="3.2" aria-labelledby="dsl-32-heading">
+      <h2 id="dsl-32-heading">DSL 3.2 実行版</h2>
+      <p>Web版、台本、SB3はDSL 3.2で実行するための成果物です。同じ台本とアセットロックから、編集用と再生用の2種類のSB3を生成しています。</p>
+      ${webDescription}
+      <div class="actions">
+${webAction}        <a class="button secondary" href="urashima.txt">DSL 3.2台本を表示</a>
+        <a class="button secondary" href="urashima.sb3" download>再生用SB3をダウンロード</a>
+        <a class="button secondary" href="_urashima.sb3" download>編集用SB3をダウンロード</a>
+      </div>
+    </section>
+    <section class="artifact-group" data-dsl-series="4.0" aria-labelledby="dsl-40-heading">
+      <h2 id="dsl-40-heading">DSL 4.0 変換版</h2>
+      <p>DSL 3.2台本を公式変換ツールで変換・検証したYAMLです。DSL 3.2用のWeb版・SB3とは別の成果物です。</p>
+      <div class="actions">
+        <button class="button secondary" type="button" disabled aria-disabled="true">Web版（準備中）</button>
+        <a class="button" href="urashima.k4.yml" download>DSL 4.0 YAMLをダウンロード</a>
+        <button class="button secondary" type="button" disabled aria-disabled="true">再生用SB3（準備中）</button>
+      </div>
+    </section>
+    <section class="artifact-group" aria-labelledby="work-info-heading">
+      <h2 id="work-info-heading">作品情報</h2>
+      <div class="actions">
+        <a class="button secondary" href="manifest.json">manifest</a>
+        <a class="button secondary" href="LICENSES.md">ライセンス</a>
+      </div>
+    </section>
   </div>
   <p>再生用SB3 SHA-256: <code>${manifest.profiles.player.sb3.sha256}</code></p>
   <p>編集用SB3 SHA-256: <code>${manifest.profiles.editor.sb3.sha256}</code></p>

@@ -27,6 +27,18 @@ test('publishes the approved works-library categories and rights metadata', asyn
     assert(work.license.href);
     assert(work.dslSeries.length > 0);
   }
+
+  const urashima = catalog.works.find(({id}) => id === 'urashima');
+  assert.deepEqual(
+    [...new Set(urashima.actions.map(({group}) => group))],
+    ['DSL 3.2 実行版', 'DSL 4.0 変換版', '作品情報'],
+  );
+  const partiallyGrouped = structuredClone(catalog);
+  delete partiallyGrouped.works.find(({id}) => id === 'urashima').actions[0].group;
+  assert.throws(
+    () => validateWorksCatalog(partiallyGrouped),
+    /must either all define group or all omit it/u,
+  );
 });
 
 test('allows external works only as one HTTPS link with rights and terms', () => {
