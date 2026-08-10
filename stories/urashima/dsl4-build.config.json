@@ -3,10 +3,10 @@
   "runtime": {
     "repository": "https://github.com/kubohiroya/tmpose-kamishibai",
     "pullRequest": 519,
-    "commit": "b804aa5006b9003a06489792b59ee67631f41afe",
+    "commit": "76d2e4fc5925375b70738766eddd37d562c33ff5",
     "baseOutput": "dist/downloads/kamishibai-4.0.sb3",
-    "baseSize": 7540307,
-    "baseSha256": "04d8e58285272d0bd6393e743b36483f97a4688b19abcb75172b4a360da53c89"
+    "baseSize": 7540568,
+    "baseSha256": "bbf26e50dda14eef8b55fab3f37b0eecf419c21a77d60874dc7af14bb10395b5"
   },
   "sourceManifest": "project.source.json",
   "projectAssets": "project-assets-dsl4.yml",
