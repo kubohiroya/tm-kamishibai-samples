@@ -3,6 +3,10 @@ controls:
   keymaps:
     production:
       Space: navigation.nextAction
+    rehearsal:
+      Space: navigation.nextAction
+      ArrowRight: navigation.nextAction
+      ArrowDown: navigation.nextScene
 assets:
   Urashima-walk-1: costume:Urashima
   Urashima-help-1: costume:Urashima
@@ -118,11 +122,11 @@ scenes:
   opening:
     - transition:
         effect: fadeOut
-        seconds: 0
+        seconds: 1
     - stage: Stars
     - transition:
         effect: fadeUp
-        seconds: 0
+        seconds: 1
     - Narration.show:
         skin: TextPlaceholder
         x: 0
@@ -150,11 +154,11 @@ scenes:
     actions:
       - transition:
           effect: fadeOut
-          seconds: 0
+          seconds: 1
       - stage: Beach1
       - transition:
           effect: fadeUp
-          seconds: 0
+          seconds: 1
       - wait: 0.5
       - bgm: Guitar Chords2
       - wait: 0.3
@@ -405,11 +409,11 @@ scenes:
   home village:
     - transition:
         effect: fadeOut
-        seconds: 0
+        seconds: 1
     - stage: Beach2
     - transition:
         effect: fadeUp
-        seconds: 0
+        seconds: 1
     - wait: 1
     - bgm: Medieval1
     - wait: 3
@@ -466,11 +470,11 @@ scenes:
     actions:
       - transition:
           effect: fadeToWhite
-          seconds: 0
+          seconds: 1
       - stage: Smoke
       - transition:
           effect: fadeFromWhite
-          seconds: 0
+          seconds: 1
       - sound: Gong
       - Urashima.show:
           skin: Urashima-old-1
@@ -496,11 +500,11 @@ scenes:
   curtain call:
     - transition:
         effect: fadeOut
-        seconds: 0
+        seconds: 1
     - stage: Dragon Castle
     - transition:
         effect: fadeUp
-        seconds: 0
+        seconds: 1
     - sound: Ocean Wave
     - wait: 1.5
     - bgm: Xylo2
@@ -543,4 +547,4 @@ scenes:
     - wait: 4
     - transition:
         effect: fadeOut
-        seconds: 0
+        seconds: 1

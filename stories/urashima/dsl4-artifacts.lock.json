@@ -3,10 +3,10 @@
   "runtime": {
     "repository": "https://github.com/kubohiroya/tmpose-kamishibai",
     "pullRequest": 519,
-    "commit": "76d2e4fc5925375b70738766eddd37d562c33ff5",
+    "commit": "160bdfae48bf4bb8c8bbebbbb72fd7582d114853",
     "baseOutput": "dist/downloads/kamishibai-4.0.sb3",
-    "baseSize": 7540568,
-    "baseSha256": "bbf26e50dda14eef8b55fab3f37b0eecf419c21a77d60874dc7af14bb10395b5"
+    "baseSize": 7548189,
+    "baseSha256": "2a4b5b816e849242d8a7a0c15e2501649fe1ddfa6866793643450f312f67d15b"
   },
   "sb3Toolchain": {
     "package": "@kubohiroya/sb3-toolchain",
@@ -14,16 +14,16 @@
   },
   "source": {
     "path": "urashima.k4.yml",
-    "size": 16319,
-    "sha256": "bba6d23c21ef810c198aaf2bdd6f0c7af66e360291a5f4860eafa439c0f4ed87",
+    "size": 16447,
+    "sha256": "5059fbd976b9defca2d99299adc55039db537dc268641140dba9eea86856d8fd",
     "assetCount": 49,
     "remoteAssetCount": 0
   },
   "output": {
     "path": "urashima-4.0.sb3",
-    "size": 42437949,
-    "sha256": "5b3248d61e0ee61f43093c486812104ff64c86c3800e6166bd7c49c25b6ba435",
-    "archiveEntryCount": 11,
+    "size": 42445113,
+    "sha256": "b0f4f3dc746608f0b5fe0bb246e04407ecc051fcf8d8334a5716c9a3b5614a8e",
+    "archiveEntryCount": 13,
     "targetNames": [
       "Stage",
       "officialWebsiteButton",
