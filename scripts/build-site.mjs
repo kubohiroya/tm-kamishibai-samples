@@ -386,8 +386,8 @@ ${renderSiteHeader('../../')}
       </div>
     </section>
     <section class="artifact-group" data-dsl-series="4.0" aria-labelledby="my-dsl-40-heading">
-      <h2 id="my-dsl-40-heading">DSL 4.0 変換版</h2>
-      <p>DSL 3.2作業用台本を公式変換ツールで変換・検証したYAMLです。</p>
+      <h2 id="my-dsl-40-heading">DSL 4.0 作業版</h2>
+      <p>YAMLの行頭にある#を選択的に削除し、ポーズ画像とposeアクションを有効化できるワークショップ用台本です。</p>
       <div class="actions">
         <button class="button secondary" type="button" disabled aria-disabled="true">Web版（準備中）</button>
         <a class="button secondary" href="my-urashima.k4.yml" download>DSL 4.0 YAMLをダウンロード</a>

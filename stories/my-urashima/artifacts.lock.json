@@ -6,6 +6,11 @@
     "source": "npm:@kubohiroya/tmpose-kamishibai@3.2.2",
     "commit": "2b5005d293a9b63c8ba5da396fd86815d093f975"
   },
+  "sb3Toolchain": {
+    "package": "@kubohiroya/sb3-toolchain",
+    "version": "0.5.0",
+    "source": "github:kubohiroya/sb3-toolchain#cd5e221dd8fa5f903042f2c291d5d1e764e7bf4e"
+  },
   "storyDate": {
     "value": "2026-08-05",
     "contentSha256": "c13e7fca30f4fdc3ad2786e1a2ea8708dc8d05cef46e08fde1ada7d37eb9ea1e"
@@ -35,15 +40,35 @@
   },
   "configuration": {
     "path": "sample.config.json",
-    "size": 2045,
-    "sha256": "a8ae2e1d7932cc2874f8c1e451a7167f4a17702d7d2aab33d1316ec3735d720f"
+    "size": 1790,
+    "sha256": "c27cd1a5972e5f1500cc0bc80276de5cd930d8ee6d86e9d4ed0fd5df25c63e03"
+  },
+  "projectAssets": {
+    "manifest": {
+      "path": "project-assets.yml",
+      "size": 449,
+      "sha256": "56f26e4c2670aef9e15534dc03414be435159fe43d1707acb0b1c76269f3923b"
+    },
+    "files": [
+      {
+        "id": "Princess",
+        "kind": "costume",
+        "target": "Princess",
+        "license": "CC-BY-SA-4.0: ../../resources/20260801/LICENSES.md",
+        "source": {
+          "path": "../../resources/20260801/master/Princess.png",
+          "size": 220534,
+          "sha256": "e9d1857528a619e4a56ebd232fea4767fd6bdd00b20ac67a90c859c6b3598e83"
+        }
+      }
+    ]
   },
   "output": {
     "outputName": "my-urashima",
     "sb3": {
       "filename": "my-urashima.sb3",
-      "sha256": "4de2dcd78062880a743869b903f781f0ab4f996720d008eb6028c49e986912a4",
-      "size": 15562665
+      "sha256": "ad4cef4428b19890909a4fcec76c21cfb05abf01a5a6f6f2cfe8612f51e42f01",
+      "size": 15337912
     },
     "script": {
       "filename": "my-urashima.txt",
@@ -53,7 +78,7 @@
     "manifest": {
       "filename": "my-urashima.manifest.json",
       "size": 30190,
-      "sha256": "8735491a18d630f142023e6db7119c3bfaa90ef8abee5d08fceba9a526256657"
+      "sha256": "23957cba1401fe10bf219df86e9df9e41659c128e39319bd93be669d27d4402b"
     }
   }
 }

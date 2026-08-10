@@ -1,0 +1,23 @@
+formatVersion: 1
+
+sprites:
+  Princess:
+    layerOrder: 6
+    visible: false
+    x: 4
+    y: -16
+    size: 70
+    direction: 90
+    draggable: false
+    rotationStyle: all around
+    volume: 100
+
+assets:
+  Princess:
+    kind: costume
+    target: Princess
+    file: ../../resources/20260801/master/Princess.png
+    bitmapResolution: 2
+    rotationCenterX: 507
+    rotationCenterY: 507
+    license: 'CC-BY-SA-4.0: ../../resources/20260801/LICENSES.md'

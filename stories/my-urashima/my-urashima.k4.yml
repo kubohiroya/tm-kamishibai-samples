@@ -7,7 +7,7 @@ assets:
   Urashima-walk-1: costume:Urashima
   Urashima-help-1: costume:Urashima
   Urashima-dance-1: costume:Urashima
-  Urashima-dance-2: costume:Actor
+  Urashima-dance-2: costume:Urashima
   Urashima-ride-1: costume:Urashima
   Urashima-ride-2: costume:Urashima
   Urashima-box-1: costume:Urashima
@@ -20,6 +20,11 @@ assets:
   Urashima-old-2: costume:Urashima
   Turtle: costume:Turtle
   Princess: costume:Princess
+# ワークショップ: 使用するポーズ数に合わせ、p1から順に行頭の#だけを削除してください。
+#  p1: costume:Princess
+#  p2: costume:Princess
+#  p3: costume:Princess
+#  p4: costume:Princess
   Fish1: costume:Fish
   Fish2: costume:Fish
   Beach1: backdrop
@@ -213,7 +218,6 @@ scenes:
               sound: Squish Pop
       - Urashima.setSkin:
           skin: Urashima-walk-1
-          scale: 45
       - wait: 1.5
       - Urashima.moveTo:
           x: 120
@@ -232,7 +236,6 @@ scenes:
       - bgm: Jump
       - Urashima.setSkin:
           skin: Urashima-dance-1
-          scale: 45
       - Urashima.say:
           text: わーい🎵
           seconds: 2
@@ -339,17 +342,16 @@ scenes:
           x: -130
           y: -27
           scale: 70
-      - Fish.setLayer: back
-      - Fish.loop:
-          steps:
-            - skin: Fish1
-              seconds: 0.3
-            - skin: Fish2
-              seconds: 0.3
+      - Fish.setSkin: Fish2
+      - wait: 0.3
+      - Fish.setSkin: Fish1
       - Urashima.setSkin:
           skin: Urashima-dance-1
-          scale: 45
       - wait: 1
+# ワークショップ: 次の3候補から1行だけを選び、行頭の#だけを削除してください。
+#      - Princess.pose: {steps: [{pose: p1, skin: p1, sound: Drum Funky}, {pose: p2, skin: p2, sound: Drum Funky}, {pose: p1, skin: p1, sound: Drum Funky}, {pose: p2, skin: p2, sound: Drum Funky}]}
+#      - Princess.pose: {steps: [{pose: p1, skin: p1, sound: Drum Funky}, {pose: p2, skin: p2, sound: Drum Funky}, {pose: p3, skin: p3, sound: Drum Funky}, {pose: p1, skin: p1, sound: Drum Funky}, {pose: p2, skin: p2, sound: Drum Funky}, {pose: p3, skin: p3, sound: Drum Funky}]}
+#      - Princess.pose: {steps: [{pose: p1, skin: p1, sound: Drum Funky}, {pose: p2, skin: p2, sound: Drum Funky}, {pose: p3, skin: p3, sound: Drum Funky}, {pose: p4, skin: p4, sound: Drum Funky}, {pose: p1, skin: p1, sound: Drum Funky}, {pose: p2, skin: p2, sound: Drum Funky}, {pose: p3, skin: p3, sound: Drum Funky}, {pose: p4, skin: p4, sound: Drum Funky}]}
       - wait: 2
   goodbye dragon castle:
     poseModel: PoseModel2
@@ -380,7 +382,6 @@ scenes:
           seconds: 0.5
       - Urashima.setSkin:
           skin: Urashima-box-1
-          scale: 45
       - Urashima.pose:
           steps:
             - pose: receive
@@ -394,12 +395,12 @@ scenes:
           y: -77
           seconds: 2.5
       - wait: 1
-      - Urashima.hide: {}
+      - Urashima.setTransparency: 100
       - wait: 1
       - Princess.think:
           text: ............
           seconds: 2.5
-      - Princess.hide: {}
+      - Princess.setTransparency: 100
       - wait: 2
   home village:
     - transition:
@@ -417,6 +418,7 @@ scenes:
         x: 172
         y: -57
         scale: 45
+    - Urashima.setTransparency: 0
     - wait: 2
     - Urashima.moveTo:
         x: 0
@@ -425,7 +427,6 @@ scenes:
     - wait: 0.5
     - Urashima.setSkin:
         skin: Urashima-surprised
-        scale: 45
     - wait: 1
     - bgm: Ocean Wave
     - Urashima.say:
@@ -490,7 +491,7 @@ scenes:
               sound: Ocean Wave
       - bgm: Medieval1
       - wait: 4
-      - Urashima.hide: {}
+      - Urashima.setTransparency: 100
       - wait: 1
   curtain call:
     - transition:
@@ -515,12 +516,14 @@ scenes:
         x: 0
         y: -27
         scale: 70
+    - Princess.setTransparency: 0
     - wait: 1.2
     - Urashima.show:
         skin: Urashima-walk-1
         x: 155
         y: -10
         scale: 45
+    - Urashima.setTransparency: 0
     - wait: 1.2
     - Princess.say:
         text: バイバイ！

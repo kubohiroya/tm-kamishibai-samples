@@ -10,26 +10,10 @@
     "script": "external",
     "assets": "embedded"
   },
-  "targets": [
-    {
-      "name": "Princess",
-      "type": "sprite",
-      "layerOrder": 6,
-      "visible": false,
-      "x": 4,
-      "y": -16,
-      "size": 70,
-      "direction": 90,
-      "draggable": false,
-      "rotationStyle": "all around",
-      "costumes": [
-        {
-          "asset": "Princess",
-          "reference": "costume"
-        }
-      ]
-    }
-  ],
+  "projectAssets": {
+    "manifest": "project-assets.yml",
+    "allowedRoots": ["../../resources/20260801/master"]
+  },
   "scriptReplacements": [
     {
       "description": "Pause before Princess pose exercise",

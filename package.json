@@ -14,6 +14,7 @@
     "test": "node --test test/*.test.mjs",
     "test:web": "node scripts/verify-packaged-web-browser.mjs && node scripts/verify-packaged-web-webkit-audio.mjs",
     "update:my-urashima": "node scripts/refresh-story-artifacts.mjs --force-my",
+    "validate:my-urashima-dsl4": "node scripts/validate-my-urashima-dsl4.mjs",
     "update:artifacts-lock": "node scripts/refresh-story-artifacts.mjs --force",
     "verify": "node scripts/verify-site.mjs",
     "verify:external-links": "node scripts/verify-external-works.mjs"
@@ -26,7 +27,9 @@
     "fflate": "0.8.3"
   },
   "devDependencies": {
+    "@kubohiroya/sb3-toolchain": "github:kubohiroya/sb3-toolchain#cd5e221dd8fa5f903042f2c291d5d1e764e7bf4e",
     "@turbowarp/packager": "3.13.0",
-    "playwright": "1.61.1"
+    "playwright": "1.61.1",
+    "yaml": "2.9.0"
   }
 }

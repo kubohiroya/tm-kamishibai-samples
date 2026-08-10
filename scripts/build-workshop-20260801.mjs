@@ -127,6 +127,8 @@ export async function verifyWorkshopArchive(zipPath) {
     `${workshopEdition}/stories/urashima/licenses/tmpose-kamishibai-MPL-2.0.txt`,
     `${workshopEdition}/stories/my-urashima/my-urashima.sb3`,
     `${workshopEdition}/stories/my-urashima/my-urashima.txt`,
+    `${workshopEdition}/stories/my-urashima/my-urashima.k4.yml`,
+    `${workshopEdition}/stories/my-urashima/project-assets.yml`,
     ...workshopResourceDirectories.map((name) => `${workshopEdition}/${name}/`),
   ];
   for (const entry of requiredEntries) {
@@ -183,6 +185,8 @@ export async function assembleWorkshopDistribution({
     ["urashima", "urashima.txt"],
     ["my-urashima", "my-urashima.sb3"],
     ["my-urashima", "my-urashima.txt"],
+    ["my-urashima", "my-urashima.k4.yml"],
+    ["my-urashima", "project-assets.yml"],
   ];
   await Promise.all(
     storyFiles.map(([story, filename]) =>

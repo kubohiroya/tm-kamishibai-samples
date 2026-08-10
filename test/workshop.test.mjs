@@ -146,6 +146,14 @@ test("assembles a deterministic workshop directory and ZIP with explicit license
         "script",
       ),
       writeFixture(
+        path.join(siteOutputDirectory, "stories/my-urashima/my-urashima.k4.yml"),
+        "kamishibai: '4.0'",
+      ),
+      writeFixture(
+        path.join(siteOutputDirectory, "stories/my-urashima/project-assets.yml"),
+        "formatVersion: 1",
+      ),
+      writeFixture(
         path.join(siteOutputDirectory, "stories/urashima/LICENSES.md"),
         "Story licenses",
       ),
@@ -182,6 +190,18 @@ test("assembles a deterministic workshop directory and ZIP with explicit license
       Object.hasOwn(
         archive,
         `${workshopEdition}/stories/urashima/licenses/tmpose-kamishibai-MPL-2.0.txt`,
+      ),
+    );
+    assert(
+      Object.hasOwn(
+        archive,
+        `${workshopEdition}/stories/my-urashima/my-urashima.k4.yml`,
+      ),
+    );
+    assert(
+      Object.hasOwn(
+        archive,
+        `${workshopEdition}/stories/my-urashima/project-assets.yml`,
       ),
     );
     assert.equal(
