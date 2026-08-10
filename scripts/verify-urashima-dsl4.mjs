@@ -61,6 +61,16 @@ export async function verifyUrashimaDsl4() {
     project.targets.map((target) => target.name),
     expectedTargets,
   );
+  const stage = project.targets.find((target) => target.isStage);
+  assert.equal(stage?.blocks?.titleFlag?.opcode, 'event_whenflagclicked');
+  assert.equal(stage?.blocks?.titleFlag?.next, 'titleFlagShow');
+  assert.equal(stage?.blocks?.titleFlagShow?.opcode, 'kubohiroyakamishibai4_showTitle');
+  const extensionSource = Buffer.from(
+    project.extensionURLs.kubohiroyakamishibai4.slice('data:text/javascript;base64,'.length),
+    'base64',
+  ).toString('utf8');
+  assert(extensionSource.includes('dsl4SpeechAdvanceTypewriter:!0'));
+  assert(extensionSource.includes('data-dsl4-runtime-error'));
   for (const actor of ['Urashima', 'Turtle', 'Princess', 'Fish', 'Narration']) {
     const target = project.targets.find((candidate) => candidate.name === actor);
     assert(target && !target.isStage && target.costumes.length === 1);
