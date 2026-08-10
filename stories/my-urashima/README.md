@@ -12,7 +12,7 @@
 - 掲載形態: 当サイトで配布
 - ライセンス・利用条件: [MPL-2.0、CC BY-SA 2.0ほか](../urashima/LICENSES.md)
 
-SB3の展開ソース化、`--project-assets project-assets.yml`によるPrincessスプライトの追加、決定的再構築には、commit固定した`@kubohiroya/sb3-toolchain`を使用します。最終SB3も同じツールチェインで再構築したバイト列と一致することを生成時に検証します。利用側スクリプトがScratch JSONやZIP entryを直接編集する経路はありません。
+SB3の展開ソース化、`--project-assets project-assets.yml`によるPrincessスプライトの追加、決定的再構築には、npmの厳密バージョン`@kubohiroya/sb3-toolchain@0.6.0`を使用します。最終SB3も同じツールチェインで再構築したバイト列と一致することを生成時に検証します。利用側スクリプトがScratch JSONやZIP entryを直接編集する経路はありません。
 
 親入力や設定を意図的に変更した場合は、リポジトリルートで次の唯一の更新コマンドを実行し、チェックイン済み成果物とロックを更新します。
 

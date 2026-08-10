@@ -1,9 +1,7 @@
 packages:
   - .
 
-allowBuilds:
-  '@kubohiroya/sb3-toolchain@https://codeload.github.com/kubohiroya/sb3-toolchain/tar.gz/cd5e221dd8fa5f903042f2c291d5d1e764e7bf4e': true
-
 minimumReleaseAgeExclude:
   - '@kubohiroya/tmpose-kamishibai@3.2.2'
   - '@kubohiroya/turbowarp-svg-text@0.1.0'
+  - '@kubohiroya/sb3-toolchain@0.6.0'

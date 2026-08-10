@@ -16,8 +16,8 @@ importers:
         version: 0.8.3
     devDependencies:
       '@kubohiroya/sb3-toolchain':
-        specifier: github:kubohiroya/sb3-toolchain#cd5e221dd8fa5f903042f2c291d5d1e764e7bf4e
-        version: https://codeload.github.com/kubohiroya/sb3-toolchain/tar.gz/cd5e221dd8fa5f903042f2c291d5d1e764e7bf4e
+        specifier: 0.6.0
+        version: 0.6.0
       '@turbowarp/packager':
         specifier: 3.13.0
         version: 3.13.0
@@ -41,9 +41,8 @@ packages:
     resolution: {integrity: sha512-XuhF/edg+iIvXjkCWgfj6fWtRi/KrEPg2ILXj1l86EN4EssuOiPcLKgkMDr9cL8jTGtVd/MKUWW6Y0/ZVf1PGA==}
     engines: {node: '>=8'}
 
-  '@kubohiroya/sb3-toolchain@https://codeload.github.com/kubohiroya/sb3-toolchain/tar.gz/cd5e221dd8fa5f903042f2c291d5d1e764e7bf4e':
-    resolution: {gitHosted: true, integrity: sha512-zdIUFT+Ww3idSZEvlmjoPhrxRXBb6C0xK+jwT77ze/1t9IKAVkJknhHhkwo5wPjYtmjdWWQ5RutJ1EQ0opLHOw==, tarball: https://codeload.github.com/kubohiroya/sb3-toolchain/tar.gz/cd5e221dd8fa5f903042f2c291d5d1e764e7bf4e}
-    version: 0.5.0
+  '@kubohiroya/sb3-toolchain@0.6.0':
+    resolution: {integrity: sha512-xV8hFlN1SF9QU/L2RIf68ty8IxhQzFxwFEZ2kuwq1U1hNdYNCY/WE4j+0HQ2M5iQ8pMMoNHqASpEAEwKwGGRyQ==}
     engines: {node: '>=22.12.0'}
     hasBin: true
 
@@ -329,7 +328,7 @@ snapshots:
 
   '@fiahfy/packbits@0.0.6': {}
 
-  '@kubohiroya/sb3-toolchain@https://codeload.github.com/kubohiroya/sb3-toolchain/tar.gz/cd5e221dd8fa5f903042f2c291d5d1e764e7bf4e':
+  '@kubohiroya/sb3-toolchain@0.6.0':
     dependencies:
       fflate: 0.8.3
       music-metadata: 11.14.0

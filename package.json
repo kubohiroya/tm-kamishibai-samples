@@ -27,7 +27,7 @@
     "fflate": "0.8.3"
   },
   "devDependencies": {
-    "@kubohiroya/sb3-toolchain": "github:kubohiroya/sb3-toolchain#cd5e221dd8fa5f903042f2c291d5d1e764e7bf4e",
+    "@kubohiroya/sb3-toolchain": "0.6.0",
     "@turbowarp/packager": "3.13.0",
     "playwright": "1.61.1",
     "yaml": "2.9.0"

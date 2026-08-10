@@ -8,8 +8,8 @@
   },
   "sb3Toolchain": {
     "package": "@kubohiroya/sb3-toolchain",
-    "version": "0.5.0",
-    "source": "github:kubohiroya/sb3-toolchain#cd5e221dd8fa5f903042f2c291d5d1e764e7bf4e"
+    "version": "0.6.0",
+    "source": "0.6.0"
   },
   "storyDate": {
     "value": "2026-08-05",
