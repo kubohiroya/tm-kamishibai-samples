@@ -208,7 +208,7 @@ export async function verifyPublishedSite(options = {}) {
   );
   assert(myUrashimaDsl4Published.toString('utf8').startsWith('kamishibai: "4.0"\n'));
 
-  assert.equal(manifest.formatVersion, 3);
+  assert.equal(manifest.formatVersion, 4);
   assert.equal(manifest.sample, 'urashima');
   assert.equal(
     manifest.publicUrl,
@@ -219,12 +219,25 @@ export async function verifyPublishedSite(options = {}) {
   assert.equal(packageJson.devDependencies['@turbowarp/packager'], '3.13.0');
   assert.equal(manifest.baseSb3.profile, 'generic');
   assert.equal(manifest.baseSb3.published, true);
-  assert.deepEqual(manifest.assetCounts, {images: 24, sounds: 22, embedded: 44});
-  assert.equal(manifest.assets.length, 46);
+  assert.deepEqual(manifest.assetCounts, {images: 26, sounds: 22, embedded: 44});
+  assert.equal(manifest.assets.length, 48);
   assert.deepEqual(manifest.unusedSourceAssets, [
+    'assets/images/47282ff0f7047c6fab9c94b531abf721.png',
+    'assets/images/b6c18d2f3df8b5d12e2b6a529109fec2.svg',
     'assets/sounds/9d01505050dea4f782cd59635bcbab63.mp3',
     'assets/sounds/ab4760e0c9f0db6d1f5e83e3a0e9bf4f.mp3',
   ]);
+  assert.equal(manifest.dsl4Offline.path, 'urashima-4.0.sb3');
+  assert.equal(manifest.dsl4Offline.sourceAssetCount, 49);
+  assert.equal(manifest.dsl4Offline.embeddedFileCount, 55);
+  assert.equal(
+    manifest.dsl4Offline.runtimeCommit,
+    '41dcf1d6051b11cf28148db85dd6377ec6f9fb95',
+  );
+  assert.deepEqual(manifest.dsl4Offline.sb3Toolchain, {
+    package: '@kubohiroya/sb3-toolchain',
+    version: '0.6.0',
+  });
   assert.equal(
     manifest.assets
       .filter((asset) => asset.path.startsWith('assets/sounds/'))
@@ -235,10 +248,20 @@ export async function verifyPublishedSite(options = {}) {
     await verifyFile(outputSampleDirectory, asset, asset.path);
   }
 
-  const [editor, player, publicScript, baseSb3, sourceScript, dsl4Script, assetManifest] =
+  const [
+    editor,
+    player,
+    dsl4Offline,
+    publicScript,
+    baseSb3,
+    sourceScript,
+    dsl4Script,
+    assetManifest,
+  ] =
     await Promise.all([
       verifyProfile(outputSampleDirectory, 'editor', manifest.profiles.editor),
       verifyProfile(outputSampleDirectory, 'player', manifest.profiles.player),
+      verifyFile(outputSampleDirectory, manifest.dsl4Offline, 'DSL 4.0 offline SB3'),
       verifyFile(outputSampleDirectory, manifest.script, 'public script'),
       verifyFile(outputSampleDirectory, manifest.baseSb3, 'generic base SB3'),
       verifyFile(outputSampleDirectory, manifest.source.script, 'source script'),
@@ -252,6 +275,7 @@ export async function verifyPublishedSite(options = {}) {
   assert.equal(player.builderManifest.script.mode, 'embedded');
   assert.equal(player.builderManifest.script.embeddedVariableId, 'tmposeEmbeddedScript');
   assert.equal(baseSb3.length, manifest.baseSb3.size);
+  assert(dsl4Offline.length > baseSb3.length);
   assert(sourceScript.includes(Buffer.from('file:assets/')));
   assert(dsl4Script.toString('utf8').startsWith('kamishibai: "4.0"\n'));
   assert.equal(JSON.parse(assetManifest.toString('utf8')).assets.length, 44);
@@ -318,7 +342,9 @@ export async function verifyPublishedSite(options = {}) {
   assert(licenseSummary.includes('tmpose-kamishibai-MPL-2.0.txt'));
   assert(!licenseSummary.includes('tmpose-kamishibai-MIT.txt'));
   assert(licenseSummary.includes('turbowarp-packager-NOTICE.md'));
-  assert(licenseSummary.includes('完全オフライン版ではありません'));
+  assert(licenseSummary.includes('3.2 Web版'));
+  assert(licenseSummary.includes('urashima-4.0.sb3'));
+  assert(licenseSummary.includes('実行時のモデル取得は不要'));
   assert(packagerNotice.includes('Copyright (C) 2021-2024 Thomas Weber'));
   assert(packagerNotice.includes('MPL-2.0'));
   verifySiteHeader(rootIndex, '');
@@ -364,10 +390,10 @@ export async function verifyPublishedSite(options = {}) {
   );
   const rootDsl32Actions = urashimaCard.slice(
     urashimaCard.indexOf('data-action-group="DSL 3.2 実行版"'),
-    urashimaCard.indexOf('data-action-group="DSL 4.0 変換版"'),
+    urashimaCard.indexOf('data-action-group="DSL 4.0 オフライン実行版"'),
   );
   const rootDsl40Actions = urashimaCard.slice(
-    urashimaCard.indexOf('data-action-group="DSL 4.0 変換版"'),
+    urashimaCard.indexOf('data-action-group="DSL 4.0 オフライン実行版"'),
   );
   assert(
     urashimaCard.includes(
@@ -379,19 +405,15 @@ export async function verifyPublishedSite(options = {}) {
   assert(rootDsl32Actions.includes('DSL 3.2台本を表示'));
   assert(rootDsl32Actions.includes('再生用SB3をダウンロード'));
   assert(!rootDsl32Actions.includes('urashima.k4.yml'));
-  assert(rootDsl40Actions.includes('<h4>DSL 4.0 変換版</h4>'));
+  assert(rootDsl40Actions.includes('<h4>DSL 4.0 オフライン実行版</h4>'));
   assert(rootDsl40Actions.includes('urashima.k4.yml'));
-  assert(!rootDsl40Actions.includes('urashima.sb3'));
+  assert(rootDsl40Actions.includes('urashima-4.0.sb3'));
   assert(
     rootDsl40Actions.includes(
       '<button class="button secondary" type="button" disabled aria-disabled="true">Web版（準備中）</button>',
     ),
   );
-  assert(
-    rootDsl40Actions.includes(
-      '<button class="button secondary" type="button" disabled aria-disabled="true">再生用SB3（準備中）</button>',
-    ),
-  );
+  assert(rootDsl40Actions.includes('オフラインSB3をダウンロード'));
   assert(!urashimaCard.includes('data-action-group="作品情報"'));
   assert(!urashimaCard.includes('>manifest</a>'));
   assert(!urashimaCard.includes('>詳細を見る</a>'));
@@ -459,11 +481,11 @@ export async function verifyPublishedSite(options = {}) {
   assert(sampleDsl32Actions.includes('Web版を開く'));
   assert(sampleDsl32Actions.includes('再生用SB3をダウンロード'));
   assert(!sampleDsl32Actions.includes('urashima.k4.yml'));
-  assert(sampleDsl40Actions.includes('<h2 id="dsl-40-heading">DSL 4.0 変換版</h2>'));
+  assert(sampleDsl40Actions.includes('<h2 id="dsl-40-heading">DSL 4.0 オフライン実行版</h2>'));
   assert(sampleDsl40Actions.includes('urashima.k4.yml'));
-  assert(!sampleDsl40Actions.includes('urashima.sb3'));
+  assert(sampleDsl40Actions.includes('urashima-4.0.sb3'));
   assert(sampleDsl40Actions.includes('disabled aria-disabled="true">Web版（準備中）'));
-  assert(sampleDsl40Actions.includes('disabled aria-disabled="true">再生用SB3（準備中）'));
+  assert(sampleDsl40Actions.includes('オフラインSB3をダウンロード'));
   assert(publishedFiles.includes('.nojekyll'));
   assert(publishedFiles.includes('favicon.png'));
   assert(publishedFiles.includes('favicon.source.json'));
@@ -477,6 +499,7 @@ export async function verifyPublishedSite(options = {}) {
   assert(publishedFiles.includes('stories/my-urashima/my-urashima.k4.yml'));
   assert(publishedFiles.includes('stories/my-urashima/index.html'));
   assert(publishedFiles.includes('stories/urashima/urashima.k4.yml'));
+  assert(publishedFiles.includes('stories/urashima/urashima-4.0.sb3'));
   assert(
     publishedFiles.includes(
       'stories/urashima/licenses/tmpose-kamishibai-MPL-2.0.txt',

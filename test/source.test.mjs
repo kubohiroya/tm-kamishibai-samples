@@ -112,7 +112,7 @@ test('licenses the repository, runtime, Urashima content, and Packager notices',
 
 test('keeps the migrated Scratch assets complete and content-addressed', async () => {
   const directories = [
-    ['images', 24],
+    ['images', 26],
     ['sounds', 22],
   ];
   for (const [directory, expectedCount] of directories) {
@@ -569,7 +569,7 @@ test('recovers interrupted or stalled-running WebKit audio after touch completio
   assert.equal(window.__tmposeAudioUnlockState.primeCompletions, 6);
 });
 
-test('locks every external script asset and publishes DSL 3.2 and converted DSL 4.0 scripts', async () => {
+test('locks every external script asset and publishes DSL 3.2 and offline DSL 4.0 scripts', async () => {
   const [source, published, dsl4, rawAssetManifest] = await Promise.all([
     readFile(path.join(sampleDirectory, 'source.txt'), 'utf8'),
     readFile(path.join(sampleDirectory, 'urashima.txt'), 'utf8'),
@@ -586,7 +586,22 @@ test('locks every external script asset and publishes DSL 3.2 and converted DSL 
     assert.deepEqual(script.match(/^# scene \d+$/gmu), expectedSceneComments);
   }
   assert(dsl4.startsWith('kamishibai: "4.0"\n'));
-  assert.match(dsl4, /^\s{2}PoseModel1:\n\s{4}kind: poseModel\n\s{4}delivery: remote$/mu);
+  const dsl4Document = parseYaml(dsl4);
+  const dsl4Assets = Object.values(dsl4Document.assets);
+  assert.equal(dsl4Assets.length, 49);
+  assert.equal(
+    dsl4Assets.every(
+      (asset) =>
+        typeof asset === 'object' &&
+        typeof asset.file === 'string' &&
+        asset.delivery !== 'remote' &&
+        asset.source === undefined,
+    ),
+    true,
+  );
+  assert.equal(dsl4Document.assets.PoseModel1.file, 'pose-models/1and2');
+  assert.equal(dsl4Document.assets.PoseModel2.file, 'pose-models/3and4');
+  assert.equal(dsl4Document.assets.PoseModel3.file, 'pose-models/6and7');
   assert.match(dsl4, /^\s{2}opening:\n/mu);
   assert.match(dsl4, /^\s{2}beach:\n\s{4}poseModel: PoseModel1\n\s{4}actions:$/mu);
   assert.match(dsl4, /^\s{6}- Urashima\.pose:\n\s{10}steps:\n/mu);

@@ -1,0 +1,96 @@
+formatVersion: 1
+
+# DSL 4.0 resolves actors to physical Scratch targets with the same names. The
+# full story assets remain file-backed in urashima.k4.yml; these initial
+# costumes materialize the five targets in the generated Scratch project.
+sprites:
+  Urashima:
+    layerOrder: 3
+    visible: false
+    x: 0
+    y: 0
+    size: 100
+    direction: 90
+    draggable: false
+    rotationStyle: all around
+    volume: 100
+  Turtle:
+    layerOrder: 4
+    visible: false
+    x: 0
+    y: 0
+    size: 100
+    direction: 90
+    draggable: false
+    rotationStyle: all around
+    volume: 100
+  Princess:
+    layerOrder: 5
+    visible: false
+    x: 0
+    y: 0
+    size: 100
+    direction: 90
+    draggable: false
+    rotationStyle: all around
+    volume: 100
+  Fish:
+    layerOrder: 6
+    visible: false
+    x: 0
+    y: 0
+    size: 100
+    direction: 90
+    draggable: false
+    rotationStyle: all around
+    volume: 100
+  Narration:
+    layerOrder: 7
+    visible: false
+    x: 0
+    y: 0
+    size: 100
+    direction: 90
+    draggable: false
+    rotationStyle: all around
+    volume: 100
+
+assets:
+  Urashima-walk-1:
+    kind: costume
+    target: Urashima
+    file: assets/images/963e926995791fde1b335fd4ba60d6d7.png
+    bitmapResolution: 2
+    rotationCenterX: 360
+    rotationCenterY: 360
+    license: 'MPL-2.0: LICENSES.md'
+  Turtle:
+    kind: costume
+    target: Turtle
+    file: assets/images/e9440d396734310dae5a63617d312015.svg
+    rotationCenterX: 173
+    rotationCenterY: 178
+    license: 'MPL-2.0: LICENSES.md'
+  Princess:
+    kind: costume
+    target: Princess
+    file: assets/images/bb5e81842988f89263e9f94aadb1adfb.png
+    bitmapResolution: 2
+    rotationCenterX: 360
+    rotationCenterY: 360
+    license: 'MPL-2.0: LICENSES.md'
+  Fish1:
+    kind: costume
+    target: Fish
+    file: assets/images/b72fee140b181e3d2ece61e33c625b2c.png
+    bitmapResolution: 2
+    rotationCenterX: 354
+    rotationCenterY: 359
+    license: 'MPL-2.0: LICENSES.md'
+  TextPlaceholder:
+    kind: costume
+    target: Narration
+    file: assets/images/b6c18d2f3df8b5d12e2b6a529109fec2.svg
+    rotationCenterX: 1
+    rotationCenterY: 1
+    license: 'MPL-2.0: LICENSES.md'
