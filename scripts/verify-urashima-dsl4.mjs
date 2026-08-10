@@ -71,6 +71,8 @@ export async function verifyUrashimaDsl4() {
   ).toString('utf8');
   assert(extensionSource.includes('dsl4SpeechAdvanceTypewriter:!0'));
   assert(extensionSource.includes('data-dsl4-runtime-error'));
+  assert(extensionSource.includes('@tensorflow/tfjs Copyright 2019 Google'));
+  assert(extensionSource.includes('var tmPose='));
   for (const actor of ['Urashima', 'Turtle', 'Princess', 'Fish', 'Narration']) {
     const target = project.targets.find((candidate) => candidate.name === actor);
     assert(target && !target.isStage && target.costumes.length === 1);
