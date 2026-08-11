@@ -681,6 +681,7 @@ scenes:
     - Narration.setText:
         text: お し ま い
         style: ending
+    - wait: 0.5
     - sound: Goal Cheer
     - wait: 4
     - transition:

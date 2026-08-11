@@ -5,6 +5,10 @@ import {tmpdir} from 'node:os';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 
+import {parse} from 'yaml';
+
+import {verifyEndCreditCheerDelay} from './verify-end-credit.mjs';
+
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 const sourcePath = path.join(projectRoot, 'stories/my-urashima/my-urashima.k4.yml');
 const validatorPath = path.resolve(projectRoot, '../tmpose-kamishibai/bin/tmpose-kamishibai.mjs');
@@ -37,6 +41,7 @@ function createVariant(source, poseCount, poseCandidate) {
 
 export async function validateMyUrashimaDsl4Workshop() {
   const source = await readFile(sourcePath, 'utf8');
+  verifyEndCreditCheerDelay(parse(source, {uniqueKeys: true}));
   const poseCandidates = source.match(/^#      - Princess\.pose:.*$/gmu) ?? [];
   assert.equal(poseCandidates.length, 3, 'Exactly three workshop pose candidates are required.');
   assert.equal(
