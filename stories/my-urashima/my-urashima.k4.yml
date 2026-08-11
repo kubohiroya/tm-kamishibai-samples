@@ -2,11 +2,13 @@ kamishibai: "4.0"
 controls:
   keymaps:
     production:
-      Space: navigation.nextAction
+      Space: rehearsal.skipPose
+      ArrowRight: rehearsal.skipAction
+      ArrowDown: rehearsal.skipScene
     rehearsal:
-      Space: navigation.nextAction
-      ArrowRight: navigation.nextAction
-      ArrowDown: navigation.nextScene
+      Space: rehearsal.skipPose
+      ArrowRight: rehearsal.skipAction
+      ArrowDown: rehearsal.skipScene
 assets:
   Urashima-walk-1: costume:Urashima
   Urashima-help-1: costume:Urashima
@@ -118,6 +120,8 @@ loading:
 poseRecognition:
   idleSound: Clock Ticking
   chargeSound: Sewing Machine
+  navigation:
+    allowSkip: true
 scenes:
   opening:
     - transition:

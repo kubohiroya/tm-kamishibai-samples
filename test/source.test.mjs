@@ -420,6 +420,13 @@ test('keeps my-urashima external-script-only and publishes its DSL 4.0 workshop 
     },
   ]);
   assert(dsl4.startsWith('kamishibai: "4.0"\n'));
+  const dsl4Document = parseYaml(dsl4);
+  assert.deepEqual(dsl4Document.controls.keymaps.production, {
+    Space: 'rehearsal.skipPose',
+    ArrowRight: 'rehearsal.skipAction',
+    ArrowDown: 'rehearsal.skipScene',
+  });
+  assert.equal(dsl4Document.poseRecognition.navigation.allowSkip, true);
   assert.match(dsl4, /^\s{2}Princess: costume:Princess$/mu);
   assert.match(dsl4, /^\s{2}Princess: Princess$/mu);
   assert.match(
@@ -605,7 +612,12 @@ test('locks every external script asset and publishes DSL 3.2 and offline DSL 4.
   assert.match(dsl4, /^\s{2}opening:\n/mu);
   assert.match(dsl4, /^\s{2}beach:\n\s{4}poseModel: PoseModel1\n\s{4}actions:$/mu);
   assert.match(dsl4, /^\s{6}- Urashima\.pose:\n\s{10}steps:\n/mu);
-  assert.match(dsl4, /^\s{4}production:\n\s{6}Space: navigation\.nextAction$/mu);
+  assert.deepEqual(dsl4Document.controls.keymaps.production, {
+    Space: 'rehearsal.skipPose',
+    ArrowRight: 'rehearsal.skipAction',
+    ArrowDown: 'rehearsal.skipScene',
+  });
+  assert.equal(dsl4Document.poseRecognition.navigation.allowSkip, true);
   const externalLines = source
     .split(/\r?\n/u)
     .filter((line) => /^asset=.*,(?:file|https?):/u.test(line));
