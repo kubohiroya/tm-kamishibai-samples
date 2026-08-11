@@ -10,6 +10,7 @@ import {strFromU8, unzipSync} from 'fflate';
 import {parse} from 'yaml';
 
 import {ensureUrashimaDsl4Inputs} from './update-urashima-dsl4-inputs.mjs';
+import {verifyEndCreditCheerDelay} from './verify-end-credit.mjs';
 
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 const storyDirectory = path.join(projectRoot, 'stories/urashima');
@@ -30,6 +31,7 @@ export async function verifyUrashimaDsl4() {
   assert.equal(sha256(sourceBytes), artifactLock.source.sha256);
 
   const story = parse(sourceBytes.toString('utf8'), {uniqueKeys: true});
+  verifyEndCreditCheerDelay(story);
   const assets = Object.values(story.assets);
   assert.equal(assets.length, 49);
   assert.equal(
