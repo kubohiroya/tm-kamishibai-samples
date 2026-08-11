@@ -14,6 +14,11 @@
     "test": "node --test test/*.test.mjs",
     "test:web": "node scripts/verify-packaged-web-browser.mjs && node scripts/verify-packaged-web-webkit-audio.mjs",
     "update:my-urashima": "node scripts/refresh-story-artifacts.mjs --force-my",
+    "update:urashima-dsl4-inputs": "node scripts/update-urashima-dsl4-inputs.mjs --download",
+    "update:urashima-dsl4": "pnpm update:urashima-dsl4-inputs && node scripts/build-urashima-dsl4.mjs --write-lock",
+    "validate:my-urashima-dsl4": "node scripts/validate-my-urashima-dsl4.mjs",
+    "validate:urashima-dsl4": "node ../tmpose-kamishibai/bin/tmpose-kamishibai.mjs validate-dsl4 --input stories/urashima/urashima.k4.yml --max-source-bytes 262144 --format pretty",
+    "verify:urashima-dsl4": "node scripts/verify-urashima-dsl4.mjs",
     "update:artifacts-lock": "node scripts/refresh-story-artifacts.mjs --force",
     "verify": "node scripts/verify-site.mjs",
     "verify:external-links": "node scripts/verify-external-works.mjs"
@@ -26,7 +31,9 @@
     "fflate": "0.8.3"
   },
   "devDependencies": {
+    "@kubohiroya/sb3-toolchain": "0.6.0",
     "@turbowarp/packager": "3.13.0",
-    "playwright": "1.61.1"
+    "playwright": "1.61.1",
+    "yaml": "2.9.0"
   }
 }

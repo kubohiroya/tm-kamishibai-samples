@@ -2,74 +2,206 @@ kamishibai: "4.0"
 controls:
   keymaps:
     production:
-      Space: navigation.nextAction
+      Space: rehearsal.skipPose
+      ArrowRight: rehearsal.skipAction
+      ArrowDown: rehearsal.skipScene
+    rehearsal:
+      Space: rehearsal.skipPose
+      ArrowRight: rehearsal.skipAction
+      ArrowDown: rehearsal.skipScene
 assets:
-  Urashima-walk-1: costume:Urashima
-  Urashima-help-1: costume:Urashima
-  Urashima-dance-1: costume:Urashima
-  Urashima-dance-2: costume:Urashima
-  Urashima-ride-1: costume:Urashima
-  Urashima-ride-2: costume:Urashima
-  Urashima-box-1: costume:Urashima
-  Urashima-box-2: costume:Urashima
-  Urashima-surprised: costume:Urashima
-  Urashima-open-1: costume:Urashima
-  Urashima-open-2: costume:Urashima
-  Urashima-open-3: costume:Urashima
-  Urashima-old-1: costume:Urashima
-  Urashima-old-2: costume:Urashima
-  Turtle: costume:Turtle
-  Princess: costume:Princess
-  Fish1: costume:Fish
-  Fish2: costume:Fish
-  Beach1: backdrop
-  Beach2: backdrop
-  Ocean: backdrop
-  Dragon Castle: backdrop
-  Smoke: backdrop
-  End: backdrop
-  Stars: backdrop
-  Guitar Chords2: sound
-  Rip: sound
-  Squish Pop: sound
-  Squeaky Toy: sound
-  Jump: sound
-  Odesong: sound
-  Splash: sound
-  Drum Funky: sound
-  Medieval2: sound
-  Medieval1: sound
-  Lo Gliss Tabla: sound
-  Low Conga: sound
-  Lo Geh Tabla: sound
-  Gong: sound
-  Crowd Gasp: sound
-  Ocean Wave: sound
-  Xylo2: sound
-  Goal Cheer: sound
-  Clock Ticking: sound
-  Sewing Machine: sound
+  Urashima-walk-1:
+    kind: costume
+    target: Urashima
+    file: assets/images/963e926995791fde1b335fd4ba60d6d7.png
+    bitmapResolution: 2
+  Urashima-help-1:
+    kind: costume
+    target: Urashima
+    file: assets/images/de2c9922d359138cd8f4fd96829c377a.png
+    bitmapResolution: 2
+  Urashima-dance-1:
+    kind: costume
+    target: Urashima
+    file: assets/images/fbcd808f6a222080bc8722d631e40ac4.png
+    bitmapResolution: 2
+  Urashima-dance-2:
+    kind: costume
+    target: Urashima
+    file: assets/images/2c8a567edc720b9039dc7a00bf164289.png
+    bitmapResolution: 2
+  Urashima-ride-1:
+    kind: costume
+    target: Urashima
+    file: assets/images/603045ae9bc87d42d84ebed21e76af7e.png
+    bitmapResolution: 2
+  Urashima-ride-2:
+    kind: costume
+    target: Urashima
+    file: assets/images/a6b0d96dd3d9fe9069acb213d2682caf.png
+    bitmapResolution: 2
+  Urashima-box-1:
+    kind: costume
+    target: Urashima
+    file: assets/images/0ec7d76d7a77cf94aa14a3cbf1030f1d.png
+    bitmapResolution: 2
+  Urashima-box-2:
+    kind: costume
+    target: Urashima
+    file: assets/images/7c4060f3c1f3b3535a6c035d3c811ed4.png
+    bitmapResolution: 2
+  Urashima-surprised:
+    kind: costume
+    target: Urashima
+    file: assets/images/9a9d051e632a6a0bc14283d4067051c3.png
+    bitmapResolution: 2
+  Urashima-open-1:
+    kind: costume
+    target: Urashima
+    file: assets/images/cccd1f9ec5d5f5d424391830a7e961ca.png
+    bitmapResolution: 2
+  Urashima-open-2:
+    kind: costume
+    target: Urashima
+    file: assets/images/bf71533830b43c976033475e2c1ddda9.png
+    bitmapResolution: 2
+  Urashima-open-3:
+    kind: costume
+    target: Urashima
+    file: assets/images/57cd266ee81b71c922eeec3cffaa9543.png
+    bitmapResolution: 2
+  Urashima-old-1:
+    kind: costume
+    target: Urashima
+    file: assets/images/83e50d9ac4fb3c4b8e2f280dac8a31f7.png
+    bitmapResolution: 2
+  Urashima-old-2:
+    kind: costume
+    target: Urashima
+    file: assets/images/8f7246587c9aa5e105ecf759ec7fdbf2.png
+    bitmapResolution: 2
+  Turtle:
+    kind: costume
+    target: Turtle
+    file: assets/images/e9440d396734310dae5a63617d312015.svg
+  Princess:
+    kind: costume
+    target: Princess
+    file: assets/images/bb5e81842988f89263e9f94aadb1adfb.png
+    bitmapResolution: 2
+  Fish1:
+    kind: costume
+    target: Fish
+    file: assets/images/b72fee140b181e3d2ece61e33c625b2c.png
+    bitmapResolution: 2
+  Fish2:
+    kind: costume
+    target: Fish
+    file: assets/images/1f3f91b56deb108fef4d42bcc90dd664.png
+    bitmapResolution: 2
+  Beach1:
+    kind: backdrop
+    file: assets/images/eb776c9010f3e8cb37c996ed28ced040.png
+    bitmapResolution: 2
+  Beach2:
+    kind: backdrop
+    file: assets/images/a3989cb8ade50e902eca361fb039eb9e.png
+    bitmapResolution: 2
+  Ocean:
+    kind: backdrop
+    file: assets/images/f17a928d2b84a862897355d764b27ea7.png
+    bitmapResolution: 2
+  Dragon Castle:
+    kind: backdrop
+    file: assets/images/cb0680dde39f37183cf6a036c1ba9d84.png
+    bitmapResolution: 2
+  Smoke:
+    kind: backdrop
+    file: assets/images/93393d4256c7651095f509e7beede6f7.png
+    bitmapResolution: 2
+  End:
+    kind: backdrop
+    file: assets/images/47a3f4dc8ef6daef91623e54ee109cd9.png
+    bitmapResolution: 2
+  Stars:
+    kind: backdrop
+    file: assets/images/47282ff0f7047c6fab9c94b531abf721.png
+    bitmapResolution: 2
+  Guitar Chords2:
+    kind: sound
+    file: assets/sounds/b3dde1b18eefc1b833889cfb0166347e.mp3
+  Rip:
+    kind: sound
+    file: assets/sounds/edef7e21a863bd400323a8a84359724b.mp3
+  Squish Pop:
+    kind: sound
+    file: assets/sounds/ff3775a2cc22c7c87eb8b851ed650efe.mp3
+  Squeaky Toy:
+    kind: sound
+    file: assets/sounds/439f8657b1cb684019a48463e05efa8b.mp3
+  Jump:
+    kind: sound
+    file: assets/sounds/02283e47a05e37d03a26eda444f331aa.mp3
+  Odesong:
+    kind: sound
+    file: assets/sounds/94a18e35af30d118a139d0394d38f32d.mp3
+  Splash:
+    kind: sound
+    file: assets/sounds/98e221fee9f4930b018496fb3a266687.mp3
+  Drum Funky:
+    kind: sound
+    file: assets/sounds/c28fb91feabdce6f882cbe8a6130c9c8.mp3
+  Medieval2:
+    kind: sound
+    file: assets/sounds/26bc2918f3516ee760f6f31c23d61e11.mp3
+  Medieval1:
+    kind: sound
+    file: assets/sounds/3dc51a6cfa6c4078aeeafb5db54b0290.mp3
+  Lo Gliss Tabla:
+    kind: sound
+    file: assets/sounds/9a3d3c59ddb24028da478eb5f4fe3217.mp3
+  Low Conga:
+    kind: sound
+    file: assets/sounds/c8531feaf9e1e7342d1171961d8443aa.mp3
+  Lo Geh Tabla:
+    kind: sound
+    file: assets/sounds/579156750e1ce25b2a829780df2598e6.mp3
+  Gong:
+    kind: sound
+    file: assets/sounds/953ecfbb79d1974cf8a510922f3cc97d.mp3
+  Crowd Gasp:
+    kind: sound
+    file: assets/sounds/12e6c84f065d6a8b651e8fbb4b246e2a.mp3
+  Ocean Wave:
+    kind: sound
+    file: assets/sounds/9bdabd397aac6305ceb80899c7b2ae78.mp3
+  Xylo2:
+    kind: sound
+    file: assets/sounds/e4ee886bed15fe374cf8faf73ea423f4.mp3
+  Goal Cheer:
+    kind: sound
+    file: assets/sounds/72a029d02f38062e3d3eecc5605b2289.mp3
+  Clock Ticking:
+    kind: sound
+    file: assets/sounds/13561fa02a628ea56859f72a90a3bfab.mp3
+  Sewing Machine:
+    kind: sound
+    file: assets/sounds/cfc75b8ec10d522a49e754cee372fcb9.mp3
   TextPlaceholder:
     kind: costume
     target: Narration
-    name: ui-placeholder
+    file: assets/images/b6c18d2f3df8b5d12e2b6a529109fec2.svg
   PoseModel1:
     kind: poseModel
-    delivery: remote
-    source:
-      url: https://sqs.prof.cuc.ac.jp/kamishibai/20260630/1and2/
+    file: pose-models/1and2
     loading: lazy
   PoseModel2:
     kind: poseModel
-    delivery: remote
-    source:
-      url: https://sqs.prof.cuc.ac.jp/kamishibai/20260630/3and4/
+    file: pose-models/3and4
     loading: lazy
   PoseModel3:
     kind: poseModel
-    delivery: remote
-    source:
-      url: https://sqs.prof.cuc.ac.jp/kamishibai/20260630/6and7/
+    file: pose-models/6and7
     loading: lazy
 actors:
   Urashima: Urashima-walk-1
@@ -87,21 +219,18 @@ textStyles:
     font: Helvetica
     size: 100
     align: left
-    direction: up-right
   narration:
     background: "#00000000"
     color: "#ffffff"
     font: Noto Sans JP
     size: 200
     align: center
-    direction: up
   ending:
     background: "#00000000"
     color: "#ffffff"
     font: Noto Sans JP
     size: 300
     align: center
-    direction: up
 variables:
   startSceneIndex: 1
 loading:
@@ -112,15 +241,17 @@ loading:
 poseRecognition:
   idleSound: Clock Ticking
   chargeSound: Sewing Machine
+  navigation:
+    allowSkip: true
 scenes:
   opening:
     - transition:
         effect: fadeOut
-        seconds: 0
+        seconds: 1
     - stage: Stars
     - transition:
         effect: fadeUp
-        seconds: 0
+        seconds: 1
     - Narration.show:
         skin: TextPlaceholder
         x: 0
@@ -148,11 +279,11 @@ scenes:
     actions:
       - transition:
           effect: fadeOut
-          seconds: 0
+          seconds: 1
       - stage: Beach1
       - transition:
           effect: fadeUp
-          seconds: 0
+          seconds: 1
       - wait: 0.5
       - bgm: Guitar Chords2
       - wait: 0.3
@@ -216,7 +347,6 @@ scenes:
               sound: Squish Pop
       - Urashima.setSkin:
           skin: Urashima-walk-1
-          scale: 45
       - wait: 1.5
       - Urashima.moveTo:
           x: 120
@@ -235,7 +365,6 @@ scenes:
       - bgm: Jump
       - Urashima.setSkin:
           skin: Urashima-dance-1
-          scale: 45
       - Urashima.say:
           text: わーい🎵
           seconds: 2
@@ -342,16 +471,15 @@ scenes:
           x: -130
           y: -27
           scale: 70
-      - Fish.setLayer: back
-      - Fish.loop:
-          steps:
-            - skin: Fish1
-              seconds: 0.3
-            - skin: Fish2
-              seconds: 0.3
+      - Fish.setSkin: Fish2
+      - wait: 0.3
+      - Fish.setSkin: Fish1
+      - wait: 0.3
+      - Fish.setSkin: Fish2
+      - wait: 0.3
+      - Fish.setSkin: Fish1
       - Urashima.setSkin:
           skin: Urashima-dance-1
-          scale: 45
       - Urashima.pose:
           steps:
             - pose: dance1
@@ -396,7 +524,6 @@ scenes:
           seconds: 0.5
       - Urashima.setSkin:
           skin: Urashima-box-1
-          scale: 45
       - Urashima.pose:
           steps:
             - pose: receive
@@ -410,21 +537,21 @@ scenes:
           y: -77
           seconds: 2.5
       - wait: 1
-      - Urashima.hide: {}
+      - Urashima.setTransparency: 100
       - wait: 1
       - Princess.think:
           text: ............
           seconds: 2.5
-      - Princess.hide: {}
+      - Princess.setTransparency: 100
       - wait: 2
   home village:
     - transition:
         effect: fadeOut
-        seconds: 0
+        seconds: 1
     - stage: Beach2
     - transition:
         effect: fadeUp
-        seconds: 0
+        seconds: 1
     - wait: 1
     - bgm: Medieval1
     - wait: 3
@@ -433,6 +560,7 @@ scenes:
         x: 172
         y: -57
         scale: 45
+    - Urashima.setTransparency: 0
     - wait: 2
     - Urashima.moveTo:
         x: 0
@@ -441,7 +569,6 @@ scenes:
     - wait: 0.5
     - Urashima.setSkin:
         skin: Urashima-surprised
-        scale: 45
     - wait: 1
     - bgm: Ocean Wave
     - Urashima.say:
@@ -481,11 +608,11 @@ scenes:
     actions:
       - transition:
           effect: fadeToWhite
-          seconds: 0
+          seconds: 1
       - stage: Smoke
       - transition:
           effect: fadeFromWhite
-          seconds: 0
+          seconds: 1
       - sound: Gong
       - Urashima.show:
           skin: Urashima-old-1
@@ -506,16 +633,16 @@ scenes:
               sound: Ocean Wave
       - bgm: Medieval1
       - wait: 4
-      - Urashima.hide: {}
+      - Urashima.setTransparency: 100
       - wait: 1
   curtain call:
     - transition:
         effect: fadeOut
-        seconds: 0
+        seconds: 1
     - stage: Dragon Castle
     - transition:
         effect: fadeUp
-        seconds: 0
+        seconds: 1
     - sound: Ocean Wave
     - wait: 1.5
     - bgm: Xylo2
@@ -531,12 +658,14 @@ scenes:
         x: 0
         y: -27
         scale: 70
+    - Princess.setTransparency: 0
     - wait: 1.2
     - Urashima.show:
         skin: Urashima-walk-1
         x: 155
         y: -10
         scale: 45
+    - Urashima.setTransparency: 0
     - wait: 1.2
     - Princess.say:
         text: バイバイ！
@@ -556,4 +685,4 @@ scenes:
     - wait: 4
     - transition:
         effect: fadeOut
-        seconds: 0
+        seconds: 1

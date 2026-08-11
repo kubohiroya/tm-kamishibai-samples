@@ -9,6 +9,7 @@ import {runInNewContext} from 'node:vm';
 
 import {validateAssetManifest} from '@kubohiroya/tmpose-kamishibai/builder';
 import {strFromU8, unzipSync} from 'fflate';
+import {parse as parseYaml} from 'yaml';
 
 import {
   AUDIO_UNLOCK_CLOCK_CHECK_DELAY_MS,
@@ -111,7 +112,7 @@ test('licenses the repository, runtime, Urashima content, and Packager notices',
 
 test('keeps the migrated Scratch assets complete and content-addressed', async () => {
   const directories = [
-    ['images', 24],
+    ['images', 26],
     ['sounds', 22],
   ];
   for (const [directory, expectedCount] of directories) {
@@ -279,18 +280,23 @@ test('pins the generic, editor, and player profile contract', async () => {
   assertLoadingSkinPosition(project, 'Urashima base');
 });
 
-test('keeps my-urashima external-script-only and publishes its converted DSL 4.0 source', async () => {
-  const [myUrashima, script, dsl4, config, artifactsLock] = await Promise.all([
-    readFile(path.join(projectRoot, 'stories/my-urashima/my-urashima.sb3')),
-    readFile(path.join(projectRoot, 'stories/my-urashima/my-urashima.txt'), 'utf8'),
-    readFile(path.join(projectRoot, 'stories/my-urashima/my-urashima.k4.yml'), 'utf8'),
-    readFile(path.join(projectRoot, 'stories/my-urashima/sample.config.json'), 'utf8').then(
-      JSON.parse,
-    ),
-    readFile(path.join(projectRoot, 'stories/my-urashima/artifacts.lock.json'), 'utf8').then(
-      JSON.parse,
-    ),
-  ]);
+test('keeps my-urashima external-script-only and publishes its DSL 4.0 workshop source', async () => {
+  const [myUrashima, script, dsl4, config, projectAssets, artifactsLock, princessSource] =
+    await Promise.all([
+      readFile(path.join(projectRoot, 'stories/my-urashima/my-urashima.sb3')),
+      readFile(path.join(projectRoot, 'stories/my-urashima/my-urashima.txt'), 'utf8'),
+      readFile(path.join(projectRoot, 'stories/my-urashima/my-urashima.k4.yml'), 'utf8'),
+      readFile(path.join(projectRoot, 'stories/my-urashima/sample.config.json'), 'utf8').then(
+        JSON.parse,
+      ),
+      readFile(path.join(projectRoot, 'stories/my-urashima/project-assets.yml'), 'utf8').then(
+        parseYaml,
+      ),
+      readFile(path.join(projectRoot, 'stories/my-urashima/artifacts.lock.json'), 'utf8').then(
+        JSON.parse,
+      ),
+      readFile(path.join(projectRoot, 'resources/20260801/master/Princess.png')),
+    ]);
   const archive = unzipSync(new Uint8Array(myUrashima));
   const project = JSON.parse(strFromU8(archive['project.json']));
   const stage = project.targets.find((target) => target.isStage);
@@ -304,6 +310,23 @@ test('keeps my-urashima external-script-only and publishes its converted DSL 4.0
   assert.deepEqual(
     princess.costumes.map(({name, dataFormat}) => ({name, dataFormat})),
     [{name: 'Princess', dataFormat: 'png'}],
+  );
+  const princessCostume = princess.costumes[0];
+  const princessAssetId = createHash('md5').update(princessSource).digest('hex');
+  assert.equal(princessCostume.assetId, princessAssetId);
+  assert.equal(princessCostume.md5ext, `${princessAssetId}.png`);
+  assert.equal(Buffer.from(archive[princessCostume.md5ext]).equals(princessSource), true);
+  assert.equal(
+    sha256(princessSource),
+    artifactsLock.projectAssets.files[0].source.sha256,
+  );
+  assert.deepEqual(
+    {
+      bitmapResolution: princessCostume.bitmapResolution,
+      rotationCenterX: princessCostume.rotationCenterX,
+      rotationCenterY: princessCostume.rotationCenterY,
+    },
+    {bitmapResolution: 2, rotationCenterX: 507, rotationCenterY: 507},
   );
   assert.equal(princess.size, 70);
   assert.equal(
@@ -349,19 +372,73 @@ test('keeps my-urashima external-script-only and publishes its converted DSL 4.0
     script: 'external',
     assets: 'embedded',
   });
-  assert.deepEqual(config.targets[0].costumes, [{asset: 'Princess', reference: 'costume'}]);
+  assert.deepEqual(config.projectAssets, {
+    manifest: 'project-assets.yml',
+    allowedRoots: ['../../resources/20260801/master'],
+  });
+  assert.deepEqual(projectAssets.sprites.Princess, {
+    layerOrder: 6,
+    visible: false,
+    x: 4,
+    y: -16,
+    size: 70,
+    direction: 90,
+    draggable: false,
+    rotationStyle: 'all around',
+    volume: 100,
+  });
+  assert.deepEqual(projectAssets.assets.Princess, {
+    kind: 'costume',
+    target: 'Princess',
+    file: '../../resources/20260801/master/Princess.png',
+    bitmapResolution: 2,
+    rotationCenterX: 507,
+    rotationCenterY: 507,
+    license: 'CC-BY-SA-4.0: ../../resources/20260801/LICENSES.md',
+  });
   assert.equal(artifactsLock.parentStory.name, 'urashima');
+  assert.deepEqual(artifactsLock.sb3Toolchain, {
+    package: '@kubohiroya/sb3-toolchain',
+    version: '0.6.0',
+    source: '0.6.0',
+  });
   assert.equal(artifactsLock.parentStory.sourceScript.path, '../urashima/source.txt');
   assert.equal(artifactsLock.parentStory.assetManifest.path, '../urashima/assets.lock.json');
   assert.equal(artifactsLock.output.sb3.sha256, sha256(myUrashima));
   assert.equal(artifactsLock.output.script.sha256, sha256(script));
+  assert.deepEqual(artifactsLock.projectAssets.files, [
+    {
+      id: 'Princess',
+      kind: 'costume',
+      target: 'Princess',
+      license: 'CC-BY-SA-4.0: ../../resources/20260801/LICENSES.md',
+      source: {
+        path: '../../resources/20260801/master/Princess.png',
+        size: 220534,
+        sha256: 'e9d1857528a619e4a56ebd232fea4767fd6bdd00b20ac67a90c859c6b3598e83',
+      },
+    },
+  ]);
   assert(dsl4.startsWith('kamishibai: "4.0"\n'));
+  const dsl4Document = parseYaml(dsl4);
+  assert.deepEqual(dsl4Document.controls.keymaps.production, {
+    Space: 'rehearsal.skipPose',
+    ArrowRight: 'rehearsal.skipAction',
+    ArrowDown: 'rehearsal.skipScene',
+  });
+  assert.equal(dsl4Document.poseRecognition.navigation.allowSkip, true);
   assert.match(dsl4, /^\s{2}Princess: costume:Princess$/mu);
   assert.match(dsl4, /^\s{2}Princess: Princess$/mu);
+  assert.match(
+    dsl4,
+    /^#  p1: costume:Princess\n#  p2: costume:Princess\n#  p3: costume:Princess\n#  p4: costume:Princess$/mu,
+  );
+  assert.equal((dsl4.match(/^#      - Princess\.pose:/gmu) ?? []).length, 3);
+  assert.equal((dsl4.match(/^\s{6}- Princess\.pose:/gmu) ?? []).length, 0);
   assert.match(dsl4, /^\s{2}welcome to dragon castle:\n\s{4}poseModel: PoseModel2$/mu);
   assert.match(
     dsl4,
-    /^\s{6}- Urashima\.setSkin:\n\s{10}skin: Urashima-dance-1\n\s{10}scale: 45\n\s{6}- wait: 1\n\s{6}- wait: 2$/mu,
+    /^\s{6}- Urashima\.setSkin:\n\s{10}skin: Urashima-dance-1\n\s{6}- wait: 1\n(?:^#.*\n){4}\s{6}- wait: 2$/mu,
   );
 });
 
@@ -499,7 +576,7 @@ test('recovers interrupted or stalled-running WebKit audio after touch completio
   assert.equal(window.__tmposeAudioUnlockState.primeCompletions, 6);
 });
 
-test('locks every external script asset and publishes DSL 3.2 and converted DSL 4.0 scripts', async () => {
+test('locks every external script asset and publishes DSL 3.2 and offline DSL 4.0 scripts', async () => {
   const [source, published, dsl4, rawAssetManifest] = await Promise.all([
     readFile(path.join(sampleDirectory, 'source.txt'), 'utf8'),
     readFile(path.join(sampleDirectory, 'urashima.txt'), 'utf8'),
@@ -516,11 +593,31 @@ test('locks every external script asset and publishes DSL 3.2 and converted DSL 
     assert.deepEqual(script.match(/^# scene \d+$/gmu), expectedSceneComments);
   }
   assert(dsl4.startsWith('kamishibai: "4.0"\n'));
-  assert.match(dsl4, /^\s{2}PoseModel1:\n\s{4}kind: poseModel\n\s{4}delivery: remote$/mu);
+  const dsl4Document = parseYaml(dsl4);
+  const dsl4Assets = Object.values(dsl4Document.assets);
+  assert.equal(dsl4Assets.length, 49);
+  assert.equal(
+    dsl4Assets.every(
+      (asset) =>
+        typeof asset === 'object' &&
+        typeof asset.file === 'string' &&
+        asset.delivery !== 'remote' &&
+        asset.source === undefined,
+    ),
+    true,
+  );
+  assert.equal(dsl4Document.assets.PoseModel1.file, 'pose-models/1and2');
+  assert.equal(dsl4Document.assets.PoseModel2.file, 'pose-models/3and4');
+  assert.equal(dsl4Document.assets.PoseModel3.file, 'pose-models/6and7');
   assert.match(dsl4, /^\s{2}opening:\n/mu);
   assert.match(dsl4, /^\s{2}beach:\n\s{4}poseModel: PoseModel1\n\s{4}actions:$/mu);
   assert.match(dsl4, /^\s{6}- Urashima\.pose:\n\s{10}steps:\n/mu);
-  assert.match(dsl4, /^\s{4}production:\n\s{6}Space: navigation\.nextAction$/mu);
+  assert.deepEqual(dsl4Document.controls.keymaps.production, {
+    Space: 'rehearsal.skipPose',
+    ArrowRight: 'rehearsal.skipAction',
+    ArrowDown: 'rehearsal.skipScene',
+  });
+  assert.equal(dsl4Document.poseRecognition.navigation.allowSkip, true);
   const externalLines = source
     .split(/\r?\n/u)
     .filter((line) => /^asset=.*,(?:file|https?):/u.test(line));

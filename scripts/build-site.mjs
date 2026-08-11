@@ -278,7 +278,7 @@ ${renderSiteHeader('../../')}
 <main id="main-content">
   <nav class="local-nav" aria-label="作品内ナビゲーション"><a href="../../">作品一覧へ戻る</a></nav>
   <h1>浦島太郎</h1>
-  <p>DSL 3.2の実行用成果物と、そこから変換したDSL 4.0 YAMLを区別して公開しています。</p>
+  <p>DSL 3.2の実行用成果物と、台本・画像・音声・ポーズモデルを組み込んだDSL 4.0オフライン実行版を区別して公開しています。</p>
   <dl class="work-meta">
     <div><dt>対応DSL</dt><dd>3.2／4.0</dd></div>
     <div><dt>掲載形態</dt><dd>当サイトで配布</dd></div>
@@ -296,12 +296,12 @@ ${webAction}        <a class="button secondary" href="urashima.txt">DSL 3.2台�
       </div>
     </section>
     <section class="artifact-group" data-dsl-series="4.0" aria-labelledby="dsl-40-heading">
-      <h2 id="dsl-40-heading">DSL 4.0 変換版</h2>
-      <p>DSL 3.2台本を公式変換ツールで変換・検証したYAMLです。DSL 3.2用のWeb版・SB3とは別の成果物です。</p>
+      <h2 id="dsl-40-heading">DSL 4.0 オフライン実行版</h2>
+      <p>DSL 4.0 YAML、49アセット、Urashima／Turtle／Princess／Fish／Narration target、4.0実行基盤を一つのSB3に組み込んでいます。モデル取得にネットワーク接続は不要です。</p>
       <div class="actions">
         <button class="button secondary" type="button" disabled aria-disabled="true">Web版（準備中）</button>
         <a class="button" href="urashima.k4.yml" download>DSL 4.0 YAMLをダウンロード</a>
-        <button class="button secondary" type="button" disabled aria-disabled="true">再生用SB3（準備中）</button>
+        <a class="button secondary" href="urashima-4.0.sb3" download>オフラインSB3をダウンロード</a>
       </div>
     </section>
     <section class="artifact-group" aria-labelledby="work-info-heading">
@@ -314,11 +314,13 @@ ${webAction}        <a class="button secondary" href="urashima.txt">DSL 3.2台�
   </div>
   <p>再生用SB3 SHA-256: <code>${manifest.profiles.player.sb3.sha256}</code></p>
   <p>編集用SB3 SHA-256: <code>${manifest.profiles.editor.sb3.sha256}</code></p>
+  <p>DSL 4.0オフラインSB3 SHA-256: <code>${manifest.dsl4Offline.sha256}</code></p>
 ${webHash}  <h2>成果物プロファイル</h2>
   <ul>
     <li><code>generic</code>: <code>base/kamishibai.sb3</code> — 台本・物語固有アセット非埋め込みの汎用雛形</li>
     <li><code>editor</code>: <code>_urashima.sb3</code> — 台本非埋め込み・アセット埋め込みの編集用</li>
     <li><code>player</code>: <code>urashima.sb3</code> — 台本・アセット埋め込みの再生用</li>
+    <li><code>dsl4-offline</code>: <code>urashima-4.0.sb3</code> — DSL 4.0台本・49アセット・実行基盤埋め込みのオフライン動作確認用</li>
   </ul>
   <h2>元アセット</h2>
   <p>画像${manifest.assetCounts.images}件、音声${manifest.assetCounts.sounds}件（組み込み対象${manifest.assetCounts.embedded}件）。ファイル名はScratchの <code>md5ext</code> 名です。</p>
@@ -386,8 +388,8 @@ ${renderSiteHeader('../../')}
       </div>
     </section>
     <section class="artifact-group" data-dsl-series="4.0" aria-labelledby="my-dsl-40-heading">
-      <h2 id="my-dsl-40-heading">DSL 4.0 変換版</h2>
-      <p>DSL 3.2作業用台本を公式変換ツールで変換・検証したYAMLです。</p>
+      <h2 id="my-dsl-40-heading">DSL 4.0 作業版</h2>
+      <p>YAMLの行頭にある#を選択的に削除し、ポーズ画像とposeアクションを有効化できるワークショップ用台本です。</p>
       <div class="actions">
         <button class="button secondary" type="button" disabled aria-disabled="true">Web版（準備中）</button>
         <a class="button secondary" href="my-urashima.k4.yml" download>DSL 4.0 YAMLをダウンロード</a>
@@ -495,12 +497,13 @@ function profileRecord(profile, build, lock) {
 
 export async function buildSite() {
   await refreshChangedStoryArtifacts();
-  const [worksCatalog, images, sounds] = await Promise.all([
+  const [worksCatalog, images, sounds, dsl4ArtifactLock] = await Promise.all([
     readWorksCatalog(worksCatalogPath),
     assetRecords(path.join(sourceDirectory, 'assets/images'), 'images'),
     assetRecords(path.join(sourceDirectory, 'assets/sounds'), 'sounds'),
+    readFile(path.join(sourceDirectory, 'dsl4-artifacts.lock.json'), 'utf8').then(JSON.parse),
   ]);
-  if (images.length !== 24 || sounds.length !== 22) {
+  if (images.length !== 26 || sounds.length !== 22) {
     throw new Error(`Unexpected Urashima asset counts: ${images.length} images, ${sounds.length} sounds.`);
   }
   const myUrashimaWork = worksCatalog.works.find(({id}) => id === 'my-urashima');
@@ -554,7 +557,7 @@ export async function buildSite() {
   });
   const assets = [...images, ...sounds];
   const manifest = {
-    formatVersion: 3,
+    formatVersion: 4,
     sample: 'urashima',
     publicUrl: `${publicUrl}stories/urashima/`,
     license: 'MPL-2.0',
@@ -573,6 +576,15 @@ export async function buildSite() {
     profiles: {
       editor: profileRecord('editor', results.editor, artifactsLock.profiles.editor),
       player: profileRecord('player', results.player, artifactsLock.profiles.player),
+    },
+    dsl4Offline: {
+      path: dsl4ArtifactLock.output.path,
+      size: dsl4ArtifactLock.output.size,
+      sha256: dsl4ArtifactLock.output.sha256,
+      sourceAssetCount: dsl4ArtifactLock.source.assetCount,
+      embeddedFileCount: 55,
+      runtimeCommit: dsl4ArtifactLock.runtime.commit,
+      sb3Toolchain: dsl4ArtifactLock.sb3Toolchain,
     },
     web,
     assetCounts: {images: images.length, sounds: sounds.length, embedded: assetManifest.assets.length},

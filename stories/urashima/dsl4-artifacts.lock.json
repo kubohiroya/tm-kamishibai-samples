@@ -1,0 +1,38 @@
+{
+  "formatVersion": 1,
+  "runtime": {
+    "repository": "https://github.com/kubohiroya/tmpose-kamishibai",
+    "pullRequest": 519,
+    "commit": "f6f82649c4abcf5f01a765b4b008b169ea25dde0",
+    "baseOutput": "dist/downloads/kamishibai-4.0.sb3",
+    "baseSize": 7549123,
+    "baseSha256": "989a0344d27b4ca670822a83d60de715442dd54cd20c720cc7cb8b43e00a8b2d"
+  },
+  "sb3Toolchain": {
+    "package": "@kubohiroya/sb3-toolchain",
+    "version": "0.6.0"
+  },
+  "source": {
+    "path": "urashima.k4.yml",
+    "size": 16549,
+    "sha256": "0a1ed30aa137618e4753ef5d1830e54eb2803d1adc25750566a215f7588626a9",
+    "assetCount": 49,
+    "remoteAssetCount": 0
+  },
+  "output": {
+    "path": "urashima-4.0.sb3",
+    "size": 42446269,
+    "sha256": "999e6cdad8f11c9956821a15f9392d3b562a67feafc91ee2bf968d85bd356bcf",
+    "archiveEntryCount": 13,
+    "targetNames": [
+      "Stage",
+      "officialWebsiteButton",
+      "closeTitleButton",
+      "Urashima",
+      "Turtle",
+      "Princess",
+      "Fish",
+      "Narration"
+    ]
+  }
+}

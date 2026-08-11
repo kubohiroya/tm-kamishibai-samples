@@ -6,13 +6,18 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 
 import {buildSb3Bundle} from '@kubohiroya/tmpose-kamishibai/builder';
-import {strFromU8, strToU8, unzipSync, zipSync} from 'fflate';
+import {
+  createDeterministicSb3,
+  importSb3,
+  packageVersion as sb3ToolchainVersion,
+} from '@kubohiroya/sb3-toolchain';
+import {strFromU8, unzipSync} from 'fflate';
+import {parse as parseYaml} from 'yaml';
 
 import {replaceStoryDate, storyDateMetadata} from './story-date.mjs';
 
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 const storyDirectory = path.join(projectRoot, 'stories/my-urashima');
-const fixedZipTimestamp = new Date(1980, 0, 1, 0, 0, 0, 0);
 
 function hash(algorithm, contents) {
   return createHash(algorithm).update(contents).digest('hex');
@@ -22,32 +27,25 @@ function sha256(contents) {
   return hash('sha256', contents);
 }
 
-function orderedArchive(archive) {
-  return Object.fromEntries(
-    Object.entries(archive)
-      .filter(([entryName]) => !entryName.endsWith('/'))
-      .sort(([left], [right]) => {
-        if (left === 'project.json') return -1;
-        if (right === 'project.json') return 1;
-        return left.localeCompare(right, 'en');
-      }),
-  );
-}
-
 async function readJson(filePath) {
   return JSON.parse(await readFile(filePath, 'utf8'));
 }
 
-function resolveContainedFile(directory, uri) {
-  assert.match(uri, /^file:/u, `Derived target assets must use file: URIs: ${uri}`);
-  const resolved = path.resolve(directory, uri.slice('file:'.length));
-  const relative = path.relative(directory, resolved);
+function resolveProjectFile(baseDirectory, sourcePath) {
+  assert.equal(path.isAbsolute(sourcePath), false, `Source path must be relative: ${sourcePath}`);
+  const resolved = path.resolve(baseDirectory, sourcePath);
+  const relative = path.relative(projectRoot, resolved);
   assert.equal(
     relative !== '' && !relative.startsWith(`..${path.sep}`) && relative !== '..',
     true,
-    `Derived target asset escapes its parent story: ${uri}`,
+    `Source asset escapes the project root: ${sourcePath}`,
   );
   return resolved;
+}
+
+async function readProjectAssets(manifestPath) {
+  const source = await readFile(manifestPath, 'utf8');
+  return path.extname(manifestPath).toLowerCase() === '.json' ? JSON.parse(source) : parseYaml(source);
 }
 
 function replaceExactlyOnce(source, before, after, description) {
@@ -56,69 +54,34 @@ function replaceExactlyOnce(source, before, after, description) {
   return `${parts[0]}${after}${parts[1]}`;
 }
 
-async function createDerivedBase(baseSb3, parentDirectory, parentManifest, targets) {
-  const archive = unzipSync(new Uint8Array(baseSb3));
-  const project = JSON.parse(strFromU8(archive['project.json']));
-  const assetsByName = new Map(parentManifest.assets.map((asset) => [asset.name, asset]));
-
-  for (const specification of targets) {
-    assert.equal(
-      project.targets.some((target) => target.name === specification.name),
-      false,
-      `Derived target already exists: ${specification.name}`,
-    );
-    const target = {
-      isStage: false,
-      name: specification.name,
-      variables: {},
-      lists: {},
-      broadcasts: {},
-      blocks: {},
-      comments: {},
-      currentCostume: 0,
-      costumes: [],
-      sounds: [],
-      volume: 100,
-      layerOrder: specification.layerOrder,
-      visible: specification.visible,
-      x: specification.x,
-      y: specification.y,
-      size: specification.size,
-      direction: specification.direction,
-      draggable: specification.draggable,
-      rotationStyle: specification.rotationStyle,
-    };
-
-    for (const costume of specification.costumes) {
-      assert.equal(costume.reference, 'costume');
-      assert.equal(costume.asset, specification.name);
-      const entry = assetsByName.get(costume.asset);
-      assert.ok(entry, `Derived target asset is missing: ${costume.asset}`);
-      assert.equal(entry.kind, 'costume');
-      assert.equal(entry.name, specification.name);
-      assert.equal(entry.sb3Name, specification.name);
-      const contents = await readFile(resolveContainedFile(parentDirectory, entry.uri));
-      assert.equal(contents.length, entry.size, `${entry.name} size differs from its lock.`);
-      assert.equal(sha256(contents), entry.sha256, `${entry.name} SHA-256 differs from its lock.`);
-      const assetId = hash('md5', contents);
-      const filename = `${assetId}.${entry.dataFormat}`;
-      assert.equal(entry.uri.endsWith(filename), true);
-      archive[filename] = new Uint8Array(contents);
-      target.costumes.push({
-        name: entry.name,
-        bitmapResolution: entry.metadata.bitmapResolution,
-        dataFormat: entry.dataFormat,
-        assetId,
-        md5ext: filename,
-        rotationCenterX: entry.metadata.rotationCenterX,
-        rotationCenterY: entry.metadata.rotationCenterY,
-      });
-    }
-    project.targets.push(target);
+function embeddedProjectAssetReference(assetId, specification) {
+  const name = specification.name ?? assetId;
+  if (specification.kind === 'costume') {
+    if (specification.target === assetId && name === assetId) return 'costume';
+    return name === assetId
+      ? `costume:${specification.target}`
+      : `costume:${specification.target}:${name}`;
   }
+  if (specification.kind === 'backdrop') return `backdrop:${name}`;
+  return specification.target ? `sound:${specification.target}:${name}` : `sound:@stage:${name}`;
+}
 
-  archive['project.json'] = strToU8(`${JSON.stringify(project)}\n`);
-  return Buffer.from(zipSync(orderedArchive(archive), {level: 6, mtime: fixedZipTimestamp}));
+async function createDerivedBase(baseSb3Path, projectAssetsPath, allowedAssetRoots) {
+  const temporaryDirectory = await mkdtemp(path.join(tmpdir(), 'my-urashima-base-source-'));
+  const sourceDirectory = path.join(temporaryDirectory, 'source');
+  try {
+    await importSb3({inputPath: baseSb3Path, outputDirectory: sourceDirectory});
+    return Buffer.from(
+      (
+        await createDeterministicSb3(sourceDirectory, {
+          allowedAssetRoots,
+          projectAssetsPath,
+        })
+      ).archive,
+    );
+  } finally {
+    await rm(temporaryDirectory, {recursive: true, force: true});
+  }
 }
 
 async function dependencyRecord(filePath, relativeTo) {
@@ -130,20 +93,47 @@ async function dependencyRecord(filePath, relativeTo) {
   };
 }
 
+async function assertToolchainCanonicalSb3(sb3Path) {
+  const temporaryDirectory = await mkdtemp(path.join(tmpdir(), 'my-urashima-final-source-'));
+  const sourceDirectory = path.join(temporaryDirectory, 'source');
+  try {
+    await importSb3({inputPath: sb3Path, outputDirectory: sourceDirectory});
+    const [actual, rebuilt] = await Promise.all([
+      readFile(sb3Path),
+      createDeterministicSb3(sourceDirectory).then(({archive}) => Buffer.from(archive)),
+    ]);
+    assert.equal(
+      actual.equals(rebuilt),
+      true,
+      'my-urashima.sb3 must be the canonical sb3-toolchain output.',
+    );
+  } finally {
+    await rm(temporaryDirectory, {recursive: true, force: true});
+  }
+}
+
 async function createArtifactLock({
   config,
   configPath,
   parentConfig,
   parentConfigPath,
   parentDirectory,
+  projectAssets,
+  projectAssetsPath,
   result,
   storyDate,
 }) {
+  const packageConfiguration = await readJson(path.join(projectRoot, 'package.json'));
   const manifestPath = result.outputPaths[result.manifest.outputs.manifest.filename];
   const manifestContents = await readFile(manifestPath);
   return {
     formatVersion: 1,
     builder: parentConfig.builder,
+    sb3Toolchain: {
+      package: '@kubohiroya/sb3-toolchain',
+      version: sb3ToolchainVersion,
+      source: packageConfiguration.devDependencies['@kubohiroya/sb3-toolchain'],
+    },
     storyDate,
     parentStory: {
       name: parentConfig.sample,
@@ -162,6 +152,22 @@ async function createArtifactLock({
       ),
     },
     configuration: await dependencyRecord(configPath, storyDirectory),
+    projectAssets: {
+      manifest: await dependencyRecord(projectAssetsPath, storyDirectory),
+      files: await Promise.all(
+        Object.entries(projectAssets.assets).map(async ([assetId, specification]) => ({
+          id: assetId,
+          kind: specification.kind,
+          ...(specification.target ? {target: specification.target} : {}),
+          ...(specification.name ? {name: specification.name} : {}),
+          ...(specification.license ? {license: specification.license} : {}),
+          source: await dependencyRecord(
+            resolveProjectFile(path.dirname(projectAssetsPath), specification.file),
+            storyDirectory,
+          ),
+        })),
+      ),
+    },
     output: {
       outputName: config.profile.outputName,
       sb3: result.manifest.outputs.sb3,
@@ -188,23 +194,25 @@ async function deriveMyUrashimaSourceContext() {
   const parentDirectory = path.dirname(parentConfigPath);
   const parentConfig = await readJson(parentConfigPath);
   const parentManifest = await readJson(path.join(parentDirectory, parentConfig.assetManifest));
+  const projectAssetsPath = resolveProjectFile(storyDirectory, config.projectAssets.manifest);
+  const projectAssets = await readProjectAssets(projectAssetsPath);
+  const allowedAssetRoots = config.projectAssets.allowedRoots.map((root) =>
+    resolveProjectFile(storyDirectory, root),
+  );
   assert.equal(parentConfig.sample, config.parentStory.name);
+  assert.equal(projectAssets.formatVersion, 1);
 
   let source = await readFile(path.join(parentDirectory, parentConfig.sourceScript), 'utf8');
-  const derivedAssetNames = new Set(
-    config.targets.flatMap((target) => target.costumes.map(({asset}) => asset)),
-  );
-  for (const target of config.targets) {
-    for (const costume of target.costumes) {
-      const entry = parentManifest.assets.find(({name}) => name === costume.asset);
-      assert.ok(entry, `Parent asset is missing: ${costume.asset}`);
-      source = replaceExactlyOnce(
-        source,
-        `asset=${entry.name},${entry.uri}`,
-        `asset=${entry.name},${costume.reference}`,
-        `${entry.name} source asset`,
-      );
-    }
+  const derivedAssetNames = new Set(Object.keys(projectAssets.assets));
+  for (const [assetId, specification] of Object.entries(projectAssets.assets)) {
+    const entry = parentManifest.assets.find(({name}) => name === assetId);
+    if (!entry) continue;
+    source = replaceExactlyOnce(
+      source,
+      `asset=${entry.name},${entry.uri}`,
+      `asset=${entry.name},${embeddedProjectAssetReference(assetId, specification)}`,
+      `${entry.name} source asset`,
+    );
   }
   for (const replacement of config.scriptReplacements) {
     source = replaceExactlyOnce(source, replacement.from, replacement.to, replacement.description);
@@ -218,6 +226,9 @@ async function deriveMyUrashimaSourceContext() {
     parentConfigPath,
     parentDirectory,
     parentManifest,
+    projectAssets,
+    projectAssetsPath,
+    allowedAssetRoots,
     source,
   };
 }
@@ -263,6 +274,7 @@ export async function buildMyUrashima(
   {scriptDate, verifyArtifacts = true} = {},
 ) {
   const {
+    allowedAssetRoots,
     config,
     configPath,
     derivedAssetNames,
@@ -270,6 +282,8 @@ export async function buildMyUrashima(
     parentConfigPath,
     parentDirectory,
     parentManifest,
+    projectAssets,
+    projectAssetsPath,
     source: rawSource,
   } = await deriveMyUrashimaSourceContext();
   const expectedLock = verifyArtifacts
@@ -283,12 +297,11 @@ export async function buildMyUrashima(
     ...parentManifest,
     assets: parentManifest.assets.filter(({name}) => !derivedAssetNames.has(name)),
   };
-  const baseSb3 = await readFile(path.join(parentDirectory, parentConfig.baseSb3.path));
+  const baseSb3Path = path.join(parentDirectory, parentConfig.baseSb3.path);
   const derivedBase = await createDerivedBase(
-    baseSb3,
-    parentDirectory,
-    parentManifest,
-    config.targets,
+    baseSb3Path,
+    projectAssetsPath,
+    allowedAssetRoots,
   );
 
   const temporaryDirectory = await mkdtemp(path.join(tmpdir(), 'my-urashima-build-'));
@@ -305,12 +318,17 @@ export async function buildMyUrashima(
       outputName: config.profile.outputName,
       profile: 'editor',
     });
+    await assertToolchainCanonicalSb3(
+      result.outputPaths[result.manifest.outputs.sb3.filename],
+    );
     const artifactLock = await createArtifactLock({
       config,
       configPath,
       parentConfig,
       parentConfigPath,
       parentDirectory,
+      projectAssets,
+      projectAssetsPath,
       result,
       storyDate,
     });

@@ -1,0 +1,20 @@
+{
+  "formatVersion": 1,
+  "runtime": {
+    "repository": "https://github.com/kubohiroya/tmpose-kamishibai",
+    "pullRequest": 519,
+    "commit": "f6f82649c4abcf5f01a765b4b008b169ea25dde0",
+    "baseOutput": "dist/downloads/kamishibai-4.0.sb3",
+    "baseSize": 7549123,
+    "baseSha256": "989a0344d27b4ca670822a83d60de715442dd54cd20c720cc7cb8b43e00a8b2d"
+  },
+  "sourceManifest": "project.source.json",
+  "projectAssets": "project-assets-dsl4.yml",
+  "output": "urashima-4.0.sb3",
+  "limits": {
+    "maxSourceBytes": 262144,
+    "maxAssetFileBytes": 8388608,
+    "maxAssetFiles": 128,
+    "maxTotalAssetBytes": 67108864
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "formatVersion": 1,
+  "archiveAssets": [
+    {
+      "name": "Stars",
+      "source": "base/kamishibai.sb3",
+      "entry": "47282ff0f7047c6fab9c94b531abf721.png",
+      "output": "assets/images/47282ff0f7047c6fab9c94b531abf721.png",
+      "size": 382632,
+      "sha256": "e241528275a253d03ea42be0ee1abfef28e508f82ceb29e4e485947c244b6b61"
+    },
+    {
+      "name": "TextPlaceholder",
+      "source": "base/kamishibai.sb3",
+      "entry": "b6c18d2f3df8b5d12e2b6a529109fec2.svg",
+      "output": "assets/images/b6c18d2f3df8b5d12e2b6a529109fec2.svg",
+      "size": 147,
+      "sha256": "d39fb34d8ce63322d9fb0a0151e525cf4ac6e7a45c05e016d738fbdece38ba71"
+    }
+  ],
+  "poseModels": [
+    {
+      "name": "PoseModel1",
+      "source": "https://sqs.prof.cuc.ac.jp/kamishibai/20260630/1and2/",
+      "output": "pose-models/1and2",
+      "files": [
+        {
+          "path": "metadata.json",
+          "size": 350,
+          "sha256": "c9aaedfe0b83964025b6a7d710fca3630846f89efe3f59b8433dadd484a63bc3"
+        },
+        {
+          "path": "model.json",
+          "size": 1435,
+          "sha256": "fd9f3f13857985eba87fb3a311ead4009536cff9175a752b2cdd5d3887130379"
+        },
+        {
+          "path": "weights.bin",
+          "size": 5897600,
+          "sha256": "14d7a87a0c6d1c74e14593d13a1dd30b3911adf062803fc58705fd0fd16c2ffc"
+        }
+      ]
+    },
+    {
+      "name": "PoseModel2",
+      "source": "https://sqs.prof.cuc.ac.jp/kamishibai/20260630/3and4/",
+      "output": "pose-models/3and4",
+      "files": [
+        {
+          "path": "metadata.json",
+          "size": 358,
+          "sha256": "a2dc10c25de4b601ebb88c629b5c80033e1894e6404dc2a3b714f32c90f9bb44"
+        },
+        {
+          "path": "model.json",
+          "size": 1438,
+          "sha256": "7c83a8d6039b433b9b2a08bd0acdbb5869c2d214ba4376d4d324fb9483f72807"
+        },
+        {
+          "path": "weights.bin",
+          "size": 5897600,
+          "sha256": "5e69509696c4aef6ea8dedcca91c826c6cd556bce687c23388a6f12cf7ff5d51"
+        }
+      ]
+    },
+    {
+      "name": "PoseModel3",
+      "source": "https://sqs.prof.cuc.ac.jp/kamishibai/20260630/6and7/",
+      "output": "pose-models/6and7",
+      "files": [
+        {
+          "path": "metadata.json",
+          "size": 354,
+          "sha256": "aeacef87e8d2742f98729e69a9119112f3b2a146251608a5e3806be3434451ca"
+        },
+        {
+          "path": "model.json",
+          "size": 1435,
+          "sha256": "fd9f3f13857985eba87fb3a311ead4009536cff9175a752b2cdd5d3887130379"
+        },
+        {
+          "path": "weights.bin",
+          "size": 5897600,
+          "sha256": "670b1ef9064a9c42fc39a51689874c96e20cabeae4077168429186eab5c7ba50"
+        }
+      ]
+    }
+  ]
+}

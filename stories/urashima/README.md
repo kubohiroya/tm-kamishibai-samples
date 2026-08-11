@@ -1,14 +1,15 @@
 # 浦島太郎 — 用途別SB3の生成元
 
-浦島太郎の元台本、画像・音声、アセットロック、生成設定を管理します。公開用SB3は、固定したnpmビルダー `3.2.2` と、本体コミット`2b5005d`の汎用ベースからGitHub Pagesのビルド時に生成します。
+浦島太郎の元台本、画像・音声、ポーズモデル、アセットロック、生成設定を管理します。3.2成果物に加え、DSL 4.0の台本・全アセット・実行基盤を一つにしたオフライン動作確認用`urashima-4.0.sb3`を提供します。
 
-## 3つのプロファイル
+## 成果物
 
 | プロファイル | ファイル | 台本 | 物語固有アセット | 用途 |
 | --- | --- | --- | --- | --- |
 | `generic` | `base/kamishibai.sb3` | 非埋め込み | 非埋め込み | 汎用の物語作成・再生用雛形 |
 | `editor` | `_urashima.sb3` | 非埋め込み | 埋め込み | 物語作成者による台本編集・動作確認 |
 | `player` | `urashima.sb3` | 埋め込み | 埋め込み | 配布・再生、Web版生成 |
+| `dsl4-offline` | `urashima-4.0.sb3` | DSL 4.0 YAML埋め込み | 画像・音声・3ポーズモデル埋め込み | DSL 4.0の実ブラウザ・実カメラ確認 |
 
 先頭の `_` は物語作成者による内部的使用をコンパクトに示し、非公開や一時ファイルを意味しません。`player` は「再生専用」ではなく「再生用」です。
 
@@ -23,7 +24,13 @@
 - `urashima.k4.yml`: `urashima.txt`を公式CLIで変換したDSL 4.0 YAML
 - `assets/images/`: 画像元データ24ファイル
 - `assets/sounds/`: MP3音声元データ22ファイル（組み込み対象20、来歴保存2）
+- `pose-models/`: オフライン版へ組み込むTeachable Machine Poseモデル3組（各3ファイル）
 - `assets.lock.json`: 組み込み対象44件の名前、target、Scratchメタデータ、サイズ、SHA-256
+- `dsl4-inputs.lock.json`: DSL 4.0で追加するStars／TextPlaceholderと3ポーズモデルの取得元、サイズ、SHA-256
+- `project-assets-dsl4.yml`: DSL 4.0 actor IDと同名の物理Scratch target 5件を作る`sb3-toolchain --project-assets`入力
+- `project.source.json`: `urashima.k4.yml`を選ぶ固定cache identity付きDSL 4.0 source manifest
+- `dsl4-build.config.json`: 4.0 runtime base、tmpose-kamishibai commit、入力上限を固定する生成設定
+- `dsl4-artifacts.lock.json`: `urashima-4.0.sb3`の入力・出力ハッシュとtarget構成
 - `sample.config.json`: ベース、ビルダー、プロファイル、出力名、既定OFFのWeb生成機能を浦島太郎で有効にする設定
 - `artifacts.lock.json`: `_urashima` / `urashima` / `web/index.html` の再現可能な出力ハッシュ
 - `base/kamishibai.sb3`: `tmpose-kamishibai` のclone-only UI `generic` 成果物
@@ -32,19 +39,31 @@
 
 ## DSL 4.0 YAMLへの変換
 
-`urashima.k4.yml`は、`tmpose-kamishibai`の`convert-dsl4`を含むcommit `444956bfbf8d00b966f3870c49b42e53b4808f36`を隣接directoryの`../tmpose-kamishibai`へcheckoutし、次のように生成しています。同じ処理系の`validate-dsl4`で検証し、生成後のYAMLは手修正していません。
+`urashima.k4.yml`は3.2台本から変換した内容を起点とし、DSL 4.0の現行schemaへ追随させています。全49 assetは短縮形のScratch project内参照ではなく、リポジトリ内の画像・音声・ポーズモデルを明示するfile-backed宣言です。`delivery: remote`と`source.url`は使用しません。
 
 ```bash
-node ../tmpose-kamishibai/bin/tmpose-kamishibai.mjs convert-dsl4 \
-  --input stories/urashima/urashima.txt \
-  --output stories/urashima/urashima.k4.yml
-node ../tmpose-kamishibai/bin/tmpose-kamishibai.mjs validate-dsl4 \
-  --input stories/urashima/urashima.k4.yml \
-  --max-source-bytes 262144 \
-  --format pretty
+pnpm validate:urashima-dsl4
+pnpm verify:urashima-dsl4
 ```
 
-変換時のwarningとして、`startSceneIndex`のnumber型推論、costumeのlogical actorへの付け替え、Stage音声名の一意性確認、秒数指定のないtransitionの0秒化、app shell用`text`の省略を確認しています。変換停止errorはなく、検証結果は`urashima.k4.yml: valid`です。DSL 3.2のSB3・Web版は従来どおり`source.txt`と`urashima.txt`から生成し、DSL 4.0 YAMLの追加では変更しません。
+`verify:urashima-dsl4`は、ローカル入力のlock一致、remote asset 0件、物理target、埋め込みsource、49 asset／55 file、ポーズラベル、SB3ハッシュを確認し、最終SB3を`sb3-toolchain`へ再importしてcanonical rebuildがバイト一致することも検証します。DSL 3.2のSB3・Web版は従来どおり`source.txt`と`urashima.txt`から生成し、4.0成果物とはファイル名を分離しています。
+
+## DSL 4.0オフラインSB3の生成
+
+隣接する`../tmpose-kamishibai`を`dsl4-build.config.json`のcommitへcheckoutし、そのcommitから`dist/downloads/kamishibai-4.0.sb3`を生成してから実行します。
+
+```bash
+pnpm update:urashima-dsl4
+```
+
+このコマンドだけが`urashima-4.0.sb3`と`dsl4-artifacts.lock.json`を更新する正規経路です。処理は次の順で行います。
+
+1. `dsl4-inputs.lock.json`に固定したポーズモデルを必要時だけ取得し、Stars／TextPlaceholderを3.2 generic baseから検証付きで抽出する。
+2. 4.0 generic baseを`sb3-toolchain`へimportし、`project-assets-dsl4.yml`でUrashima／Turtle／Princess／Fish／Narration targetを追加して決定的再構築する。
+3. `tmpose-kamishibai build-dsl4`で台本、画像、音声、ポーズモデルをbundled runtime componentへ埋め込む。
+4. 生成途中のSB3をもう一度`sb3-toolchain`へimportし、最終`urashima-4.0.sb3`を決定的再構築する。
+
+SB3のZIPや`project.json`を直接編集する別経路はありません。通常の再生成はすでに取得済みのローカルモデルだけで完了し、完成したSB3の実行時にはモデル配布元へのネットワーク接続を必要としません。カメラを使うポーズ認識にはブラウザのカメラ権限が必要です。
 
 アセットや生成設定など、台本以外の入力を意図的に変更したときは、リポジトリルートで`pnpm update:artifacts-lock`を実行すると、両プロファイルとWeb版を実際に生成して`artifacts.lock.json`を再作成できます。その後の`pnpm build`では、再生成したロックとの一致を通常どおり検証します。
 
