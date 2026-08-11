@@ -1,0 +1,336 @@
+# Generated from ../urashima/urashima.k4.yml asset declarations.
+# Rotation centers come from the canonical DSL 3.2 workshop project.
+# Princess intentionally uses the workshop image and remains the only Princess costume.
+formatVersion: 1
+sprites:
+  Urashima:
+    layerOrder: 3
+    visible: false
+    x: 0
+    y: 0
+    size: 100
+    direction: 90
+    draggable: false
+    rotationStyle: all around
+    volume: 100
+  Turtle:
+    layerOrder: 4
+    visible: false
+    x: 0
+    y: 0
+    size: 100
+    direction: 90
+    draggable: false
+    rotationStyle: all around
+    volume: 100
+  Princess:
+    layerOrder: 5
+    visible: false
+    x: 0
+    y: 0
+    size: 70
+    direction: 90
+    draggable: false
+    rotationStyle: all around
+    volume: 100
+  Fish:
+    layerOrder: 6
+    visible: false
+    x: 0
+    y: 0
+    size: 100
+    direction: 90
+    draggable: false
+    rotationStyle: all around
+    volume: 100
+  Narration:
+    layerOrder: 7
+    visible: false
+    x: 0
+    y: 0
+    size: 100
+    direction: 90
+    draggable: false
+    rotationStyle: all around
+    volume: 100
+assets:
+  Urashima-walk-1:
+    kind: costume
+    target: Urashima
+    file: ../urashima/assets/images/963e926995791fde1b335fd4ba60d6d7.png
+    bitmapResolution: 2
+    rotationCenterX: 360
+    rotationCenterY: 360
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Urashima-help-1:
+    kind: costume
+    target: Urashima
+    file: ../urashima/assets/images/de2c9922d359138cd8f4fd96829c377a.png
+    bitmapResolution: 2
+    rotationCenterX: 346
+    rotationCenterY: 282
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Urashima-dance-1:
+    kind: costume
+    target: Urashima
+    file: ../urashima/assets/images/fbcd808f6a222080bc8722d631e40ac4.png
+    bitmapResolution: 2
+    rotationCenterX: 352
+    rotationCenterY: 346.5
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Urashima-dance-2:
+    kind: costume
+    target: Urashima
+    file: ../urashima/assets/images/2c8a567edc720b9039dc7a00bf164289.png
+    bitmapResolution: 2
+    rotationCenterX: 324
+    rotationCenterY: 320
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Urashima-ride-1:
+    kind: costume
+    target: Urashima
+    file: ../urashima/assets/images/603045ae9bc87d42d84ebed21e76af7e.png
+    bitmapResolution: 2
+    rotationCenterX: 357.5
+    rotationCenterY: 355
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Urashima-ride-2:
+    kind: costume
+    target: Urashima
+    file: ../urashima/assets/images/a6b0d96dd3d9fe9069acb213d2682caf.png
+    bitmapResolution: 2
+    rotationCenterX: 360
+    rotationCenterY: 360
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Urashima-box-1:
+    kind: costume
+    target: Urashima
+    file: ../urashima/assets/images/0ec7d76d7a77cf94aa14a3cbf1030f1d.png
+    bitmapResolution: 2
+    rotationCenterX: 360
+    rotationCenterY: 360
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Urashima-box-2:
+    kind: costume
+    target: Urashima
+    file: ../urashima/assets/images/7c4060f3c1f3b3535a6c035d3c811ed4.png
+    bitmapResolution: 2
+    rotationCenterX: 321
+    rotationCenterY: 338
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Urashima-surprised:
+    kind: costume
+    target: Urashima
+    file: ../urashima/assets/images/9a9d051e632a6a0bc14283d4067051c3.png
+    bitmapResolution: 2
+    rotationCenterX: 321
+    rotationCenterY: 338
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Urashima-open-1:
+    kind: costume
+    target: Urashima
+    file: ../urashima/assets/images/cccd1f9ec5d5f5d424391830a7e961ca.png
+    bitmapResolution: 2
+    rotationCenterX: 360
+    rotationCenterY: 360
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Urashima-open-2:
+    kind: costume
+    target: Urashima
+    file: ../urashima/assets/images/bf71533830b43c976033475e2c1ddda9.png
+    bitmapResolution: 2
+    rotationCenterX: 258.5
+    rotationCenterY: 264
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Urashima-open-3:
+    kind: costume
+    target: Urashima
+    file: ../urashima/assets/images/57cd266ee81b71c922eeec3cffaa9543.png
+    bitmapResolution: 2
+    rotationCenterX: 360
+    rotationCenterY: 360
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Urashima-old-1:
+    kind: costume
+    target: Urashima
+    file: ../urashima/assets/images/83e50d9ac4fb3c4b8e2f280dac8a31f7.png
+    bitmapResolution: 2
+    rotationCenterX: 360
+    rotationCenterY: 360
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Urashima-old-2:
+    kind: costume
+    target: Urashima
+    file: ../urashima/assets/images/8f7246587c9aa5e105ecf759ec7fdbf2.png
+    bitmapResolution: 2
+    rotationCenterX: 248
+    rotationCenterY: 187
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Turtle:
+    kind: costume
+    target: Turtle
+    file: ../urashima/assets/images/e9440d396734310dae5a63617d312015.svg
+    rotationCenterX: 173
+    rotationCenterY: 178
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Princess:
+    kind: costume
+    target: Princess
+    file: ../../resources/20260801/master/Princess.png
+    bitmapResolution: 2
+    rotationCenterX: 507
+    rotationCenterY: 507
+    license: "CC-BY-SA-4.0: ../../resources/20260801/LICENSES.md"
+  Fish1:
+    kind: costume
+    target: Fish
+    file: ../urashima/assets/images/b72fee140b181e3d2ece61e33c625b2c.png
+    bitmapResolution: 2
+    rotationCenterX: 354
+    rotationCenterY: 359
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Fish2:
+    kind: costume
+    target: Fish
+    file: ../urashima/assets/images/1f3f91b56deb108fef4d42bcc90dd664.png
+    bitmapResolution: 2
+    rotationCenterX: 346
+    rotationCenterY: 360
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Beach1:
+    kind: backdrop
+    file: ../urashima/assets/images/eb776c9010f3e8cb37c996ed28ced040.png
+    bitmapResolution: 2
+    rotationCenterX: 480
+    rotationCenterY: 320
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Beach2:
+    kind: backdrop
+    file: ../urashima/assets/images/a3989cb8ade50e902eca361fb039eb9e.png
+    bitmapResolution: 2
+    rotationCenterX: 480
+    rotationCenterY: 322
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Ocean:
+    kind: backdrop
+    file: ../urashima/assets/images/f17a928d2b84a862897355d764b27ea7.png
+    bitmapResolution: 2
+    rotationCenterX: 480
+    rotationCenterY: 320
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Dragon Castle:
+    kind: backdrop
+    file: ../urashima/assets/images/cb0680dde39f37183cf6a036c1ba9d84.png
+    bitmapResolution: 2
+    rotationCenterX: 480
+    rotationCenterY: 320
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Smoke:
+    kind: backdrop
+    file: ../urashima/assets/images/93393d4256c7651095f509e7beede6f7.png
+    bitmapResolution: 2
+    rotationCenterX: 480
+    rotationCenterY: 320
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  End:
+    kind: backdrop
+    file: ../urashima/assets/images/47a3f4dc8ef6daef91623e54ee109cd9.png
+    bitmapResolution: 2
+    rotationCenterX: 480
+    rotationCenterY: 360
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Stars:
+    kind: backdrop
+    file: ../urashima/assets/images/47282ff0f7047c6fab9c94b531abf721.png
+    bitmapResolution: 2
+    rotationCenterX: 480
+    rotationCenterY: 360
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Guitar Chords2:
+    kind: sound
+    file: ../urashima/assets/sounds/b3dde1b18eefc1b833889cfb0166347e.mp3
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Rip:
+    kind: sound
+    file: ../urashima/assets/sounds/edef7e21a863bd400323a8a84359724b.mp3
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Squish Pop:
+    kind: sound
+    file: ../urashima/assets/sounds/ff3775a2cc22c7c87eb8b851ed650efe.mp3
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Squeaky Toy:
+    kind: sound
+    file: ../urashima/assets/sounds/439f8657b1cb684019a48463e05efa8b.mp3
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Jump:
+    kind: sound
+    file: ../urashima/assets/sounds/02283e47a05e37d03a26eda444f331aa.mp3
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Odesong:
+    kind: sound
+    file: ../urashima/assets/sounds/94a18e35af30d118a139d0394d38f32d.mp3
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Splash:
+    kind: sound
+    file: ../urashima/assets/sounds/98e221fee9f4930b018496fb3a266687.mp3
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Drum Funky:
+    kind: sound
+    file: ../urashima/assets/sounds/c28fb91feabdce6f882cbe8a6130c9c8.mp3
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Medieval2:
+    kind: sound
+    file: ../urashima/assets/sounds/26bc2918f3516ee760f6f31c23d61e11.mp3
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Medieval1:
+    kind: sound
+    file: ../urashima/assets/sounds/3dc51a6cfa6c4078aeeafb5db54b0290.mp3
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Lo Gliss Tabla:
+    kind: sound
+    file: ../urashima/assets/sounds/9a3d3c59ddb24028da478eb5f4fe3217.mp3
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Low Conga:
+    kind: sound
+    file: ../urashima/assets/sounds/c8531feaf9e1e7342d1171961d8443aa.mp3
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Lo Geh Tabla:
+    kind: sound
+    file: ../urashima/assets/sounds/579156750e1ce25b2a829780df2598e6.mp3
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Gong:
+    kind: sound
+    file: ../urashima/assets/sounds/953ecfbb79d1974cf8a510922f3cc97d.mp3
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Crowd Gasp:
+    kind: sound
+    file: ../urashima/assets/sounds/12e6c84f065d6a8b651e8fbb4b246e2a.mp3
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Ocean Wave:
+    kind: sound
+    file: ../urashima/assets/sounds/9bdabd397aac6305ceb80899c7b2ae78.mp3
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Xylo2:
+    kind: sound
+    file: ../urashima/assets/sounds/e4ee886bed15fe374cf8faf73ea423f4.mp3
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Goal Cheer:
+    kind: sound
+    file: ../urashima/assets/sounds/72a029d02f38062e3d3eecc5605b2289.mp3
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Clock Ticking:
+    kind: sound
+    file: ../urashima/assets/sounds/13561fa02a628ea56859f72a90a3bfab.mp3
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  Sewing Machine:
+    kind: sound
+    file: ../urashima/assets/sounds/cfc75b8ec10d522a49e754cee372fcb9.mp3
+    license: "MPL-2.0: ../urashima/LICENSES.md"
+  TextPlaceholder:
+    kind: costume
+    target: Narration
+    name: ui-placeholder
+    file: ../urashima/assets/images/b6c18d2f3df8b5d12e2b6a529109fec2.svg
+    rotationCenterX: 5
+    rotationCenterY: 5
+    license: "MPL-2.0: ../urashima/LICENSES.md"

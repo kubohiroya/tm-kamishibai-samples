@@ -11,14 +11,25 @@ jobs:
     runs-on: ubuntu-latest
     env:
       TZ: Asia/Tokyo
+      TMPOSE_KAMISHIBAI_DSL4_ROOT: ${{ github.workspace }}/.tmp/tmpose-kamishibai
     steps:
       - uses: actions/checkout@v7
+      - uses: actions/checkout@v7
+        with:
+          repository: kubohiroya/tmpose-kamishibai
+          ref: 8ea06bfd100b106f559cb25a280fab5570e42919
+          path: .tmp/tmpose-kamishibai
       - run: corepack enable
       - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: pnpm
+          cache-dependency-path: |
+            pnpm-lock.yaml
+            .tmp/tmpose-kamishibai/pnpm-lock.yaml
       - run: pnpm install --frozen-lockfile
+      - run: pnpm install --frozen-lockfile
+        working-directory: .tmp/tmpose-kamishibai
       - run: pnpm exec playwright install --with-deps chromium webkit
       - run: pnpm test
       - run: pnpm build

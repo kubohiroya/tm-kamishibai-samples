@@ -39,23 +39,26 @@ test('publishes the approved works-library categories and rights metadata', asyn
       ({href, download}) => href === 'stories/urashima/urashima-4.0.sb3' && download,
     ),
   );
+  assert(
+    urashima.actions.some(({href}) => href === 'stories/urashima/web-4.0/'),
+  );
   assert.equal(urashima.actions.some(({group}) => group === '作品情報'), false);
   const myUrashima = catalog.works.find(({id}) => id === 'my-urashima');
   assert.equal(myUrashima.detailHref, 'stories/my-urashima/');
   assert.deepEqual(myUrashima.dslSeries, ['3.2', '4.0']);
   assert.deepEqual(
     [...new Set(myUrashima.actions.map(({group}) => group))],
-    ['DSL 3.2 作業版', 'DSL 4.0 変換版'],
+    ['DSL 3.2 作業版', 'DSL 4.0 作業版'],
   );
   assert.equal(myUrashima.actions.some(({group}) => group === '作品情報'), false);
   assert.deepEqual(
     myUrashima.actions
-      .filter(({group}) => group === 'DSL 4.0 変換版')
+      .filter(({group}) => group === 'DSL 4.0 作業版')
       .map(({label, disabled = false}) => [label, disabled]),
     [
-      ['Web版（準備中）', true],
+      ['Web版を開く', false],
       ['DSL 4.0 YAMLをダウンロード', false],
-      ['作業用SB3（準備中）', true],
+      ['作業用SB3をダウンロード', false],
     ],
   );
   const partiallyGrouped = structuredClone(catalog);

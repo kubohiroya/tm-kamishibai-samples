@@ -1,0 +1,483 @@
+{
+  "formatVersion": 1,
+  "runtime": {
+    "repository": "https://github.com/kubohiroya/tmpose-kamishibai",
+    "version": "4.0.0",
+    "commit": "8ea06bfd100b106f559cb25a280fab5570e42919",
+    "basePath": "base/kamishibai-4.0.sb3",
+    "baseSourceCommit": "98cec94387cac726e947cf2454e3f0c5e9146061",
+    "baseSize": 7540390,
+    "baseSha256": "90d39f61b3323e2ea587036b6fc69b591148eb8f9ae9f55a822e1c9d6405144e"
+  },
+  "sb3Toolchain": {
+    "package": "@kubohiroya/sb3-toolchain",
+    "version": "0.6.0"
+  },
+  "source": {
+    "path": "my-urashima.k4.yml",
+    "size": 13426,
+    "sha256": "b78f60e1af662049949a6565392bb5c2f08a8844542e625e860848b958893931"
+  },
+  "projectAssets": {
+    "manifest": {
+      "path": "project-assets-dsl4.yml",
+      "size": 10395,
+      "sha256": "4dcf55c6988e47bff407a8fea18cdb7d7b9612e46427ccc4b1c6c1985bbd41e9"
+    },
+    "files": [
+      {
+        "id": "Beach1",
+        "kind": "backdrop",
+        "source": {
+          "path": "../urashima/assets/images/eb776c9010f3e8cb37c996ed28ced040.png",
+          "size": 1451811,
+          "sha256": "d16403cbed2b8d931dd7ad4cf2328cfdc0ad52e7ae888824ba7dd4d128438fe9"
+        }
+      },
+      {
+        "id": "Beach2",
+        "kind": "backdrop",
+        "source": {
+          "path": "../urashima/assets/images/a3989cb8ade50e902eca361fb039eb9e.png",
+          "size": 1237457,
+          "sha256": "224f2cf4d6a384bb6f48a3e0725536a2d329adc6c50d1c3573dc9555fbe6117c"
+        }
+      },
+      {
+        "id": "Clock Ticking",
+        "kind": "sound",
+        "source": {
+          "path": "../urashima/assets/sounds/13561fa02a628ea56859f72a90a3bfab.mp3",
+          "size": 80710,
+          "sha256": "506e842289d2c3497ae148a1ab7ef9442109d5c079076e3528a38b79cd131585"
+        }
+      },
+      {
+        "id": "Crowd Gasp",
+        "kind": "sound",
+        "source": {
+          "path": "../urashima/assets/sounds/12e6c84f065d6a8b651e8fbb4b246e2a.mp3",
+          "size": 20942,
+          "sha256": "ebf0918dd69dab9ed323a2e75b8d9efe0e8f659aefc1ef7dda29abec1f5d9fb8"
+        }
+      },
+      {
+        "id": "Dragon Castle",
+        "kind": "backdrop",
+        "source": {
+          "path": "../urashima/assets/images/cb0680dde39f37183cf6a036c1ba9d84.png",
+          "size": 1611867,
+          "sha256": "5107c938d825f45d04a37943ae49b3767e6d26e80efc054eb1fe9423dde3ca29"
+        }
+      },
+      {
+        "id": "Drum Funky",
+        "kind": "sound",
+        "source": {
+          "path": "../urashima/assets/sounds/c28fb91feabdce6f882cbe8a6130c9c8.mp3",
+          "size": 33480,
+          "sha256": "b404131549c340da59660be3226131367031f1783a78a1f808f682713b05f819"
+        }
+      },
+      {
+        "id": "End",
+        "kind": "backdrop",
+        "source": {
+          "path": "../urashima/assets/images/47a3f4dc8ef6daef91623e54ee109cd9.png",
+          "size": 972749,
+          "sha256": "728ac621230d821f2183815c89c391a8eb6a7c24ad250502ff5080e7b0c1f114"
+        }
+      },
+      {
+        "id": "Fish1",
+        "kind": "costume",
+        "target": "Fish",
+        "source": {
+          "path": "../urashima/assets/images/b72fee140b181e3d2ece61e33c625b2c.png",
+          "size": 213276,
+          "sha256": "9d5a296c7ebc5734ab043bf6bbbf1dce3720bba51a2c0254a7f46ae1c52f31f7"
+        }
+      },
+      {
+        "id": "Fish2",
+        "kind": "costume",
+        "target": "Fish",
+        "source": {
+          "path": "../urashima/assets/images/1f3f91b56deb108fef4d42bcc90dd664.png",
+          "size": 187499,
+          "sha256": "8003dacd9374248656ec8c5735c2e61faf8bf9ef70fee26259a12c5a4adaa113"
+        }
+      },
+      {
+        "id": "Goal Cheer",
+        "kind": "sound",
+        "source": {
+          "path": "../urashima/assets/sounds/72a029d02f38062e3d3eecc5605b2289.mp3",
+          "size": 62319,
+          "sha256": "cdc7e63421bd60c79e61e977a0889553be71d4540a6212972a49d161370c6d0d"
+        }
+      },
+      {
+        "id": "Gong",
+        "kind": "sound",
+        "source": {
+          "path": "../urashima/assets/sounds/953ecfbb79d1974cf8a510922f3cc97d.mp3",
+          "size": 77366,
+          "sha256": "2694f534a2b8c37747f242b9323ca81942191f2adcd1f5db5a4225b96c3c344a"
+        }
+      },
+      {
+        "id": "Guitar Chords2",
+        "kind": "sound",
+        "source": {
+          "path": "../urashima/assets/sounds/b3dde1b18eefc1b833889cfb0166347e.mp3",
+          "size": 117072,
+          "sha256": "2d952f8112d1a2320f5933f7450ac46f38a40341d4f79cd26f725ae5c390746a"
+        }
+      },
+      {
+        "id": "Jump",
+        "kind": "sound",
+        "source": {
+          "path": "../urashima/assets/sounds/02283e47a05e37d03a26eda444f331aa.mp3",
+          "size": 6313,
+          "sha256": "ed9b0ce39b080a49f792de76774326a586676f67d0b180b4833ff79c09222935"
+        }
+      },
+      {
+        "id": "Lo Geh Tabla",
+        "kind": "sound",
+        "source": {
+          "path": "../urashima/assets/sounds/579156750e1ce25b2a829780df2598e6.mp3",
+          "size": 23449,
+          "sha256": "2ff8c5dc94a492a70542b2d95a299f0d78dc3cf754e581e8843ad0cd14a9037d"
+        }
+      },
+      {
+        "id": "Lo Gliss Tabla",
+        "kind": "sound",
+        "source": {
+          "path": "../urashima/assets/sounds/9a3d3c59ddb24028da478eb5f4fe3217.mp3",
+          "size": 6313,
+          "sha256": "04333eaeba44ea7f7900b0e85e67c7e4b499e3ff4c5b2ad6b01f33a5dfbac119"
+        }
+      },
+      {
+        "id": "Low Conga",
+        "kind": "sound",
+        "source": {
+          "path": "../urashima/assets/sounds/c8531feaf9e1e7342d1171961d8443aa.mp3",
+          "size": 7149,
+          "sha256": "2180333d0c921f5fc65c32c98259a9e747fe124b11c7e4f3b3d77d20dfa62c0b"
+        }
+      },
+      {
+        "id": "Medieval1",
+        "kind": "sound",
+        "source": {
+          "path": "../urashima/assets/sounds/3dc51a6cfa6c4078aeeafb5db54b0290.mp3",
+          "size": 155942,
+          "sha256": "0d600d7be53fc8b22d8e69f9495e8712e6c9b6e1949a0fc20ba1625d6ed3977f"
+        }
+      },
+      {
+        "id": "Medieval2",
+        "kind": "sound",
+        "source": {
+          "path": "../urashima/assets/sounds/26bc2918f3516ee760f6f31c23d61e11.mp3",
+          "size": 236608,
+          "sha256": "bce7ea84b1e23e44d2df9f133581c0b02bb84c9ff84b8266f5749dcff7e7c82a"
+        }
+      },
+      {
+        "id": "Ocean",
+        "kind": "backdrop",
+        "source": {
+          "path": "../urashima/assets/images/f17a928d2b84a862897355d764b27ea7.png",
+          "size": 1484573,
+          "sha256": "daee38b7bc3dc3ba24d336cd33b44443200e154f1546fd3332bd01871f5759b5"
+        }
+      },
+      {
+        "id": "Ocean Wave",
+        "kind": "sound",
+        "source": {
+          "path": "../urashima/assets/sounds/9bdabd397aac6305ceb80899c7b2ae78.mp3",
+          "size": 73604,
+          "sha256": "905d6f935ea6c48ef58d893115a4bc55c73d051f551f8d9215f74365c1fef4b3"
+        }
+      },
+      {
+        "id": "Odesong",
+        "kind": "sound",
+        "source": {
+          "path": "../urashima/assets/sounds/94a18e35af30d118a139d0394d38f32d.mp3",
+          "size": 155524,
+          "sha256": "4e4ce55aa96a44893573cddb4a458b3513f8de1c336639c815469abca4c869b7"
+        }
+      },
+      {
+        "id": "Princess",
+        "kind": "costume",
+        "target": "Princess",
+        "source": {
+          "path": "../../resources/20260801/master/Princess.png",
+          "size": 220534,
+          "sha256": "e9d1857528a619e4a56ebd232fea4767fd6bdd00b20ac67a90c859c6b3598e83"
+        }
+      },
+      {
+        "id": "Rip",
+        "kind": "sound",
+        "source": {
+          "path": "../urashima/assets/sounds/edef7e21a863bd400323a8a84359724b.mp3",
+          "size": 10075,
+          "sha256": "b3d2d269e571ca28bb5a0130e6521423a1add7f6ca0abd0de44274a2db7fc297"
+        }
+      },
+      {
+        "id": "Sewing Machine",
+        "kind": "sound",
+        "source": {
+          "path": "../urashima/assets/sounds/cfc75b8ec10d522a49e754cee372fcb9.mp3",
+          "size": 79874,
+          "sha256": "dd200be1df9bd82d62599c3e127e6f8867a63ba58d80c5a8375f61a798224cd5"
+        }
+      },
+      {
+        "id": "Smoke",
+        "kind": "backdrop",
+        "source": {
+          "path": "../urashima/assets/images/93393d4256c7651095f509e7beede6f7.png",
+          "size": 575791,
+          "sha256": "7227b4957a3bc3a67648fcfde4f390b1a9524c0d461bccdbfced0c7868d3e4c0"
+        }
+      },
+      {
+        "id": "Splash",
+        "kind": "sound",
+        "source": {
+          "path": "../urashima/assets/sounds/98e221fee9f4930b018496fb3a266687.mp3",
+          "size": 35152,
+          "sha256": "0514fa5ad43d69c39486f7ecc5d0cf3b2d2ec2f81904b499883b08d6b629a488"
+        }
+      },
+      {
+        "id": "Squeaky Toy",
+        "kind": "sound",
+        "source": {
+          "path": "../urashima/assets/sounds/439f8657b1cb684019a48463e05efa8b.mp3",
+          "size": 8403,
+          "sha256": "1b90fdb3898da8828d28ac77aca24404901d074fc62ad250c98ca4d995ad16b2"
+        }
+      },
+      {
+        "id": "Squish Pop",
+        "kind": "sound",
+        "source": {
+          "path": "../urashima/assets/sounds/ff3775a2cc22c7c87eb8b851ed650efe.mp3",
+          "size": 8403,
+          "sha256": "e0b8aea723012ae42ed88d1f28b2413dac4eeae8f074c8caf4f5dd05d38d08d2"
+        }
+      },
+      {
+        "id": "Stars",
+        "kind": "backdrop",
+        "source": {
+          "path": "../urashima/assets/images/47282ff0f7047c6fab9c94b531abf721.png",
+          "size": 382632,
+          "sha256": "e241528275a253d03ea42be0ee1abfef28e508f82ceb29e4e485947c244b6b61"
+        }
+      },
+      {
+        "id": "TextPlaceholder",
+        "kind": "costume",
+        "target": "Narration",
+        "name": "ui-placeholder",
+        "source": {
+          "path": "../urashima/assets/images/b6c18d2f3df8b5d12e2b6a529109fec2.svg",
+          "size": 147,
+          "sha256": "d39fb34d8ce63322d9fb0a0151e525cf4ac6e7a45c05e016d738fbdece38ba71"
+        }
+      },
+      {
+        "id": "Turtle",
+        "kind": "costume",
+        "target": "Turtle",
+        "source": {
+          "path": "../urashima/assets/images/e9440d396734310dae5a63617d312015.svg",
+          "size": 414139,
+          "sha256": "cf9c196bfcab97ad678b885214b3a1eeb02a52264c7650d6b3e78907ee6f2371"
+        }
+      },
+      {
+        "id": "Urashima-box-1",
+        "kind": "costume",
+        "target": "Urashima",
+        "source": {
+          "path": "../urashima/assets/images/0ec7d76d7a77cf94aa14a3cbf1030f1d.png",
+          "size": 348181,
+          "sha256": "9ee212d8b3bc6664a8df22f5d51242334d8db043eefebbcc679e41f556a6bd1b"
+        }
+      },
+      {
+        "id": "Urashima-box-2",
+        "kind": "costume",
+        "target": "Urashima",
+        "source": {
+          "path": "../urashima/assets/images/7c4060f3c1f3b3535a6c035d3c811ed4.png",
+          "size": 315184,
+          "sha256": "96c63b8bae7644dbd1a46a6e6785f446cc7b88b6a52b8050a11e9d1d33a3e3f6"
+        }
+      },
+      {
+        "id": "Urashima-dance-1",
+        "kind": "costume",
+        "target": "Urashima",
+        "source": {
+          "path": "../urashima/assets/images/fbcd808f6a222080bc8722d631e40ac4.png",
+          "size": 369213,
+          "sha256": "f17340aa73f4c19d98343dd4afad9efc2580d63c879c842b17fa042879ce3d7d"
+        }
+      },
+      {
+        "id": "Urashima-dance-2",
+        "kind": "costume",
+        "target": "Urashima",
+        "source": {
+          "path": "../urashima/assets/images/2c8a567edc720b9039dc7a00bf164289.png",
+          "size": 394275,
+          "sha256": "6d5fe8b31511f108c2759698110aa06cebd41922a48d07757ec64106ded761ea"
+        }
+      },
+      {
+        "id": "Urashima-help-1",
+        "kind": "costume",
+        "target": "Urashima",
+        "source": {
+          "path": "../urashima/assets/images/de2c9922d359138cd8f4fd96829c377a.png",
+          "size": 296401,
+          "sha256": "b457406d45d210d4362a929437936209a68736f75d80fe87daf0eea78efbb8db"
+        }
+      },
+      {
+        "id": "Urashima-old-1",
+        "kind": "costume",
+        "target": "Urashima",
+        "source": {
+          "path": "../urashima/assets/images/83e50d9ac4fb3c4b8e2f280dac8a31f7.png",
+          "size": 357710,
+          "sha256": "8e191c3ac08e04fbb0132879b5233c1112032b9a7075eb94798c17a5e313ed31"
+        }
+      },
+      {
+        "id": "Urashima-old-2",
+        "kind": "costume",
+        "target": "Urashima",
+        "source": {
+          "path": "../urashima/assets/images/8f7246587c9aa5e105ecf759ec7fdbf2.png",
+          "size": 236870,
+          "sha256": "d0a383193b4668c30bb1a7669dfb7bd5d9f1cee1bfcfc7c4847e44cbf63ff114"
+        }
+      },
+      {
+        "id": "Urashima-open-1",
+        "kind": "costume",
+        "target": "Urashima",
+        "source": {
+          "path": "../urashima/assets/images/cccd1f9ec5d5f5d424391830a7e961ca.png",
+          "size": 321904,
+          "sha256": "ad3e2f2fa01c86acd93f4e8ad539f4fcd5ca691f66e4284c5659e93a9eb89159"
+        }
+      },
+      {
+        "id": "Urashima-open-2",
+        "kind": "costume",
+        "target": "Urashima",
+        "source": {
+          "path": "../urashima/assets/images/bf71533830b43c976033475e2c1ddda9.png",
+          "size": 373839,
+          "sha256": "b424a2b6bbbbff4d345d4252c70b0a4a9792cc6d8ac416fba73868d69f43332e"
+        }
+      },
+      {
+        "id": "Urashima-open-3",
+        "kind": "costume",
+        "target": "Urashima",
+        "source": {
+          "path": "../urashima/assets/images/57cd266ee81b71c922eeec3cffaa9543.png",
+          "size": 419137,
+          "sha256": "593a5caf83dcbc405df62f3d4fd8d9833ae5bc1fcac12a37c0ba815deeb81d65"
+        }
+      },
+      {
+        "id": "Urashima-ride-1",
+        "kind": "costume",
+        "target": "Urashima",
+        "source": {
+          "path": "../urashima/assets/images/603045ae9bc87d42d84ebed21e76af7e.png",
+          "size": 397701,
+          "sha256": "5e879ba21eefeee259a253a5cc29c29c75e6029072477e7d777f744e4d27e297"
+        }
+      },
+      {
+        "id": "Urashima-ride-2",
+        "kind": "costume",
+        "target": "Urashima",
+        "source": {
+          "path": "../urashima/assets/images/a6b0d96dd3d9fe9069acb213d2682caf.png",
+          "size": 392722,
+          "sha256": "14f59cd50ee5069a933d32590da0d2ea54714f50582c3fa3e609dc1179db6351"
+        }
+      },
+      {
+        "id": "Urashima-surprised",
+        "kind": "costume",
+        "target": "Urashima",
+        "source": {
+          "path": "../urashima/assets/images/9a9d051e632a6a0bc14283d4067051c3.png",
+          "size": 322973,
+          "sha256": "03f3d3a0aa062210ca646a706f41bf238b514dc135ed9921d9f3168511a0cb42"
+        }
+      },
+      {
+        "id": "Urashima-walk-1",
+        "kind": "costume",
+        "target": "Urashima",
+        "source": {
+          "path": "../urashima/assets/images/963e926995791fde1b335fd4ba60d6d7.png",
+          "size": 352636,
+          "sha256": "f66c89b710324a7ca0809ab8cdc5acdfff83e988828a199403b7104ade6ec2df"
+        }
+      },
+      {
+        "id": "Xylo2",
+        "kind": "sound",
+        "source": {
+          "path": "../urashima/assets/sounds/e4ee886bed15fe374cf8faf73ea423f4.mp3",
+          "size": 180602,
+          "sha256": "650bceafec172c7e845d5d531d658d64d10a9be2f5bdcd339f11adadcd997944"
+        }
+      }
+    ]
+  },
+  "output": {
+    "path": "my-urashima-4.0.sb3",
+    "size": 22406696,
+    "sha256": "e4e7fe7d9c525ef2f50a438785879e93e00468b8a9e5bd1677a6ec1a14f8359c",
+    "archiveEntryCount": 51,
+    "targetNames": [
+      "Stage",
+      "Urashima",
+      "Turtle",
+      "Princess",
+      "Fish",
+      "Narration"
+    ],
+    "stageBackdropCount": 11,
+    "stageSoundCount": 20,
+    "princessCostumes": [
+      "Princess"
+    ]
+  }
+}

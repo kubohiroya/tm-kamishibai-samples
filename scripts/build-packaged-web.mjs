@@ -251,9 +251,18 @@ export async function buildPackagedWeb({
   const webConfig = {...DEFAULT_WEB_CONFIGURATION, ...rawWebConfig};
   if (!webConfig.enabled) return {enabled: false};
 
-  assert.equal(webConfig.inputProfile, 'player', 'Web builds accept only the player profile.');
-  assert.equal(webConfig.scriptMode, 'embedded');
-  assert.equal(webConfig.assets, 'embedded');
+  assert(
+    ['player', 'dsl4-offline', 'dsl4-workshop'].includes(webConfig.inputProfile),
+    `Unsupported Web input profile: ${webConfig.inputProfile}`,
+  );
+  assert(
+    ['embedded', 'external'].includes(webConfig.scriptMode),
+    `Unsupported Web script mode: ${webConfig.scriptMode}`,
+  );
+  assert(
+    ['embedded', 'embedded-project'].includes(webConfig.assets),
+    `Unsupported Web asset mode: ${webConfig.assets}`,
+  );
   assert.equal(webConfig.packager.package, '@turbowarp/packager');
   assert.equal(webConfig.packager.version, installedPackager.version);
   assert.equal(webConfig.packager.version, '3.13.0');

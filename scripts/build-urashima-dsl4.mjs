@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {spawnSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
-import {mkdtemp, readFile, rename, rm, writeFile} from 'node:fs/promises';
+import {mkdir, mkdtemp, readFile, rename, rm, writeFile} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -20,6 +20,7 @@ const storyDirectory = path.join(projectRoot, 'stories/urashima');
 const configPath = path.join(storyDirectory, 'dsl4-build.config.json');
 const artifactLockPath = path.join(storyDirectory, 'dsl4-artifacts.lock.json');
 const defaultKamishibaiRoot = path.resolve(projectRoot, '../tmpose-kamishibai');
+const kamishibaiRootEnvironmentName = 'TMPOSE_KAMISHIBAI_DSL4_ROOT';
 
 function sha256(contents) {
   return createHash('sha256').update(contents).digest('hex');
@@ -37,7 +38,9 @@ function commandResult(command, arguments_, options = {}) {
 }
 
 function parseArguments(arguments_) {
-  let kamishibaiRoot = defaultKamishibaiRoot;
+  let kamishibaiRoot = path.resolve(
+    process.env[kamishibaiRootEnvironmentName] ?? defaultKamishibaiRoot,
+  );
   let writeLock = false;
   for (let index = 0; index < arguments_.length; index += 1) {
     const argument = arguments_[index];
@@ -52,6 +55,7 @@ function parseArguments(arguments_) {
 }
 
 async function writeAtomically(outputPath, contents) {
+  await mkdir(path.dirname(outputPath), {recursive: true});
   const temporaryPath = `${outputPath}.tmp-${process.pid}`;
   await writeFile(temporaryPath, contents);
   await rename(temporaryPath, outputPath);
@@ -103,7 +107,14 @@ async function canonicalizeSb3(inputPath, sourceDirectory) {
   return Buffer.from(first.archive);
 }
 
-export async function buildUrashimaDsl4({kamishibaiRoot, writeLock = false}) {
+export async function buildUrashimaDsl4({
+  kamishibaiRoot = path.resolve(
+    process.env[kamishibaiRootEnvironmentName] ?? defaultKamishibaiRoot,
+  ),
+  publishedOutputPath,
+  verifyCommittedOutput = true,
+  writeLock = false,
+} = {}) {
   const config = JSON.parse(await readFile(configPath, 'utf8'));
   assert.equal(config.formatVersion, 1);
   await ensureUrashimaDsl4Inputs();
@@ -119,7 +130,7 @@ export async function buildUrashimaDsl4({kamishibaiRoot, writeLock = false}) {
     '',
     'tmpose-kamishibai checkout must be clean.',
   );
-  const basePath = path.join(kamishibaiRoot, config.runtime.baseOutput);
+  const basePath = path.join(storyDirectory, config.runtime.basePath);
   const baseBytes = await readFile(basePath);
   assert.equal(baseBytes.length, config.runtime.baseSize);
   assert.equal(sha256(baseBytes), config.runtime.baseSha256);
@@ -217,13 +228,20 @@ export async function buildUrashimaDsl4({kamishibaiRoot, writeLock = false}) {
         JSON.parse(await readFile(artifactLockPath, 'utf8')),
         'dsl4-artifacts.lock.json is stale; run pnpm update:urashima-dsl4.',
       );
-      assert.deepEqual(
-        await readFile(outputPath),
-        canonicalBytes,
-        'urashima-4.0.sb3 is stale; run pnpm update:urashima-dsl4.',
-      );
+      if (verifyCommittedOutput) {
+        assert.deepEqual(
+          await readFile(outputPath),
+          canonicalBytes,
+          'urashima-4.0.sb3 is stale; run pnpm update:urashima-dsl4.',
+        );
+      }
     }
-    return {artifactLock, outputPath};
+    if (publishedOutputPath) await writeAtomically(publishedOutputPath, canonicalBytes);
+    return {
+      archive: canonicalBytes,
+      artifactLock,
+      outputPath: publishedOutputPath ?? outputPath,
+    };
   } finally {
     await rm(temporaryDirectory, {recursive: true, force: true});
   }
