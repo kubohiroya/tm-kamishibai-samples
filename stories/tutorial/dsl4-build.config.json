@@ -27,7 +27,7 @@
   "publication": {
     "enabled": true,
     "reason": "tmpose-kamishibai 4.0.0-rc.2 is published and verified by tmpose-kamishibai#559",
-    "issue": "https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/100"
+    "issue": "https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/102"
   },
   "webArtifactsLock": "dsl4-web-artifacts.lock.json",
   "web": {
@@ -48,7 +48,7 @@
         "target": "html",
         "autoplay": true,
         "app": {
-          "windowTitle": "カメを助けよう DSL 4.0 | TMPose紙芝居"
+          "windowTitle": "地震だ！頭を守ろう DSL 4.0 | TMPose紙芝居"
         },
         "cloudVariables": {
           "mode": "disabled"
@@ -68,11 +68,11 @@
     ]
   },
   "work": {
-    "id": "tutorial-rescue",
+    "id": "tutorial-earthquake-safety",
     "category": "official",
-    "title": "カメを助けよう（DSL 4.0チュートリアル）",
+    "title": "地震だ！頭を守ろう（DSL 4.0チュートリアル）",
     "detailHref": "stories/tutorial/",
-    "summary": "紙芝居を遊ぶ・作るチュートリアルで使う、3場面の小さな公式サンプルです。",
+    "summary": "教室で地震の揺れを感じたときの安全行動を、具体的なポーズで練習する3場面の公式サンプルです。",
     "creator": "Hiroya Kubo",
     "rightsHolder": "Hiroya Kubo",
     "dslSeries": ["4.0"],

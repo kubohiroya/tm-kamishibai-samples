@@ -279,7 +279,7 @@ try {
     });
     assert.deepEqual(tutorialProject, {
       applicationMode: 'story',
-      targets: ['Stage', 'Turtle', 'Friend'],
+      targets: ['Stage', 'Student'],
     });
     await tutorial.page.locator('[data-dsl4-title-action=close]').click();
     await tutorial.page.waitForFunction(

@@ -8,69 +8,63 @@ controls:
       ArrowDown: rehearsal.skipScene
 
 assets:
-  Beach:
+  Classroom:
     kind: backdrop
-    file: beach.svg
-  TurtleIdle:
+    file: classroom.svg
+  StudentReady:
     kind: costume
-    target: Turtle
-    file: turtle.svg
-  NewBeach:
+    target: Student
+    file: student-ready.svg
+  EarthquakeClassroom:
     kind: backdrop
-    file: new-beach.svg
-  FriendIdle:
+    file: earthquake-classroom.svg
+  ProtectHead:
     kind: costume
-    target: Friend
-    file: friend.svg
-  RescuePose:
+    target: Student
+    file: protect-head.svg
+  SafetyPose:
     kind: poseModel
-    file: rescue-pose
+    file: safety-pose
     loading: lazy
-  RescueSound:
+  SuccessSound:
     kind: sound
-    file: opening.mp3
+    file: success.mp3
 
 actors:
-  Turtle: TurtleIdle
-  Friend: FriendIdle
+  Student: StudentReady
 
 cover:
-  backdrop: Beach
+  backdrop: Classroom
 
 poseRecognition:
   navigation:
     allowSkip: true
 
 scenes:
-  opening:
-    - stage: Beach
-    - Turtle.show:
-        skin: TurtleIdle
-        x: 0
-        y: -70
-        scale: 45
-    - Turtle.say:
-        text: こんにちは！
-        seconds: 2
-  meeting:
-    - stage: NewBeach
-    - Friend.show:
-        skin: FriendIdle
-        x: 80
+  earthquake:
+    - stage: Classroom
+    - Student.show:
+        skin: StudentReady
+        x: -90
         y: -55
-        scale: 38
-    - Friend.say:
-        text: こんにちは、カメさん！
+        scale: 58
+    - Student.say:
+        text: 地震だ！
         seconds: 2
-  rescue:
-    poseModel: RescuePose
+  instruction:
+    - stage: EarthquakeClassroom
+    - Student.say:
+        text: 自分の身を守るため、丈夫な机の下に入り、両手で頭を守ろう！
+        seconds: 4
+  protect:
+    poseModel: SafetyPose
     actions:
-      - stage: Beach
-      - Turtle.pose:
+      - stage: EarthquakeClassroom
+      - Student.pose:
           steps:
-            - pose: help
-              skin: TurtleIdle
-              sound: RescueSound
-      - Turtle.say:
-          text: 助けてくれて、ありがとう！
-          seconds: 2
+            - pose: 頭を守る
+              skin: ProtectHead
+              sound: SuccessSound
+      - Student.say:
+          text: できた！ 揺れがおさまるまで待とう。
+          seconds: 3

@@ -18,20 +18,20 @@ const kamishibaiRootEnvironmentName = 'TMPOSE_KAMISHIBAI_DSL4_ROOT';
 const zipTimestamp = new Date('2026-08-12T00:00:00.000Z');
 
 const starterSharedFiles = [
-  'beach.svg',
-  'turtle.svg',
-  'opening.mp3',
-  'rescue-pose/metadata.json',
-  'rescue-pose/model.json',
-  'rescue-pose/weights.bin',
+  'classroom.svg',
+  'student-ready.svg',
+  'success.mp3',
+  'safety-pose/metadata.json',
+  'safety-pose/model.json',
+  'safety-pose/weights.bin',
 ];
 const additionKitFiles = [
   'README.md',
   'add-background-and-actor.yml.txt',
   'add-pose-scene.yml.txt',
-  'friend.svg',
+  'protect-head.svg',
   'intentional-diagnostic.kamishibai.yaml.txt',
-  'new-beach.svg',
+  'earthquake-classroom.svg',
 ];
 
 function sha256(contents) {
@@ -103,7 +103,7 @@ function inspectSource(source, label) {
 function inspectProject(sb3Bytes) {
   const archive = unzipSync(new Uint8Array(sb3Bytes));
   const project = JSON.parse(strFromU8(archive['project.json']));
-  for (const name of ['Stage', 'Turtle', 'Friend']) {
+  for (const name of ['Stage', 'Student']) {
     assert.equal(
       project.targets.filter((target) => target.name === name).length,
       1,
@@ -327,14 +327,14 @@ export async function buildTutorialDsl4({
       config.projectAssets,
       'README.md',
       'LICENSES.md',
-      'beach.svg',
-      'turtle.svg',
-      'new-beach.svg',
-      'friend.svg',
-      'opening.mp3',
-      'rescue-pose/metadata.json',
-      'rescue-pose/model.json',
-      'rescue-pose/weights.bin',
+      'classroom.svg',
+      'student-ready.svg',
+      'earthquake-classroom.svg',
+      'protect-head.svg',
+      'success.mp3',
+      'safety-pose/metadata.json',
+      'safety-pose/model.json',
+      'safety-pose/weights.bin',
       ...additionKitFiles.map((filename) => `addition-kit/${filename}`),
       'starter/README.md',
     ];

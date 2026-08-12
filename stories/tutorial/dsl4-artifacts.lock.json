@@ -3,7 +3,7 @@
   "status": "published",
   "version": "4.0.0-rc.2",
   "releaseDependency": "https://github.com/kubohiroya/tmpose-kamishibai/issues/559",
-  "sourceIdentity": "b5278ea502cab0d06cd301022aed128c91ec3909c4cd9cfc216be46784c9e6c3",
+  "sourceIdentity": "41469cdcd93ace85c421ff1de229b247b7d2157c677e399377ac49fa92a632c4",
   "runtime": {
     "repository": "https://github.com/kubohiroya/tmpose-kamishibai",
     "version": "4.0.0-rc.2",
@@ -20,133 +20,128 @@
   "sources": {
     "complete": {
       "path": "story.kamishibai.yaml",
-      "size": 1378,
-      "sha256": "c786674254aff5854f2af6d77b49a53009176bdb3c6e07896e06d7e9ced5adf2"
+      "size": 1439,
+      "sha256": "4016c237438c942222ea4c7c1bbfabef83184e489e913b06260c93a491b09c59"
     },
     "starter": {
       "path": "starter.kamishibai.yaml",
-      "size": 594,
-      "sha256": "6df559bc1ce5f4b19884b4b8026801342a61a51f70d0ff3f64014a39ea85fd7a"
+      "size": 644,
+      "sha256": "b24dd1007fd22137bbc5d131f3bbebcf75a3ccefc5ffd0ec95aa6809f311821e"
     },
     "completeStructure": {
       "assetIds": [
-        "Beach",
-        "TurtleIdle",
-        "NewBeach",
-        "FriendIdle",
-        "RescuePose",
-        "RescueSound"
+        "Classroom",
+        "StudentReady",
+        "EarthquakeClassroom",
+        "ProtectHead",
+        "SafetyPose",
+        "SuccessSound"
       ],
       "sceneIds": [
-        "opening",
-        "meeting",
-        "rescue"
+        "earthquake",
+        "instruction",
+        "protect"
       ]
     },
     "starterStructure": {
       "assetIds": [
-        "Beach",
-        "TurtleIdle"
+        "Classroom",
+        "StudentReady"
       ],
       "sceneIds": [
-        "opening"
+        "earthquake"
       ]
     },
     "inputs": [
       {
         "path": "LICENSES.md",
-        "size": 1049,
-        "sha256": "4f861e2cbca84a530d2571f17696830046b5491299cad56e438ab76b0f647a91"
+        "size": 1375,
+        "sha256": "f6e61d883ea5f5aa20895b3e3cd24c9522857d9a7d60f021b820f4fef91eb4ce"
       },
       {
         "path": "README.md",
-        "size": 1668,
-        "sha256": "486f050e3d7d52915717728945dc2d6f8c0f8462e5adee0e4342c056fedcb473"
+        "size": 2354,
+        "sha256": "f5d41a19e284c16b7e903e83bd4e9a52d6468e396cf10e96d167c716eda8696f"
       },
       {
         "path": "addition-kit/README.md",
-        "size": 744,
-        "sha256": "0f7ba21adea1bb5ecb7e07bd9bb7facf650cbaf1fd57e102b69064d46701a664"
+        "size": 960,
+        "sha256": "b18d5fcaf390ac8b15c39081255206e4c9ea1ffaa9071a72bb86acb68ebd29e2"
       },
       {
         "path": "addition-kit/add-background-and-actor.yml.txt",
-        "size": 714,
-        "sha256": "f5585aa5b7ce4d3d35ccc2a043a5f3067afa2f8008a963571ff79fe84bc3023a"
+        "size": 730,
+        "sha256": "8de27f227885ae98df431d4b09c9e34f5c8f057784950c270427e6355ecb8cd7"
       },
       {
         "path": "addition-kit/add-pose-scene.yml.txt",
-        "size": 1135,
-        "sha256": "4c99cdf16c1c601b171d4a2679b49eed446a17d46aa72cc9429835dbe517816a"
+        "size": 1439,
+        "sha256": "4016c237438c942222ea4c7c1bbfabef83184e489e913b06260c93a491b09c59"
       },
       {
-        "path": "addition-kit/friend.svg",
-        "size": 983,
-        "sha256": "32c30f9da9d69629988fc9ba7a3c6a131c02418b11adb33a86fcaf2a96df9e44"
+        "path": "addition-kit/earthquake-classroom.svg",
+        "size": 1580,
+        "sha256": "67fc11a8d2232ab1ab237b14de9e86f1370928a67e9949e16c398b685a983985"
       },
       {
         "path": "addition-kit/intentional-diagnostic.kamishibai.yaml.txt",
-        "size": 594,
-        "sha256": "df0a55f082dfa675d2d0852d8117d94660ee6b52b6b9c7dff224cb6d7328c7fd"
+        "size": 644,
+        "sha256": "78e3ce82176a18ebfc2c50c667316ba397a6ac8239517f24bce9761ee78e6950"
       },
       {
-        "path": "addition-kit/new-beach.svg",
-        "size": 782,
-        "sha256": "ac22bce3d65a9eb236fb097a41fca8884143c040b5d364cff01e70e654b244ba"
+        "path": "addition-kit/protect-head.svg",
+        "size": 1230,
+        "sha256": "e128724b4f82e059832ba56a3eff1f8df8f04177b37fb2b02215397c114cfce7"
       },
       {
-        "path": "beach.svg",
-        "size": 619,
-        "sha256": "84063a53765a3e8db594a660227ccf07ab6be7aae37d43206a3d25bf88aaa443"
+        "path": "classroom.svg",
+        "size": 1335,
+        "sha256": "50ceb201ee858fc0294279ac901285b6792c5417c9397435433f0c355e8dfef9"
       },
       {
-        "path": "friend.svg",
-        "size": 983,
-        "sha256": "32c30f9da9d69629988fc9ba7a3c6a131c02418b11adb33a86fcaf2a96df9e44"
-      },
-      {
-        "path": "new-beach.svg",
-        "size": 782,
-        "sha256": "ac22bce3d65a9eb236fb097a41fca8884143c040b5d364cff01e70e654b244ba"
-      },
-      {
-        "path": "opening.mp3",
-        "size": 6313,
-        "sha256": "ed9b0ce39b080a49f792de76774326a586676f67d0b180b4833ff79c09222935"
+        "path": "earthquake-classroom.svg",
+        "size": 1580,
+        "sha256": "67fc11a8d2232ab1ab237b14de9e86f1370928a67e9949e16c398b685a983985"
       },
       {
         "path": "project-assets-dsl4.yml",
-        "size": 1042,
-        "sha256": "851f47d84467bb490f416bf9e54c7fde3ee1fc15fbdcbd3f2229295c0b71913a"
+        "size": 928,
+        "sha256": "d5da32a89950e8b8acfd37bbfdc146f3f0f0f501b9a5fb70e45e719b9664d7c8"
       },
       {
         "path": "project.source.json",
         "size": 244,
-        "sha256": "1ef646e5eb9f9d9b820611e373643c528738948bc65384f90b2cf4201d0c1278"
+        "sha256": "2d3c170256724eff03637127dac4ce18b17393ea144aae5a06842027080adf79"
       },
       {
-        "path": "rescue-pose/metadata.json",
-        "size": 350,
-        "sha256": "c9aaedfe0b83964025b6a7d710fca3630846f89efe3f59b8433dadd484a63bc3"
+        "path": "protect-head.svg",
+        "size": 1230,
+        "sha256": "e128724b4f82e059832ba56a3eff1f8df8f04177b37fb2b02215397c114cfce7"
       },
       {
-        "path": "rescue-pose/model.json",
+        "path": "safety-pose/metadata.json",
+        "size": 471,
+        "sha256": "6495de3e6dee4aa3a1275378b6570f21aa5b34bbbe3ebc36399ad50350a4330b"
+      },
+      {
+        "path": "safety-pose/model.json",
         "size": 1435,
         "sha256": "fd9f3f13857985eba87fb3a311ead4009536cff9175a752b2cdd5d3887130379"
       },
       {
-        "path": "rescue-pose/weights.bin",
+        "path": "safety-pose/weights.bin",
         "size": 5897600,
-        "sha256": "14d7a87a0c6d1c74e14593d13a1dd30b3911adf062803fc58705fd0fd16c2ffc"
+        "sha256": "670b1ef9064a9c42fc39a51689874c96e20cabeae4077168429186eab5c7ba50"
       },
       {
         "path": "starter.kamishibai.yaml",
-        "size": 594,
-        "sha256": "6df559bc1ce5f4b19884b4b8026801342a61a51f70d0ff3f64014a39ea85fd7a"
+        "size": 644,
+        "sha256": "b24dd1007fd22137bbc5d131f3bbebcf75a3ccefc5ffd0ec95aa6809f311821e"
       },
       {
         "path": "starter/README.md",
-        "size": 585,
-        "sha256": "607af56aaa01b3968beea6d9d1393b478b68db2f0dbab007efda740b28f76721"
+        "size": 795,
+        "sha256": "349e1d2a0c89388c7fb4ad266d2977322e99cb068631a2fd2a7ed31394261bc2"
       },
       {
         "path": "starter/project.source.json",
@@ -155,32 +150,36 @@
       },
       {
         "path": "story.kamishibai.yaml",
-        "size": 1378,
-        "sha256": "c786674254aff5854f2af6d77b49a53009176bdb3c6e07896e06d7e9ced5adf2"
+        "size": 1439,
+        "sha256": "4016c237438c942222ea4c7c1bbfabef83184e489e913b06260c93a491b09c59"
       },
       {
-        "path": "turtle.svg",
-        "size": 1130,
-        "sha256": "947b30a1061b20ebb975ef2f6e0498c494f78890599c7d1b2b70b09b87a94f84"
+        "path": "student-ready.svg",
+        "size": 1058,
+        "sha256": "287d34ac83bbaefbf737c2af8d3396df1f49b3e10089d6787d9204a353af3f21"
+      },
+      {
+        "path": "success.mp3",
+        "size": 6313,
+        "sha256": "ed9b0ce39b080a49f792de76774326a586676f67d0b180b4833ff79c09222935"
       }
     ]
   },
   "outputs": {
     "sb3": {
       "path": "tutorial-4.0.sb3",
-      "size": 13654464,
-      "sha256": "ed5d78fc8f81338d124edccd9aef1808631947bf5bc71a084bfe64d15086d5cc",
+      "size": 13655651,
+      "sha256": "419cb4db90923658f4754610cd462e0caadd790636d7c688923529016b932292",
       "archiveEntryCount": 10,
       "targetNames": [
         "Stage",
-        "Turtle",
-        "Friend"
+        "Student"
       ]
     },
     "starter": {
       "path": "tutorial-story-starter-4.0.zip",
-      "size": 5912556,
-      "sha256": "e4e584815453b2a3298c2ae2ee41842a69c390d33cc20d6aa712e24058e891b1",
+      "size": 5914276,
+      "sha256": "1f13af3451a6afdb3bcf19f9e398759542610da8748500c93626b853b4616186",
       "entries": [
         "tutorial-story/LICENSES.md",
         "tutorial-story/README.md",
@@ -188,31 +187,31 @@
         "tutorial-story/addition-kit/README.md",
         "tutorial-story/addition-kit/add-background-and-actor.yml.txt",
         "tutorial-story/addition-kit/add-pose-scene.yml.txt",
-        "tutorial-story/addition-kit/friend.svg",
+        "tutorial-story/addition-kit/earthquake-classroom.svg",
         "tutorial-story/addition-kit/intentional-diagnostic.kamishibai.yaml.txt",
-        "tutorial-story/addition-kit/new-beach.svg",
-        "tutorial-story/beach.svg",
-        "tutorial-story/opening.mp3",
+        "tutorial-story/addition-kit/protect-head.svg",
+        "tutorial-story/classroom.svg",
         "tutorial-story/project.source.json",
-        "tutorial-story/rescue-pose/metadata.json",
-        "tutorial-story/rescue-pose/model.json",
-        "tutorial-story/rescue-pose/weights.bin",
+        "tutorial-story/safety-pose/metadata.json",
+        "tutorial-story/safety-pose/model.json",
+        "tutorial-story/safety-pose/weights.bin",
         "tutorial-story/story.kamishibai.yaml",
-        "tutorial-story/turtle.svg"
+        "tutorial-story/student-ready.svg",
+        "tutorial-story/success.mp3"
       ]
     },
     "additionKit": {
       "path": "tutorial-story-addition-kit-4.0.zip",
-      "size": 4260,
-      "sha256": "053209f45b5b45e8d2655151b9ef81ee9b11791d77546e9437e210d4422dbe68",
+      "size": 5295,
+      "sha256": "0036fa2ec9721873427af27d7d4fa545f8c4f174368229d22cfe9aab568799d9",
       "entries": [
         "tutorial-story-addition-kit/LICENSES.md",
         "tutorial-story-addition-kit/README.md",
         "tutorial-story-addition-kit/add-background-and-actor.yml.txt",
         "tutorial-story-addition-kit/add-pose-scene.yml.txt",
-        "tutorial-story-addition-kit/friend.svg",
+        "tutorial-story-addition-kit/earthquake-classroom.svg",
         "tutorial-story-addition-kit/intentional-diagnostic.kamishibai.yaml.txt",
-        "tutorial-story-addition-kit/new-beach.svg"
+        "tutorial-story-addition-kit/protect-head.svg"
       ]
     }
   },
@@ -223,6 +222,6 @@
   "publication": {
     "enabled": true,
     "reason": "tmpose-kamishibai 4.0.0-rc.2 is published and verified by tmpose-kamishibai#559",
-    "issue": "https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/100"
+    "issue": "https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/102"
   }
 }
