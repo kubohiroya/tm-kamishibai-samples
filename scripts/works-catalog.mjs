@@ -32,11 +32,24 @@ function deepFreeze(value) {
 function validateAction(action, label) {
   assertKeys(
     action,
-    ['label', 'href', 'style', 'download', 'external', 'requires', 'group', 'disabled'],
+    [
+      'label',
+      'href',
+      'style',
+      'download',
+      'external',
+      'requires',
+      'unavailableLabel',
+      'group',
+      'disabled',
+    ],
     ['label', 'style'],
     label,
   );
   assertString(action.label, `${label}.label`);
+  if (Object.hasOwn(action, 'unavailableLabel')) {
+    assertString(action.unavailableLabel, `${label}.unavailableLabel`);
+  }
   assert(['primary', 'secondary'].includes(action.style), `${label}.style is invalid.`);
   if (Object.hasOwn(action, 'group')) assertString(action.group, `${label}.group`);
   if (Object.hasOwn(action, 'disabled')) {
@@ -52,7 +65,14 @@ function validateAction(action, label) {
   if (Object.hasOwn(action, 'download')) assert.equal(typeof action.download, 'boolean');
   if (Object.hasOwn(action, 'external')) assert.equal(typeof action.external, 'boolean');
   if (Object.hasOwn(action, 'requires')) {
-    assert.equal(action.requires, 'urashimaWeb', `${label}.requires is invalid.`);
+    assert(
+      ['urashimaWeb', 'urashimaDsl4Web', 'myUrashimaDsl4Web'].includes(action.requires),
+      `${label}.requires is invalid.`,
+    );
+    assert(
+      Object.hasOwn(action, 'unavailableLabel'),
+      `${label}.unavailableLabel is required with requires.`,
+    );
   }
 }
 

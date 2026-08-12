@@ -26,6 +26,15 @@ async function listFiles(directory, prefix = '') {
   return files.flat().sort();
 }
 
+async function listFilesIfPresent(directory) {
+  try {
+    return await listFiles(directory);
+  } catch (error) {
+    if (error?.code === 'ENOENT') return [];
+    throw error;
+  }
+}
+
 function localLinks(html) {
   return [...html.matchAll(/\bhref="([^"]+)"/gu)]
     .map((match) => match[1])
@@ -148,6 +157,8 @@ export async function verifyPublishedSite(options = {}) {
     rightsIndex,
     manifest,
     myDsl4Manifest,
+    dsl4Config,
+    myDsl4Config,
     packageJson,
     license,
     licenseSummary,
@@ -161,14 +172,18 @@ export async function verifyPublishedSite(options = {}) {
       listFiles(sourceDirectory),
       listFiles(outputDirectory),
       listFiles(path.join(outputSampleDirectory, 'web')),
-      listFiles(path.join(outputSampleDirectory, 'web-4.0')),
-      listFiles(path.join(myUrashimaOutputDirectory, 'web-4.0')),
+      listFilesIfPresent(path.join(outputSampleDirectory, 'web-4.0')),
+      listFilesIfPresent(path.join(myUrashimaOutputDirectory, 'web-4.0')),
       verifyLinks(path.join(outputDirectory, 'index.html')),
       verifyLinks(path.join(outputSampleDirectory, 'index.html')),
       verifyLinks(path.join(myUrashimaOutputDirectory, 'index.html')),
       verifyLinks(path.join(outputDirectory, 'licenses/index.html')),
       readFile(path.join(outputSampleDirectory, 'manifest.json'), 'utf8').then(JSON.parse),
       readFile(path.join(myUrashimaOutputDirectory, 'dsl4-manifest.json'), 'utf8').then(
+        JSON.parse,
+      ),
+      readFile(path.join(sourceDirectory, 'dsl4-build.config.json'), 'utf8').then(JSON.parse),
+      readFile(path.join(myUrashimaSourceDirectory, 'dsl4-build.config.json'), 'utf8').then(
         JSON.parse,
       ),
       readFile(path.join(projectRoot, 'package.json'), 'utf8').then(JSON.parse),
@@ -189,6 +204,9 @@ export async function verifyPublishedSite(options = {}) {
       readFile(path.join(outputDirectory, 'works.schema.json'), 'utf8').then(JSON.parse),
       readFile(path.join(outputDirectory, 'WORKS_POLICY.md'), 'utf8'),
     ]);
+
+  const dsl4WebEnabled = dsl4Config.web?.enabled === true;
+  const myDsl4WebEnabled = myDsl4Config.web?.enabled === true;
 
   validateWorksCatalog(worksCatalog);
   assert.equal(
@@ -343,26 +361,31 @@ export async function verifyPublishedSite(options = {}) {
     ['camera', 'audio'],
   );
 
-  assert.equal(manifest.dsl4Web.enabled, true);
-  assert.equal(manifest.dsl4Web.publicPath, 'web-4.0/');
-  assert.equal(manifest.dsl4Web.input.profile, 'dsl4-offline');
-  assert.equal(manifest.dsl4Web.input.path, 'urashima-4.0.sb3');
-  assert.equal(manifest.dsl4Web.input.sha256, manifest.dsl4Offline.sha256);
-  assert.equal(manifest.dsl4Web.scriptMode, 'embedded');
-  assert.equal(manifest.dsl4Web.assets, 'embedded');
-  assert.deepEqual(manifest.dsl4Web.allowedOnlineDependencies, []);
-  assert.deepEqual(
-    manifest.dsl4Web.runtimeCapabilities.map(({capability}) => capability),
-    ['camera', 'audio'],
-  );
-  assert.deepEqual(manifest.dsl4Web.reproducibility, {runs: 2, identical: true});
-  const dsl4WebHtml = await verifyFile(
-    outputSampleDirectory,
-    manifest.dsl4Web.output,
-    'DSL 4.0 Packager HTML',
-  );
-  assert.deepEqual(dsl4WebFiles, ['index.html']);
-  assert(dsl4WebHtml.includes(Buffer.from('<title>浦島太郎 DSL 4.0 | TMPose紙芝居</title>')));
+  assert.equal(manifest.dsl4Web.enabled, dsl4WebEnabled);
+  if (dsl4WebEnabled) {
+    assert.equal(manifest.dsl4Web.publicPath, 'web-4.0/');
+    assert.equal(manifest.dsl4Web.input.profile, 'dsl4-offline');
+    assert.equal(manifest.dsl4Web.input.path, 'urashima-4.0.sb3');
+    assert.equal(manifest.dsl4Web.input.sha256, manifest.dsl4Offline.sha256);
+    assert.equal(manifest.dsl4Web.scriptMode, 'embedded');
+    assert.equal(manifest.dsl4Web.assets, 'embedded');
+    assert.deepEqual(manifest.dsl4Web.allowedOnlineDependencies, []);
+    assert.deepEqual(
+      manifest.dsl4Web.runtimeCapabilities.map(({capability}) => capability),
+      ['camera', 'audio'],
+    );
+    assert.deepEqual(manifest.dsl4Web.reproducibility, {runs: 2, identical: true});
+    const dsl4WebHtml = await verifyFile(
+      outputSampleDirectory,
+      manifest.dsl4Web.output,
+      'DSL 4.0 Packager HTML',
+    );
+    assert.deepEqual(dsl4WebFiles, ['index.html']);
+    assert(dsl4WebHtml.includes(Buffer.from('<title>浦島太郎 DSL 4.0 | TMPose紙芝居</title>')));
+  } else {
+    assert.deepEqual(manifest.dsl4Web, {enabled: false});
+    assert.deepEqual(dsl4WebFiles, []);
+  }
 
   assert.equal(myDsl4Manifest.sample, 'my-urashima');
   assert.equal(
@@ -371,34 +394,39 @@ export async function verifyPublishedSite(options = {}) {
   );
   assert.equal(myDsl4Manifest.output.path, 'my-urashima-4.0.sb3');
   assert.deepEqual(myDsl4Manifest.output.princessCostumes, ['Princess']);
-  assert.equal(myDsl4Manifest.web.enabled, true);
-  assert.equal(myDsl4Manifest.web.publicPath, 'web-4.0/');
-  assert.equal(myDsl4Manifest.web.input.profile, 'dsl4-workshop');
-  assert.equal(myDsl4Manifest.web.input.path, 'my-urashima-4.0.sb3');
-  assert.equal(myDsl4Manifest.web.input.sha256, myDsl4Manifest.output.sha256);
-  assert.equal(myDsl4Manifest.web.scriptMode, 'external');
-  assert.equal(myDsl4Manifest.web.assets, 'embedded-project');
-  assert.deepEqual(
-    myDsl4Manifest.web.runtimeCapabilities.map(({capability}) => capability),
-    ['file-picker', 'camera', 'audio'],
-  );
-  assert.deepEqual(myDsl4Manifest.web.reproducibility, {runs: 2, identical: true});
+  assert.equal(myDsl4Manifest.web.enabled, myDsl4WebEnabled);
   await verifyFile(
     myUrashimaOutputDirectory,
     myDsl4Manifest.output,
     'my-urashima DSL 4.0 workshop SB3',
   );
-  const myDsl4WebHtml = await verifyFile(
-    myUrashimaOutputDirectory,
-    myDsl4Manifest.web.output,
-    'my-urashima DSL 4.0 Packager HTML',
-  );
-  assert.deepEqual(myDsl4WebFiles, ['index.html']);
-  assert(
-    myDsl4WebHtml.includes(
-      Buffer.from('<title>my-urashima DSL 4.0 | TMPose紙芝居</title>'),
-    ),
-  );
+  if (myDsl4WebEnabled) {
+    assert.equal(myDsl4Manifest.web.publicPath, 'web-4.0/');
+    assert.equal(myDsl4Manifest.web.input.profile, 'dsl4-workshop');
+    assert.equal(myDsl4Manifest.web.input.path, 'my-urashima-4.0.sb3');
+    assert.equal(myDsl4Manifest.web.input.sha256, myDsl4Manifest.output.sha256);
+    assert.equal(myDsl4Manifest.web.scriptMode, 'external');
+    assert.equal(myDsl4Manifest.web.assets, 'embedded-project');
+    assert.deepEqual(
+      myDsl4Manifest.web.runtimeCapabilities.map(({capability}) => capability),
+      ['file-picker', 'camera', 'audio'],
+    );
+    assert.deepEqual(myDsl4Manifest.web.reproducibility, {runs: 2, identical: true});
+    const myDsl4WebHtml = await verifyFile(
+      myUrashimaOutputDirectory,
+      myDsl4Manifest.web.output,
+      'my-urashima DSL 4.0 Packager HTML',
+    );
+    assert.deepEqual(myDsl4WebFiles, ['index.html']);
+    assert(
+      myDsl4WebHtml.includes(
+        Buffer.from('<title>my-urashima DSL 4.0 | TMPose紙芝居</title>'),
+      ),
+    );
+  } else {
+    assert.deepEqual(myDsl4Manifest.web, {enabled: false});
+    assert.deepEqual(myDsl4WebFiles, []);
+  }
 
   assert(license.startsWith('Mozilla Public License Version 2.0'));
   assert(runtimeLicense.startsWith('Mozilla Public License Version 2.0'));
@@ -449,9 +477,20 @@ export async function verifyPublishedSite(options = {}) {
   assert(sampleIndex.includes(manifest.profiles.player.sb3.sha256));
   assert(sampleIndex.includes(manifest.profiles.editor.sb3.sha256));
   assert(sampleIndex.includes(manifest.web.output.sha256));
-  assert(sampleIndex.includes(manifest.dsl4Web.output.sha256));
+  assert.equal(
+    dsl4WebEnabled
+      ? sampleIndex.includes(manifest.dsl4Web.output.sha256)
+      : sampleIndex.includes('Web版（準備中）') && !sampleIndex.includes('href="web-4.0/"'),
+    true,
+  );
   assert(myUrashimaIndex.includes(myDsl4Manifest.output.sha256));
-  assert(myUrashimaIndex.includes(myDsl4Manifest.web.output.sha256));
+  assert.equal(
+    myDsl4WebEnabled
+      ? myUrashimaIndex.includes(myDsl4Manifest.web.output.sha256)
+      : myUrashimaIndex.includes('Web版（準備中）') &&
+          !myUrashimaIndex.includes('href="web-4.0/"'),
+    true,
+  );
   const urashimaCard = rootIndex.slice(
     rootIndex.indexOf('data-work-id="urashima"'),
     rootIndex.indexOf('data-work-id="my-urashima"'),
@@ -476,7 +515,13 @@ export async function verifyPublishedSite(options = {}) {
   assert(rootDsl40Actions.includes('<h4>DSL 4.0 オフライン実行版</h4>'));
   assert(rootDsl40Actions.includes('urashima.k4.yml'));
   assert(rootDsl40Actions.includes('urashima-4.0.sb3'));
-  assert(rootDsl40Actions.includes('href="stories/urashima/web-4.0/"'));
+  assert.equal(
+    dsl4WebEnabled
+      ? rootDsl40Actions.includes('href="stories/urashima/web-4.0/"')
+      : rootDsl40Actions.includes('disabled aria-disabled="true">Web版（準備中）</button>') &&
+          !rootDsl40Actions.includes('href="stories/urashima/web-4.0/"'),
+    true,
+  );
   assert(rootDsl40Actions.includes('オフラインSB3をダウンロード'));
   assert(!urashimaCard.includes('data-action-group="作品情報"'));
   assert(!urashimaCard.includes('>manifest</a>'));
@@ -504,13 +549,20 @@ export async function verifyPublishedSite(options = {}) {
   assert(myUrashimaDsl40Actions.includes('<h4>DSL 4.0 作業版</h4>'));
   assert(myUrashimaDsl40Actions.includes('my-urashima.k4.yml'));
   assert(!myUrashimaDsl40Actions.includes('href="stories/my-urashima/my-urashima.sb3"'));
-  assert(myUrashimaDsl40Actions.includes('href="stories/my-urashima/web-4.0/"'));
+  assert.equal(
+    myDsl4WebEnabled
+      ? myUrashimaDsl40Actions.includes('href="stories/my-urashima/web-4.0/"')
+      : myUrashimaDsl40Actions.includes(
+          'disabled aria-disabled="true">Web版（準備中）</button>',
+        ) && !myUrashimaDsl40Actions.includes('href="stories/my-urashima/web-4.0/"'),
+    true,
+  );
   assert(
     myUrashimaDsl40Actions.includes(
       'href="stories/my-urashima/my-urashima-4.0.sb3"',
     ),
   );
-  assert.equal(rootIndex.includes('準備中'), false);
+  assert.equal(rootIndex.includes('準備中'), !dsl4WebEnabled || !myDsl4WebEnabled);
   assert(!myUrashimaCard.includes('data-action-group="作品情報"'));
   assert(!myUrashimaCard.includes('>説明を見る</a>'));
   assert(
@@ -545,7 +597,13 @@ export async function verifyPublishedSite(options = {}) {
   assert(sampleDsl40Actions.includes('<h2 id="dsl-40-heading">DSL 4.0 オフライン実行版</h2>'));
   assert(sampleDsl40Actions.includes('urashima.k4.yml'));
   assert(sampleDsl40Actions.includes('urashima-4.0.sb3'));
-  assert(sampleDsl40Actions.includes('href="web-4.0/"'));
+  assert.equal(
+    dsl4WebEnabled
+      ? sampleDsl40Actions.includes('href="web-4.0/"')
+      : sampleDsl40Actions.includes('disabled aria-disabled="true">Web版（準備中）</button>') &&
+          !sampleDsl40Actions.includes('href="web-4.0/"'),
+    true,
+  );
   assert(sampleDsl40Actions.includes('オフラインSB3をダウンロード'));
   assert(publishedFiles.includes('.nojekyll'));
   assert(publishedFiles.includes('favicon.png'));
@@ -560,11 +618,14 @@ export async function verifyPublishedSite(options = {}) {
   assert(publishedFiles.includes('stories/my-urashima/my-urashima.k4.yml'));
   assert(publishedFiles.includes('stories/my-urashima/my-urashima-4.0.sb3'));
   assert(publishedFiles.includes('stories/my-urashima/dsl4-manifest.json'));
-  assert(publishedFiles.includes('stories/my-urashima/web-4.0/index.html'));
+  assert.equal(
+    publishedFiles.includes('stories/my-urashima/web-4.0/index.html'),
+    myDsl4WebEnabled,
+  );
   assert(publishedFiles.includes('stories/my-urashima/index.html'));
   assert(publishedFiles.includes('stories/urashima/urashima.k4.yml'));
   assert(publishedFiles.includes('stories/urashima/urashima-4.0.sb3'));
-  assert(publishedFiles.includes('stories/urashima/web-4.0/index.html'));
+  assert.equal(publishedFiles.includes('stories/urashima/web-4.0/index.html'), dsl4WebEnabled);
   assert(
     publishedFiles.includes(
       'stories/urashima/licenses/tmpose-kamishibai-MPL-2.0.txt',

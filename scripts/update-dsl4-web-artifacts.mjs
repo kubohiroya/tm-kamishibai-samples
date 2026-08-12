@@ -18,10 +18,11 @@ async function writeJsonAtomically(filePath, value) {
   await rename(temporaryPath, filePath);
 }
 
-async function buildWebLock(storyName) {
+export async function buildWebLock(storyName) {
   const storyDirectory = path.join(projectRoot, 'stories', storyName);
   const config = await readJson(path.join(storyDirectory, 'dsl4-build.config.json'));
   assert.equal(config.formatVersion, 1);
+  if (config.web?.enabled !== true) return {enabled: false};
   const temporaryOutput = await mkdtemp(path.join(tmpdir(), `${storyName}-dsl4-web-`));
   try {
     const web = await buildPackagedWeb({
@@ -37,8 +38,14 @@ async function buildWebLock(storyName) {
   }
 }
 
-const urashima = await buildWebLock('urashima');
-const myUrashima = await buildWebLock('my-urashima');
-process.stdout.write(
-  `Locked DSL 4.0 Web artifacts: urashima ${urashima.output.sha256}, my-urashima ${myUrashima.output.sha256}.\n`,
-);
+function resultSummary(result) {
+  return result.enabled ? result.output.sha256 : 'disabled (lock preserved)';
+}
+
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  const urashima = await buildWebLock('urashima');
+  const myUrashima = await buildWebLock('my-urashima');
+  process.stdout.write(
+    `Locked DSL 4.0 Web artifacts: urashima ${resultSummary(urashima)}, my-urashima ${resultSummary(myUrashima)}.\n`,
+  );
+}
