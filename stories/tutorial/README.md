@@ -1,7 +1,7 @@
 # カメを助けよう — DSL 4.0チュートリアル作品
 
 DSL 4.0チュートリアルの「紙芝居を遊ぶ」「紙芝居を作る」で共通利用する、3場面の
-最小作品です。正式公開は`tmpose-kamishibai#548`によるrelease固定だけに依存します。samplesを先に公開し、
+最小作品です。公開は`tmpose-kamishibai#559`によるrelease固定だけに依存します。samplesを先に公開し、
 docs側はその公開surfaceを使ってcaptureとチュートリアルpublicationを行います。
 
 ## 正本と成果物
@@ -20,6 +20,6 @@ docs側はその公開surfaceを使ってcaptureとチュートリアルpublicat
 
 ## 公開フラグ
 
-`dsl4-build.config.json`の`publication.enabled`は起動時固定でONです。`4.0.0-rc.1`の固定release
+`dsl4-build.config.json`の`publication.enabled`は起動時固定でONです。`4.0.0-rc.2`の固定release
 sourceから成果物を再現してブラウザー検証し、`dist/`と作品一覧へ公開します。docs側のcapture完了は
 公開条件にしません。問題時はフラグをOFFへ戻して4.0チュートリアルの公開導線だけを停止し、既存3.2成果物を維持します。

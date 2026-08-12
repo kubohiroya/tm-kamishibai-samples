@@ -25,7 +25,7 @@ test('builds a deterministic published SB3 and tutorial distribution archives', 
     readFile(path.join(storyDirectory, 'public-surfaces.json'), 'utf8').then(JSON.parse),
   ]);
   assert.equal(build.artifactLock.status, 'published');
-  assert.equal(build.artifactLock.version, '4.0.0-rc.1');
+  assert.equal(build.artifactLock.version, '4.0.0-rc.2');
   assert.equal(build.artifactLock.publication.enabled, true);
   assert.equal(build.artifactLock.publication.reason, config.publication.reason);
   assert.doesNotMatch(config.publication.reason, /docs|capture/iu);

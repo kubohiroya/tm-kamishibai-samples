@@ -35,7 +35,7 @@
 - `sample.config.json`: ベース、ビルダー、プロファイル、出力名、既定OFFのWeb生成機能を浦島太郎で有効にする設定
 - `artifacts.lock.json`: `_urashima` / `urashima` / `web/index.html` の再現可能な出力ハッシュ
 - `base/kamishibai.sb3`: `tmpose-kamishibai` のclone-only UI `generic` 成果物
-- `base/kamishibai-4.0.sb3`: DSL 4.0.0-rc.1の固定release sourceから生成した`generic`ベース
+- `base/kamishibai-4.0.sb3`: DSL 4.0.0-rc.2の固定release sourceから生成した`generic`ベース
 
 `source.txt`の`# date:`はビルドが自動管理します。日付行を除いた内容fingerprintが`artifacts.lock.json`の記録から変わった場合だけ、ビルド環境のローカル今日へ更新し、`urashima.txt`、両プロファイル、Web版、my-urashimaを再生成します。内容が同じ再ビルドでは日付も成果物も更新しません。
 
@@ -52,7 +52,7 @@ pnpm verify:urashima-dsl4
 
 ## DSL 4.0オフラインSB3の生成
 
-`dsl4-build.config.json`に固定した`tmpose-kamishibai` tag commitを、既定では隣接する`../tmpose-kamishibai`にcheckoutして依存関係をインストールします。CIでは同じcommitを`.tmp/tmpose-kamishibai`へcheckoutし、`TMPOSE_KAMISHIBAI_DSL4_ROOT`でその場所を指定します。入力となる`base/kamishibai-4.0.sb3`も、DSL 4.0.0-rc.1のrelease source identity、サイズ、SHA-256を設定に固定しています。
+`dsl4-build.config.json`に固定した`tmpose-kamishibai` tag commitを、既定では隣接する`../tmpose-kamishibai`にcheckoutして依存関係をインストールします。CIでは同じcommitを`.tmp/tmpose-kamishibai`へcheckoutし、`TMPOSE_KAMISHIBAI_DSL4_ROOT`でその場所を指定します。入力となる`base/kamishibai-4.0.sb3`も、DSL 4.0.0-rc.2のrelease source identity、サイズ、SHA-256を設定に固定しています。
 
 ```bash
 pnpm update:dsl4-artifacts
@@ -94,7 +94,7 @@ scene 7では、本体3.2.2の標準コマンド`fadeToWhite`でステージの�
 - 移設元コミット: `9526c9d6391622ee261b8d7c0778b1fbbd2e6745`
 - ビルダー: npm `@kubohiroya/tmpose-kamishibai` `3.2.2` / `2b5005d293a9b63c8ba5da396fd86815d093f975`
 - 汎用ベース: `tmpose-kamishibai` / `2b5005d293a9b63c8ba5da396fd86815d093f975`
-- DSL 4.0汎用ベースのソース: `tmpose-kamishibai` / `4.0.0-rc.1` / `sha256:1fc8cb02c365a3bd8f5a5c236cbb7b4408e4a3cb757bce8068e809c77b81c5d9`
-- DSL 4.0ビルダー: `tmpose-kamishibai` / `4.0.0-rc.1` / `0e7e23f59a323f088408f42ba0dc41f6b6c9feef`
+- DSL 4.0汎用ベースのソース: `tmpose-kamishibai` / `4.0.0-rc.2` / `sha256:70dfcb7dfc391e9f8c576976d810a55656c8cab09c0c729cc685d20e02140991`
+- DSL 4.0ビルダー: `tmpose-kamishibai` / `4.0.0-rc.2` / `9fdea59854ff0a28a00a45fe8e1d7cd5bb0c9014`
 
 生成・検証・公開の実装は [Issue #2](https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/2)、Packager Web版は [Issue #7](https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/7)、DSL 4.0の自動生成は [Issue #90](https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/90) で管理します。
