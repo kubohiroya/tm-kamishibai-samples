@@ -26,6 +26,8 @@ test('builds a deterministic candidate SB3 and tutorial distribution archives', 
   ]);
   assert.equal(build.artifactLock.status, 'candidate');
   assert.equal(build.artifactLock.publication.enabled, false);
+  assert.equal(build.artifactLock.publication.reason, config.publication.reason);
+  assert.doesNotMatch(config.publication.reason, /docs|capture/iu);
   assert.deepEqual(
     createTutorialPublicSurfaces(config, build.artifactLock, webLock),
     publicSurfaces,

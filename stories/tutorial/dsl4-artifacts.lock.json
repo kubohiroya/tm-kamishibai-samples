@@ -3,7 +3,7 @@
   "status": "candidate",
   "version": "4.0.0-candidate.1",
   "releaseDependency": "https://github.com/kubohiroya/tmpose-kamishibai/issues/548",
-  "sourceIdentity": "ce2663a2231e90820a0a443faca503ae8f3c8e349f240b9f86ac878e05d94e32",
+  "sourceIdentity": "8f264747beebb8358d1f528d38538d1cb9b6a751ad45b126bc6a745dfa0ab11c",
   "runtime": {
     "repository": "https://github.com/kubohiroya/tmpose-kamishibai",
     "version": "4.0.0",
@@ -60,8 +60,8 @@
       },
       {
         "path": "README.md",
-        "size": 1471,
-        "sha256": "d232ac142fbcac76f5168bce3ed9a3e473a1683bc3ca40db9901369cf02bf77e"
+        "size": 1650,
+        "sha256": "20a653ce8ff8e4773e5e3f14e3b48a3cf2fcd3e82205c9a1869cfaf58d09fda8"
       },
       {
         "path": "addition-kit/README.md",
@@ -222,7 +222,7 @@
   },
   "publication": {
     "enabled": false,
-    "reason": "DSL 4.0 release and docs tutorial capture gates are not complete",
+    "reason": "DSL 4.0 release tracked by tmpose-kamishibai#548 is not complete",
     "issue": "https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/94"
   }
 }

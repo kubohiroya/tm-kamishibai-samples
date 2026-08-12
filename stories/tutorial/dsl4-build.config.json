@@ -26,7 +26,7 @@
   },
   "publication": {
     "enabled": false,
-    "reason": "DSL 4.0 release and docs tutorial capture gates are not complete",
+    "reason": "DSL 4.0 release tracked by tmpose-kamishibai#548 is not complete",
     "issue": "https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/94"
   },
   "webArtifactsLock": "dsl4-web-artifacts.lock.json",
