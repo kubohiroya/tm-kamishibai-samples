@@ -26,5 +26,5 @@ const publicSurfaces = createTutorialPublicSurfaces(config, build.artifactLock, 
 await writeJsonAtomically(path.join(storyDirectory, config.publicSurfaces), publicSurfaces);
 
 process.stdout.write(
-  `Updated tutorial candidate ${config.version}: SB3 ${build.artifactLock.outputs.sb3.sha256}, Web ${web.output.sha256}, starter ${build.artifactLock.outputs.starter.sha256}.\n`,
+  `Updated tutorial release ${config.version}: SB3 ${build.artifactLock.outputs.sb3.sha256}, Web ${web.output.sha256}, starter ${build.artifactLock.outputs.starter.sha256}.\n`,
 );

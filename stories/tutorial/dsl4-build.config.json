@@ -1,7 +1,7 @@
 {
   "formatVersion": 1,
-  "status": "candidate",
-  "version": "4.0.0-candidate.1",
+  "status": "published",
+  "version": "4.0.0-rc.1",
   "releaseDependency": "https://github.com/kubohiroya/tmpose-kamishibai/issues/548",
   "runtime": {
     "config": "../urashima/dsl4-build.config.json"
@@ -25,8 +25,8 @@
     "maxTotalAssetBytes": 16777216
   },
   "publication": {
-    "enabled": false,
-    "reason": "DSL 4.0 release tracked by tmpose-kamishibai#548 is not complete",
+    "enabled": true,
+    "reason": "tmpose-kamishibai 4.0.0-rc.1 is published and verified by tmpose-kamishibai#548",
     "issue": "https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/94"
   },
   "webArtifactsLock": "dsl4-web-artifacts.lock.json",
