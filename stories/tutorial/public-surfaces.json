@@ -4,7 +4,7 @@
   "version": "4.0.0-candidate.1",
   "published": false,
   "releaseDependency": "https://github.com/kubohiroya/tmpose-kamishibai/issues/548",
-  "sourceIdentity": "ce2663a2231e90820a0a443faca503ae8f3c8e349f240b9f86ac878e05d94e32",
+  "sourceIdentity": "8f264747beebb8358d1f528d38538d1cb9b6a751ad45b126bc6a745dfa0ab11c",
   "runtime": {
     "repository": "https://github.com/kubohiroya/tmpose-kamishibai",
     "version": "4.0.0",
