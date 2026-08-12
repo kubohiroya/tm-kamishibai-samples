@@ -1,0 +1,92 @@
+{
+  "formatVersion": 1,
+  "status": "candidate",
+  "version": "4.0.0-candidate.1",
+  "published": false,
+  "releaseDependency": "https://github.com/kubohiroya/tmpose-kamishibai/issues/548",
+  "sourceIdentity": "ce2663a2231e90820a0a443faca503ae8f3c8e349f240b9f86ac878e05d94e32",
+  "runtime": {
+    "repository": "https://github.com/kubohiroya/tmpose-kamishibai",
+    "version": "4.0.0",
+    "commit": "8ea06bfd100b106f559cb25a280fab5570e42919",
+    "basePath": "base/kamishibai-4.0.sb3",
+    "baseSourceCommit": "98cec94387cac726e947cf2454e3f0c5e9146061",
+    "baseSize": 7540390,
+    "baseSha256": "90d39f61b3323e2ea587036b6fc69b591148eb8f9ae9f55a822e1c9d6405144e"
+  },
+  "license": {
+    "spdx": "MPL-2.0",
+    "url": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/LICENSES.md"
+  },
+  "surfaces": {
+    "detailUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/",
+    "webUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/web-4.0/",
+    "sourceUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/story.kamishibai.yaml",
+    "sb3Url": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/tutorial-4.0.sb3",
+    "starterUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/tutorial-story-starter-4.0.zip",
+    "additionKitUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/tutorial-story-addition-kit-4.0.zip",
+    "manifestUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/public-surfaces.json"
+  },
+  "artifacts": {
+    "source": {
+      "path": "story.kamishibai.yaml",
+      "size": 1378,
+      "sha256": "c786674254aff5854f2af6d77b49a53009176bdb3c6e07896e06d7e9ced5adf2"
+    },
+    "sb3": {
+      "path": "tutorial-4.0.sb3",
+      "size": 13545642,
+      "sha256": "632692ecfc5c2d917e0354c620b025778e2e8b83d9745f6588b651ba85661781",
+      "archiveEntryCount": 10,
+      "targetNames": [
+        "Stage",
+        "Turtle",
+        "Friend"
+      ]
+    },
+    "web": {
+      "path": "web-4.0/index.html",
+      "contentType": "text/html",
+      "size": 31549469,
+      "sha256": "0f9a8d47179e9afcb88257d15dedf128bf37e61c01b77270216296a9e345c49a"
+    },
+    "starter": {
+      "path": "tutorial-story-starter-4.0.zip",
+      "size": 5912556,
+      "sha256": "e4e584815453b2a3298c2ae2ee41842a69c390d33cc20d6aa712e24058e891b1",
+      "entries": [
+        "tutorial-story/LICENSES.md",
+        "tutorial-story/README.md",
+        "tutorial-story/addition-kit/LICENSES.md",
+        "tutorial-story/addition-kit/README.md",
+        "tutorial-story/addition-kit/add-background-and-actor.yml.txt",
+        "tutorial-story/addition-kit/add-pose-scene.yml.txt",
+        "tutorial-story/addition-kit/friend.svg",
+        "tutorial-story/addition-kit/intentional-diagnostic.kamishibai.yaml.txt",
+        "tutorial-story/addition-kit/new-beach.svg",
+        "tutorial-story/beach.svg",
+        "tutorial-story/opening.mp3",
+        "tutorial-story/project.source.json",
+        "tutorial-story/rescue-pose/metadata.json",
+        "tutorial-story/rescue-pose/model.json",
+        "tutorial-story/rescue-pose/weights.bin",
+        "tutorial-story/story.kamishibai.yaml",
+        "tutorial-story/turtle.svg"
+      ]
+    },
+    "additionKit": {
+      "path": "tutorial-story-addition-kit-4.0.zip",
+      "size": 4260,
+      "sha256": "053209f45b5b45e8d2655151b9ef81ee9b11791d77546e9437e210d4422dbe68",
+      "entries": [
+        "tutorial-story-addition-kit/LICENSES.md",
+        "tutorial-story-addition-kit/README.md",
+        "tutorial-story-addition-kit/add-background-and-actor.yml.txt",
+        "tutorial-story-addition-kit/add-pose-scene.yml.txt",
+        "tutorial-story-addition-kit/friend.svg",
+        "tutorial-story-addition-kit/intentional-diagnostic.kamishibai.yaml.txt",
+        "tutorial-story-addition-kit/new-beach.svg"
+      ]
+    }
+  }
+}

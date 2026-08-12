@@ -1,0 +1,60 @@
+assets:
+  Beach:
+    kind: backdrop
+    file: beach.svg
+  TurtleIdle:
+    kind: costume
+    target: Turtle
+    file: turtle.svg
+  NewBeach:
+    kind: backdrop
+    file: new-beach.svg
+  FriendIdle:
+    kind: costume
+    target: Friend
+    file: friend.svg
+  RescuePose:
+    kind: poseModel
+    file: rescue-pose
+    loading: lazy
+  RescueSound:
+    kind: sound
+    file: opening.mp3
+
+actors:
+  Turtle: TurtleIdle
+  Friend: FriendIdle
+
+scenes:
+  opening:
+    - stage: Beach
+    - Turtle.show:
+        skin: TurtleIdle
+        x: 0
+        y: -70
+        scale: 45
+    - Turtle.say:
+        text: こんにちは！
+        seconds: 2
+  meeting:
+    - stage: NewBeach
+    - Friend.show:
+        skin: FriendIdle
+        x: 80
+        y: -55
+        scale: 38
+    - Friend.say:
+        text: こんにちは、カメさん！
+        seconds: 2
+  rescue:
+    poseModel: RescuePose
+    actions:
+      - stage: Beach
+      - Turtle.pose:
+          steps:
+            - pose: help
+              skin: TurtleIdle
+              sound: RescueSound
+      - Turtle.say:
+          text: 助けてくれて、ありがとう！
+          seconds: 2

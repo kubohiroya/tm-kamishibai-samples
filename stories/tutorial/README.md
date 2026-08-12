@@ -1,0 +1,24 @@
+# カメを助けよう — DSL 4.0チュートリアル作品
+
+DSL 4.0チュートリアルの「紙芝居を遊ぶ」「紙芝居を作る」で共通利用する、3場面の
+最小作品です。正式公開は`tmpose-kamishibai`のrelease固定とdocs側capture gateに依存します。
+
+## 正本と成果物
+
+- `story.kamishibai.yaml`: 完成版の正本
+- `starter.kamishibai.yaml`: starter ZIPへ`story.kamishibai.yaml`として収録する初期版
+- `addition-kit/`: 追加背景、登場人物、YAML断片
+- `rescue-pose/`: `help`ラベルを含む検証済みポーズモデル
+- `tutorial-4.0.sb3`: 完成版の自己完結SB3
+- `tutorial-story-starter-4.0.zip`: starterとaddition kitをまとめた配布物
+- `tutorial-story-addition-kit-4.0.zip`: addition kitだけの配布物
+- `public-surfaces.json`: 予約公開URL、version、integrity、license、公開状態
+
+`pnpm update:tutorial-dsl4`はSB3、ZIP、Web lock、公開surface manifestをatomicに更新します。
+通常の`pnpm build`とCIは同じ入力から再生成し、チェックイン済みhashとの一致だけを確認します。
+
+## 公開フラグ
+
+`dsl4-build.config.json`の`publication.enabled`は起動時固定で既定OFFです。OFFの間も候補成果物を
+再現してブラウザー検証しますが、`dist/`へコピーせず、作品一覧にも追加しません。正式releaseと
+docs capture gateが揃った後、小さなPRでONへ切り替えます。

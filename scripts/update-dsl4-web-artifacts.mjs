@@ -45,7 +45,8 @@ function resultSummary(result) {
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const urashima = await buildWebLock('urashima');
   const myUrashima = await buildWebLock('my-urashima');
+  const tutorial = await buildWebLock('tutorial');
   process.stdout.write(
-    `Locked DSL 4.0 Web artifacts: urashima ${resultSummary(urashima)}, my-urashima ${resultSummary(myUrashima)}.\n`,
+    `Locked DSL 4.0 Web artifacts: urashima ${resultSummary(urashima)}, my-urashima ${resultSummary(myUrashima)}, tutorial ${resultSummary(tutorial)}.\n`,
   );
 }

@@ -1,0 +1,75 @@
+{
+  "enabled": true,
+  "publicPath": "web-4.0/",
+  "input": {
+    "profile": "dsl4-offline",
+    "path": "tutorial-4.0.sb3",
+    "size": 13545642,
+    "sha256": "632692ecfc5c2d917e0354c620b025778e2e8b83d9745f6588b651ba85661781"
+  },
+  "output": {
+    "path": "web-4.0/index.html",
+    "contentType": "text/html",
+    "size": 31549469,
+    "sha256": "0f9a8d47179e9afcb88257d15dedf128bf37e61c01b77270216296a9e345c49a"
+  },
+  "packager": {
+    "package": "@turbowarp/packager",
+    "version": "3.13.0",
+    "options": {
+      "target": "html",
+      "autoplay": true,
+      "app": {
+        "windowTitle": "カメを助けよう DSL 4.0 | TMPose紙芝居"
+      },
+      "cloudVariables": {
+        "mode": "disabled"
+      },
+      "bakeExtensions": true
+    },
+    "projectExtensions": [
+      {
+        "id": "kubohiroyakamishibai4",
+        "source": "input-sb3-data-url",
+        "sha256": "f09f264febb13774556ab47e4e4dc74b3a7cfe8b69d7183bda70824beb97deaa"
+      }
+    ]
+  },
+  "scriptMode": "embedded",
+  "assets": "embedded",
+  "audioUnlock": {
+    "enabled": true,
+    "events": [
+      "pointerdown",
+      "pointerup",
+      "touchend",
+      "mousedown",
+      "click",
+      "keydown"
+    ],
+    "lifecycleEvents": [
+      "visibilitychange",
+      "pageshow"
+    ],
+    "verification": {
+      "strategy": "state-and-clock",
+      "clockCheckDelayMs": 250,
+      "primesOutput": true
+    }
+  },
+  "allowedOnlineDependencies": [],
+  "runtimeCapabilities": [
+    {
+      "capability": "camera",
+      "purpose": "同梱済みモデルによるポーズ認識"
+    },
+    {
+      "capability": "audio",
+      "purpose": "組み込み済み成功音の再生"
+    }
+  ],
+  "reproducibility": {
+    "runs": 2,
+    "identical": true
+  }
+}
