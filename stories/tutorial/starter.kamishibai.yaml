@@ -8,32 +8,32 @@ controls:
       ArrowDown: rehearsal.skipScene
 
 assets:
-  Beach:
+  Classroom:
     kind: backdrop
-    file: beach.svg
-  TurtleIdle:
+    file: classroom.svg
+  StudentReady:
     kind: costume
-    target: Turtle
-    file: turtle.svg
+    target: Student
+    file: student-ready.svg
 
 actors:
-  Turtle: TurtleIdle
+  Student: StudentReady
 
 cover:
-  backdrop: Beach
+  backdrop: Classroom
 
 poseRecognition:
   navigation:
     allowSkip: true
 
 scenes:
-  opening:
-    - stage: Beach
-    - Turtle.show:
-        skin: TurtleIdle
-        x: 0
-        y: -70
-        scale: 45
-    - Turtle.say:
-        text: 助けて！
+  earthquake:
+    - stage: Classroom
+    - Student.show:
+        skin: StudentReady
+        x: -90
+        y: -55
+        scale: 58
+    - Student.say:
+        text: なにがおきたの？
         seconds: 2

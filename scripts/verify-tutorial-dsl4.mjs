@@ -67,9 +67,16 @@ export async function verifyTutorialCandidate(options = {}) {
 
   const composed = {...starterSource, ...addition};
   assert.deepEqual(composed, finalSource, 'Starter plus addition kit must equal the final story.');
-  assert.deepEqual(Object.keys(finalSource.scenes), ['opening', 'meeting', 'rescue']);
-  assert.equal(finalSource.scenes.rescue.poseModel, 'RescuePose');
-  assert.equal(finalSource.scenes.rescue.actions[1]['Turtle.pose'].steps[0].pose, 'help');
+  assert.deepEqual(Object.keys(finalSource.scenes), ['earthquake', 'instruction', 'protect']);
+  assert.equal(finalSource.scenes.protect.poseModel, 'SafetyPose');
+  assert.equal(
+    finalSource.scenes.instruction[1]['Student.say'].text,
+    '自分の身を守るため、丈夫な机の下に入り、両手で頭を守ろう！',
+  );
+  assert.equal(
+    finalSource.scenes.protect.actions[1]['Student.pose'].steps[0].pose,
+    '頭を守る',
+  );
 
   const [sb3, starterArchive, additionArchive, web] = await Promise.all([
     verifyRecord(candidateOutputDirectory, artifactLock.outputs.sb3, 'Tutorial SB3'),
@@ -92,7 +99,9 @@ export async function verifyTutorialCandidate(options = {}) {
     'story',
   );
   assert.match(web.toString('utf8', 0, 256), /^<!DOCTYPE html>/u);
-  assert(web.includes(Buffer.from('<title>カメを助けよう DSL 4.0 | TMPose紙芝居</title>')));
+  assert(
+    web.includes(Buffer.from('<title>地震だ！頭を守ろう DSL 4.0 | TMPose紙芝居</title>')),
+  );
 
   const starterEntries = Object.keys(unzipSync(new Uint8Array(starterArchive))).sort();
   const additionEntries = Object.keys(unzipSync(new Uint8Array(additionArchive))).sort();
@@ -101,14 +110,14 @@ export async function verifyTutorialCandidate(options = {}) {
   for (const required of [
     'tutorial-story/project.source.json',
     'tutorial-story/story.kamishibai.yaml',
-    'tutorial-story/beach.svg',
-    'tutorial-story/turtle.svg',
-    'tutorial-story/opening.mp3',
-    'tutorial-story/rescue-pose/model.json',
-    'tutorial-story/rescue-pose/metadata.json',
-    'tutorial-story/rescue-pose/weights.bin',
-    'tutorial-story/addition-kit/new-beach.svg',
-    'tutorial-story/addition-kit/friend.svg',
+    'tutorial-story/classroom.svg',
+    'tutorial-story/student-ready.svg',
+    'tutorial-story/success.mp3',
+    'tutorial-story/safety-pose/model.json',
+    'tutorial-story/safety-pose/metadata.json',
+    'tutorial-story/safety-pose/weights.bin',
+    'tutorial-story/addition-kit/earthquake-classroom.svg',
+    'tutorial-story/addition-kit/protect-head.svg',
     'tutorial-story/addition-kit/add-background-and-actor.yml.txt',
     'tutorial-story/addition-kit/add-pose-scene.yml.txt',
     'tutorial-story/addition-kit/intentional-diagnostic.kamishibai.yaml.txt',
@@ -120,10 +129,10 @@ export async function verifyTutorialCandidate(options = {}) {
   const rootIndex = await readFile(path.join(outputDirectory, 'index.html'), 'utf8');
   if (config.publication.enabled) {
     assert((await stat(publishedTutorialPath)).isDirectory());
-    assert(rootIndex.includes('data-work-id="tutorial-rescue"'));
+    assert(rootIndex.includes('data-work-id="tutorial-earthquake-safety"'));
   } else {
     await assert.rejects(stat(publishedTutorialPath), {code: 'ENOENT'});
-    assert(!rootIndex.includes('data-work-id="tutorial-rescue"'));
+    assert(!rootIndex.includes('data-work-id="tutorial-earthquake-safety"'));
     assert(!rootIndex.includes('stories/tutorial/'));
   }
 

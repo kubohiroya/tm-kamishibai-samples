@@ -34,7 +34,7 @@ test('builds a deterministic published SB3 and tutorial distribution archives', 
     publicSurfaces,
   );
   assert.equal(publicSurfaces.published, true);
-  assert.deepEqual(build.artifactLock.outputs.sb3.targetNames, ['Stage', 'Turtle', 'Friend']);
+  assert.deepEqual(build.artifactLock.outputs.sb3.targetNames, ['Stage', 'Student']);
   assert.deepEqual(
     Object.keys(unzipSync(new Uint8Array(build.archives.starter.bytes))).sort(),
     build.artifactLock.outputs.starter.entries,
@@ -58,10 +58,33 @@ test('turns the starter into the final three-scene story with the addition kit',
     ),
   ]);
   assert.deepEqual({...starter, ...addition}, complete);
-  assert.equal(starter.scenes.opening[2]['Turtle.say'].text, '助けて！');
-  assert.equal(complete.scenes.opening[2]['Turtle.say'].text, 'こんにちは！');
-  assert.deepEqual(Object.keys(complete.scenes), ['opening', 'meeting', 'rescue']);
-  assert.equal(complete.scenes.rescue.poseModel, 'RescuePose');
+  assert.equal(starter.scenes.earthquake[2]['Student.say'].text, 'なにがおきたの？');
+  assert.equal(complete.scenes.earthquake[2]['Student.say'].text, '地震だ！');
+  assert.deepEqual(Object.keys(complete.scenes), ['earthquake', 'instruction', 'protect']);
+  assert.equal(complete.scenes.protect.poseModel, 'SafetyPose');
+  assert.equal(
+    complete.scenes.instruction[1]['Student.say'].text,
+    '自分の身を守るため、丈夫な机の下に入り、両手で頭を守ろう！',
+  );
+  assert.equal(complete.scenes.protect.actions[1]['Student.pose'].steps[0].pose, '頭を守る');
+});
+
+test('reuses the kneeling hands-on-head pose model with an explicit safety label', async () => {
+  const sourceModelDirectory = path.join(storyDirectory, '../urashima/pose-models/6and7');
+  const tutorialModelDirectory = path.join(storyDirectory, 'safety-pose');
+  const [sourceMetadata, tutorialMetadata, sourceModel, tutorialModel, sourceWeights, tutorialWeights] =
+    await Promise.all([
+      readFile(path.join(sourceModelDirectory, 'metadata.json'), 'utf8').then(JSON.parse),
+      readFile(path.join(tutorialModelDirectory, 'metadata.json'), 'utf8').then(JSON.parse),
+      readFile(path.join(sourceModelDirectory, 'model.json')),
+      readFile(path.join(tutorialModelDirectory, 'model.json')),
+      readFile(path.join(sourceModelDirectory, 'weights.bin')),
+      readFile(path.join(tutorialModelDirectory, 'weights.bin')),
+    ]);
+  assert.equal(sourceMetadata.labels[3], 'despair');
+  assert.deepEqual(tutorialMetadata.labels, ['open1', 'open2', 'open3', '頭を守る']);
+  assert.deepEqual(tutorialModel, sourceModel);
+  assert.deepEqual(tutorialWeights, sourceWeights);
 });
 
 test('provides one intentional CLI diagnostic with an exact starter fix', async () => {
@@ -72,7 +95,7 @@ test('provides one intentional CLI diagnostic with an exact starter fix', async 
     ),
     readFile(path.join(storyDirectory, 'starter.kamishibai.yaml'), 'utf8'),
   ]);
-  assert.equal(diagnosticExercise.replace('Turtle.sya:', 'Turtle.say:'), starter);
+  assert.equal(diagnosticExercise.replace('Student.sya:', 'Student.say:'), starter);
 
   const kamishibaiRoot = path.resolve(
     process.env.TMPOSE_KAMISHIBAI_DSL4_ROOT ?? path.join(projectRoot, '../tmpose-kamishibai'),

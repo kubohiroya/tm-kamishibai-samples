@@ -1,18 +1,8 @@
 formatVersion: 1
 
 sprites:
-  Turtle:
+  Student:
     layerOrder: 3
-    visible: false
-    x: 0
-    y: 0
-    size: 100
-    direction: 90
-    draggable: false
-    rotationStyle: all around
-    volume: 100
-  Friend:
-    layerOrder: 4
     visible: false
     x: 0
     y: 0
@@ -23,33 +13,33 @@ sprites:
     volume: 100
 
 assets:
-  Beach:
+  Classroom:
     kind: backdrop
-    file: beach.svg
+    file: classroom.svg
     rotationCenterX: 240
     rotationCenterY: 180
     license: 'MPL-2.0: LICENSES.md'
-  TurtleIdle:
+  StudentReady:
     kind: costume
-    target: Turtle
-    file: turtle.svg
+    target: Student
+    file: student-ready.svg
     rotationCenterX: 120
     rotationCenterY: 90
     license: 'MPL-2.0: LICENSES.md'
-  NewBeach:
+  EarthquakeClassroom:
     kind: backdrop
-    file: new-beach.svg
+    file: earthquake-classroom.svg
     rotationCenterX: 240
     rotationCenterY: 180
     license: 'MPL-2.0: LICENSES.md'
-  FriendIdle:
+  ProtectHead:
     kind: costume
-    target: Friend
-    file: friend.svg
+    target: Student
+    file: protect-head.svg
     rotationCenterX: 120
     rotationCenterY: 90
     license: 'MPL-2.0: LICENSES.md'
-  RescueSound:
+  SuccessSound:
     kind: sound
-    file: opening.mp3
+    file: success.mp3
     license: 'MPL-2.0: LICENSES.md'

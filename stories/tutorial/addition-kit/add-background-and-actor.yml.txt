@@ -1,41 +1,35 @@
 assets:
-  Beach:
+  Classroom:
     kind: backdrop
-    file: beach.svg
-  TurtleIdle:
+    file: classroom.svg
+  StudentReady:
     kind: costume
-    target: Turtle
-    file: turtle.svg
-  NewBeach:
+    target: Student
+    file: student-ready.svg
+  EarthquakeClassroom:
     kind: backdrop
-    file: new-beach.svg
-  FriendIdle:
+    file: earthquake-classroom.svg
+  ProtectHead:
     kind: costume
-    target: Friend
-    file: friend.svg
+    target: Student
+    file: protect-head.svg
 
 actors:
-  Turtle: TurtleIdle
-  Friend: FriendIdle
+  Student: StudentReady
 
 scenes:
-  opening:
-    - stage: Beach
-    - Turtle.show:
-        skin: TurtleIdle
-        x: 0
-        y: -70
-        scale: 45
-    - Turtle.say:
-        text: こんにちは！
-        seconds: 2
-  meeting:
-    - stage: NewBeach
-    - Friend.show:
-        skin: FriendIdle
-        x: 80
+  earthquake:
+    - stage: Classroom
+    - Student.show:
+        skin: StudentReady
+        x: -90
         y: -55
-        scale: 38
-    - Friend.say:
-        text: こんにちは、カメさん！
+        scale: 58
+    - Student.say:
+        text: 地震だ！
         seconds: 2
+  instruction:
+    - stage: EarthquakeClassroom
+    - Student.say:
+        text: 自分の身を守るため、丈夫な机の下に入り、両手で頭を守ろう！
+        seconds: 4

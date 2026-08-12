@@ -4,14 +4,14 @@
   "input": {
     "profile": "dsl4-offline",
     "path": "tutorial-4.0.sb3",
-    "size": 13654464,
-    "sha256": "ed5d78fc8f81338d124edccd9aef1808631947bf5bc71a084bfe64d15086d5cc"
+    "size": 13655651,
+    "sha256": "419cb4db90923658f4754610cd462e0caadd790636d7c688923529016b932292"
   },
   "output": {
     "path": "web-4.0/index.html",
     "contentType": "text/html",
-    "size": 31998889,
-    "sha256": "d885428d11c7478844f63d19809fe0d91155ec8d6d2415a0b8587ffa1a641e10"
+    "size": 32000545,
+    "sha256": "2be5c37c83cdde01a7a35f4339290b7b2d59b45cb3d9ddbb64bc6d2fda3541b0"
   },
   "packager": {
     "package": "@turbowarp/packager",
@@ -20,7 +20,7 @@
       "target": "html",
       "autoplay": true,
       "app": {
-        "windowTitle": "カメを助けよう DSL 4.0 | TMPose紙芝居"
+        "windowTitle": "地震だ！頭を守ろう DSL 4.0 | TMPose紙芝居"
       },
       "cloudVariables": {
         "mode": "disabled"
