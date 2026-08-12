@@ -42,6 +42,7 @@
           "href": "stories/urashima/web/",
           "style": "primary",
           "requires": "urashimaWeb",
+          "unavailableLabel": "Web版（準備中）",
           "group": "DSL 3.2 実行版"
         },
         {
@@ -61,6 +62,8 @@
           "label": "Web版を開く",
           "href": "stories/urashima/web-4.0/",
           "style": "primary",
+          "requires": "urashimaDsl4Web",
+          "unavailableLabel": "Web版（準備中）",
           "group": "DSL 4.0 オフライン実行版"
         },
         {
@@ -112,6 +115,8 @@
           "label": "Web版を開く",
           "href": "stories/my-urashima/web-4.0/",
           "style": "primary",
+          "requires": "myUrashimaDsl4Web",
+          "unavailableLabel": "Web版（準備中）",
           "group": "DSL 4.0 作業版"
         },
         {

@@ -56,6 +56,8 @@ pnpm verify
 
 CIとPages workflowは`tmpose-kamishibai`を`dsl4-build.config.json`に固定したcommitへcheckoutし、`TMPOSE_KAMISHIBAI_DSL4_ROOT`でビルダー位置を指定します。ローカルでは隣接する`../tmpose-kamishibai`を既定値として使います。DSL 4.0のSB3とWebロックを意図的に一括更新する正規コマンドは`pnpm update:dsl4-artifacts`です。
 
+浦島太郎とmy-urashimaのDSL 4.0 Web版は、各`dsl4-build.config.json`の`web.enabled`を起動時固定のfeature flagとして使います。未指定または`false`ではPackager生成とWeb lock更新をスキップし、チェックイン済みの有効版lockを保持したまま公開導線をdisabledの「準備中」へ戻します。再公開時は`true`へ戻すだけで、保持したlockとの一致を再検証します。
+
 台本の`# date:`は手動更新しません。`pnpm build`は日付行を除いた台本内容のSHA-256をartifact lockと比較し、実質内容が変わった台本だけ、ビルド実行環境のローカル年月日へ更新します。内容が同じなら翌日の再ビルドでも既存日付と成果物ハッシュを維持します。台本変更に伴う公開台本、SB3、artifact lockは同じビルドで更新されます。ローカル実行ではOSのタイムゾーンを使い、GitHub ActionsのCI／Pagesリリースでは`Asia/Tokyo`を明示します。
 
 アセット、生成設定など、台本以外の成果物入力を意図的に変更した場合は、`pnpm update:artifacts-lock` で `stories/urashima/artifacts.lock.json`を再生成してから`pnpm build`を実行します。更新コマンドはSB3とWeb版を実際に生成し、Web版の2回生成が一致した後にだけロックファイルを置き換えます。通常のビルドでは、日付以外の意図しない生成環境差分を引き続きエラーとして検出します。

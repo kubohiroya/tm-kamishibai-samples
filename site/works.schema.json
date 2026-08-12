@@ -49,14 +49,20 @@
         "style": {"enum": ["primary", "secondary"]},
         "download": {"type": "boolean"},
         "external": {"type": "boolean"},
-        "requires": {"enum": ["urashimaWeb"]},
+        "requires": {
+          "enum": ["urashimaWeb", "urashimaDsl4Web", "myUrashimaDsl4Web"]
+        },
+        "unavailableLabel": {"type": "string", "minLength": 1},
         "group": {"type": "string", "minLength": 1},
         "disabled": {"const": true}
       },
       "oneOf": [
         {"required": ["href"], "not": {"required": ["disabled"]}},
         {"required": ["disabled"], "not": {"required": ["href"]}}
-      ]
+      ],
+      "dependentRequired": {
+        "requires": ["unavailableLabel"]
+      }
     },
     "thumbnail": {
       "type": "object",

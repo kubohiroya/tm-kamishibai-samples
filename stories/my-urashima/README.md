@@ -33,6 +33,8 @@ pnpm update:dsl4-web-artifacts
 
 浦島太郎を含むDSL 4.0成果物を一括更新する正規コマンドは`pnpm update:dsl4-artifacts`です。通常の`pnpm build`では`my-urashima-4.0.sb3`と`web-4.0/index.html`を空の`dist/`へ自動生成し、`dsl4-artifacts.lock.json`と`dsl4-web-artifacts.lock.json`のサイズ・SHA-256に一致することを確認します。実ブラウザ検証では、タイトルからメニューへの遷移、未読込時の「もう一度」無効化、YAMLファイル選択、選択後の物語開始まで確認します。
 
+DSL 4.0 Web版だけを一時停止するときは、`dsl4-build.config.json`の`web.enabled`を`false`にして再ビルドします。Web HTMLは生成されず、作品一覧と詳細画面は「準備中」表示へ戻ります。`dsl4-web-artifacts.lock.json`は保持されるため、`true`へ戻すと同じ成果物を再検証して公開できます。
+
 ## DSL 4.0ワークショップ台本
 
 `my-urashima.k4.yml`は、DSL 3.2版のワークショップと同じ「行頭の`#`を削除して選択肢を有効化する」操作を、標準YAMLのコメントとして表現したDSL 4.0作業用台本です。専用プリプロセッサや独自コメント文法は使用しません。

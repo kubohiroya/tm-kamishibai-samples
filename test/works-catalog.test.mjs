@@ -42,6 +42,10 @@ test('publishes the approved works-library categories and rights metadata', asyn
   assert(
     urashima.actions.some(({href}) => href === 'stories/urashima/web-4.0/'),
   );
+  assert.equal(
+    urashima.actions.find(({href}) => href === 'stories/urashima/web-4.0/').requires,
+    'urashimaDsl4Web',
+  );
   assert.equal(urashima.actions.some(({group}) => group === '作品情報'), false);
   const myUrashima = catalog.works.find(({id}) => id === 'my-urashima');
   assert.equal(myUrashima.detailHref, 'stories/my-urashima/');
@@ -49,6 +53,10 @@ test('publishes the approved works-library categories and rights metadata', asyn
   assert.deepEqual(
     [...new Set(myUrashima.actions.map(({group}) => group))],
     ['DSL 3.2 作業版', 'DSL 4.0 作業版'],
+  );
+  assert.equal(
+    myUrashima.actions.find(({href}) => href === 'stories/my-urashima/web-4.0/').requires,
+    'myUrashimaDsl4Web',
   );
   assert.equal(myUrashima.actions.some(({group}) => group === '作品情報'), false);
   assert.deepEqual(

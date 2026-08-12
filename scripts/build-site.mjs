@@ -94,21 +94,30 @@ async function assetRecords(directory, kind) {
   );
 }
 
-function renderWorkAction(action, manifest) {
+function renderDisabledAction(className, label) {
+  return `        <button class="${className}" type="button" disabled aria-disabled="true">${escapeHtml(label)}</button>`;
+}
+
+function renderWorkAction(action, features) {
   const className = action.style === 'secondary' ? 'button secondary' : 'button';
   if (action.disabled) {
-    return `        <button class="${className}" type="button" disabled aria-disabled="true">${escapeHtml(action.label)}</button>`;
+    return renderDisabledAction(className, action.label);
   }
-  if (action.requires === 'urashimaWeb' && !manifest.web.enabled) return '';
+  if (action.requires && features[action.requires] !== true) {
+    return renderDisabledAction(
+      className,
+      action.unavailableLabel ?? `${action.label}（準備中）`,
+    );
+  }
   const download = action.download ? ' download' : '';
   const external = action.external ? ' target="_blank" rel="noopener external"' : '';
   const externalLabel = action.external ? '（外部サイト）' : '';
   return `        <a class="${className}" href="${escapeHtml(action.href)}"${download}${external}>${escapeHtml(action.label)}${externalLabel}</a>`;
 }
 
-function renderWorkActions(work, manifest) {
+function renderWorkActions(work, features) {
   const renderedActions = work.actions
-    .map((action) => ({action, html: renderWorkAction(action, manifest)}))
+    .map((action) => ({action, html: renderWorkAction(action, features)}))
     .filter(({html}) => html);
   if (!renderedActions.some(({action}) => action.group)) {
     return `        <div class="actions">
@@ -136,8 +145,8 @@ ${actions.join('\n')}
         </div>`;
 }
 
-function renderWorkCard(work, manifest) {
-  const actions = renderWorkActions(work, manifest);
+function renderWorkCard(work, features) {
+  const actions = renderWorkActions(work, features);
   const title = work.detailHref
     ? `<a class="work-card__title-link" href="${escapeHtml(work.detailHref)}">${escapeHtml(work.title)}</a>`
     : escapeHtml(work.title);
@@ -152,10 +161,10 @@ ${actions}
       </article>`;
 }
 
-function renderWorkCategory(category, works, manifest) {
+function renderWorkCategory(category, works, features) {
   const categoryWorks = works.filter((work) => work.category === category.id);
   const contents = categoryWorks.length
-    ? `<div class="work-list">\n${categoryWorks.map((work) => renderWorkCard(work, manifest)).join('\n')}\n      </div>`
+    ? `<div class="work-list">\n${categoryWorks.map((work) => renderWorkCard(work, features)).join('\n')}\n      </div>`
     : `<p class="empty-state">${escapeHtml(category.emptyMessage)}</p>`;
   return `    <section class="work-category" aria-labelledby="category-${escapeHtml(category.id)}">
       <h2 id="category-${escapeHtml(category.id)}">${escapeHtml(category.title)}</h2>
@@ -164,9 +173,14 @@ function renderWorkCategory(category, works, manifest) {
     </section>`;
 }
 
-function renderRootIndex(manifest, worksCatalog) {
+export function renderRootIndex(manifest, myDsl4Manifest, worksCatalog) {
+  const features = {
+    urashimaWeb: manifest.web.enabled,
+    urashimaDsl4Web: manifest.dsl4Web.enabled,
+    myUrashimaDsl4Web: myDsl4Manifest.web.enabled,
+  };
   const categories = worksCatalog.categories
-    .map((category) => renderWorkCategory(category, worksCatalog.works, manifest))
+    .map((category) => renderWorkCategory(category, worksCatalog.works, features))
     .join('\n');
   return `<!doctype html>
 <html lang="ja">
@@ -224,7 +238,7 @@ ${renderSiteFooter('')}
 `;
 }
 
-function renderSampleIndex(manifest) {
+export function renderSampleIndex(manifest) {
   const webDescription = manifest.web.enabled
     ? '<p>Web版には画像・音声・台本を組み込み済みです。TMPoseのライブラリ・モデル取得とカメラ利用にはネットワーク接続が必要です。</p>'
     : '';
@@ -240,7 +254,7 @@ function renderSampleIndex(manifest) {
     : '';
   const dsl4WebAction = manifest.dsl4Web.enabled
     ? '        <a class="button" href="web-4.0/">Web版を開く</a>\n'
-    : '';
+    : '        <button class="button" type="button" disabled aria-disabled="true">Web版（準備中）</button>\n';
   const dsl4WebHash = manifest.dsl4Web.enabled
     ? `  <p>DSL 4.0 Web版 SHA-256: <code>${manifest.dsl4Web.output.sha256}</code></p>\n`
     : '';
@@ -342,7 +356,13 @@ ${renderSiteFooter('../../')}
 `;
 }
 
-function renderMyUrashimaIndex(work, dsl4Manifest) {
+export function renderMyUrashimaIndex(work, dsl4Manifest) {
+  const webAction = dsl4Manifest.web.enabled
+    ? '        <a class="button" href="web-4.0/">Web版を開く</a>\n'
+    : '        <button class="button" type="button" disabled aria-disabled="true">Web版（準備中）</button>\n';
+  const webHash = dsl4Manifest.web.enabled
+    ? `  <p>DSL 4.0 Web版 SHA-256: <code>${dsl4Manifest.web.output.sha256}</code></p>\n`
+    : '';
   return `<!doctype html>
 <html lang="ja">
 <head>
@@ -399,15 +419,13 @@ ${renderSiteHeader('../../')}
       <h2 id="my-dsl-40-heading">DSL 4.0 作業版</h2>
       <p>全作品アセットとPrincess.png由来のPrincess costumeを持つ非台本埋め込みSB3です。Web版またはSB3のメニューから、編集したYAMLを開いて実行できます。</p>
       <div class="actions">
-        <a class="button" href="web-4.0/">Web版を開く</a>
-        <a class="button secondary" href="my-urashima.k4.yml" download>DSL 4.0 YAMLをダウンロード</a>
+${webAction}        <a class="button secondary" href="my-urashima.k4.yml" download>DSL 4.0 YAMLをダウンロード</a>
         <a class="button secondary" href="my-urashima-4.0.sb3" download>作業用SB3をダウンロード</a>
       </div>
     </section>
   </div>
   <p>DSL 4.0作業用SB3 SHA-256: <code>${dsl4Manifest.output.sha256}</code></p>
-  <p>DSL 4.0 Web版 SHA-256: <code>${dsl4Manifest.web.output.sha256}</code></p>
-  <p><a href="README.md">生成・変換の説明を見る</a></p>
+${webHash}  <p><a href="README.md">生成・変換の説明を見る</a></p>
 </main>
 ${renderSiteFooter('../../')}
 </body>
@@ -505,6 +523,16 @@ function profileRecord(profile, build, lock) {
   };
 }
 
+export function verifyConfiguredWebBuild(web, webConfig, artifactLock, description) {
+  const enabled = webConfig?.enabled === true;
+  assert.equal(web.enabled, enabled, `${description} enabled state differs from its configuration.`);
+  if (enabled) {
+    assert.deepEqual(web, artifactLock, `${description} lock is stale.`);
+  } else {
+    assert.deepEqual(web, {enabled: false}, `${description} disabled result is invalid.`);
+  }
+}
+
 export async function buildSite() {
   await refreshChangedStoryArtifacts();
   const [
@@ -599,7 +627,12 @@ export async function buildSite() {
     expectedInput: dsl4WebLock.input,
     expectedOutput: dsl4WebLock.output,
   });
-  assert.deepEqual(dsl4Web, dsl4WebLock, 'Urashima DSL 4.0 Web lock is stale.');
+  verifyConfiguredWebBuild(
+    dsl4Web,
+    dsl4Config.web,
+    dsl4WebLock,
+    'Urashima DSL 4.0 Web',
+  );
   const myDsl4Web = await buildPackagedWeb({
     inputSb3Path: myDsl4Build.outputPath,
     outputSampleDirectory: myOutputSampleDirectory,
@@ -607,7 +640,12 @@ export async function buildSite() {
     expectedInput: myDsl4WebLock.input,
     expectedOutput: myDsl4WebLock.output,
   });
-  assert.deepEqual(myDsl4Web, myDsl4WebLock, 'my-urashima DSL 4.0 Web lock is stale.');
+  verifyConfiguredWebBuild(
+    myDsl4Web,
+    myDsl4Config.web,
+    myDsl4WebLock,
+    'my-urashima DSL 4.0 Web',
+  );
   const assets = [...images, ...sounds];
   const manifest = {
     formatVersion: 5,
@@ -663,7 +701,7 @@ export async function buildSite() {
   await writeFile(path.join(outputDirectory, '.nojekyll'), '');
   await writeFile(
     path.join(outputDirectory, 'index.html'),
-    renderRootIndex(manifest, worksCatalog),
+    renderRootIndex(manifest, myDsl4Manifest, worksCatalog),
     'utf8',
   );
   await writeFile(path.join(outputDirectory, 'licenses/index.html'), renderRightsIndex(), 'utf8');
