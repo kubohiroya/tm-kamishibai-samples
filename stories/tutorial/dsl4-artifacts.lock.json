@@ -1,17 +1,17 @@
 {
   "formatVersion": 1,
-  "status": "candidate",
-  "version": "4.0.0-candidate.1",
+  "status": "published",
+  "version": "4.0.0-rc.1",
   "releaseDependency": "https://github.com/kubohiroya/tmpose-kamishibai/issues/548",
-  "sourceIdentity": "8f264747beebb8358d1f528d38538d1cb9b6a751ad45b126bc6a745dfa0ab11c",
+  "sourceIdentity": "50880d5de1fede2b73b01ff1a26eb6191d5ac9b9433a8d8489d945935638ddc6",
   "runtime": {
     "repository": "https://github.com/kubohiroya/tmpose-kamishibai",
-    "version": "4.0.0",
-    "commit": "8ea06bfd100b106f559cb25a280fab5570e42919",
+    "version": "4.0.0-rc.1",
+    "commit": "0e7e23f59a323f088408f42ba0dc41f6b6c9feef",
     "basePath": "base/kamishibai-4.0.sb3",
-    "baseSourceCommit": "98cec94387cac726e947cf2454e3f0c5e9146061",
-    "baseSize": 7540390,
-    "baseSha256": "90d39f61b3323e2ea587036b6fc69b591148eb8f9ae9f55a822e1c9d6405144e"
+    "baseSourceIdentity": "sha256:1fc8cb02c365a3bd8f5a5c236cbb7b4408e4a3cb757bce8068e809c77b81c5d9",
+    "baseSize": 7634567,
+    "baseSha256": "2d55ec71cfba272c21c8a560ecc52d0b05a289a842307a1f49cf1063b37890b8"
   },
   "sb3Toolchain": {
     "package": "@kubohiroya/sb3-toolchain",
@@ -60,8 +60,8 @@
       },
       {
         "path": "README.md",
-        "size": 1650,
-        "sha256": "20a653ce8ff8e4773e5e3f14e3b48a3cf2fcd3e82205c9a1869cfaf58d09fda8"
+        "size": 1674,
+        "sha256": "6931c85890a5ecce963d9f40611ef06aa95e6dd7a83f5baa948b4212c9fda79f"
       },
       {
         "path": "addition-kit/README.md",
@@ -168,8 +168,8 @@
   "outputs": {
     "sb3": {
       "path": "tutorial-4.0.sb3",
-      "size": 13545642,
-      "sha256": "632692ecfc5c2d917e0354c620b025778e2e8b83d9745f6588b651ba85661781",
+      "size": 13639883,
+      "sha256": "165f6d97727dafa34255ed4179746737eccaf089fa85224ceecf73ab57d4cf1f",
       "archiveEntryCount": 10,
       "targetNames": [
         "Stage",
@@ -221,8 +221,8 @@
     "path": "LICENSES.md"
   },
   "publication": {
-    "enabled": false,
-    "reason": "DSL 4.0 release tracked by tmpose-kamishibai#548 is not complete",
+    "enabled": true,
+    "reason": "tmpose-kamishibai 4.0.0-rc.1 is published and verified by tmpose-kamishibai#548",
     "issue": "https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/94"
   }
 }

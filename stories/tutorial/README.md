@@ -13,13 +13,13 @@ docs側はその公開surfaceを使ってcaptureとチュートリアルpublicat
 - `tutorial-4.0.sb3`: 完成版の自己完結SB3
 - `tutorial-story-starter-4.0.zip`: starterとaddition kitをまとめた配布物
 - `tutorial-story-addition-kit-4.0.zip`: addition kitだけの配布物
-- `public-surfaces.json`: 予約公開URL、version、integrity、license、公開状態
+- `public-surfaces.json`: 公開URL、version、integrity、license、公開状態
 
 `pnpm update:tutorial-dsl4`はSB3、ZIP、Web lock、公開surface manifestをatomicに更新します。
 通常の`pnpm build`とCIは同じ入力から再生成し、チェックイン済みhashとの一致だけを確認します。
 
 ## 公開フラグ
 
-`dsl4-build.config.json`の`publication.enabled`は起動時固定で既定OFFです。OFFの間も候補成果物を
-再現してブラウザー検証しますが、`dist/`へコピーせず、作品一覧にも追加しません。本体#548で
-正式releaseが固定された後、小さなPRでONへ切り替えます。docs側のcapture完了は公開条件にしません。
+`dsl4-build.config.json`の`publication.enabled`は起動時固定でONです。`4.0.0-rc.1`の固定release
+sourceから成果物を再現してブラウザー検証し、`dist/`と作品一覧へ公開します。docs側のcapture完了は
+公開条件にしません。問題時はフラグをOFFへ戻して4.0チュートリアルの公開導線だけを停止し、既存3.2成果物を維持します。

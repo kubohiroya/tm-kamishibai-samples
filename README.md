@@ -17,11 +17,11 @@
 - `sample.config.json`: `generic` / `editor` / `player` とWeb版の生成設定
 - `artifacts.lock.json`: 再現可能な生成物のサイズとSHA-256
 - `base/kamishibai.sb3`: ポーズ認識成立音対応済み本体コミットから生成したDSL 3.2 `generic` ベース
-- `base/kamishibai-4.0.sb3`: DSL 4.0安定版ソースcommitから生成し、サイズとSHA-256を固定した`generic`ベース
+- `base/kamishibai-4.0.sb3`: DSL 4.0.0-rc.1の固定release sourceから生成し、サイズとSHA-256を固定した`generic`ベース
 
 `stories/my-urashima/`はワークショップ用の依存ストーリーです。DSL 3.2版に加え、Princess PNGを唯一のコスチュームとして持つ`Princess`スプライトと浦島太郎のプロジェクトアセットを組み込んだ、台本非埋め込みの`my-urashima-4.0.sb3`およびWeb版も生成します。生成規約と更新方法は[`stories/my-urashima/README.md`](stories/my-urashima/README.md)に記載しています。
 
-`stories/tutorial/`にはDSL 4.0チュートリアル用の3場面作品、starter、addition kit、自己完結SB3、Web版の固定情報があります。`tmpose-kamishibai#548`で正式releaseが固定されるまではcandidateとして再現・ブラウザー検証だけを行い、`publication.enabled`を既定OFFにしてPagesと作品一覧へは出しません。#548完了後はsamplesを先に公開し、docs側はその公開URLとintegrityを使ってcaptureとチュートリアルpublicationを行います。生成規約とロールバック方法は[`stories/tutorial/README.md`](stories/tutorial/README.md)に記載しています。
+`stories/tutorial/`にはDSL 4.0チュートリアル用の3場面作品、starter、addition kit、自己完結SB3、Web版の固定情報があります。`tmpose-kamishibai#548`で固定・公開した`4.0.0-rc.1`を入力として、`publication.enabled`をONにしたPagesと作品一覧を先に公開します。docs側はその公開URLとintegrityを使ってcaptureとチュートリアルpublicationを行います。生成規約とロールバック方法は[`stories/tutorial/README.md`](stories/tutorial/README.md)に記載しています。
 
 正式な浦島太郎の実行用成果物はDSL 3.2のSVG Textを使い、名前付きstyle、相対font size、複数行のNarration actorを実演します。作品ライブラリでは、公式CLIで変換・検証したDSL 4.0 YAML、オフラインSB3、単一HTML Web版も併せて配布します。deprecatedな旧Text Assetは正式台本から分離したテストfixtureで互換性を確認します。
 
@@ -33,7 +33,7 @@
 - `web/index.html`: `player`だけを入力とする、画像・音声・台本組み込み済みの単一HTML
 - `urashima-4.0.sb3` / `web-4.0/index.html`: DSL 4.0台本・全アセット・ポーズモデル組み込み済みのオフライン版
 - `my-urashima-4.0.sb3` / `my-urashima/web-4.0/index.html`: DSL 4.0外部台本をファイル選択またはドラッグ＆ドロップで開くワークショップ版
-- `tutorial-4.0.sb3` / starter ZIP / addition kit ZIP / `web-4.0/index.html`: 公開フラグOFFのまま再現・検証するDSL 4.0チュートリアル候補
+- `tutorial-4.0.sb3` / starter ZIP / addition kit ZIP / `web-4.0/index.html`: 4.0.0-rc.1で再現・検証して公開するDSL 4.0チュートリアル成果物
 
 先頭の `_` は物語作成者による内部的使用を示します。`player` は編集禁止を意味する「再生専用」ではなく「再生用」です。GitHub Pagesのビルド時には空の`dist/`へすべての成果物をロック済み入力から生成します。DSL 4.0のチェックイン済みSB3は配布元かつ再現性検証対象であり、Web版HTMLはリポジトリへコミットせず自動生成します。
 
@@ -55,7 +55,7 @@ pnpm test:web
 pnpm verify
 ```
 
-`pnpm build` は空の `dist/` からDSL 3.2／4.0のSB3、Packager Web版、公開サイトを生成し、台本・SB3・HTML・全アセット・ライセンス・リンク・SHA-256を検証します。同じ入力から各Web版を2回生成してハッシュが一致することも確認します。`pnpm test:web` はPages相当のHTTPサーバで各Web版を開きます。DSL 4.0浦島太郎では外部ネットワークを遮断した状態でタイトル画面から組み込み台本が開始すること、my-urashimaではタイトルからメニューへ進み、`.k4.yml`をファイル選択して物語が開始すること、tutorial候補では偽カメラを使って3場面を最後まで進められることをheadless Chromiumで検証します。
+`pnpm build` は空の `dist/` からDSL 3.2／4.0のSB3、Packager Web版、公開サイトを生成し、台本・SB3・HTML・全アセット・ライセンス・リンク・SHA-256を検証します。同じ入力から各Web版を2回生成してハッシュが一致することも確認します。`pnpm test:web` はPages相当のHTTPサーバで各Web版を開きます。DSL 4.0浦島太郎では外部ネットワークを遮断した状態でタイトル画面から組み込み台本が開始すること、my-urashimaではタイトルからメニューへ進み、`.k4.yml`をファイル選択して物語が開始すること、tutorial公開版では偽カメラを使って3場面を最後まで進められることをheadless Chromiumで検証します。
 
 CIとPages workflowは`tmpose-kamishibai`を`dsl4-build.config.json`に固定したcommitへcheckoutし、`TMPOSE_KAMISHIBAI_DSL4_ROOT`でビルダー位置を指定します。ローカルでは隣接する`../tmpose-kamishibai`を既定値として使います。DSL 4.0のSB3とWebロックを意図的に一括更新する正規コマンドは`pnpm update:dsl4-artifacts`です。tutorialだけを更新する場合は`pnpm update:tutorial-dsl4`を使います。
 

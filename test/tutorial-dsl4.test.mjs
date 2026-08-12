@@ -17,22 +17,23 @@ import {renderTutorialIndex} from '../scripts/build-site.mjs';
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 const storyDirectory = path.join(projectRoot, 'stories/tutorial');
 
-test('builds a deterministic candidate SB3 and tutorial distribution archives', async () => {
+test('builds a deterministic published SB3 and tutorial distribution archives', async () => {
   const build = await buildTutorialDsl4();
   const [config, webLock, publicSurfaces] = await Promise.all([
     readFile(path.join(storyDirectory, 'dsl4-build.config.json'), 'utf8').then(JSON.parse),
     readFile(path.join(storyDirectory, 'dsl4-web-artifacts.lock.json'), 'utf8').then(JSON.parse),
     readFile(path.join(storyDirectory, 'public-surfaces.json'), 'utf8').then(JSON.parse),
   ]);
-  assert.equal(build.artifactLock.status, 'candidate');
-  assert.equal(build.artifactLock.publication.enabled, false);
+  assert.equal(build.artifactLock.status, 'published');
+  assert.equal(build.artifactLock.version, '4.0.0-rc.1');
+  assert.equal(build.artifactLock.publication.enabled, true);
   assert.equal(build.artifactLock.publication.reason, config.publication.reason);
   assert.doesNotMatch(config.publication.reason, /docs|capture/iu);
   assert.deepEqual(
     createTutorialPublicSurfaces(config, build.artifactLock, webLock),
     publicSurfaces,
   );
-  assert.equal(publicSurfaces.published, false);
+  assert.equal(publicSurfaces.published, true);
   assert.deepEqual(build.artifactLock.outputs.sb3.targetNames, ['Stage', 'Turtle', 'Friend']);
   assert.deepEqual(
     Object.keys(unzipSync(new Uint8Array(build.archives.starter.bytes))).sort(),
@@ -94,7 +95,7 @@ test('provides one intentional CLI diagnostic with an exact starter fix', async 
   assert.match(`${result.stdout}${result.stderr}`, /K4-SCHEMA-(?:001|UNKNOWN-KEY)/u);
 });
 
-test('renders every fixed tutorial download on the future detail page', async () => {
+test('renders every fixed tutorial download on the published detail page', async () => {
   const [config, manifest] = await Promise.all([
     readFile(path.join(storyDirectory, 'dsl4-build.config.json'), 'utf8').then(JSON.parse),
     readFile(path.join(storyDirectory, 'public-surfaces.json'), 'utf8').then(JSON.parse),

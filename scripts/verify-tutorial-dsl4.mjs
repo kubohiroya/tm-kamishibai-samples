@@ -139,6 +139,6 @@ export async function verifyTutorialCandidate(options = {}) {
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const result = await verifyTutorialCandidate();
   process.stdout.write(
-    `Verified tutorial candidate ${result.sourceIdentity} (${result.published ? 'published' : 'publication disabled'}).\n`,
+    `Verified tutorial release ${result.sourceIdentity} (${result.published ? 'published' : 'publication disabled'}).\n`,
   );
 }

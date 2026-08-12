@@ -42,9 +42,9 @@ const fixtures = new Map(
     ].filter(Boolean),
   ),
 );
-const workshopSourcePath = path.join(
-  projectRoot,
-  'stories/my-urashima/my-urashima.k4.yml',
+const workshopSource = await readFile(
+  path.join(projectRoot, 'stories/my-urashima/my-urashima.k4.yml'),
+  'utf8',
 );
 
 function conciseFailure(value) {
@@ -65,7 +65,7 @@ const server = createServer((request, response) => {
 });
 await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
 
-async function openDsl4Page(browser, origin, pathname) {
+async function openDsl4Page(browser, origin, pathname, {storySource} = {}) {
   const page = await browser.newPage({locale: 'ja-JP', viewport: {width: 960, height: 720}});
   const failures = [];
   const externalRequests = [];
@@ -73,6 +73,30 @@ async function openDsl4Page(browser, origin, pathname) {
   page.on('console', (message) => {
     if (message.type() === 'error') failures.push(conciseFailure(message.text()));
   });
+  if (storySource !== undefined) {
+    await page.addInitScript((source) => {
+      globalThis.__tmposeFilePickerCalls = [];
+      Object.defineProperty(globalThis, 'showOpenFilePicker', {
+        configurable: true,
+        value: async (options) => {
+          globalThis.__tmposeFilePickerCalls.push(options);
+          const file = new File([source], 'my-urashima.k4.yml', {type: 'application/yaml'});
+          return [
+            {
+              kind: 'file',
+              name: file.name,
+              async queryPermission() {
+                return 'granted';
+              },
+              async getFile() {
+                return file;
+              },
+            },
+          ];
+        },
+      });
+    }, storySource);
+  }
   await page.route('**/*', async (route) => {
     const url = route.request().url();
     if (url.startsWith(origin) || url.startsWith('blob:') || url.startsWith('data:')) {
@@ -171,7 +195,7 @@ try {
   }
 
   if (myUrashimaEnabled) {
-    const workshop = await openDsl4Page(browser, origin, '/my-urashima');
+    const workshop = await openDsl4Page(browser, origin, '/my-urashima', {storySource: workshopSource});
     const workshopProject = await workshop.page.evaluate(() => {
       const vm = globalThis.Scratch?.vm ?? globalThis.scaffolding?.vm;
       const project = JSON.parse(vm.toJSON());
@@ -198,11 +222,12 @@ try {
     const reload = workshop.page.locator('[data-dsl4-menu-action=reload]');
     assert.equal(await reload.isDisabled(), true);
     assert.equal(await reload.getAttribute('aria-disabled'), 'true');
-    const chooserPromise = workshop.page.waitForEvent('filechooser');
     await workshop.page.locator('[data-dsl4-menu-action=open]').click();
-    const chooser = await chooserPromise;
-    assert.match(await chooser.element().getAttribute('accept'), /\.ya?ml/u);
-    await chooser.setFiles(workshopSourcePath);
+    const sourceChooser = workshop.page.locator('[data-dsl4-source-chooser=true]');
+    await sourceChooser.waitFor({state: 'visible', timeout: 30_000});
+    const fileChoice = sourceChooser.locator('[data-dsl4-source-choice=file]');
+    assert.equal(await fileChoice.isDisabled(), false);
+    await fileChoice.click();
     await workshop.page.waitForFunction(
       () => {
         const vm = globalThis.Scratch?.vm ?? globalThis.scaffolding?.vm;
@@ -224,6 +249,17 @@ try {
       undefined,
       {timeout: 120_000},
     );
+    assert.deepEqual(await workshop.page.evaluate(() => globalThis.__tmposeFilePickerCalls), [
+      {
+        multiple: false,
+        types: [
+          {
+            description: 'Kamishibai DSL 4.0 YAML',
+            accept: {'application/yaml': ['.yml', '.yaml']},
+          },
+        ],
+      },
+    ]);
     assert.deepEqual(workshop.externalRequests, []);
     assert.deepEqual(workshop.failures, []);
     await workshop.page.close();
@@ -333,7 +369,7 @@ try {
   const verified = [
     ...(urashimaEnabled ? ['Urashima'] : []),
     ...(myUrashimaEnabled ? ['workshop'] : []),
-    ...(tutorialEnabled ? ['tutorial candidate'] : []),
+    ...(tutorialEnabled ? ['tutorial release'] : []),
   ];
   process.stdout.write(
     verified.length > 0
