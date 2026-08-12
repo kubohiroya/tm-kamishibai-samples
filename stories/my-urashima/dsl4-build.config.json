@@ -1,0 +1,57 @@
+{
+  "formatVersion": 1,
+  "runtime": {
+    "config": "../urashima/dsl4-build.config.json"
+  },
+  "source": "my-urashima.k4.yml",
+  "projectAssets": "project-assets-dsl4.yml",
+  "output": "my-urashima-4.0.sb3",
+  "artifactsLock": "dsl4-artifacts.lock.json",
+  "webArtifactsLock": "dsl4-web-artifacts.lock.json",
+  "web": {
+    "enabled": true,
+    "inputProfile": "dsl4-workshop",
+    "outputDirectory": "web-4.0",
+    "outputFilename": "index.html",
+    "maxOutputBytes": 134217728,
+    "scriptMode": "external",
+    "assets": "embedded-project",
+    "audioUnlock": {
+      "enabled": true
+    },
+    "packager": {
+      "package": "@turbowarp/packager",
+      "version": "3.13.0",
+      "options": {
+        "target": "html",
+        "autoplay": true,
+        "app": {
+          "windowTitle": "my-urashima DSL 4.0 | TMPose紙芝居"
+        },
+        "cloudVariables": {
+          "mode": "disabled"
+        }
+      }
+    },
+    "allowedOnlineDependencies": [
+      {
+        "urlPrefix": "https://sqs.prof.cuc.ac.jp/kamishibai/20260630/",
+        "purpose": "ワークショップ台本で指定するTMPoseモデル"
+      }
+    ],
+    "runtimeCapabilities": [
+      {
+        "capability": "file-picker",
+        "purpose": "DSL 4.0 YAMLを開く"
+      },
+      {
+        "capability": "camera",
+        "purpose": "TMPoseによるポーズ認識"
+      },
+      {
+        "capability": "audio",
+        "purpose": "組み込み済み音声の再生"
+      }
+    ]
+  }
+}

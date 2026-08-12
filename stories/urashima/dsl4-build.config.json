@@ -2,19 +2,58 @@
   "formatVersion": 1,
   "runtime": {
     "repository": "https://github.com/kubohiroya/tmpose-kamishibai",
-    "pullRequest": 519,
-    "commit": "f6f82649c4abcf5f01a765b4b008b169ea25dde0",
-    "baseOutput": "dist/downloads/kamishibai-4.0.sb3",
-    "baseSize": 7549123,
-    "baseSha256": "989a0344d27b4ca670822a83d60de715442dd54cd20c720cc7cb8b43e00a8b2d"
+    "version": "4.0.0",
+    "commit": "8ea06bfd100b106f559cb25a280fab5570e42919",
+    "basePath": "base/kamishibai-4.0.sb3",
+    "baseSourceCommit": "98cec94387cac726e947cf2454e3f0c5e9146061",
+    "baseSize": 7540390,
+    "baseSha256": "90d39f61b3323e2ea587036b6fc69b591148eb8f9ae9f55a822e1c9d6405144e"
   },
   "sourceManifest": "project.source.json",
   "projectAssets": "project-assets-dsl4.yml",
   "output": "urashima-4.0.sb3",
+  "webArtifactsLock": "dsl4-web-artifacts.lock.json",
   "limits": {
     "maxSourceBytes": 262144,
     "maxAssetFileBytes": 8388608,
     "maxAssetFiles": 128,
     "maxTotalAssetBytes": 67108864
+  },
+  "web": {
+    "enabled": true,
+    "inputProfile": "dsl4-offline",
+    "outputDirectory": "web-4.0",
+    "outputFilename": "index.html",
+    "maxOutputBytes": 134217728,
+    "scriptMode": "embedded",
+    "assets": "embedded",
+    "audioUnlock": {
+      "enabled": true
+    },
+    "packager": {
+      "package": "@turbowarp/packager",
+      "version": "3.13.0",
+      "options": {
+        "target": "html",
+        "autoplay": true,
+        "app": {
+          "windowTitle": "浦島太郎 DSL 4.0 | TMPose紙芝居"
+        },
+        "cloudVariables": {
+          "mode": "disabled"
+        }
+      }
+    },
+    "allowedOnlineDependencies": [],
+    "runtimeCapabilities": [
+      {
+        "capability": "camera",
+        "purpose": "TMPoseによるポーズ認識"
+      },
+      {
+        "capability": "audio",
+        "purpose": "組み込み済み音声の再生"
+      }
+    ]
   }
 }

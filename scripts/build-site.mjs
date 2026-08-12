@@ -1,10 +1,13 @@
+import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {copyFile, cp, mkdir, readFile, readdir, rm, writeFile} from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 
 import {buildMyUrashima} from './build-my-urashima.mjs';
+import {buildMyUrashimaDsl4} from './build-my-urashima-dsl4.mjs';
 import {buildUrashima} from './build-urashima.mjs';
+import {buildUrashimaDsl4} from './build-urashima-dsl4.mjs';
 import {buildPackagedWeb} from './build-packaged-web.mjs';
 import {renderSiteHeader as renderContractSiteHeader} from './site-navigation.mjs';
 import {refreshChangedStoryArtifacts} from './refresh-story-artifacts.mjs';
@@ -235,6 +238,12 @@ function renderSampleIndex(manifest) {
     ? `  <h2>Web版のクレジット</h2>
   <p>Web版は <a href="https://packager.turbowarp.org/">TurboWarp Packager</a> ${escapeHtml(manifest.web.packager.version)} で生成しています。PackagerはMPL-2.0で提供され、ライセンスと同梱ランタイムのクレジットは<a href="LICENSES.md">ライセンス情報</a>および生成HTML内で確認できます。</p>\n`
     : '';
+  const dsl4WebAction = manifest.dsl4Web.enabled
+    ? '        <a class="button" href="web-4.0/">Web版を開く</a>\n'
+    : '';
+  const dsl4WebHash = manifest.dsl4Web.enabled
+    ? `  <p>DSL 4.0 Web版 SHA-256: <code>${manifest.dsl4Web.output.sha256}</code></p>\n`
+    : '';
   const assetItems = manifest.assets
     .map(
       (asset) =>
@@ -299,8 +308,7 @@ ${webAction}        <a class="button secondary" href="urashima.txt">DSL 3.2台�
       <h2 id="dsl-40-heading">DSL 4.0 オフライン実行版</h2>
       <p>DSL 4.0 YAML、49アセット、Urashima／Turtle／Princess／Fish／Narration target、4.0実行基盤を一つのSB3に組み込んでいます。モデル取得にネットワーク接続は不要です。</p>
       <div class="actions">
-        <button class="button secondary" type="button" disabled aria-disabled="true">Web版（準備中）</button>
-        <a class="button" href="urashima.k4.yml" download>DSL 4.0 YAMLをダウンロード</a>
+${dsl4WebAction}        <a class="button" href="urashima.k4.yml" download>DSL 4.0 YAMLをダウンロード</a>
         <a class="button secondary" href="urashima-4.0.sb3" download>オフラインSB3をダウンロード</a>
       </div>
     </section>
@@ -315,7 +323,7 @@ ${webAction}        <a class="button secondary" href="urashima.txt">DSL 3.2台�
   <p>再生用SB3 SHA-256: <code>${manifest.profiles.player.sb3.sha256}</code></p>
   <p>編集用SB3 SHA-256: <code>${manifest.profiles.editor.sb3.sha256}</code></p>
   <p>DSL 4.0オフラインSB3 SHA-256: <code>${manifest.dsl4Offline.sha256}</code></p>
-${webHash}  <h2>成果物プロファイル</h2>
+${dsl4WebHash}${webHash}  <h2>成果物プロファイル</h2>
   <ul>
     <li><code>generic</code>: <code>base/kamishibai.sb3</code> — 台本・物語固有アセット非埋め込みの汎用雛形</li>
     <li><code>editor</code>: <code>_urashima.sb3</code> — 台本非埋め込み・アセット埋め込みの編集用</li>
@@ -334,7 +342,7 @@ ${renderSiteFooter('../../')}
 `;
 }
 
-function renderMyUrashimaIndex(work) {
+function renderMyUrashimaIndex(work, dsl4Manifest) {
   return `<!doctype html>
 <html lang="ja">
 <head>
@@ -389,14 +397,16 @@ ${renderSiteHeader('../../')}
     </section>
     <section class="artifact-group" data-dsl-series="4.0" aria-labelledby="my-dsl-40-heading">
       <h2 id="my-dsl-40-heading">DSL 4.0 作業版</h2>
-      <p>YAMLの行頭にある#を選択的に削除し、ポーズ画像とposeアクションを有効化できるワークショップ用台本です。</p>
+      <p>全作品アセットとPrincess.png由来のPrincess costumeを持つ非台本埋め込みSB3です。Web版またはSB3のメニューから、編集したYAMLを開いて実行できます。</p>
       <div class="actions">
-        <button class="button secondary" type="button" disabled aria-disabled="true">Web版（準備中）</button>
+        <a class="button" href="web-4.0/">Web版を開く</a>
         <a class="button secondary" href="my-urashima.k4.yml" download>DSL 4.0 YAMLをダウンロード</a>
-        <button class="button secondary" type="button" disabled aria-disabled="true">作業用SB3（準備中）</button>
+        <a class="button secondary" href="my-urashima-4.0.sb3" download>作業用SB3をダウンロード</a>
       </div>
     </section>
   </div>
+  <p>DSL 4.0作業用SB3 SHA-256: <code>${dsl4Manifest.output.sha256}</code></p>
+  <p>DSL 4.0 Web版 SHA-256: <code>${dsl4Manifest.web.output.sha256}</code></p>
   <p><a href="README.md">生成・変換の説明を見る</a></p>
 </main>
 ${renderSiteFooter('../../')}
@@ -497,11 +507,30 @@ function profileRecord(profile, build, lock) {
 
 export async function buildSite() {
   await refreshChangedStoryArtifacts();
-  const [worksCatalog, images, sounds, dsl4ArtifactLock] = await Promise.all([
+  const [
+    worksCatalog,
+    images,
+    sounds,
+    dsl4ArtifactLock,
+    dsl4Config,
+    dsl4WebLock,
+    myDsl4ArtifactLock,
+    myDsl4Config,
+    myDsl4WebLock,
+  ] = await Promise.all([
     readWorksCatalog(worksCatalogPath),
     assetRecords(path.join(sourceDirectory, 'assets/images'), 'images'),
     assetRecords(path.join(sourceDirectory, 'assets/sounds'), 'sounds'),
     readFile(path.join(sourceDirectory, 'dsl4-artifacts.lock.json'), 'utf8').then(JSON.parse),
+    readFile(path.join(sourceDirectory, 'dsl4-build.config.json'), 'utf8').then(JSON.parse),
+    readFile(path.join(sourceDirectory, 'dsl4-web-artifacts.lock.json'), 'utf8').then(
+      JSON.parse,
+    ),
+    readFile(path.join(mySourceDirectory, 'dsl4-artifacts.lock.json'), 'utf8').then(JSON.parse),
+    readFile(path.join(mySourceDirectory, 'dsl4-build.config.json'), 'utf8').then(JSON.parse),
+    readFile(path.join(mySourceDirectory, 'dsl4-web-artifacts.lock.json'), 'utf8').then(
+      JSON.parse,
+    ),
   ]);
   if (images.length !== 26 || sounds.length !== 22) {
     throw new Error(`Unexpected Urashima asset counts: ${images.length} images, ${sounds.length} sounds.`);
@@ -530,6 +559,14 @@ export async function buildSite() {
   await cp(mySourceDirectory, myOutputSampleDirectory, {recursive: true});
   const {artifactsLock, config, results} = await buildUrashima(outputSampleDirectory);
   await buildMyUrashima(myOutputSampleDirectory);
+  const dsl4Build = await buildUrashimaDsl4({
+    publishedOutputPath: path.join(outputSampleDirectory, dsl4Config.output),
+    verifyCommittedOutput: false,
+  });
+  const myDsl4Build = await buildMyUrashimaDsl4({
+    publishedOutputPath: path.join(myOutputSampleDirectory, myDsl4Config.output),
+    verifyCommittedOutput: false,
+  });
   const [
     sourceScript,
     assetManifest,
@@ -555,9 +592,25 @@ export async function buildSite() {
     expectedInput: artifactsLock.web.input,
     expectedOutput: artifactsLock.web.output,
   });
+  const dsl4Web = await buildPackagedWeb({
+    inputSb3Path: dsl4Build.outputPath,
+    outputSampleDirectory,
+    rawWebConfig: dsl4Config.web,
+    expectedInput: dsl4WebLock.input,
+    expectedOutput: dsl4WebLock.output,
+  });
+  assert.deepEqual(dsl4Web, dsl4WebLock, 'Urashima DSL 4.0 Web lock is stale.');
+  const myDsl4Web = await buildPackagedWeb({
+    inputSb3Path: myDsl4Build.outputPath,
+    outputSampleDirectory: myOutputSampleDirectory,
+    rawWebConfig: myDsl4Config.web,
+    expectedInput: myDsl4WebLock.input,
+    expectedOutput: myDsl4WebLock.output,
+  });
+  assert.deepEqual(myDsl4Web, myDsl4WebLock, 'my-urashima DSL 4.0 Web lock is stale.');
   const assets = [...images, ...sounds];
   const manifest = {
-    formatVersion: 4,
+    formatVersion: 5,
     sample: 'urashima',
     publicUrl: `${publicUrl}stories/urashima/`,
     license: 'MPL-2.0',
@@ -578,20 +631,29 @@ export async function buildSite() {
       player: profileRecord('player', results.player, artifactsLock.profiles.player),
     },
     dsl4Offline: {
-      path: dsl4ArtifactLock.output.path,
-      size: dsl4ArtifactLock.output.size,
-      sha256: dsl4ArtifactLock.output.sha256,
-      sourceAssetCount: dsl4ArtifactLock.source.assetCount,
+      path: dsl4Build.artifactLock.output.path,
+      size: dsl4Build.artifactLock.output.size,
+      sha256: dsl4Build.artifactLock.output.sha256,
+      sourceAssetCount: dsl4Build.artifactLock.source.assetCount,
       embeddedFileCount: 55,
-      runtimeCommit: dsl4ArtifactLock.runtime.commit,
-      sb3Toolchain: dsl4ArtifactLock.sb3Toolchain,
+      runtimeCommit: dsl4Build.artifactLock.runtime.commit,
+      sb3Toolchain: dsl4Build.artifactLock.sb3Toolchain,
     },
+    dsl4Web,
     web,
     assetCounts: {images: images.length, sounds: sounds.length, embedded: assetManifest.assets.length},
     unusedSourceAssets: assets
       .filter((asset) => !embeddedPaths.has(asset.path))
       .map((asset) => asset.path),
     assets,
+  };
+  assert.deepEqual(dsl4Build.artifactLock, dsl4ArtifactLock);
+  assert.deepEqual(myDsl4Build.artifactLock, myDsl4ArtifactLock);
+  const myDsl4Manifest = {
+    ...myDsl4Build.artifactLock,
+    sample: 'my-urashima',
+    publicUrl: `${publicUrl}stories/my-urashima/`,
+    web: myDsl4Web,
   };
   if (sha256(sourceScript) !== sourceScriptRecord.sha256) {
     throw new Error('Source script changed while building the site.');
@@ -612,8 +674,13 @@ export async function buildSite() {
   );
   await writeFile(path.join(outputSampleDirectory, 'index.html'), renderSampleIndex(manifest), 'utf8');
   await writeFile(
+    path.join(myOutputSampleDirectory, 'dsl4-manifest.json'),
+    `${JSON.stringify(myDsl4Manifest, null, 2)}\n`,
+    'utf8',
+  );
+  await writeFile(
     path.join(myOutputSampleDirectory, 'index.html'),
-    renderMyUrashimaIndex(myUrashimaWork),
+    renderMyUrashimaIndex(myUrashimaWork, myDsl4Manifest),
     'utf8',
   );
 

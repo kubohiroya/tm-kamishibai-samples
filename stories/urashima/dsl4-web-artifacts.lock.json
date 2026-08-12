@@ -1,0 +1,75 @@
+{
+  "enabled": true,
+  "publicPath": "web-4.0/",
+  "input": {
+    "profile": "dsl4-offline",
+    "path": "urashima-4.0.sb3",
+    "size": 42437519,
+    "sha256": "a198352ed1785261fe41ba1b0333914664ca33434da1a9bf3ba9dc56ba81de1a"
+  },
+  "output": {
+    "path": "web-4.0/index.html",
+    "contentType": "text/html",
+    "size": 67069097,
+    "sha256": "6a458145f63df77a80258c5ec2956f0608a1b7e2cedd290db0267e1328dc5ae1"
+  },
+  "packager": {
+    "package": "@turbowarp/packager",
+    "version": "3.13.0",
+    "options": {
+      "target": "html",
+      "autoplay": true,
+      "app": {
+        "windowTitle": "浦島太郎 DSL 4.0 | TMPose紙芝居"
+      },
+      "cloudVariables": {
+        "mode": "disabled"
+      },
+      "bakeExtensions": true
+    },
+    "projectExtensions": [
+      {
+        "id": "kubohiroyakamishibai4",
+        "source": "input-sb3-data-url",
+        "sha256": "f09f264febb13774556ab47e4e4dc74b3a7cfe8b69d7183bda70824beb97deaa"
+      }
+    ]
+  },
+  "scriptMode": "embedded",
+  "assets": "embedded",
+  "audioUnlock": {
+    "enabled": true,
+    "events": [
+      "pointerdown",
+      "pointerup",
+      "touchend",
+      "mousedown",
+      "click",
+      "keydown"
+    ],
+    "lifecycleEvents": [
+      "visibilitychange",
+      "pageshow"
+    ],
+    "verification": {
+      "strategy": "state-and-clock",
+      "clockCheckDelayMs": 250,
+      "primesOutput": true
+    }
+  },
+  "allowedOnlineDependencies": [],
+  "runtimeCapabilities": [
+    {
+      "capability": "camera",
+      "purpose": "TMPoseによるポーズ認識"
+    },
+    {
+      "capability": "audio",
+      "purpose": "組み込み済み音声の再生"
+    }
+  ],
+  "reproducibility": {
+    "runs": 2,
+    "identical": true
+  }
+}

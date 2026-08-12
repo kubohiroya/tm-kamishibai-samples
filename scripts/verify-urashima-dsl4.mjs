@@ -51,8 +51,6 @@ export async function verifyUrashimaDsl4() {
   assert(project.extensionURLs.kubohiroyakamishibai4.startsWith('data:text/javascript'));
   const expectedTargets = [
     'Stage',
-    'officialWebsiteButton',
-    'closeTitleButton',
     'Urashima',
     'Turtle',
     'Princess',

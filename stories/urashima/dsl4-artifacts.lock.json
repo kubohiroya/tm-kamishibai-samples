@@ -2,11 +2,12 @@
   "formatVersion": 1,
   "runtime": {
     "repository": "https://github.com/kubohiroya/tmpose-kamishibai",
-    "pullRequest": 519,
-    "commit": "f6f82649c4abcf5f01a765b4b008b169ea25dde0",
-    "baseOutput": "dist/downloads/kamishibai-4.0.sb3",
-    "baseSize": 7549123,
-    "baseSha256": "989a0344d27b4ca670822a83d60de715442dd54cd20c720cc7cb8b43e00a8b2d"
+    "version": "4.0.0",
+    "commit": "8ea06bfd100b106f559cb25a280fab5570e42919",
+    "basePath": "base/kamishibai-4.0.sb3",
+    "baseSourceCommit": "98cec94387cac726e947cf2454e3f0c5e9146061",
+    "baseSize": 7540390,
+    "baseSha256": "90d39f61b3323e2ea587036b6fc69b591148eb8f9ae9f55a822e1c9d6405144e"
   },
   "sb3Toolchain": {
     "package": "@kubohiroya/sb3-toolchain",
@@ -21,13 +22,11 @@
   },
   "output": {
     "path": "urashima-4.0.sb3",
-    "size": 42446270,
-    "sha256": "c11b8cb35f0bec5523787af7376f3aaec9a799111855baef69e7dac9fc9b4184",
-    "archiveEntryCount": 13,
+    "size": 42437519,
+    "sha256": "a198352ed1785261fe41ba1b0333914664ca33434da1a9bf3ba9dc56ba81de1a",
+    "archiveEntryCount": 10,
     "targetNames": [
       "Stage",
-      "officialWebsiteButton",
-      "closeTitleButton",
       "Urashima",
       "Turtle",
       "Princess",
