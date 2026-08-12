@@ -9,18 +9,26 @@ import {buildMyUrashimaDsl4} from './build-my-urashima-dsl4.mjs';
 import {buildUrashima} from './build-urashima.mjs';
 import {buildUrashimaDsl4} from './build-urashima-dsl4.mjs';
 import {buildPackagedWeb} from './build-packaged-web.mjs';
+import {
+  buildTutorialDsl4,
+  createTutorialPublicSurfaces,
+} from './build-tutorial-dsl4.mjs';
 import {renderSiteHeader as renderContractSiteHeader} from './site-navigation.mjs';
 import {refreshChangedStoryArtifacts} from './refresh-story-artifacts.mjs';
+import {verifyTutorialCandidate} from './verify-tutorial-dsl4.mjs';
 import {verifyPublishedSite} from './verify-site.mjs';
-import {readWorksCatalog} from './works-catalog.mjs';
+import {readWorksCatalog, validateWorksCatalog} from './works-catalog.mjs';
 
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 const sourceDirectory = path.join(projectRoot, 'stories/urashima');
 const mySourceDirectory = path.join(projectRoot, 'stories/my-urashima');
+const tutorialSourceDirectory = path.join(projectRoot, 'stories/tutorial');
 const siteDirectory = path.join(projectRoot, 'site');
 const outputDirectory = path.join(projectRoot, 'dist');
+const tutorialCandidateOutputDirectory = path.join(projectRoot, 'tmp/tutorial-candidate');
 const outputSampleDirectory = path.join(outputDirectory, 'stories/urashima');
 const myOutputSampleDirectory = path.join(outputDirectory, 'stories/my-urashima');
+const tutorialOutputDirectory = path.join(outputDirectory, 'stories/tutorial');
 const publicUrl = 'https://kubohiroya.github.io/tmpose-kamishibai-samples/';
 const worksCatalogPath = path.join(siteDirectory, 'works.json');
 const worksSchemaPath = path.join(siteDirectory, 'works.schema.json');
@@ -433,6 +441,64 @@ ${renderSiteFooter('../../')}
 `;
 }
 
+export function renderTutorialIndex(work, manifest) {
+  return `<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>${escapeHtml(work.title)} | TMPose紙芝居 作品ライブラリ</title>
+  <link rel="icon" href="../../favicon.png">
+  <link rel="stylesheet" href="../../site-shell.css">
+  <style>
+    :root { color-scheme: light; font-family: system-ui, sans-serif; --ink: #3f302b; --muted: #756960; --paper: #fffdf8; --canvas: #fff8ee; --accent: #963f2f; --line: #dbc9bb; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--canvas); color: var(--ink); }
+    main { max-width: 920px; margin: auto; padding: 40px 24px 72px; }
+    nav { margin-bottom: 32px; }
+    article { padding: 24px; border: 1px solid var(--line); border-radius: 14px; background: var(--paper); }
+    a { color: var(--accent); }
+    .eyebrow { color: var(--muted); font-weight: 800; }
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 24px 0 32px; }
+    .button { display: inline-block; padding: 10px 14px; border-radius: 8px; background: var(--accent); color: white; text-decoration: none; font-weight: 700; }
+    .button.secondary { border: 1px solid var(--accent); background: white; color: var(--accent); }
+    dl { display: grid; grid-template-columns: minmax(9rem, auto) minmax(0, 1fr); gap: .65rem 1rem; }
+    dt { color: var(--muted); font-weight: 800; }
+    dd { margin: 0; overflow-wrap: anywhere; }
+    @media (max-width: 560px) { dl { grid-template-columns: 1fr; } dt { margin-top: .6rem; } }
+  </style>
+</head>
+<body>
+${renderSiteHeader('../../')}
+<main id="main-content">
+  <nav aria-label="作品内ナビゲーション"><a href="../../">作品一覧へ戻る</a></nav>
+  <article>
+    <p class="eyebrow">DSL 4.0 チュートリアル</p>
+    <h1>${escapeHtml(work.title)}</h1>
+    <p>${escapeHtml(work.summary)}</p>
+    <div class="actions">
+      <a class="button" href="web-4.0/">Web版を開く</a>
+      <a class="button secondary" href="${manifest.artifacts.starter.path}" download>スターターをダウンロード</a>
+      <a class="button secondary" href="${manifest.artifacts.additionKit.path}" download>addition kitをダウンロード</a>
+      <a class="button secondary" href="${manifest.artifacts.sb3.path}" download>完成版SB3をダウンロード</a>
+      <a class="button secondary" href="story.kamishibai.yaml" download>完成版YAMLをダウンロード</a>
+    </div>
+    <h2>固定情報</h2>
+    <dl>
+      <dt>version</dt><dd><code>${escapeHtml(manifest.version)}</code></dd>
+      <dt>source identity</dt><dd><code>${manifest.sourceIdentity}</code></dd>
+      <dt>SB3 SHA-256</dt><dd><code>${manifest.artifacts.sb3.sha256}</code></dd>
+      <dt>Web SHA-256</dt><dd><code>${manifest.artifacts.web.sha256}</code></dd>
+      <dt>starter SHA-256</dt><dd><code>${manifest.artifacts.starter.sha256}</code></dd>
+      <dt>ライセンス</dt><dd><a href="LICENSES.md">MPL-2.0と収録物の説明</a></dd>
+    </dl>
+  </article>
+</main>
+${renderSiteFooter('../../')}
+</body>
+</html>`;
+}
+
 function renderRightsIndex() {
   return `<!doctype html>
 <html lang="ja">
@@ -545,6 +611,10 @@ export async function buildSite() {
     myDsl4ArtifactLock,
     myDsl4Config,
     myDsl4WebLock,
+    tutorialArtifactLock,
+    tutorialConfig,
+    tutorialWebLock,
+    tutorialPublicSurfaces,
   ] = await Promise.all([
     readWorksCatalog(worksCatalogPath),
     assetRecords(path.join(sourceDirectory, 'assets/images'), 'images'),
@@ -559,15 +629,36 @@ export async function buildSite() {
     readFile(path.join(mySourceDirectory, 'dsl4-web-artifacts.lock.json'), 'utf8').then(
       JSON.parse,
     ),
+    readFile(path.join(tutorialSourceDirectory, 'dsl4-artifacts.lock.json'), 'utf8').then(
+      JSON.parse,
+    ),
+    readFile(path.join(tutorialSourceDirectory, 'dsl4-build.config.json'), 'utf8').then(
+      JSON.parse,
+    ),
+    readFile(path.join(tutorialSourceDirectory, 'dsl4-web-artifacts.lock.json'), 'utf8').then(
+      JSON.parse,
+    ),
+    readFile(path.join(tutorialSourceDirectory, 'public-surfaces.json'), 'utf8').then(
+      JSON.parse,
+    ),
   ]);
   if (images.length !== 26 || sounds.length !== 22) {
     throw new Error(`Unexpected Urashima asset counts: ${images.length} images, ${sounds.length} sounds.`);
   }
   const myUrashimaWork = worksCatalog.works.find(({id}) => id === 'my-urashima');
   if (!myUrashimaWork) throw new Error('my-urashima is missing from the works catalog.');
+  const catalogWithTutorial = validateWorksCatalog({
+    ...structuredClone(worksCatalog),
+    works: [...structuredClone(worksCatalog.works), tutorialConfig.work],
+  });
+  const publishedWorksCatalog = tutorialConfig.publication.enabled
+    ? catalogWithTutorial
+    : worksCatalog;
 
   await rm(outputDirectory, {recursive: true, force: true});
+  await rm(tutorialCandidateOutputDirectory, {recursive: true, force: true});
   await mkdir(path.dirname(outputSampleDirectory), {recursive: true});
+  await mkdir(tutorialCandidateOutputDirectory, {recursive: true});
   await mkdir(path.join(outputDirectory, 'licenses'), {recursive: true});
   await Promise.all([
     copyFile(path.join(siteDirectory, 'favicon.png'), path.join(outputDirectory, 'favicon.png')),
@@ -579,7 +670,6 @@ export async function buildSite() {
       path.join(siteDirectory, 'site-shell.css'),
       path.join(outputDirectory, 'site-shell.css'),
     ),
-    copyFile(worksCatalogPath, path.join(outputDirectory, 'works.json')),
     copyFile(worksSchemaPath, path.join(outputDirectory, 'works.schema.json')),
     copyFile(path.join(projectRoot, 'WORKS_POLICY.md'), path.join(outputDirectory, 'WORKS_POLICY.md')),
   ]);
@@ -593,6 +683,10 @@ export async function buildSite() {
   });
   const myDsl4Build = await buildMyUrashimaDsl4({
     publishedOutputPath: path.join(myOutputSampleDirectory, myDsl4Config.output),
+    verifyCommittedOutput: false,
+  });
+  const tutorialBuild = await buildTutorialDsl4({
+    publishedOutputDirectory: tutorialCandidateOutputDirectory,
     verifyCommittedOutput: false,
   });
   const [
@@ -646,6 +740,19 @@ export async function buildSite() {
     myDsl4WebLock,
     'my-urashima DSL 4.0 Web',
   );
+  const tutorialWeb = await buildPackagedWeb({
+    inputSb3Path: tutorialBuild.outputPath,
+    outputSampleDirectory: tutorialCandidateOutputDirectory,
+    rawWebConfig: tutorialConfig.web,
+    expectedInput: tutorialWebLock.input,
+    expectedOutput: tutorialWebLock.output,
+  });
+  verifyConfiguredWebBuild(
+    tutorialWeb,
+    tutorialConfig.web,
+    tutorialWebLock,
+    'tutorial DSL 4.0 Web',
+  );
   const assets = [...images, ...sounds];
   const manifest = {
     formatVersion: 5,
@@ -687,6 +794,11 @@ export async function buildSite() {
   };
   assert.deepEqual(dsl4Build.artifactLock, dsl4ArtifactLock);
   assert.deepEqual(myDsl4Build.artifactLock, myDsl4ArtifactLock);
+  assert.deepEqual(tutorialBuild.artifactLock, tutorialArtifactLock);
+  assert.deepEqual(
+    createTutorialPublicSurfaces(tutorialConfig, tutorialArtifactLock, tutorialWebLock),
+    tutorialPublicSurfaces,
+  );
   const myDsl4Manifest = {
     ...myDsl4Build.artifactLock,
     sample: 'my-urashima',
@@ -700,8 +812,13 @@ export async function buildSite() {
   await copyFile(path.join(projectRoot, 'LICENSE'), path.join(outputDirectory, 'LICENSE'));
   await writeFile(path.join(outputDirectory, '.nojekyll'), '');
   await writeFile(
+    path.join(outputDirectory, 'works.json'),
+    `${JSON.stringify(publishedWorksCatalog, null, 2)}\n`,
+    'utf8',
+  );
+  await writeFile(
     path.join(outputDirectory, 'index.html'),
-    renderRootIndex(manifest, myDsl4Manifest, worksCatalog),
+    renderRootIndex(manifest, myDsl4Manifest, publishedWorksCatalog),
     'utf8',
   );
   await writeFile(path.join(outputDirectory, 'licenses/index.html'), renderRightsIndex(), 'utf8');
@@ -721,6 +838,62 @@ export async function buildSite() {
     renderMyUrashimaIndex(myUrashimaWork, myDsl4Manifest),
     'utf8',
   );
+
+  if (tutorialConfig.publication.enabled) {
+    await mkdir(tutorialOutputDirectory, {recursive: true});
+    await Promise.all([
+      ...[
+        'README.md',
+        'LICENSES.md',
+        tutorialConfig.source,
+        tutorialConfig.artifactsLock,
+        tutorialConfig.webArtifactsLock,
+        tutorialConfig.publicSurfaces,
+      ].map((filename) =>
+        copyFile(
+          path.join(tutorialSourceDirectory, filename),
+          path.join(tutorialOutputDirectory, filename),
+        ),
+      ),
+      ...[
+        tutorialConfig.output,
+        tutorialConfig.archives.starter,
+        tutorialConfig.archives.additionKit,
+      ].map((filename) =>
+        copyFile(
+          path.join(tutorialCandidateOutputDirectory, filename),
+          path.join(tutorialOutputDirectory, filename),
+        ),
+      ),
+      mkdir(path.join(tutorialOutputDirectory, tutorialConfig.web.outputDirectory), {
+        recursive: true,
+      }).then(() =>
+        copyFile(
+          path.join(
+            tutorialCandidateOutputDirectory,
+            tutorialConfig.web.outputDirectory,
+            tutorialConfig.web.outputFilename,
+          ),
+          path.join(
+            tutorialOutputDirectory,
+            tutorialConfig.web.outputDirectory,
+            tutorialConfig.web.outputFilename,
+          ),
+        ),
+      ),
+    ]);
+    await writeFile(
+      path.join(tutorialOutputDirectory, 'index.html'),
+      renderTutorialIndex(tutorialConfig.work, tutorialPublicSurfaces),
+      'utf8',
+    );
+  }
+
+  await verifyTutorialCandidate({
+    candidateOutputDirectory: tutorialCandidateOutputDirectory,
+    outputDirectory,
+    projectRoot,
+  });
 
   const verification = await verifyPublishedSite({
     projectRoot,

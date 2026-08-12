@@ -1,0 +1,55 @@
+formatVersion: 1
+
+sprites:
+  Turtle:
+    layerOrder: 3
+    visible: false
+    x: 0
+    y: 0
+    size: 100
+    direction: 90
+    draggable: false
+    rotationStyle: all around
+    volume: 100
+  Friend:
+    layerOrder: 4
+    visible: false
+    x: 0
+    y: 0
+    size: 100
+    direction: 90
+    draggable: false
+    rotationStyle: all around
+    volume: 100
+
+assets:
+  Beach:
+    kind: backdrop
+    file: beach.svg
+    rotationCenterX: 240
+    rotationCenterY: 180
+    license: 'MPL-2.0: LICENSES.md'
+  TurtleIdle:
+    kind: costume
+    target: Turtle
+    file: turtle.svg
+    rotationCenterX: 120
+    rotationCenterY: 90
+    license: 'MPL-2.0: LICENSES.md'
+  NewBeach:
+    kind: backdrop
+    file: new-beach.svg
+    rotationCenterX: 240
+    rotationCenterY: 180
+    license: 'MPL-2.0: LICENSES.md'
+  FriendIdle:
+    kind: costume
+    target: Friend
+    file: friend.svg
+    rotationCenterX: 120
+    rotationCenterY: 90
+    license: 'MPL-2.0: LICENSES.md'
+  RescueSound:
+    kind: sound
+    file: opening.mp3
+    license: 'MPL-2.0: LICENSES.md'

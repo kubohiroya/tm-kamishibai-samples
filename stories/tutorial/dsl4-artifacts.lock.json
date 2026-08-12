@@ -1,0 +1,228 @@
+{
+  "formatVersion": 1,
+  "status": "candidate",
+  "version": "4.0.0-candidate.1",
+  "releaseDependency": "https://github.com/kubohiroya/tmpose-kamishibai/issues/548",
+  "sourceIdentity": "ce2663a2231e90820a0a443faca503ae8f3c8e349f240b9f86ac878e05d94e32",
+  "runtime": {
+    "repository": "https://github.com/kubohiroya/tmpose-kamishibai",
+    "version": "4.0.0",
+    "commit": "8ea06bfd100b106f559cb25a280fab5570e42919",
+    "basePath": "base/kamishibai-4.0.sb3",
+    "baseSourceCommit": "98cec94387cac726e947cf2454e3f0c5e9146061",
+    "baseSize": 7540390,
+    "baseSha256": "90d39f61b3323e2ea587036b6fc69b591148eb8f9ae9f55a822e1c9d6405144e"
+  },
+  "sb3Toolchain": {
+    "package": "@kubohiroya/sb3-toolchain",
+    "version": "0.6.0"
+  },
+  "sources": {
+    "complete": {
+      "path": "story.kamishibai.yaml",
+      "size": 1378,
+      "sha256": "c786674254aff5854f2af6d77b49a53009176bdb3c6e07896e06d7e9ced5adf2"
+    },
+    "starter": {
+      "path": "starter.kamishibai.yaml",
+      "size": 594,
+      "sha256": "6df559bc1ce5f4b19884b4b8026801342a61a51f70d0ff3f64014a39ea85fd7a"
+    },
+    "completeStructure": {
+      "assetIds": [
+        "Beach",
+        "TurtleIdle",
+        "NewBeach",
+        "FriendIdle",
+        "RescuePose",
+        "RescueSound"
+      ],
+      "sceneIds": [
+        "opening",
+        "meeting",
+        "rescue"
+      ]
+    },
+    "starterStructure": {
+      "assetIds": [
+        "Beach",
+        "TurtleIdle"
+      ],
+      "sceneIds": [
+        "opening"
+      ]
+    },
+    "inputs": [
+      {
+        "path": "LICENSES.md",
+        "size": 1049,
+        "sha256": "4f861e2cbca84a530d2571f17696830046b5491299cad56e438ab76b0f647a91"
+      },
+      {
+        "path": "README.md",
+        "size": 1471,
+        "sha256": "d232ac142fbcac76f5168bce3ed9a3e473a1683bc3ca40db9901369cf02bf77e"
+      },
+      {
+        "path": "addition-kit/README.md",
+        "size": 744,
+        "sha256": "0f7ba21adea1bb5ecb7e07bd9bb7facf650cbaf1fd57e102b69064d46701a664"
+      },
+      {
+        "path": "addition-kit/add-background-and-actor.yml.txt",
+        "size": 714,
+        "sha256": "f5585aa5b7ce4d3d35ccc2a043a5f3067afa2f8008a963571ff79fe84bc3023a"
+      },
+      {
+        "path": "addition-kit/add-pose-scene.yml.txt",
+        "size": 1135,
+        "sha256": "4c99cdf16c1c601b171d4a2679b49eed446a17d46aa72cc9429835dbe517816a"
+      },
+      {
+        "path": "addition-kit/friend.svg",
+        "size": 983,
+        "sha256": "32c30f9da9d69629988fc9ba7a3c6a131c02418b11adb33a86fcaf2a96df9e44"
+      },
+      {
+        "path": "addition-kit/intentional-diagnostic.kamishibai.yaml.txt",
+        "size": 594,
+        "sha256": "df0a55f082dfa675d2d0852d8117d94660ee6b52b6b9c7dff224cb6d7328c7fd"
+      },
+      {
+        "path": "addition-kit/new-beach.svg",
+        "size": 782,
+        "sha256": "ac22bce3d65a9eb236fb097a41fca8884143c040b5d364cff01e70e654b244ba"
+      },
+      {
+        "path": "beach.svg",
+        "size": 619,
+        "sha256": "84063a53765a3e8db594a660227ccf07ab6be7aae37d43206a3d25bf88aaa443"
+      },
+      {
+        "path": "friend.svg",
+        "size": 983,
+        "sha256": "32c30f9da9d69629988fc9ba7a3c6a131c02418b11adb33a86fcaf2a96df9e44"
+      },
+      {
+        "path": "new-beach.svg",
+        "size": 782,
+        "sha256": "ac22bce3d65a9eb236fb097a41fca8884143c040b5d364cff01e70e654b244ba"
+      },
+      {
+        "path": "opening.mp3",
+        "size": 6313,
+        "sha256": "ed9b0ce39b080a49f792de76774326a586676f67d0b180b4833ff79c09222935"
+      },
+      {
+        "path": "project-assets-dsl4.yml",
+        "size": 1042,
+        "sha256": "851f47d84467bb490f416bf9e54c7fde3ee1fc15fbdcbd3f2229295c0b71913a"
+      },
+      {
+        "path": "project.source.json",
+        "size": 244,
+        "sha256": "1ef646e5eb9f9d9b820611e373643c528738948bc65384f90b2cf4201d0c1278"
+      },
+      {
+        "path": "rescue-pose/metadata.json",
+        "size": 350,
+        "sha256": "c9aaedfe0b83964025b6a7d710fca3630846f89efe3f59b8433dadd484a63bc3"
+      },
+      {
+        "path": "rescue-pose/model.json",
+        "size": 1435,
+        "sha256": "fd9f3f13857985eba87fb3a311ead4009536cff9175a752b2cdd5d3887130379"
+      },
+      {
+        "path": "rescue-pose/weights.bin",
+        "size": 5897600,
+        "sha256": "14d7a87a0c6d1c74e14593d13a1dd30b3911adf062803fc58705fd0fd16c2ffc"
+      },
+      {
+        "path": "starter.kamishibai.yaml",
+        "size": 594,
+        "sha256": "6df559bc1ce5f4b19884b4b8026801342a61a51f70d0ff3f64014a39ea85fd7a"
+      },
+      {
+        "path": "starter/README.md",
+        "size": 585,
+        "sha256": "607af56aaa01b3968beea6d9d1393b478b68db2f0dbab007efda740b28f76721"
+      },
+      {
+        "path": "starter/project.source.json",
+        "size": 104,
+        "sha256": "2d8fa0783c6907d5712e4f1baf8a07d860210594c9471f1c9be5c0280176c03e"
+      },
+      {
+        "path": "story.kamishibai.yaml",
+        "size": 1378,
+        "sha256": "c786674254aff5854f2af6d77b49a53009176bdb3c6e07896e06d7e9ced5adf2"
+      },
+      {
+        "path": "turtle.svg",
+        "size": 1130,
+        "sha256": "947b30a1061b20ebb975ef2f6e0498c494f78890599c7d1b2b70b09b87a94f84"
+      }
+    ]
+  },
+  "outputs": {
+    "sb3": {
+      "path": "tutorial-4.0.sb3",
+      "size": 13545642,
+      "sha256": "632692ecfc5c2d917e0354c620b025778e2e8b83d9745f6588b651ba85661781",
+      "archiveEntryCount": 10,
+      "targetNames": [
+        "Stage",
+        "Turtle",
+        "Friend"
+      ]
+    },
+    "starter": {
+      "path": "tutorial-story-starter-4.0.zip",
+      "size": 5912556,
+      "sha256": "e4e584815453b2a3298c2ae2ee41842a69c390d33cc20d6aa712e24058e891b1",
+      "entries": [
+        "tutorial-story/LICENSES.md",
+        "tutorial-story/README.md",
+        "tutorial-story/addition-kit/LICENSES.md",
+        "tutorial-story/addition-kit/README.md",
+        "tutorial-story/addition-kit/add-background-and-actor.yml.txt",
+        "tutorial-story/addition-kit/add-pose-scene.yml.txt",
+        "tutorial-story/addition-kit/friend.svg",
+        "tutorial-story/addition-kit/intentional-diagnostic.kamishibai.yaml.txt",
+        "tutorial-story/addition-kit/new-beach.svg",
+        "tutorial-story/beach.svg",
+        "tutorial-story/opening.mp3",
+        "tutorial-story/project.source.json",
+        "tutorial-story/rescue-pose/metadata.json",
+        "tutorial-story/rescue-pose/model.json",
+        "tutorial-story/rescue-pose/weights.bin",
+        "tutorial-story/story.kamishibai.yaml",
+        "tutorial-story/turtle.svg"
+      ]
+    },
+    "additionKit": {
+      "path": "tutorial-story-addition-kit-4.0.zip",
+      "size": 4260,
+      "sha256": "053209f45b5b45e8d2655151b9ef81ee9b11791d77546e9437e210d4422dbe68",
+      "entries": [
+        "tutorial-story-addition-kit/LICENSES.md",
+        "tutorial-story-addition-kit/README.md",
+        "tutorial-story-addition-kit/add-background-and-actor.yml.txt",
+        "tutorial-story-addition-kit/add-pose-scene.yml.txt",
+        "tutorial-story-addition-kit/friend.svg",
+        "tutorial-story-addition-kit/intentional-diagnostic.kamishibai.yaml.txt",
+        "tutorial-story-addition-kit/new-beach.svg"
+      ]
+    }
+  },
+  "license": {
+    "spdx": "MPL-2.0",
+    "path": "LICENSES.md"
+  },
+  "publication": {
+    "enabled": false,
+    "reason": "DSL 4.0 release and docs tutorial capture gates are not complete",
+    "issue": "https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/94"
+  }
+}

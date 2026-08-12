@@ -1,0 +1,107 @@
+{
+  "formatVersion": 1,
+  "status": "candidate",
+  "version": "4.0.0-candidate.1",
+  "releaseDependency": "https://github.com/kubohiroya/tmpose-kamishibai/issues/548",
+  "runtime": {
+    "config": "../urashima/dsl4-build.config.json"
+  },
+  "source": "story.kamishibai.yaml",
+  "starterSource": "starter.kamishibai.yaml",
+  "sourceManifest": "project.source.json",
+  "starterManifest": "starter/project.source.json",
+  "projectAssets": "project-assets-dsl4.yml",
+  "output": "tutorial-4.0.sb3",
+  "artifactsLock": "dsl4-artifacts.lock.json",
+  "publicSurfaces": "public-surfaces.json",
+  "archives": {
+    "starter": "tutorial-story-starter-4.0.zip",
+    "additionKit": "tutorial-story-addition-kit-4.0.zip"
+  },
+  "limits": {
+    "maxSourceBytes": 262144,
+    "maxAssetFileBytes": 8388608,
+    "maxAssetFiles": 32,
+    "maxTotalAssetBytes": 16777216
+  },
+  "publication": {
+    "enabled": false,
+    "reason": "DSL 4.0 release and docs tutorial capture gates are not complete",
+    "issue": "https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/94"
+  },
+  "webArtifactsLock": "dsl4-web-artifacts.lock.json",
+  "web": {
+    "enabled": true,
+    "inputProfile": "dsl4-offline",
+    "outputDirectory": "web-4.0",
+    "outputFilename": "index.html",
+    "maxOutputBytes": 134217728,
+    "scriptMode": "embedded",
+    "assets": "embedded",
+    "audioUnlock": {
+      "enabled": true
+    },
+    "packager": {
+      "package": "@turbowarp/packager",
+      "version": "3.13.0",
+      "options": {
+        "target": "html",
+        "autoplay": true,
+        "app": {
+          "windowTitle": "カメを助けよう DSL 4.0 | TMPose紙芝居"
+        },
+        "cloudVariables": {
+          "mode": "disabled"
+        }
+      }
+    },
+    "allowedOnlineDependencies": [],
+    "runtimeCapabilities": [
+      {
+        "capability": "camera",
+        "purpose": "同梱済みモデルによるポーズ認識"
+      },
+      {
+        "capability": "audio",
+        "purpose": "組み込み済み成功音の再生"
+      }
+    ]
+  },
+  "work": {
+    "id": "tutorial-rescue",
+    "category": "official",
+    "title": "カメを助けよう（DSL 4.0チュートリアル）",
+    "detailHref": "stories/tutorial/",
+    "summary": "紙芝居を遊ぶ・作るチュートリアルで使う、3場面の小さな公式サンプルです。",
+    "creator": "Hiroya Kubo",
+    "rightsHolder": "Hiroya Kubo",
+    "dslSeries": ["4.0"],
+    "distribution": "hosted",
+    "license": {
+      "label": "MPL-2.0",
+      "href": "stories/tutorial/LICENSES.md"
+    },
+    "actions": [
+      {
+        "label": "Web版を開く",
+        "href": "stories/tutorial/web-4.0/",
+        "style": "primary",
+        "group": "DSL 4.0 チュートリアル"
+      },
+      {
+        "label": "スターターをダウンロード",
+        "href": "stories/tutorial/tutorial-story-starter-4.0.zip",
+        "style": "secondary",
+        "download": true,
+        "group": "DSL 4.0 チュートリアル"
+      },
+      {
+        "label": "完成版SB3をダウンロード",
+        "href": "stories/tutorial/tutorial-4.0.sb3",
+        "style": "secondary",
+        "download": true,
+        "group": "DSL 4.0 チュートリアル"
+      }
+    ]
+  }
+}

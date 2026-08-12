@@ -17,14 +17,15 @@
     "update:urashima-dsl4-inputs": "node scripts/update-urashima-dsl4-inputs.mjs --download",
     "update:urashima-dsl4": "pnpm update:urashima-dsl4-inputs && node scripts/build-urashima-dsl4.mjs --write-lock",
     "update:my-urashima-dsl4": "node scripts/build-my-urashima-dsl4.mjs --write-lock",
+    "update:tutorial-dsl4": "node scripts/update-tutorial-dsl4.mjs",
     "update:dsl4-web-artifacts": "node scripts/update-dsl4-web-artifacts.mjs",
-    "update:dsl4-artifacts": "pnpm update:urashima-dsl4 && pnpm update:my-urashima-dsl4 && pnpm update:dsl4-web-artifacts",
+    "update:dsl4-artifacts": "pnpm update:urashima-dsl4 && pnpm update:my-urashima-dsl4 && pnpm update:dsl4-web-artifacts && pnpm update:tutorial-dsl4",
     "validate:my-urashima-dsl4": "node scripts/validate-my-urashima-dsl4.mjs",
     "validate:urashima-dsl4": "node ../tmpose-kamishibai/bin/tmpose-kamishibai.mjs validate-dsl4 --input stories/urashima/urashima.k4.yml --max-source-bytes 262144 --format pretty",
     "verify:urashima-dsl4": "node scripts/verify-urashima-dsl4.mjs",
     "verify:my-urashima-dsl4": "node scripts/build-my-urashima-dsl4.mjs",
     "update:artifacts-lock": "node scripts/refresh-story-artifacts.mjs --force",
-    "verify": "node scripts/verify-site.mjs",
+    "verify": "node scripts/verify-site.mjs && node scripts/verify-tutorial-dsl4.mjs",
     "verify:external-links": "node scripts/verify-external-works.mjs"
   },
   "engines": {

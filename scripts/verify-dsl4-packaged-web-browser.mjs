@@ -7,16 +7,20 @@ import {fileURLToPath} from 'node:url';
 import {chromium} from 'playwright';
 
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
-const [urashimaConfig, myUrashimaConfig] = await Promise.all([
+const [urashimaConfig, myUrashimaConfig, tutorialConfig] = await Promise.all([
   readFile(path.join(projectRoot, 'stories/urashima/dsl4-build.config.json'), 'utf8').then(
     JSON.parse,
   ),
   readFile(path.join(projectRoot, 'stories/my-urashima/dsl4-build.config.json'), 'utf8').then(
     JSON.parse,
   ),
+  readFile(path.join(projectRoot, 'stories/tutorial/dsl4-build.config.json'), 'utf8').then(
+    JSON.parse,
+  ),
 ]);
 const urashimaEnabled = urashimaConfig.web?.enabled === true;
 const myUrashimaEnabled = myUrashimaConfig.web?.enabled === true;
+const tutorialEnabled = tutorialConfig.web?.enabled === true;
 const fixtures = new Map(
   await Promise.all(
     [
@@ -30,6 +34,11 @@ const fixtures = new Map(
             (contents) => ['/my-urashima', contents],
           )
         : null,
+      tutorialEnabled
+        ? readFile(
+            path.join(projectRoot, 'tmp/tutorial-candidate/web-4.0/index.html'),
+          ).then((contents) => ['/tutorial', contents])
+        : null,
     ].filter(Boolean),
   ),
 );
@@ -37,6 +46,10 @@ const workshopSourcePath = path.join(
   projectRoot,
   'stories/my-urashima/my-urashima.k4.yml',
 );
+
+function conciseFailure(value) {
+  return String(value).replace(/data:text\/javascript;base64,[^\s)]+/gu, 'data:<embedded-runtime>');
+}
 
 const server = createServer((request, response) => {
   const contents = fixtures.get(request.url);
@@ -56,9 +69,9 @@ async function openDsl4Page(browser, origin, pathname) {
   const page = await browser.newPage({locale: 'ja-JP', viewport: {width: 960, height: 720}});
   const failures = [];
   const externalRequests = [];
-  page.on('pageerror', (error) => failures.push(String(error.stack ?? error)));
+  page.on('pageerror', (error) => failures.push(conciseFailure(error.stack ?? error)));
   page.on('console', (message) => {
-    if (message.type() === 'error') failures.push(message.text());
+    if (message.type() === 'error') failures.push(conciseFailure(message.text()));
   });
   await page.route('**/*', async (route) => {
     const url = route.request().url();
@@ -95,7 +108,10 @@ async function openDsl4Page(browser, origin, pathname) {
 let browser;
 try {
   const origin = `http://127.0.0.1:${server.address().port}`;
-  browser = await chromium.launch({headless: true});
+  browser = await chromium.launch({
+    headless: true,
+    args: ['--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream'],
+  });
 
   if (urashimaEnabled) {
     const urashima = await openDsl4Page(browser, origin, '/urashima');
@@ -213,9 +229,111 @@ try {
     await workshop.page.close();
   }
 
+  if (tutorialEnabled) {
+    const tutorial = await openDsl4Page(browser, origin, '/tutorial');
+    const tutorialProject = await tutorial.page.evaluate(() => {
+      const vm = globalThis.Scratch?.vm ?? globalThis.scaffolding?.vm;
+      const project = JSON.parse(vm.toJSON());
+      return {
+        applicationMode:
+          project.extensionStorage.kubohiroyakamishibai4.components
+            .kubohiroyakamishibairuntime4.application.mode,
+        targets: project.targets.map(({name}) => name),
+      };
+    });
+    assert.deepEqual(tutorialProject, {
+      applicationMode: 'story',
+      targets: ['Stage', 'Turtle', 'Friend'],
+    });
+    await tutorial.page.locator('[data-dsl4-title-action=close]').click();
+    await tutorial.page.waitForFunction(
+      () => {
+        const vm = globalThis.Scratch?.vm ?? globalThis.scaffolding?.vm;
+        const stage = vm.runtime.getTargetForStage();
+        const drawableSkinId = vm.runtime.renderer._allDrawables[stage.drawableID]?._skin?._id;
+        const shellSkinIds = stage
+          .getCostumes()
+          .filter(({name}) => /^(?:Title|Menu)/u.test(name))
+          .map(({skinId}) => skinId);
+        return (
+          document.querySelector('[data-dsl4-title-controls=true]')?.style.display === 'none' &&
+          document.querySelector('[data-dsl4-application-menu=true]')?.style.display !== 'block' &&
+          Number.isInteger(drawableSkinId) &&
+          !shellSkinIds.includes(drawableSkinId)
+        );
+      },
+      undefined,
+      {timeout: 120_000},
+    );
+    let acceptedSkips = 0;
+    for (let index = 0; index < 10; index += 1) {
+      const finished = await tutorial.page.evaluate(
+        () => document.querySelector('[data-dsl4-application-menu=true]')?.style.display === 'block',
+      );
+      if (finished) break;
+      const consumed = await tutorial.page.evaluate(() => {
+        const vm = globalThis.Scratch?.vm ?? globalThis.scaffolding?.vm;
+        const canvas = vm?.runtime?.renderer?._gl?.canvas;
+        if (!(canvas instanceof EventTarget)) return false;
+        const keydown = new KeyboardEvent('keydown', {
+          bubbles: true,
+          cancelable: true,
+          code: 'ArrowDown',
+          key: 'ArrowDown',
+        });
+        canvas.dispatchEvent(keydown);
+        canvas.dispatchEvent(
+          new KeyboardEvent('keyup', {
+            bubbles: true,
+            cancelable: true,
+            code: 'ArrowDown',
+            key: 'ArrowDown',
+          }),
+        );
+        return keydown.defaultPrevented;
+      });
+      if (consumed) acceptedSkips += 1;
+      await tutorial.page.waitForTimeout(1_000);
+    }
+    assert(acceptedSkips > 0, 'The tutorial stage must accept keyboard navigation.');
+    try {
+      await tutorial.page.waitForFunction(
+        () => document.querySelector('[data-dsl4-application-menu=true]')?.style.display === 'block',
+        undefined,
+        {timeout: 30_000},
+      );
+    } catch (error) {
+      const state = await tutorial.page.evaluate(() => {
+        const vm = globalThis.Scratch?.vm ?? globalThis.scaffolding?.vm;
+        const stage = vm?.runtime?.getTargetForStage();
+        return {
+          titleDisplay: document.querySelector('[data-dsl4-title-controls=true]')?.style.display,
+          menuDisplay: document.querySelector('[data-dsl4-application-menu=true]')?.style.display,
+          errorDisplay: document.querySelector('[data-dsl4-runtime-error=true]')?.style.display,
+          errorText: document.querySelector('[data-dsl4-runtime-error=true]')?.textContent,
+          stageCostume: stage?.getCostumes()[stage.currentCostume]?.name,
+          actors: vm?.runtime?.targets
+            ?.filter((target) => !target.isStage)
+            .map((target) => ({name: target.getName(), visible: target.visible})),
+        };
+      });
+      throw new Error(
+        `${error.message}\n${JSON.stringify(
+          {acceptedSkips, state, failures: tutorial.failures},
+          null,
+          2,
+        )}`,
+      );
+    }
+    assert.deepEqual(tutorial.externalRequests, []);
+    assert.deepEqual(tutorial.failures, []);
+    await tutorial.page.close();
+  }
+
   const verified = [
     ...(urashimaEnabled ? ['Urashima'] : []),
     ...(myUrashimaEnabled ? ['workshop'] : []),
+    ...(tutorialEnabled ? ['tutorial candidate'] : []),
   ];
   process.stdout.write(
     verified.length > 0

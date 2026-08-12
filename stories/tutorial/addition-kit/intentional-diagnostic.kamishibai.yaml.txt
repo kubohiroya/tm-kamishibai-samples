@@ -1,0 +1,39 @@
+kamishibai: '4.0'
+
+controls:
+  keymaps:
+    production:
+      Space: rehearsal.skipPose
+      ArrowRight: rehearsal.skipAction
+      ArrowDown: rehearsal.skipScene
+
+assets:
+  Beach:
+    kind: backdrop
+    file: beach.svg
+  TurtleIdle:
+    kind: costume
+    target: Turtle
+    file: turtle.svg
+
+actors:
+  Turtle: TurtleIdle
+
+cover:
+  backdrop: Beach
+
+poseRecognition:
+  navigation:
+    allowSkip: true
+
+scenes:
+  opening:
+    - stage: Beach
+    - Turtle.show:
+        skin: TurtleIdle
+        x: 0
+        y: -70
+        scale: 45
+    - Turtle.sya:
+        text: 助けて！
+        seconds: 2
