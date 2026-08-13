@@ -651,11 +651,11 @@ export async function verifyPublishedSite(options = {}) {
   assert.equal(faviconMetadata.sourceName, 'Urashima-walk-1');
   assert.equal(
     faviconMetadata.sourcePath,
-    'stories/urashima/assets/images/963e926995791fde1b335fd4ba60d6d7.png',
+    'stories/urashima/assets/images/7025746029f54d4207e56f7c0c996b3c.png',
   );
   assert.equal(
     sha256(favicon),
-    'ba493fbb17f1260e782e8e34d0cda1db896d9eef798b316d28ed7f723d0f1018',
+    '4e3f4942709371d5e5a935992140bcc9d46dcbaff9ad15c39755402eccb1c798',
   );
 
   const noJekyll = await stat(path.join(outputDirectory, '.nojekyll'));

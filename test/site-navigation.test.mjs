@@ -37,11 +37,11 @@ test('records the source of the Urashima site symbol', async () => {
   assert.equal(metadata.sourceRepository, 'kubohiroya/tmpose-kamishibai-samples');
   assert.equal(
     metadata.sourcePath,
-    'stories/urashima/assets/images/963e926995791fde1b335fd4ba60d6d7.png',
+    'stories/urashima/assets/images/7025746029f54d4207e56f7c0c996b3c.png',
   );
   assert.equal(
     metadata.sourceSha256,
-    'f66c89b710324a7ca0809ab8cdc5acdfff83e988828a199403b7104ade6ec2df',
+    '8bf234a02d3f4f3e69938efc5ef629b2d4a7519c183e2f739317915c995b3656',
   );
   assert.equal(metadata.license, 'MPL-2.0');
   assert.equal(metadata.derivedAsset, 'favicon.png');

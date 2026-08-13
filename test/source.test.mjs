@@ -32,6 +32,33 @@ function readSb3Project(contents) {
   return JSON.parse(strFromU8(archive['project.json']));
 }
 
+function inspectPalettePng(contents) {
+  assert.deepEqual(
+    contents.subarray(0, 8),
+    Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]),
+    'PNG signature differs',
+  );
+  let colorType;
+  let height;
+  let paletteEntries;
+  let transparent = false;
+  let width;
+  for (let offset = 8; offset + 12 <= contents.length; ) {
+    const length = contents.readUInt32BE(offset);
+    const type = contents.subarray(offset + 4, offset + 8).toString('ascii');
+    const data = contents.subarray(offset + 8, offset + 8 + length);
+    if (type === 'IHDR') {
+      width = data.readUInt32BE(0);
+      height = data.readUInt32BE(4);
+      colorType = data[9];
+    } else if (type === 'PLTE') paletteEntries = length / 3;
+    else if (type === 'tRNS') transparent = data.some((alpha) => alpha < 255);
+    offset += length + 12;
+    if (type === 'IEND') break;
+  }
+  return {colorType, height, paletteEntries, transparent, width};
+}
+
 function assertLoadingBubbleAnchor(project, description) {
   const loading = project.targets.find((target) => target.name === 'Loading');
   const anchor = project.targets.find((target) => target.name === 'LoadingBubbleAnchor');
@@ -129,6 +156,62 @@ test('keeps the migrated Scratch assets complete and content-addressed', async (
       }
     }
   }
+});
+
+test('keeps all Urashima actor costumes as compact transparent 64-color PNGs', async () => {
+  const manifest = JSON.parse(
+    await readFile(path.join(sampleDirectory, 'assets.lock.json'), 'utf8'),
+  );
+  const actorAssets = manifest.assets.filter(
+    (asset) => asset.kind === 'costume' && asset.target === 'Actor',
+  );
+  const expectedGeometry = {
+    Fish1: [354, 359, 177, 179.5],
+    Fish2: [353, 360, 173, 180],
+    Princess: [360, 360, 180, 180],
+    Turtle: [352, 355, 173, 178],
+    'Urashima-box-1': [360, 360, 180, 180],
+    'Urashima-box-2': [321, 338, 160.5, 169],
+    'Urashima-dance-1': [352, 347, 176, 173.25],
+    'Urashima-dance-2': [324, 320, 162, 160],
+    'Urashima-help-1': [321, 301, 173, 141],
+    'Urashima-old-1': [360, 360, 180, 180],
+    'Urashima-old-2': [238, 215, 124, 93.5],
+    'Urashima-open-1': [360, 360, 180, 180],
+    'Urashima-open-2': [259, 264, 129.25, 132],
+    'Urashima-open-3': [360, 360, 180, 180],
+    'Urashima-ride-1': [358, 355, 178.75, 177.5],
+    'Urashima-ride-2': [360, 360, 180, 180],
+    'Urashima-surprised': [321, 338, 160.5, 169],
+    'Urashima-walk-1': [360, 360, 180, 180],
+  };
+  assert.equal(actorAssets.length, 18);
+  assert.deepEqual(new Set(actorAssets.map(({name}) => name)), new Set(Object.keys(expectedGeometry)));
+  assert.equal(
+    actorAssets.find(({name}) => name === 'Turtle').sha256,
+    '132249b680751264c46e7dfba8df8f1be79564b374948745d4cfdd1f22871215',
+    'Turtle must preserve the original SVG horizontal mirror',
+  );
+  for (const asset of actorAssets) {
+    assert.equal(asset.contentType, 'image/png');
+    assert.equal(asset.dataFormat, 'png');
+    assert.equal(asset.metadata.bitmapResolution, 1);
+    const contents = await readFile(path.join(sampleDirectory, asset.uri.slice('file:'.length)));
+    const png = inspectPalettePng(contents);
+    assert.equal(png.colorType, 3, `${asset.name} must use an indexed PNG palette`);
+    assert(png.paletteEntries <= 64, `${asset.name} exceeds 64 palette entries`);
+    assert.equal(png.transparent, true, `${asset.name} lost transparency`);
+    const [width, height, rotationCenterX, rotationCenterY] = expectedGeometry[asset.name];
+    assert.deepEqual([png.width, png.height], [width, height], `${asset.name} dimensions differ`);
+    assert.deepEqual(
+      [asset.metadata.rotationCenterX, asset.metadata.rotationCenterY],
+      [rotationCenterX, rotationCenterY],
+      `${asset.name} rotation center differs`,
+    );
+  }
+  const originalBytes = 6_161_004;
+  const compactBytes = actorAssets.reduce((total, asset) => total + asset.size, 0);
+  assert(compactBytes < originalBytes * 0.1, 'Actor assets must be at least 90% smaller.');
 });
 
 test('pins the generic, editor, and player profile contract', async () => {

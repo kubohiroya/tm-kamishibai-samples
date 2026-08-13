@@ -12,8 +12,8 @@
     "source": "0.6.0"
   },
   "storyDate": {
-    "value": "2026-08-05",
-    "contentSha256": "c13e7fca30f4fdc3ad2786e1a2ea8708dc8d05cef46e08fde1ada7d37eb9ea1e"
+    "value": "2026-08-13",
+    "contentSha256": "edc984c7f0593b6d002ab59e8b9b0267e01ba7e2278b70a34b971b9950a021be"
   },
   "parentStory": {
     "name": "urashima",
@@ -25,12 +25,12 @@
     "sourceScript": {
       "path": "../urashima/source.txt",
       "size": 10379,
-      "sha256": "ef6d00c45165793d3ebfd09329d43ac6cd0d9410661015df79f64501e1c3cb0b"
+      "sha256": "4f3df2eb4f10802ef7eb335e5c061b436a3f60142752e4cafcda151900c1a56a"
     },
     "assetManifest": {
       "path": "../urashima/assets.lock.json",
-      "size": 22877,
-      "sha256": "d3b374dae18ad8771c53f869ab820b060370812d03e6e4f0f3c86259a66f6e3f"
+      "size": 22849,
+      "sha256": "57e7870805f119a449c65b9a7529ca37ac8c30ee71cdc1b6c94e18c191b25234"
     },
     "baseSb3": {
       "path": "../urashima/base/kamishibai.sb3",
@@ -67,18 +67,18 @@
     "outputName": "my-urashima",
     "sb3": {
       "filename": "my-urashima.sb3",
-      "sha256": "ad4cef4428b19890909a4fcec76c21cfb05abf01a5a6f6f2cfe8612f51e42f01",
-      "size": 15337912
+      "sha256": "d6b9512a5691dc0e6ab1b296456af255c979eb3490b04bb4977bab4df07232b8",
+      "size": 9806584
     },
     "script": {
       "filename": "my-urashima.txt",
-      "sha256": "90dbe0988629cc05f19869bdfbb57358868f62f376bac1f9a9e9f327ba516c48",
+      "sha256": "c23a5d2e84ce5ae2d1bc18f240e4bac1cd267a45f94a01fad14ce444a817a1a2",
       "size": 8522
     },
     "manifest": {
       "filename": "my-urashima.manifest.json",
-      "size": 30190,
-      "sha256": "23957cba1401fe10bf219df86e9df9e41659c128e39319bd93be669d27d4402b"
+      "size": 30151,
+      "sha256": "519621202973abc961ccc2ae8ffabfa43e9be5bdd0ccc255363f4a82b6049681"
     }
   }
 }
