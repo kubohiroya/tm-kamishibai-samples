@@ -157,4 +157,7 @@ test('renders every fixed tutorial download on the published detail page', async
   }
   assert(html.includes(manifest.sourceIdentity));
   assert(html.includes(manifest.artifacts.web.sha256));
+  assert(html.includes('<time datetime="2026-08-13">2026年8月13日</time>'));
+  assert(html.includes('32 MB（32,016,775 bytes）'));
+  assert(html.includes('1.7 KB（1,721 bytes）'));
 });

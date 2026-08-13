@@ -16,23 +16,30 @@ const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 test('keeps disabled DSL 4.0 Web locks reusable without publishing active links', async () => {
   const worksCatalog = await readWorksCatalog(path.join(projectRoot, 'site/works.json'));
   const manifest = {
+    updatedAt: '2026-08-13',
     web: {
       enabled: true,
-      output: {sha256: 'dsl3-web'},
+      output: {size: 14_951_564, sha256: 'dsl3-web'},
       packager: {version: '3.13.0'},
     },
     dsl4Web: {enabled: false},
+    script: {size: 8_729},
+    source: {dsl4Script: {size: 16_589}},
     profiles: {
-      player: {sb3: {sha256: 'player'}},
-      editor: {sb3: {sha256: 'editor'}},
+      player: {sb3: {size: 9_593_830, sha256: 'player'}},
+      editor: {sb3: {size: 9_591_520, sha256: 'editor'}},
     },
-    dsl4Offline: {sha256: 'dsl4-sb3'},
+    dsl4Offline: {size: 35_024_283, sha256: 'dsl4-sb3'},
     assetCounts: {images: 0, sounds: 0, embedded: 0},
     assets: [],
   };
   const myDsl4Manifest = {
-    output: {sha256: 'my-dsl4-sb3'},
+    source: {size: 13_426},
+    output: {size: 16_987_940, sha256: 'my-dsl4-sb3'},
     web: {enabled: false},
+  };
+  const myDsl32Artifacts = {
+    output: {sb3: {size: 9_806_584}, script: {size: 8_522}},
   };
   const enabledLock = {
     enabled: true,
@@ -52,6 +59,7 @@ test('keeps disabled DSL 4.0 Web locks reusable without publishing active links'
   );
 
   const rootIndex = renderRootIndex(manifest, myDsl4Manifest, worksCatalog);
+  assert(rootIndex.includes('<time datetime="2026-08-13">2026年8月13日</time>'));
   assert(rootIndex.includes('href="stories/urashima/web/"'));
   assert(!rootIndex.includes('href="stories/urashima/web-4.0/"'));
   assert(!rootIndex.includes('href="stories/my-urashima/web-4.0/"'));
@@ -62,12 +70,19 @@ test('keeps disabled DSL 4.0 Web locks reusable without publishing active links'
   );
 
   const sampleIndex = renderSampleIndex(manifest);
+  assert(sampleIndex.includes('15 MB（14,951,564 bytes）'));
+  assert(sampleIndex.includes('8.7 KB（8,729 bytes）'));
   assert(!sampleIndex.includes('href="web-4.0/"'));
   assert(sampleIndex.includes('disabled aria-disabled="true">Web版（準備中）</button>'));
   assert(!sampleIndex.includes('preserved-enabled-lock'));
 
   const myUrashima = worksCatalog.works.find(({id}) => id === 'my-urashima');
-  const myIndex = renderMyUrashimaIndex(myUrashima, myDsl4Manifest);
+  const myIndex = renderMyUrashimaIndex(
+    myUrashima,
+    myDsl4Manifest,
+    myDsl32Artifacts,
+  );
+  assert(myIndex.includes('9.8 MB（9,806,584 bytes）'));
   assert(!myIndex.includes('href="web-4.0/"'));
   assert(myIndex.includes('disabled aria-disabled="true">Web版（準備中）</button>'));
   assert(!myIndex.includes('preserved-enabled-lock'));

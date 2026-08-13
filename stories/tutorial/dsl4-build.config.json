@@ -71,6 +71,7 @@
     "id": "tutorial-earthquake-safety",
     "category": "official",
     "title": "地震だ！頭を守ろう（DSL 4.0チュートリアル）",
+    "updatedAt": "2026-08-13",
     "detailHref": "stories/tutorial/",
     "summary": "教室で地震の揺れを感じたときの安全行動を、見本と達成メッセージ付きで練習する4場面の公式サンプルです。",
     "creator": "Hiroya Kubo",
