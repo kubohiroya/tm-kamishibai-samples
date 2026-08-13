@@ -1,18 +1,18 @@
 {
   "formatVersion": 1,
   "status": "published",
-  "version": "4.0.0-rc.2",
+  "version": "4.0.0-rc.3",
   "published": true,
-  "releaseDependency": "https://github.com/kubohiroya/tmpose-kamishibai/issues/559",
-  "sourceIdentity": "4dedb96167825f03654c11af1da43d65b293b99fe5ac185ece827c761941b6bb",
+  "releaseDependency": "https://github.com/kubohiroya/tmpose-kamishibai/issues/571",
+  "sourceIdentity": "e2790f97486e2f2049cd8639ce7a00bdccdeffce38e60af1aa823d62616bdfbf",
   "runtime": {
     "repository": "https://github.com/kubohiroya/tmpose-kamishibai",
-    "version": "4.0.0-rc.2",
-    "commit": "9fdea59854ff0a28a00a45fe8e1d7cd5bb0c9014",
+    "version": "4.0.0-rc.3",
+    "commit": "087dfa526e967bb2cc38af3f5b5a795355de7739",
     "basePath": "base/kamishibai-4.0.sb3",
-    "baseSourceIdentity": "sha256:70dfcb7dfc391e9f8c576976d810a55656c8cab09c0c729cc685d20e02140991",
-    "baseSize": 7648753,
-    "baseSha256": "917344e56488db42fcdc07f8036782a3912945081ed094c50cf84f6ecdb56f5f"
+    "baseSourceIdentity": "sha256:f56cc0f2b2df805cc1baebcbaa08094fa7df20b0f28b2c8b62c445d9b54e8fa3",
+    "baseSize": 7652780,
+    "baseSha256": "77ac23862ef0e729ca75be93340f65f21ded9b39449fc8f9be2c904c70d4096c"
   },
   "license": {
     "spdx": "MPL-2.0",
@@ -35,8 +35,8 @@
     },
     "sb3": {
       "path": "tutorial-4.0.sb3",
-      "size": 13655715,
-      "sha256": "2c8ebda3a96722699f17b9e6961af1acd05e112e85c24e7a4f2f3667ce796d9d",
+      "size": 13659675,
+      "sha256": "518fe92750a2e05a4711d8c9ad646256e9b21b9fa7161275174d12cca3a4dc7b",
       "archiveEntryCount": 10,
       "targetNames": [
         "Stage",
@@ -46,8 +46,8 @@
     "web": {
       "path": "web-4.0/index.html",
       "contentType": "text/html",
-      "size": 32000625,
-      "sha256": "48dd35c979c3110235e8b28c44dcb1a7f2b0daf11eef276d790c9b2b0ad8b2a5"
+      "size": 32016775,
+      "sha256": "ff9553c797e4b613f8c03dbbe5c9cdec1b3493e927b13df8ddf975666a6ec513"
     },
     "starter": {
       "path": "tutorial-story-starter-4.0.zip",

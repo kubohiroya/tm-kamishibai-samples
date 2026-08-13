@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "status": "published",
-  "version": "4.0.0-rc.2",
-  "releaseDependency": "https://github.com/kubohiroya/tmpose-kamishibai/issues/559",
+  "version": "4.0.0-rc.3",
+  "releaseDependency": "https://github.com/kubohiroya/tmpose-kamishibai/issues/571",
   "runtime": {
     "config": "../urashima/dsl4-build.config.json"
   },
@@ -26,8 +26,8 @@
   },
   "publication": {
     "enabled": true,
-    "reason": "tmpose-kamishibai 4.0.0-rc.2 is published and verified by tmpose-kamishibai#559",
-    "issue": "https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/102"
+    "reason": "tmpose-kamishibai 4.0.0-rc.3 is published and verified by tmpose-kamishibai#571",
+    "issue": "https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/106"
   },
   "webArtifactsLock": "dsl4-web-artifacts.lock.json",
   "web": {
