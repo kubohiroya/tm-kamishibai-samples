@@ -301,37 +301,104 @@ try {
       undefined,
       {timeout: 120_000},
     );
-    let acceptedSkips = 0;
-    for (let index = 0; index < 10; index += 1) {
-      const finished = await tutorial.page.evaluate(
-        () => document.querySelector('[data-dsl4-application-menu=true]')?.style.display === 'block',
-      );
-      if (finished) break;
-      const consumed = await tutorial.page.evaluate(() => {
+    const dispatchTutorialKey = (key) =>
+      tutorial.page.evaluate((pressedKey) => {
         const vm = globalThis.Scratch?.vm ?? globalThis.scaffolding?.vm;
         const canvas = vm?.runtime?.renderer?._gl?.canvas;
         if (!(canvas instanceof EventTarget)) return false;
         const keydown = new KeyboardEvent('keydown', {
           bubbles: true,
           cancelable: true,
-          code: 'ArrowDown',
-          key: 'ArrowDown',
+          code: pressedKey,
+          key: pressedKey,
         });
         canvas.dispatchEvent(keydown);
         canvas.dispatchEvent(
           new KeyboardEvent('keyup', {
             bubbles: true,
             cancelable: true,
-            code: 'ArrowDown',
-            key: 'ArrowDown',
+            code: pressedKey,
+            key: pressedKey,
           }),
         );
         return keydown.defaultPrevented;
-      });
-      if (consumed) acceptedSkips += 1;
+      }, key);
+
+    let acceptedSkips = 0;
+    for (let index = 0; index < 12 && acceptedSkips < 2; index += 1) {
+      if (await dispatchTutorialKey('ArrowDown')) acceptedSkips += 1;
       await tutorial.page.waitForTimeout(1_000);
     }
-    assert(acceptedSkips > 0, 'The tutorial stage must accept keyboard navigation.');
+    assert.equal(acceptedSkips, 2, 'The tutorial stage must enter the pose scene.');
+    await tutorial.page.waitForFunction(
+      () => {
+        const vm = globalThis.Scratch?.vm ?? globalThis.scaffolding?.vm;
+        const student = vm?.runtime?.targets?.find(
+          (target) => !target.isStage && target.getName() === 'Student',
+        );
+        return (
+          student?.visible === true &&
+          (student.getCustomState('Scratch.looks')?.text ?? '') === ''
+        );
+      },
+      undefined,
+      {timeout: 120_000},
+    );
+    const poseFeedbackState = await tutorial.page.evaluate(() => {
+      const vm = globalThis.Scratch?.vm ?? globalThis.scaffolding?.vm;
+      const student = vm.runtime.targets.find(
+        (target) => !target.isStage && target.getName() === 'Student',
+      );
+      return {
+        menuVisible:
+          document.querySelector('[data-dsl4-application-menu=true]')?.style.display === 'block',
+        visible: student.visible,
+      };
+    });
+    assert.deepEqual(poseFeedbackState, {
+      menuVisible: false,
+      visible: true,
+    });
+
+    let poseSkipAccepted = false;
+    for (let index = 0; index < 20 && !poseSkipAccepted; index += 1) {
+      poseSkipAccepted = await dispatchTutorialKey('Space');
+      if (!poseSkipAccepted) await tutorial.page.waitForTimeout(500);
+    }
+    assert.equal(poseSkipAccepted, true, 'The active tutorial pose must accept the skip control.');
+    try {
+      await tutorial.page.waitForFunction(
+        () => {
+          const vm = globalThis.Scratch?.vm ?? globalThis.scaffolding?.vm;
+          const student = vm?.runtime?.targets?.find(
+            (target) => !target.isStage && target.getName() === 'Student',
+          );
+          return (
+            student?.visible === true &&
+            student.getCustomState('Scratch.looks')?.text ===
+              'できた！ 頭を守れたね。揺れがおさまるまで、そのまま待とう。' &&
+            document.querySelector('[data-dsl4-application-menu=true]')?.style.display !== 'block'
+          );
+        },
+        undefined,
+        {timeout: 30_000},
+      );
+    } catch (error) {
+      const state = await tutorial.page.evaluate(() => {
+        const vm = globalThis.Scratch?.vm ?? globalThis.scaffolding?.vm;
+        const student = vm?.runtime?.targets?.find(
+          (target) => !target.isStage && target.getName() === 'Student',
+        );
+        return {
+          bubble: student?.getCustomState('Scratch.looks')?.text ?? '',
+          errorDisplay: document.querySelector('[data-dsl4-runtime-error=true]')?.style.display,
+          errorText: document.querySelector('[data-dsl4-runtime-error=true]')?.textContent,
+          menuDisplay: document.querySelector('[data-dsl4-application-menu=true]')?.style.display,
+          visible: student?.visible ?? null,
+        };
+      });
+      throw new Error(`${error.message}\n${JSON.stringify({state, failures: tutorial.failures})}`);
+    }
     try {
       await tutorial.page.waitForFunction(
         () => document.querySelector('[data-dsl4-application-menu=true]')?.style.display === 'block',

@@ -4,14 +4,14 @@
   "input": {
     "profile": "dsl4-offline",
     "path": "tutorial-4.0.sb3",
-    "size": 13655651,
-    "sha256": "419cb4db90923658f4754610cd462e0caadd790636d7c688923529016b932292"
+    "size": 13655715,
+    "sha256": "2c8ebda3a96722699f17b9e6961af1acd05e112e85c24e7a4f2f3667ce796d9d"
   },
   "output": {
     "path": "web-4.0/index.html",
     "contentType": "text/html",
-    "size": 32000545,
-    "sha256": "2be5c37c83cdde01a7a35f4339290b7b2d59b45cb3d9ddbb64bc6d2fda3541b0"
+    "size": 32000625,
+    "sha256": "48dd35c979c3110235e8b28c44dcb1a7f2b0daf11eef276d790c9b2b0ad8b2a5"
   },
   "packager": {
     "package": "@turbowarp/packager",
