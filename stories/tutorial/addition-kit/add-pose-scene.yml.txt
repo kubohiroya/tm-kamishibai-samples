@@ -60,11 +60,24 @@ scenes:
     poseModel: SafetyPose
     actions:
       - stage: EarthquakeClassroom
+      - Student.show:
+          skin: ProtectHead
+          x: 0
+          y: -60
+          scale: 65
       - Student.pose:
           steps:
             - pose: 頭を守る
               skin: ProtectHead
               sound: SuccessSound
-      - Student.say:
-          text: できた！ 揺れがおさまるまで待とう。
-          seconds: 3
+  success:
+    - stage: EarthquakeClassroom
+    - Student.show:
+        skin: ProtectHead
+        x: 0
+        y: -60
+        scale: 65
+    - Student.say:
+        text: できた！ 頭を守れたね。揺れがおさまるまで、そのまま待とう。
+        seconds: 5
+    - wait: 1

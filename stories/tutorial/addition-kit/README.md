@@ -4,7 +4,7 @@
 `story.kamishibai.yaml`へ反映します。
 
 1. `add-background-and-actor.yml.txt`: 揺れている教室、頭を守る見本、`instruction`場面を追加
-2. `add-pose-scene.yml.txt`: 同梱済み`safety-pose`を使う`protect`場面を追加
+2. `add-pose-scene.yml.txt`: 同梱済み`safety-pose`を使う`protect`場面と、達成を伝える`success`場面を追加
 
 `intentional-diagnostic.kamishibai.yaml.txt`は診断修正の練習用です。`.txt`を外して正式CLIで
 validateし、`Student.sya`に対する診断を確認してから`Student.say`へ直します。修正後はvalidateが

@@ -67,15 +67,30 @@ export async function verifyTutorialCandidate(options = {}) {
 
   const composed = {...starterSource, ...addition};
   assert.deepEqual(composed, finalSource, 'Starter plus addition kit must equal the final story.');
-  assert.deepEqual(Object.keys(finalSource.scenes), ['earthquake', 'instruction', 'protect']);
+  assert.deepEqual(Object.keys(finalSource.scenes), [
+    'earthquake',
+    'instruction',
+    'protect',
+    'success',
+  ]);
   assert.equal(finalSource.scenes.protect.poseModel, 'SafetyPose');
   assert.equal(
     finalSource.scenes.instruction[1]['Student.say'].text,
     '自分の身を守るため、丈夫な机の下に入り、両手で頭を守ろう！',
   );
   assert.equal(
-    finalSource.scenes.protect.actions[1]['Student.pose'].steps[0].pose,
+    finalSource.scenes.protect.actions[2]['Student.pose'].steps[0].pose,
     '頭を守る',
+  );
+  assert.deepEqual(finalSource.scenes.protect.actions[1]['Student.show'], {
+    skin: 'ProtectHead',
+    x: 0,
+    y: -60,
+    scale: 65,
+  });
+  assert.equal(
+    finalSource.scenes.success[2]['Student.say'].text,
+    'できた！ 頭を守れたね。揺れがおさまるまで、そのまま待とう。',
   );
 
   const [sb3, starterArchive, additionArchive, web] = await Promise.all([

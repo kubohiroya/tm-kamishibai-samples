@@ -45,7 +45,7 @@ test('builds a deterministic published SB3 and tutorial distribution archives', 
   );
 });
 
-test('turns the starter into the final three-scene story with the addition kit', async () => {
+test('turns the starter into the final four-scene story with visible pose feedback', async () => {
   const [starter, addition, complete] = await Promise.all([
     readFile(path.join(storyDirectory, 'starter.kamishibai.yaml'), 'utf8').then((source) =>
       parse(source, {uniqueKeys: true}),
@@ -60,13 +60,35 @@ test('turns the starter into the final three-scene story with the addition kit',
   assert.deepEqual({...starter, ...addition}, complete);
   assert.equal(starter.scenes.earthquake[2]['Student.say'].text, 'なにがおきたの？');
   assert.equal(complete.scenes.earthquake[2]['Student.say'].text, '地震だ！');
-  assert.deepEqual(Object.keys(complete.scenes), ['earthquake', 'instruction', 'protect']);
+  assert.deepEqual(Object.keys(complete.scenes), [
+    'earthquake',
+    'instruction',
+    'protect',
+    'success',
+  ]);
   assert.equal(complete.scenes.protect.poseModel, 'SafetyPose');
   assert.equal(
     complete.scenes.instruction[1]['Student.say'].text,
     '自分の身を守るため、丈夫な机の下に入り、両手で頭を守ろう！',
   );
-  assert.equal(complete.scenes.protect.actions[1]['Student.pose'].steps[0].pose, '頭を守る');
+  assert.deepEqual(complete.scenes.protect.actions[1]['Student.show'], {
+    skin: 'ProtectHead',
+    x: 0,
+    y: -60,
+    scale: 65,
+  });
+  assert.equal(complete.scenes.protect.actions[2]['Student.pose'].steps[0].pose, '頭を守る');
+  assert.deepEqual(complete.scenes.success[1]['Student.show'], {
+    skin: 'ProtectHead',
+    x: 0,
+    y: -60,
+    scale: 65,
+  });
+  assert.equal(
+    complete.scenes.success[2]['Student.say'].text,
+    'できた！ 頭を守れたね。揺れがおさまるまで、そのまま待とう。',
+  );
+  assert.equal(complete.scenes.success[2]['Student.say'].seconds, 5);
 });
 
 test('reuses the kneeling hands-on-head pose model with an explicit safety label', async () => {

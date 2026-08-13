@@ -4,7 +4,7 @@
   "version": "4.0.0-rc.2",
   "published": true,
   "releaseDependency": "https://github.com/kubohiroya/tmpose-kamishibai/issues/559",
-  "sourceIdentity": "41469cdcd93ace85c421ff1de229b247b7d2157c677e399377ac49fa92a632c4",
+  "sourceIdentity": "4dedb96167825f03654c11af1da43d65b293b99fe5ac185ece827c761941b6bb",
   "runtime": {
     "repository": "https://github.com/kubohiroya/tmpose-kamishibai",
     "version": "4.0.0-rc.2",
@@ -30,13 +30,13 @@
   "artifacts": {
     "source": {
       "path": "story.kamishibai.yaml",
-      "size": 1439,
-      "sha256": "4016c237438c942222ea4c7c1bbfabef83184e489e913b06260c93a491b09c59"
+      "size": 1721,
+      "sha256": "62b940b68b7177628a0dcd29d84754fcbaff911a9a9a955c58ffe727f59fdb57"
     },
     "sb3": {
       "path": "tutorial-4.0.sb3",
-      "size": 13655651,
-      "sha256": "419cb4db90923658f4754610cd462e0caadd790636d7c688923529016b932292",
+      "size": 13655715,
+      "sha256": "2c8ebda3a96722699f17b9e6961af1acd05e112e85c24e7a4f2f3667ce796d9d",
       "archiveEntryCount": 10,
       "targetNames": [
         "Stage",
@@ -46,13 +46,13 @@
     "web": {
       "path": "web-4.0/index.html",
       "contentType": "text/html",
-      "size": 32000545,
-      "sha256": "2be5c37c83cdde01a7a35f4339290b7b2d59b45cb3d9ddbb64bc6d2fda3541b0"
+      "size": 32000625,
+      "sha256": "48dd35c979c3110235e8b28c44dcb1a7f2b0daf11eef276d790c9b2b0ad8b2a5"
     },
     "starter": {
       "path": "tutorial-story-starter-4.0.zip",
-      "size": 5914276,
-      "sha256": "1f13af3451a6afdb3bcf19f9e398759542610da8748500c93626b853b4616186",
+      "size": 5914350,
+      "sha256": "bf0ad3b250f79d6fb49cb7584a4559d7e979e75e4b2d46923effae4b183fdfb8",
       "entries": [
         "tutorial-story/LICENSES.md",
         "tutorial-story/README.md",
@@ -75,8 +75,8 @@
     },
     "additionKit": {
       "path": "tutorial-story-addition-kit-4.0.zip",
-      "size": 5295,
-      "sha256": "0036fa2ec9721873427af27d7d4fa545f8c4f174368229d22cfe9aab568799d9",
+      "size": 5369,
+      "sha256": "fb3f7bbb7eb4c136d189a7a1bd3e6484146f42fc7ab4b87795d2f5892a7f3c81",
       "entries": [
         "tutorial-story-addition-kit/LICENSES.md",
         "tutorial-story-addition-kit/README.md",
