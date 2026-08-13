@@ -59,33 +59,34 @@ assets:
   Urashima-walk-1:
     kind: costume
     target: Urashima
-    file: assets/images/963e926995791fde1b335fd4ba60d6d7.png
-    bitmapResolution: 2
-    rotationCenterX: 360
-    rotationCenterY: 360
+    file: assets/images/7025746029f54d4207e56f7c0c996b3c.png
+    bitmapResolution: 1
+    rotationCenterX: 180
+    rotationCenterY: 180
     license: 'MPL-2.0: LICENSES.md'
   Turtle:
     kind: costume
     target: Turtle
-    file: assets/images/e9440d396734310dae5a63617d312015.svg
+    file: assets/images/339dd4c3503114e661226bf3be351975.png
+    bitmapResolution: 1
     rotationCenterX: 173
     rotationCenterY: 178
     license: 'MPL-2.0: LICENSES.md'
   Princess:
     kind: costume
     target: Princess
-    file: assets/images/bb5e81842988f89263e9f94aadb1adfb.png
-    bitmapResolution: 2
-    rotationCenterX: 360
-    rotationCenterY: 360
+    file: assets/images/2b7266a91c6c4ee74835e130f301609f.png
+    bitmapResolution: 1
+    rotationCenterX: 180
+    rotationCenterY: 180
     license: 'MPL-2.0: LICENSES.md'
   Fish1:
     kind: costume
     target: Fish
-    file: assets/images/b72fee140b181e3d2ece61e33c625b2c.png
-    bitmapResolution: 2
-    rotationCenterX: 354
-    rotationCenterY: 359
+    file: assets/images/2ba2ab09dc7317d8a5f19d2babc26dc2.png
+    bitmapResolution: 1
+    rotationCenterX: 177
+    rotationCenterY: 179.5
     license: 'MPL-2.0: LICENSES.md'
   TextPlaceholder:
     kind: costume

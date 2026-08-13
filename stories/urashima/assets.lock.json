@@ -3,252 +3,252 @@
   "assets": [
     {
       "name": "Urashima-walk-1",
-      "uri": "file:assets/images/963e926995791fde1b335fd4ba60d6d7.png",
+      "uri": "file:assets/images/7025746029f54d4207e56f7c0c996b3c.png",
       "kind": "costume",
       "target": "Actor",
       "sb3Name": "Urashima-walk-1",
       "contentType": "image/png",
       "dataFormat": "png",
-      "size": 352636,
-      "sha256": "f66c89b710324a7ca0809ab8cdc5acdfff83e988828a199403b7104ade6ec2df",
+      "size": 4348,
+      "sha256": "8bf234a02d3f4f3e69938efc5ef629b2d4a7519c183e2f739317915c995b3656",
       "license": "MPL-2.0: LICENSES.md",
       "metadata": {
-        "bitmapResolution": 2,
-        "rotationCenterX": 360,
-        "rotationCenterY": 360
+        "bitmapResolution": 1,
+        "rotationCenterX": 180,
+        "rotationCenterY": 180
       }
     },
     {
       "name": "Urashima-help-1",
-      "uri": "file:assets/images/de2c9922d359138cd8f4fd96829c377a.png",
+      "uri": "file:assets/images/1aa58d9fae49f6865d04ef042004c3c7.png",
       "kind": "costume",
       "target": "Actor",
       "sb3Name": "Urashima-help-1",
       "contentType": "image/png",
       "dataFormat": "png",
-      "size": 296401,
-      "sha256": "b457406d45d210d4362a929437936209a68736f75d80fe87daf0eea78efbb8db",
+      "size": 3388,
+      "sha256": "2fc45b37087fcfaec598aed26a69118f10589b79635640f5c29c886bc9558d20",
       "license": "MPL-2.0: LICENSES.md",
       "metadata": {
-        "bitmapResolution": 2,
-        "rotationCenterX": 346,
-        "rotationCenterY": 282
+        "bitmapResolution": 1,
+        "rotationCenterX": 173,
+        "rotationCenterY": 141
       }
     },
     {
       "name": "Urashima-dance-1",
-      "uri": "file:assets/images/fbcd808f6a222080bc8722d631e40ac4.png",
+      "uri": "file:assets/images/a4b6ac5c115f23fa9c5ebea0b94e6ca9.png",
       "kind": "costume",
       "target": "Actor",
       "sb3Name": "Urashima-dance-1",
       "contentType": "image/png",
       "dataFormat": "png",
-      "size": 369213,
-      "sha256": "f17340aa73f4c19d98343dd4afad9efc2580d63c879c842b17fa042879ce3d7d",
+      "size": 3871,
+      "sha256": "f06f315db0b974e85f896b2fef240976a5fdee150be1b44cc83cd33e122a7138",
       "license": "MPL-2.0: LICENSES.md",
       "metadata": {
-        "bitmapResolution": 2,
-        "rotationCenterX": 352,
-        "rotationCenterY": 346.5
+        "bitmapResolution": 1,
+        "rotationCenterX": 176,
+        "rotationCenterY": 173.25
       }
     },
     {
       "name": "Urashima-dance-2",
-      "uri": "file:assets/images/2c8a567edc720b9039dc7a00bf164289.png",
+      "uri": "file:assets/images/6f73929c17369bbeaf58aefdcfc1c641.png",
       "kind": "costume",
       "target": "Actor",
       "sb3Name": "Urashima-dance-2",
       "contentType": "image/png",
       "dataFormat": "png",
-      "size": 394275,
-      "sha256": "6d5fe8b31511f108c2759698110aa06cebd41922a48d07757ec64106ded761ea",
+      "size": 3962,
+      "sha256": "d16b0aa626a4a3ca8afac2467f7f7194c49c5a2bbfa0e48c2a4ea2475b35631b",
       "license": "MPL-2.0: LICENSES.md",
       "metadata": {
-        "bitmapResolution": 2,
-        "rotationCenterX": 324,
-        "rotationCenterY": 320
+        "bitmapResolution": 1,
+        "rotationCenterX": 162,
+        "rotationCenterY": 160
       }
     },
     {
       "name": "Urashima-ride-1",
-      "uri": "file:assets/images/603045ae9bc87d42d84ebed21e76af7e.png",
+      "uri": "file:assets/images/d5a35f8528c3e49d89b1eb5615451753.png",
       "kind": "costume",
       "target": "Actor",
       "sb3Name": "Urashima-ride-1",
       "contentType": "image/png",
       "dataFormat": "png",
-      "size": 397701,
-      "sha256": "5e879ba21eefeee259a253a5cc29c29c75e6029072477e7d777f744e4d27e297",
+      "size": 4073,
+      "sha256": "2be1573d66e15df0be12d9406d6191a331adf003ae843cc467d6748fce99485c",
       "license": "MPL-2.0: LICENSES.md",
       "metadata": {
-        "bitmapResolution": 2,
-        "rotationCenterX": 357.5,
-        "rotationCenterY": 355
+        "bitmapResolution": 1,
+        "rotationCenterX": 178.75,
+        "rotationCenterY": 177.5
       }
     },
     {
       "name": "Urashima-ride-2",
-      "uri": "file:assets/images/a6b0d96dd3d9fe9069acb213d2682caf.png",
+      "uri": "file:assets/images/0756437e1deda6c4f4a69cd4fa5d7030.png",
       "kind": "costume",
       "target": "Actor",
       "sb3Name": "Urashima-ride-2",
       "contentType": "image/png",
       "dataFormat": "png",
-      "size": 392722,
-      "sha256": "14f59cd50ee5069a933d32590da0d2ea54714f50582c3fa3e609dc1179db6351",
+      "size": 4020,
+      "sha256": "f187e54d26126fb6ed60688b882534cca3a6bae53486270f870f806bd7c08a41",
       "license": "MPL-2.0: LICENSES.md",
       "metadata": {
-        "bitmapResolution": 2,
-        "rotationCenterX": 360,
-        "rotationCenterY": 360
+        "bitmapResolution": 1,
+        "rotationCenterX": 180,
+        "rotationCenterY": 180
       }
     },
     {
       "name": "Urashima-box-1",
-      "uri": "file:assets/images/0ec7d76d7a77cf94aa14a3cbf1030f1d.png",
+      "uri": "file:assets/images/72068822e9ab7b09f452826921880ee4.png",
       "kind": "costume",
       "target": "Actor",
       "sb3Name": "Urashima-box-1",
       "contentType": "image/png",
       "dataFormat": "png",
-      "size": 348181,
-      "sha256": "9ee212d8b3bc6664a8df22f5d51242334d8db043eefebbcc679e41f556a6bd1b",
+      "size": 2747,
+      "sha256": "4912062c9b6270bba1a69917dd6861257e5f9757fdb2604a892ec2d3df729339",
       "license": "MPL-2.0: LICENSES.md",
       "metadata": {
-        "bitmapResolution": 2,
-        "rotationCenterX": 360,
-        "rotationCenterY": 360
+        "bitmapResolution": 1,
+        "rotationCenterX": 180,
+        "rotationCenterY": 180
       }
     },
     {
       "name": "Urashima-box-2",
-      "uri": "file:assets/images/7c4060f3c1f3b3535a6c035d3c811ed4.png",
+      "uri": "file:assets/images/3afd9d6417c43598db0363727638b53d.png",
       "kind": "costume",
       "target": "Actor",
       "sb3Name": "Urashima-box-2",
       "contentType": "image/png",
       "dataFormat": "png",
-      "size": 315184,
-      "sha256": "96c63b8bae7644dbd1a46a6e6785f446cc7b88b6a52b8050a11e9d1d33a3e3f6",
+      "size": 3303,
+      "sha256": "7a68855e4ed4f8f5a7cd2394eed186b2fbf0f7e9b55f55c1908db59b67b8a8d2",
       "license": "MPL-2.0: LICENSES.md",
       "metadata": {
-        "bitmapResolution": 2,
-        "rotationCenterX": 321,
-        "rotationCenterY": 338
+        "bitmapResolution": 1,
+        "rotationCenterX": 160.5,
+        "rotationCenterY": 169
       }
     },
     {
       "name": "Urashima-surprised",
-      "uri": "file:assets/images/9a9d051e632a6a0bc14283d4067051c3.png",
+      "uri": "file:assets/images/595bd4e6a5ccb1032af1d4dd89301c6c.png",
       "kind": "costume",
       "target": "Actor",
       "sb3Name": "Urashima-surprised",
       "contentType": "image/png",
       "dataFormat": "png",
-      "size": 322973,
-      "sha256": "03f3d3a0aa062210ca646a706f41bf238b514dc135ed9921d9f3168511a0cb42",
+      "size": 3020,
+      "sha256": "1e3cff7003514c2f0a5545b2e2c6ad80b229950e784ce3f62f09a21c25fc4a0a",
       "license": "MPL-2.0: LICENSES.md",
       "metadata": {
-        "bitmapResolution": 2,
-        "rotationCenterX": 321,
-        "rotationCenterY": 338
+        "bitmapResolution": 1,
+        "rotationCenterX": 160.5,
+        "rotationCenterY": 169
       }
     },
     {
       "name": "Urashima-open-1",
-      "uri": "file:assets/images/cccd1f9ec5d5f5d424391830a7e961ca.png",
+      "uri": "file:assets/images/60ddf2e3d760b7bb9cb96c5ccc6bdce4.png",
       "kind": "costume",
       "target": "Actor",
       "sb3Name": "Urashima-open-1",
       "contentType": "image/png",
       "dataFormat": "png",
-      "size": 321904,
-      "sha256": "ad3e2f2fa01c86acd93f4e8ad539f4fcd5ca691f66e4284c5659e93a9eb89159",
+      "size": 3164,
+      "sha256": "c320912235f84fdbd0033bea56de856d4e416a38df6593da520e81b28c982ff2",
       "license": "MPL-2.0: LICENSES.md",
       "metadata": {
-        "bitmapResolution": 2,
-        "rotationCenterX": 360,
-        "rotationCenterY": 360
+        "bitmapResolution": 1,
+        "rotationCenterX": 180,
+        "rotationCenterY": 180
       }
     },
     {
       "name": "Urashima-open-2",
-      "uri": "file:assets/images/bf71533830b43c976033475e2c1ddda9.png",
+      "uri": "file:assets/images/f64d3eb6a1b5d9ee82a31a2420896e8e.png",
       "kind": "costume",
       "target": "Actor",
       "sb3Name": "Urashima-open-2",
       "contentType": "image/png",
       "dataFormat": "png",
-      "size": 373839,
-      "sha256": "b424a2b6bbbbff4d345d4252c70b0a4a9792cc6d8ac416fba73868d69f43332e",
+      "size": 3494,
+      "sha256": "b6a04ebe5f229247991835e4783f10c31aca5c2642035be5954a437e8489f1fb",
       "license": "MPL-2.0: LICENSES.md",
       "metadata": {
-        "bitmapResolution": 2,
-        "rotationCenterX": 258.5,
-        "rotationCenterY": 264
+        "bitmapResolution": 1,
+        "rotationCenterX": 129.25,
+        "rotationCenterY": 132
       }
     },
     {
       "name": "Urashima-open-3",
-      "uri": "file:assets/images/57cd266ee81b71c922eeec3cffaa9543.png",
+      "uri": "file:assets/images/191a0d8f2d809bb3e507759f2954620b.png",
       "kind": "costume",
       "target": "Actor",
       "sb3Name": "Urashima-open-3",
       "contentType": "image/png",
       "dataFormat": "png",
-      "size": 419137,
-      "sha256": "593a5caf83dcbc405df62f3d4fd8d9833ae5bc1fcac12a37c0ba815deeb81d65",
+      "size": 3670,
+      "sha256": "43abf6d97b3a2ede71fa5a4207d66faff1c66dbad993c636fdec3322aa8ed80d",
       "license": "MPL-2.0: LICENSES.md",
       "metadata": {
-        "bitmapResolution": 2,
-        "rotationCenterX": 360,
-        "rotationCenterY": 360
+        "bitmapResolution": 1,
+        "rotationCenterX": 180,
+        "rotationCenterY": 180
       }
     },
     {
       "name": "Urashima-old-1",
-      "uri": "file:assets/images/83e50d9ac4fb3c4b8e2f280dac8a31f7.png",
+      "uri": "file:assets/images/13184b33d20ebc13d7367694df94aa6c.png",
       "kind": "costume",
       "target": "Actor",
       "sb3Name": "Urashima-old-1",
       "contentType": "image/png",
       "dataFormat": "png",
-      "size": 357710,
-      "sha256": "8e191c3ac08e04fbb0132879b5233c1112032b9a7075eb94798c17a5e313ed31",
+      "size": 3684,
+      "sha256": "92730efdb9d8c1a842e5f3c05587b2c569fb488340c6615a2a7898d16b43f096",
       "license": "MPL-2.0: LICENSES.md",
       "metadata": {
-        "bitmapResolution": 2,
-        "rotationCenterX": 360,
-        "rotationCenterY": 360
+        "bitmapResolution": 1,
+        "rotationCenterX": 180,
+        "rotationCenterY": 180
       }
     },
     {
       "name": "Urashima-old-2",
-      "uri": "file:assets/images/8f7246587c9aa5e105ecf759ec7fdbf2.png",
+      "uri": "file:assets/images/bbef3d2fb452d9eef7d8a30d9607f89a.png",
       "kind": "costume",
       "target": "Actor",
       "sb3Name": "Urashima-old-2",
       "contentType": "image/png",
       "dataFormat": "png",
-      "size": 236870,
-      "sha256": "d0a383193b4668c30bb1a7669dfb7bd5d9f1cee1bfcfc7c4847e44cbf63ff114",
+      "size": 2711,
+      "sha256": "6058bfbdceef25c3698e6f0d22cc63990bc3ecfe28837273525051041c5ea7cb",
       "license": "MPL-2.0: LICENSES.md",
       "metadata": {
-        "bitmapResolution": 2,
-        "rotationCenterX": 248,
-        "rotationCenterY": 187
+        "bitmapResolution": 1,
+        "rotationCenterX": 124,
+        "rotationCenterY": 93.5
       }
     },
     {
       "name": "Turtle",
-      "uri": "file:assets/images/e9440d396734310dae5a63617d312015.svg",
+      "uri": "file:assets/images/339dd4c3503114e661226bf3be351975.png",
       "kind": "costume",
       "target": "Actor",
       "sb3Name": "Turtle",
-      "contentType": "image/svg+xml",
-      "dataFormat": "svg",
-      "size": 414139,
-      "sha256": "cf9c196bfcab97ad678b885214b3a1eeb02a52264c7650d6b3e78907ee6f2371",
+      "contentType": "image/png",
+      "dataFormat": "png",
+      "size": 3858,
+      "sha256": "132249b680751264c46e7dfba8df8f1be79564b374948745d4cfdd1f22871215",
       "license": "MPL-2.0: LICENSES.md",
       "metadata": {
         "bitmapResolution": 1,
@@ -258,53 +258,53 @@
     },
     {
       "name": "Princess",
-      "uri": "file:assets/images/bb5e81842988f89263e9f94aadb1adfb.png",
+      "uri": "file:assets/images/2b7266a91c6c4ee74835e130f301609f.png",
       "kind": "costume",
       "target": "Actor",
       "sb3Name": "Princess",
       "contentType": "image/png",
       "dataFormat": "png",
-      "size": 447344,
-      "sha256": "a2b3fa69d1e6450306dfd249b8efb2dcbd76e3c8a307cfb75f9dc1e88d9282aa",
+      "size": 5370,
+      "sha256": "1e1d7bb23f1383356b69eb89d1e3c84cd0b36fdd68b9ec40212c9d46f58e7bb4",
       "license": "MPL-2.0: LICENSES.md",
       "metadata": {
-        "bitmapResolution": 2,
-        "rotationCenterX": 360,
-        "rotationCenterY": 360
+        "bitmapResolution": 1,
+        "rotationCenterX": 180,
+        "rotationCenterY": 180
       }
     },
     {
       "name": "Fish1",
-      "uri": "file:assets/images/b72fee140b181e3d2ece61e33c625b2c.png",
+      "uri": "file:assets/images/2ba2ab09dc7317d8a5f19d2babc26dc2.png",
       "kind": "costume",
       "target": "Actor",
       "sb3Name": "Fish1",
       "contentType": "image/png",
       "dataFormat": "png",
-      "size": 213276,
-      "sha256": "9d5a296c7ebc5734ab043bf6bbbf1dce3720bba51a2c0254a7f46ae1c52f31f7",
+      "size": 3024,
+      "sha256": "51a6a2bbed16eaa1c58db4a0977c2d8492182536330f53768c755b2bb2770b7d",
       "license": "MPL-2.0: LICENSES.md",
       "metadata": {
-        "bitmapResolution": 2,
-        "rotationCenterX": 354,
-        "rotationCenterY": 359
+        "bitmapResolution": 1,
+        "rotationCenterX": 177,
+        "rotationCenterY": 179.5
       }
     },
     {
       "name": "Fish2",
-      "uri": "file:assets/images/1f3f91b56deb108fef4d42bcc90dd664.png",
+      "uri": "file:assets/images/eb377966e823a7531b2cff0978e19cc3.png",
       "kind": "costume",
       "target": "Actor",
       "sb3Name": "Fish2",
       "contentType": "image/png",
       "dataFormat": "png",
-      "size": 187499,
-      "sha256": "8003dacd9374248656ec8c5735c2e61faf8bf9ef70fee26259a12c5a4adaa113",
+      "size": 2992,
+      "sha256": "ba9a3a52d937c9e6ea9b3a6e73e820e7f48bc72bbecc99ef8ca4c7fdd33e6960",
       "license": "MPL-2.0: LICENSES.md",
       "metadata": {
-        "bitmapResolution": 2,
-        "rotationCenterX": 346,
-        "rotationCenterY": 360
+        "bitmapResolution": 1,
+        "rotationCenterX": 173,
+        "rotationCenterY": 180
       }
     },
     {

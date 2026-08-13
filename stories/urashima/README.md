@@ -39,6 +39,8 @@
 
 `source.txt`の`# date:`はビルドが自動管理します。日付行を除いた内容fingerprintが`artifacts.lock.json`の記録から変わった場合だけ、ビルド環境のローカル今日へ更新し、`urashima.txt`、両プロファイル、Web版、my-urashimaを再生成します。内容が同じ再ビルドでは日付も成果物も更新しません。
 
+Urashima／Turtle／Princess／Fishの18コスチュームは、元の絵柄と透過を保った64色以下のパレットPNGです。`pnpm compact:urashima-actors`は移設当初の高解像度画像を約1/6へ縮小・減色した後、nearest-neighborでScratch上の元の論理寸法へ戻し、`bitmapResolution`、回転中心、content-addressedファイル名、3.2／4.0の参照を同期します。Turtleは元SVGが内部PNGへ適用する水平方向の反転も保持します。変換済みcheckoutでの再実行は何も変更しません。ロールバックは、この変換を導入したGitコミットまたはPRをrevertして画像とメタデータを一括復元します。
+
 ## DSL 4.0 YAMLへの変換
 
 `urashima.k4.yml`は3.2台本から変換した内容を起点とし、DSL 4.0の現行schemaへ追随させています。全49 assetは短縮形のScratch project内参照ではなく、リポジトリ内の画像・音声・ポーズモデルを明示するfile-backed宣言です。`delivery: remote`と`source.url`は使用しません。

@@ -26,9 +26,11 @@ test('publishes the approved works-library categories and rights metadata', asyn
     assert(work.license.label);
     assert(work.license.href);
     assert(work.dslSeries.length > 0);
+    assert.match(work.updatedAt, /^\d{4}-\d{2}-\d{2}$/u);
   }
 
   const urashima = catalog.works.find(({id}) => id === 'urashima');
+  assert.equal(urashima.updatedAt, '2026-08-13');
   assert.equal(urashima.detailHref, 'stories/urashima/');
   assert.deepEqual(
     [...new Set(urashima.actions.map(({group}) => group))],
@@ -98,6 +100,7 @@ test('allows external works only as one HTTPS link with rights and terms', () =>
         id: 'linked-work',
         category: 'external',
         title: '外部作品',
+        updatedAt: '2026-08-13',
         summary: '権利者のサイトで公開されている作品です。',
         creator: 'Example Creator',
         rightsHolder: 'Example Rights Holder',
@@ -138,6 +141,7 @@ test('detects unavailable external work and terms links', async () => {
     id: 'linked-work',
     category: 'external',
     title: '外部作品',
+    updatedAt: '2026-08-13',
     summary: '外部サイトで公開されている作品です。',
     creator: 'Example Creator',
     rightsHolder: 'Example Rights Holder',

@@ -15,15 +15,15 @@
   },
   "source": {
     "path": "urashima.k4.yml",
-    "size": 16565,
-    "sha256": "9ff92d07fb6851ddb07cc6f13d20fc9023b2c90605d2533fec89cb9fdbb1faa2",
+    "size": 16589,
+    "sha256": "ea46ae5085c83027607fa6fd406150752652d9efe8cb28ce329d128651dfc122",
     "assetCount": 49,
     "remoteAssetCount": 0
   },
   "output": {
     "path": "urashima-4.0.sb3",
-    "size": 42549501,
-    "sha256": "4516f543c25fe8d96edfa639cf789a174fd898199c5e34a1a29e079ceecbc6cb",
+    "size": 35024283,
+    "sha256": "4b087829884a5c1649fb59a15aa62a9beae7f998ff7e051d8648aa7a3bed3a1a",
     "archiveEntryCount": 10,
     "targetNames": [
       "Stage",

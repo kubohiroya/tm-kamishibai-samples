@@ -11,6 +11,15 @@ function assertString(value, label) {
   assert(typeof value === 'string' && value.length > 0, `${label} must be a non-empty string.`);
 }
 
+function assertIsoDate(value, label) {
+  assert.match(value, /^\d{4}-\d{2}-\d{2}$/u, `${label} must use YYYY-MM-DD.`);
+  assert.equal(
+    new Date(`${value}T00:00:00Z`).toISOString().slice(0, 10),
+    value,
+    `${label} must be a valid calendar date.`,
+  );
+}
+
 function assertKeys(value, allowedKeys, requiredKeys, label) {
   assertRecord(value, label);
   for (const key of Object.keys(value)) {
@@ -128,6 +137,7 @@ export function validateWorksCatalog(catalog) {
         'id',
         'category',
         'title',
+        'updatedAt',
         'detailHref',
         'summary',
         'creator',
@@ -142,6 +152,7 @@ export function validateWorksCatalog(catalog) {
         'id',
         'category',
         'title',
+        'updatedAt',
         'summary',
         'creator',
         'rightsHolder',
@@ -159,6 +170,7 @@ export function validateWorksCatalog(catalog) {
     for (const key of ['title', 'summary', 'creator', 'rightsHolder']) {
       assertString(work[key], `${label}.${key}`);
     }
+    assertIsoDate(work.updatedAt, `${label}.updatedAt`);
     if (Object.hasOwn(work, 'detailHref')) {
       assertString(work.detailHref, `${label}.detailHref`);
     }

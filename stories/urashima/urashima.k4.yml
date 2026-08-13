@@ -13,92 +13,93 @@ assets:
   Urashima-walk-1:
     kind: costume
     target: Urashima
-    file: assets/images/963e926995791fde1b335fd4ba60d6d7.png
-    bitmapResolution: 2
+    file: assets/images/7025746029f54d4207e56f7c0c996b3c.png
+    bitmapResolution: 1
   Urashima-help-1:
     kind: costume
     target: Urashima
-    file: assets/images/de2c9922d359138cd8f4fd96829c377a.png
-    bitmapResolution: 2
+    file: assets/images/1aa58d9fae49f6865d04ef042004c3c7.png
+    bitmapResolution: 1
   Urashima-dance-1:
     kind: costume
     target: Urashima
-    file: assets/images/fbcd808f6a222080bc8722d631e40ac4.png
-    bitmapResolution: 2
+    file: assets/images/a4b6ac5c115f23fa9c5ebea0b94e6ca9.png
+    bitmapResolution: 1
   Urashima-dance-2:
     kind: costume
     target: Urashima
-    file: assets/images/2c8a567edc720b9039dc7a00bf164289.png
-    bitmapResolution: 2
+    file: assets/images/6f73929c17369bbeaf58aefdcfc1c641.png
+    bitmapResolution: 1
   Urashima-ride-1:
     kind: costume
     target: Urashima
-    file: assets/images/603045ae9bc87d42d84ebed21e76af7e.png
-    bitmapResolution: 2
+    file: assets/images/d5a35f8528c3e49d89b1eb5615451753.png
+    bitmapResolution: 1
   Urashima-ride-2:
     kind: costume
     target: Urashima
-    file: assets/images/a6b0d96dd3d9fe9069acb213d2682caf.png
-    bitmapResolution: 2
+    file: assets/images/0756437e1deda6c4f4a69cd4fa5d7030.png
+    bitmapResolution: 1
   Urashima-box-1:
     kind: costume
     target: Urashima
-    file: assets/images/0ec7d76d7a77cf94aa14a3cbf1030f1d.png
-    bitmapResolution: 2
+    file: assets/images/72068822e9ab7b09f452826921880ee4.png
+    bitmapResolution: 1
   Urashima-box-2:
     kind: costume
     target: Urashima
-    file: assets/images/7c4060f3c1f3b3535a6c035d3c811ed4.png
-    bitmapResolution: 2
+    file: assets/images/3afd9d6417c43598db0363727638b53d.png
+    bitmapResolution: 1
   Urashima-surprised:
     kind: costume
     target: Urashima
-    file: assets/images/9a9d051e632a6a0bc14283d4067051c3.png
-    bitmapResolution: 2
+    file: assets/images/595bd4e6a5ccb1032af1d4dd89301c6c.png
+    bitmapResolution: 1
   Urashima-open-1:
     kind: costume
     target: Urashima
-    file: assets/images/cccd1f9ec5d5f5d424391830a7e961ca.png
-    bitmapResolution: 2
+    file: assets/images/60ddf2e3d760b7bb9cb96c5ccc6bdce4.png
+    bitmapResolution: 1
   Urashima-open-2:
     kind: costume
     target: Urashima
-    file: assets/images/bf71533830b43c976033475e2c1ddda9.png
-    bitmapResolution: 2
+    file: assets/images/f64d3eb6a1b5d9ee82a31a2420896e8e.png
+    bitmapResolution: 1
   Urashima-open-3:
     kind: costume
     target: Urashima
-    file: assets/images/57cd266ee81b71c922eeec3cffaa9543.png
-    bitmapResolution: 2
+    file: assets/images/191a0d8f2d809bb3e507759f2954620b.png
+    bitmapResolution: 1
   Urashima-old-1:
     kind: costume
     target: Urashima
-    file: assets/images/83e50d9ac4fb3c4b8e2f280dac8a31f7.png
-    bitmapResolution: 2
+    file: assets/images/13184b33d20ebc13d7367694df94aa6c.png
+    bitmapResolution: 1
   Urashima-old-2:
     kind: costume
     target: Urashima
-    file: assets/images/8f7246587c9aa5e105ecf759ec7fdbf2.png
-    bitmapResolution: 2
+    file: assets/images/bbef3d2fb452d9eef7d8a30d9607f89a.png
+    bitmapResolution: 1
   Turtle:
     kind: costume
     target: Turtle
-    file: assets/images/e9440d396734310dae5a63617d312015.svg
+    file: assets/images/339dd4c3503114e661226bf3be351975.png
+    bitmapResolution: 1
   Princess:
     kind: costume
     target: Princess
-    file: assets/images/bb5e81842988f89263e9f94aadb1adfb.png
-    bitmapResolution: 2
+    file: assets/images/2b7266a91c6c4ee74835e130f301609f.png
+    bitmapResolution: 1
   Fish1:
     kind: costume
     target: Fish
-    file: assets/images/b72fee140b181e3d2ece61e33c625b2c.png
-    bitmapResolution: 2
+    file: assets/images/2ba2ab09dc7317d8a5f19d2babc26dc2.png
+    bitmapResolution: 1
   Fish2:
     kind: costume
     target: Fish
-    file: assets/images/1f3f91b56deb108fef4d42bcc90dd664.png
-    bitmapResolution: 2
+    file: assets/images/eb377966e823a7531b2cff0978e19cc3.png
+    bitmapResolution: 1
   Beach1:
     kind: backdrop
     file: assets/images/eb776c9010f3e8cb37c996ed28ced040.png

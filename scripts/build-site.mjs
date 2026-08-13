@@ -45,6 +45,38 @@ function escapeHtml(value) {
     .replaceAll('"', '&quot;');
 }
 
+export function formatFileSize(size) {
+  assert(Number.isSafeInteger(size) && size >= 0, 'File size must be a non-negative integer.');
+  const units = [
+    ['GB', 1_000_000_000],
+    ['MB', 1_000_000],
+    ['KB', 1_000],
+  ];
+  const unit = units.find(([, divisor]) => size >= divisor);
+  if (!unit) return `${size.toLocaleString('ja-JP')} bytes`;
+  const [label, divisor] = unit;
+  const concise = (size / divisor).toLocaleString('ja-JP', {maximumFractionDigits: 1});
+  return `${concise} ${label}（${size.toLocaleString('ja-JP')} bytes）`;
+}
+
+function formatDisplayDate(value) {
+  const [year, month, day] = value.split('-').map(Number);
+  return `${year}年${month}月${day}日`;
+}
+
+function renderArtifactSizes(label, artifacts) {
+  const items = artifacts
+    .filter((artifact) => artifact.record)
+    .map(
+      ({name, record}) =>
+        `        <li>${escapeHtml(name)}: <data value="${record.size}">${formatFileSize(record.size)}</data></li>`,
+    )
+    .join('\n');
+  return `      <ul class="artifact-sizes" aria-label="${escapeHtml(label)}">
+${items}
+      </ul>`;
+}
+
 function renderSiteHeader(assetPrefix, pathname = '/tmpose-kamishibai-samples/') {
   return renderContractSiteHeader({
     assetBase: assetPrefix,
@@ -162,6 +194,7 @@ function renderWorkCard(work, features) {
         <h3>${title}</h3>
         <p>${escapeHtml(work.summary)}</p>
         <dl class="work-meta">
+          <div><dt>更新日</dt><dd><time datetime="${work.updatedAt}">${formatDisplayDate(work.updatedAt)}</time></dd></div>
           <div><dt>作者</dt><dd>${escapeHtml(work.creator)}</dd></div>
           <div><dt>著作権者</dt><dd>${escapeHtml(work.rightsHolder)}</dd></div>
         </dl>
@@ -266,6 +299,20 @@ export function renderSampleIndex(manifest) {
   const dsl4WebHash = manifest.dsl4Web.enabled
     ? `  <p>DSL 4.0 Web版 SHA-256: <code>${manifest.dsl4Web.output.sha256}</code></p>\n`
     : '';
+  const dsl32Sizes = renderArtifactSizes('DSL 3.2成果物のファイルサイズ', [
+    {name: 'Web版ファイル', record: manifest.web.enabled ? manifest.web.output : undefined},
+    {name: '台本ファイル', record: manifest.script},
+    {name: '再生用SB3ファイル', record: manifest.profiles.player.sb3},
+    {name: '編集用SB3ファイル', record: manifest.profiles.editor.sb3},
+  ]);
+  const dsl4Sizes = renderArtifactSizes('DSL 4.0成果物のファイルサイズ', [
+    {
+      name: 'Web版ファイル',
+      record: manifest.dsl4Web.enabled ? manifest.dsl4Web.output : undefined,
+    },
+    {name: '台本ファイル（YAML）', record: manifest.source.dsl4Script},
+    {name: 'オフラインSB3ファイル', record: manifest.dsl4Offline},
+  ]);
   const assetItems = manifest.assets
     .map(
       (asset) =>
@@ -291,6 +338,8 @@ export function renderSampleIndex(manifest) {
     .artifact-group { padding: 20px; border: 1px solid #dbc9bb; border-radius: 12px; background: #fffdf8; }
     .artifact-group h2 { margin-top: 0; }
     .artifact-group p { line-height: 1.7; }
+    .artifact-sizes { margin: 16px 0; padding-left: 1.4rem; color: var(--muted); }
+    .artifact-sizes data { color: var(--ink); font-weight: 700; }
     .work-meta { display: grid; gap: .65rem; margin: 1.25rem 0; }
     .work-meta div { display: grid; grid-template-columns: minmax(7.5rem, auto) 1fr; gap: .75rem; }
     .work-meta dt { color: var(--muted); font-weight: 700; }
@@ -311,6 +360,7 @@ ${renderSiteHeader('../../')}
   <h1>浦島太郎</h1>
   <p>DSL 3.2の実行用成果物と、台本・画像・音声・ポーズモデルを組み込んだDSL 4.0オフライン実行版を区別して公開しています。</p>
   <dl class="work-meta">
+    <div><dt>更新日</dt><dd><time datetime="${manifest.updatedAt}">${formatDisplayDate(manifest.updatedAt)}</time></dd></div>
     <div><dt>対応DSL</dt><dd>3.2／4.0</dd></div>
     <div><dt>掲載形態</dt><dd>当サイトで配布</dd></div>
     <div><dt>ライセンス・利用条件</dt><dd><a href="LICENSES.md">MPL-2.0、CC BY-SA 2.0ほか</a></dd></div>
@@ -320,6 +370,7 @@ ${renderSiteHeader('../../')}
       <h2 id="dsl-32-heading">DSL 3.2 実行版</h2>
       <p>Web版、台本、SB3はDSL 3.2で実行するための成果物です。同じ台本とアセットロックから、編集用と再生用の2種類のSB3を生成しています。</p>
       ${webDescription}
+${dsl32Sizes}
       <div class="actions">
 ${webAction}        <a class="button secondary" href="urashima.txt">DSL 3.2台本を表示</a>
         <a class="button secondary" href="urashima.sb3" download>再生用SB3をダウンロード</a>
@@ -329,6 +380,7 @@ ${webAction}        <a class="button secondary" href="urashima.txt">DSL 3.2台�
     <section class="artifact-group" data-dsl-series="4.0" aria-labelledby="dsl-40-heading">
       <h2 id="dsl-40-heading">DSL 4.0 オフライン実行版</h2>
       <p>DSL 4.0 YAML、49アセット、Urashima／Turtle／Princess／Fish／Narration target、4.0実行基盤を一つのSB3に組み込んでいます。モデル取得にネットワーク接続は不要です。</p>
+${dsl4Sizes}
       <div class="actions">
 ${dsl4WebAction}        <a class="button" href="urashima.k4.yml" download>DSL 4.0 YAMLをダウンロード</a>
         <a class="button secondary" href="urashima-4.0.sb3" download>オフラインSB3をダウンロード</a>
@@ -364,13 +416,25 @@ ${renderSiteFooter('../../')}
 `;
 }
 
-export function renderMyUrashimaIndex(work, dsl4Manifest) {
+export function renderMyUrashimaIndex(work, dsl4Manifest, dsl32Artifacts) {
   const webAction = dsl4Manifest.web.enabled
     ? '        <a class="button" href="web-4.0/">Web版を開く</a>\n'
     : '        <button class="button" type="button" disabled aria-disabled="true">Web版（準備中）</button>\n';
   const webHash = dsl4Manifest.web.enabled
     ? `  <p>DSL 4.0 Web版 SHA-256: <code>${dsl4Manifest.web.output.sha256}</code></p>\n`
     : '';
+  const dsl32Sizes = renderArtifactSizes('DSL 3.2成果物のファイルサイズ', [
+    {name: '作業用SB3ファイル', record: dsl32Artifacts?.output.sb3},
+    {name: '台本ファイル', record: dsl32Artifacts?.output.script},
+  ]);
+  const dsl4Sizes = renderArtifactSizes('DSL 4.0成果物のファイルサイズ', [
+    {
+      name: 'Web版ファイル',
+      record: dsl4Manifest.web.enabled ? dsl4Manifest.web.output : undefined,
+    },
+    {name: '台本ファイル（YAML）', record: dsl4Manifest.source},
+    {name: '作業用SB3ファイル', record: dsl4Manifest.output},
+  ]);
   return `<!doctype html>
 <html lang="ja">
 <head>
@@ -395,6 +459,8 @@ export function renderMyUrashimaIndex(work, dsl4Manifest) {
     .artifact-group { padding: 20px; border: 1px solid var(--line); border-radius: 12px; background: var(--paper); }
     .artifact-group h2 { margin-top: 0; }
     .artifact-group p { line-height: 1.7; }
+    .artifact-sizes { margin: 16px 0; padding-left: 1.4rem; color: var(--muted); }
+    .artifact-sizes data { color: var(--ink); font-weight: 700; }
     .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
     .button { display: inline-block; padding: 10px 14px; border-radius: 8px; background: var(--accent); color: white; text-decoration: none; font-weight: 700; }
     .button.secondary { border: 1px solid var(--accent); background: white; color: var(--accent); }
@@ -408,6 +474,7 @@ ${renderSiteHeader('../../')}
   <h1>${escapeHtml(work.title)}</h1>
   <p>${escapeHtml(work.summary)}</p>
   <dl class="work-meta">
+    <div><dt>更新日</dt><dd><time datetime="${work.updatedAt}">${formatDisplayDate(work.updatedAt)}</time></dd></div>
     <div><dt>作者</dt><dd>${escapeHtml(work.creator)}</dd></div>
     <div><dt>著作権者</dt><dd>${escapeHtml(work.rightsHolder)}</dd></div>
     <div><dt>対応DSL</dt><dd>${work.dslSeries.map(escapeHtml).join('／')}</dd></div>
@@ -418,6 +485,7 @@ ${renderSiteHeader('../../')}
     <section class="artifact-group" data-dsl-series="3.2" aria-labelledby="my-dsl-32-heading">
       <h2 id="my-dsl-32-heading">DSL 3.2 作業版</h2>
       <p>ワークショップでポーズと物語を編集するための外部台本と作業用SB3です。</p>
+${dsl32Sizes}
       <div class="actions">
         <a class="button" href="my-urashima.sb3" download>作業用SB3をダウンロード</a>
         <a class="button secondary" href="my-urashima.txt" download>作業用台本をダウンロード</a>
@@ -426,6 +494,7 @@ ${renderSiteHeader('../../')}
     <section class="artifact-group" data-dsl-series="4.0" aria-labelledby="my-dsl-40-heading">
       <h2 id="my-dsl-40-heading">DSL 4.0 作業版</h2>
       <p>全作品アセットとPrincess.png由来のPrincess costumeを持つ非台本埋め込みSB3です。Web版またはSB3のメニューから、編集したYAMLを開いて実行できます。</p>
+${dsl4Sizes}
       <div class="actions">
 ${webAction}        <a class="button secondary" href="my-urashima.k4.yml" download>DSL 4.0 YAMLをダウンロード</a>
         <a class="button secondary" href="my-urashima-4.0.sb3" download>作業用SB3をダウンロード</a>
@@ -442,6 +511,13 @@ ${renderSiteFooter('../../')}
 }
 
 export function renderTutorialIndex(work, manifest) {
+  const artifactSizes = renderArtifactSizes('公開成果物のファイルサイズ', [
+    {name: 'Web版ファイル', record: manifest.artifacts.web},
+    {name: '完成版台本ファイル（YAML）', record: manifest.artifacts.source},
+    {name: '完成版SB3ファイル', record: manifest.artifacts.sb3},
+    {name: 'スターターファイル', record: manifest.artifacts.starter},
+    {name: 'addition kitファイル', record: manifest.artifacts.additionKit},
+  ]);
   return `<!doctype html>
 <html lang="ja">
 <head>
@@ -460,6 +536,9 @@ export function renderTutorialIndex(work, manifest) {
     a { color: var(--accent); }
     .eyebrow { color: var(--muted); font-weight: 800; }
     .actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 24px 0 32px; }
+    .artifact-sizes { margin: 20px 0; padding-left: 1.4rem; color: var(--muted); }
+    .artifact-sizes li { margin: .45rem 0; }
+    .artifact-sizes data { color: var(--ink); font-weight: 700; }
     .button { display: inline-block; padding: 10px 14px; border-radius: 8px; background: var(--accent); color: white; text-decoration: none; font-weight: 700; }
     .button.secondary { border: 1px solid var(--accent); background: white; color: var(--accent); }
     dl { display: grid; grid-template-columns: minmax(9rem, auto) minmax(0, 1fr); gap: .65rem 1rem; }
@@ -476,6 +555,8 @@ ${renderSiteHeader('../../')}
     <p class="eyebrow">DSL 4.0 チュートリアル</p>
     <h1>${escapeHtml(work.title)}</h1>
     <p>${escapeHtml(work.summary)}</p>
+    <p>更新日: <time datetime="${work.updatedAt}">${formatDisplayDate(work.updatedAt)}</time></p>
+${artifactSizes}
     <div class="actions">
       <a class="button" href="web-4.0/">Web版を開く</a>
       <a class="button secondary" href="${manifest.artifacts.starter.path}" download>スターターをダウンロード</a>
@@ -555,7 +636,7 @@ ${renderSiteHeader('../')}
       <dt>ライセンス</dt>
       <dd><a href="https://www.mozilla.org/MPL/2.0/">Mozilla Public License 2.0</a></dd>
       <dt>出典</dt>
-      <dd><a href="../stories/urashima/assets/images/963e926995791fde1b335fd4ba60d6d7.png">作品内の元画像</a></dd>
+      <dd><a href="../stories/urashima/assets/images/7025746029f54d4207e56f7c0c996b3c.png">作品内の元画像</a></dd>
     </dl>
   </section>
 </main>
@@ -645,6 +726,8 @@ export async function buildSite() {
   if (images.length !== 26 || sounds.length !== 22) {
     throw new Error(`Unexpected Urashima asset counts: ${images.length} images, ${sounds.length} sounds.`);
   }
+  const urashimaWork = worksCatalog.works.find(({id}) => id === 'urashima');
+  if (!urashimaWork) throw new Error('urashima is missing from the works catalog.');
   const myUrashimaWork = worksCatalog.works.find(({id}) => id === 'my-urashima');
   if (!myUrashimaWork) throw new Error('my-urashima is missing from the works catalog.');
   const catalogWithTutorial = validateWorksCatalog({
@@ -676,7 +759,17 @@ export async function buildSite() {
   await cp(sourceDirectory, outputSampleDirectory, {recursive: true});
   await cp(mySourceDirectory, myOutputSampleDirectory, {recursive: true});
   const {artifactsLock, config, results} = await buildUrashima(outputSampleDirectory);
-  await buildMyUrashima(myOutputSampleDirectory);
+  const myUrashimaBuild = await buildMyUrashima(myOutputSampleDirectory);
+  assert.equal(
+    urashimaWork.updatedAt,
+    artifactsLock.storyDate.value,
+    'The Urashima card update date differs from its story date.',
+  );
+  assert.equal(
+    myUrashimaWork.updatedAt,
+    myUrashimaBuild.artifactLock.storyDate.value,
+    'The my-urashima card update date differs from its story date.',
+  );
   const dsl4Build = await buildUrashimaDsl4({
     publishedOutputPath: path.join(outputSampleDirectory, dsl4Config.output),
     verifyCommittedOutput: false,
@@ -757,6 +850,7 @@ export async function buildSite() {
   const manifest = {
     formatVersion: 5,
     sample: 'urashima',
+    updatedAt: urashimaWork.updatedAt,
     publicUrl: `${publicUrl}stories/urashima/`,
     license: 'MPL-2.0',
     builder: config.builder,
@@ -835,7 +929,7 @@ export async function buildSite() {
   );
   await writeFile(
     path.join(myOutputSampleDirectory, 'index.html'),
-    renderMyUrashimaIndex(myUrashimaWork, myDsl4Manifest),
+    renderMyUrashimaIndex(myUrashimaWork, myDsl4Manifest, myUrashimaBuild.artifactLock),
     'utf8',
   );
 

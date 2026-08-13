@@ -6,36 +6,36 @@
     "commit": "2b5005d293a9b63c8ba5da396fd86815d093f975"
   },
   "storyDate": {
-    "value": "2026-08-05",
-    "contentSha256": "1f4422d35166f31850a90c6058906606f8276fe0050e68624cc91c4e57b3da22"
+    "value": "2026-08-13",
+    "contentSha256": "5e17318a4c5fbbb22e426e21507f365ece5edd851a10346838d3d8870a3aacb8"
   },
   "profiles": {
     "editor": {
       "outputName": "_urashima",
       "sb3": {
-        "size": 15562625,
-        "sha256": "8d83391cccb6f62b60fb81df2c022c05c3e4a57d7c3ad57ca8644cef46e88815"
+        "size": 9591520,
+        "sha256": "eb895c6acbf656d4e38601ef8b4aab123155fd8dc501f2251c671205e28413b8"
       },
       "script": {
         "size": 8729,
-        "sha256": "a32638cf2a55e578e2b0e779a13c6e4de6e8d1de97626d363ebcdd175e5bd825"
+        "sha256": "7ee1f45d5986a9224916f42a91feef202388d561e60ab971a5bd855654cd836f"
       },
       "manifest": {
-        "sha256": "81bb26853a9caed7799c456afa465034ca1f1460539c775d4369ecc446b9f21e"
+        "sha256": "ef6813cfd8090d7fa47a48125e0eed0a864063152e7685d465ef5d26c59ce65f"
       }
     },
     "player": {
       "outputName": "urashima",
       "sb3": {
-        "size": 15564937,
-        "sha256": "ffc2e9bba78445764efdc3e259c52f6dc349fa4960a125eb8450671d382f6237"
+        "size": 9593830,
+        "sha256": "6124574bcded0e028a9f0343b7ba7e26b1c0b7859f331f61a5a6c81f6661dd10"
       },
       "script": {
         "size": 8729,
-        "sha256": "a32638cf2a55e578e2b0e779a13c6e4de6e8d1de97626d363ebcdd175e5bd825"
+        "sha256": "7ee1f45d5986a9224916f42a91feef202388d561e60ab971a5bd855654cd836f"
       },
       "manifest": {
-        "sha256": "358e1e3ddc8ba7ce97d3db32c6b29585b745e86ecbe44163b791dcda9f9de2fa"
+        "sha256": "7c20388262e133d58ee564aaf0e421a48f2adb3b7434cafaecb8a87324e15d0a"
       }
     }
   },
@@ -47,14 +47,14 @@
     "input": {
       "profile": "player",
       "path": "urashima.sb3",
-      "size": 15564937,
-      "sha256": "ffc2e9bba78445764efdc3e259c52f6dc349fa4960a125eb8450671d382f6237"
+      "size": 9593830,
+      "sha256": "6124574bcded0e028a9f0343b7ba7e26b1c0b7859f331f61a5a6c81f6661dd10"
     },
     "output": {
       "path": "web/index.html",
       "contentType": "text/html",
-      "size": 22419462,
-      "sha256": "b4548bdb5dc52f6beb9239460fdb33a70ea87416c3c4f79459e65cb798abd65c"
+      "size": 14951564,
+      "sha256": "9fefba228912cb934a87f9b3e7a273e7cbbaa53bf52c571188ae4dc55f7d9982"
     }
   }
 }
