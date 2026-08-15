@@ -110,6 +110,154 @@ function renderSiteFooter(assetPrefix) {
 </footer>`;
 }
 
+function detailRelativeHref(work, href) {
+  if (/^(?:[a-z]+:|\/|#)/iu.test(href)) return href;
+  const detailDirectory = work.detailHref.replace(/\/+$/u, '');
+  return path.posix.relative(detailDirectory, href) || '.';
+}
+
+function renderDetailMediaStyles() {
+  return `
+    .work-media { margin: 32px 0; padding: 22px; border: 1px solid var(--line, #dbc9bb); border-radius: 14px; background: var(--paper, #fffdf8); box-shadow: 0 8px 24px rgb(89 61 43 / 8%); }
+    .work-media h2 { margin: 0; }
+    .work-media__intro { margin: .45rem 0 1.25rem; color: var(--muted); line-height: 1.7; }
+    .work-media__grid { display: grid; grid-template-columns: minmax(210px, .58fr) minmax(0, 1.42fr); gap: 20px; align-items: start; }
+    .work-media__animation { min-width: 0; margin: 0; }
+    .work-media__animation-frame { aspect-ratio: 16 / 9; overflow: hidden; border-radius: 10px; background: #111; }
+    .work-media__animation picture, .work-media__animation img { display: block; width: 100%; height: 100%; }
+    .work-media__animation img { object-fit: cover; object-position: center 55%; }
+    .work-media__animation figcaption { padding-top: .65rem; color: var(--muted); font-size: .82rem; line-height: 1.55; }
+    .work-media__animation figcaption a { color: inherit; }
+    .work-carousel { min-width: 0; }
+    .work-carousel__stage { display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; align-items: center; overflow: hidden; border-radius: 10px; background: #171311; color: white; }
+    .work-carousel__slide { display: grid; min-width: 0; margin: 0; grid-template-rows: auto minmax(2.8rem, auto); }
+    .work-carousel__image { display: block; width: 100%; aspect-ratio: 16 / 9; background: #050505; object-fit: contain; }
+    .work-carousel__caption { display: flex; justify-content: space-between; gap: 16px; padding: .7rem .8rem .8rem; color: #f4eee8; line-height: 1.45; }
+    .work-carousel__counter { flex: 0 0 auto; color: #c8b8ac; font-variant-numeric: tabular-nums; }
+    .work-carousel__nav { width: 36px; height: 54px; margin: 4px; padding: 0; border: 1px solid rgb(255 255 255 / 35%); border-radius: 9px; background: rgb(255 255 255 / 10%); color: white; cursor: pointer; font-size: 1.8rem; line-height: 1; }
+    .work-carousel__nav:hover { background: rgb(255 255 255 / 20%); }
+    .work-carousel__nav:focus-visible, .work-carousel__tab:focus-visible { outline: 3px solid #f2a33a; outline-offset: 2px; }
+    .work-carousel__tabs { display: flex; gap: 8px; margin-top: 10px; padding: 3px 2px; overflow-x: auto; }
+    .work-carousel__tab { width: 88px; min-width: 64px; aspect-ratio: 16 / 9; padding: 0; overflow: hidden; border: 2px solid transparent; border-radius: 7px; background: #171311; cursor: pointer; opacity: .62; }
+    .work-carousel__tab[aria-selected="true"] { border-color: var(--accent); opacity: 1; }
+    .work-carousel__tab img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .work-carousel__status { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+    @media (max-width: 720px) {
+      .work-media { padding: 18px; }
+      .work-media__grid { grid-template-columns: 1fr; }
+      .work-carousel__tab { width: 78px; }
+    }
+    @media (max-width: 460px) {
+      .work-media { margin-inline: -8px; padding: 14px; }
+      .work-carousel__stage { grid-template-columns: 38px minmax(0, 1fr) 38px; }
+      .work-carousel__nav { width: 32px; height: 48px; margin: 3px; }
+      .work-carousel__caption { display: block; font-size: .9rem; }
+      .work-carousel__counter { display: block; margin-top: .2rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .work-carousel { scroll-behavior: auto; }
+    }`;
+}
+
+function renderDetailMediaGallery(work) {
+  if (!work.thumbnail) return '';
+  const thumbnail = work.thumbnail;
+  const slides = thumbnail.slides.map((slide) => ({
+    ...slide,
+    src: detailRelativeHref(work, slide.src),
+  }));
+  const animationSrc = detailRelativeHref(work, thumbnail.src);
+  const licenseHref = detailRelativeHref(work, thumbnail.licenseHref);
+  const headingId = `${work.id}-media-heading`;
+  const slideId = `${work.id}-carousel-slide`;
+  const tabs = slides
+    .map(
+      (slide, index) => `        <button class="work-carousel__tab" id="${escapeHtml(work.id)}-carousel-tab-${index + 1}" type="button" role="tab" aria-controls="${escapeHtml(slideId)}" aria-selected="${index === 0}" tabindex="${index === 0 ? '0' : '-1'}" data-work-carousel-index="${index}" aria-label="${escapeHtml(`${index + 1}枚目：${slide.caption}`)}">
+          <img src="${escapeHtml(slide.src)}" alt="" loading="lazy" decoding="async">
+        </button>`,
+    )
+    .join('\n');
+  const carouselData = escapeInlineJson(slides);
+  return `  <section class="work-media" aria-labelledby="${escapeHtml(headingId)}">
+    <h2 id="${escapeHtml(headingId)}">作品の場面紹介</h2>
+    <p class="work-media__intro">GIFアニメのサムネイルと、${slides.length}枚のスクリーンショットで作品の流れを紹介します。</p>
+    <div class="work-media__grid">
+      <figure class="work-media__animation">
+        <div class="work-media__animation-frame">
+          <picture>
+            <source media="(prefers-reduced-motion: reduce)" srcset="${escapeHtml(slides[0].src)}">
+            <img src="${escapeHtml(animationSrc)}" alt="${escapeHtml(thumbnail.alt)}" loading="lazy" decoding="async">
+          </picture>
+        </div>
+        <figcaption>GIFアニメ：${escapeHtml(thumbnail.rightsHolder)}（<a href="${escapeHtml(licenseHref)}">利用条件</a>）</figcaption>
+      </figure>
+      <div class="work-carousel" data-work-carousel="${escapeHtml(work.id)}" role="region" aria-roledescription="カルーセル" aria-label="${escapeHtml(`${work.title}のスクリーンショット`)}">
+        <div class="work-carousel__stage">
+          <button class="work-carousel__nav" type="button" data-work-carousel-previous aria-label="前の場面">‹</button>
+          <figure class="work-carousel__slide" id="${escapeHtml(slideId)}" role="tabpanel" aria-labelledby="${escapeHtml(work.id)}-carousel-tab-1">
+            <img class="work-carousel__image" data-work-carousel-image src="${escapeHtml(slides[0].src)}" alt="${escapeHtml(slides[0].alt)}" decoding="async">
+            <figcaption class="work-carousel__caption">
+              <span data-work-carousel-caption>${escapeHtml(slides[0].caption)}</span>
+              <span class="work-carousel__counter" aria-hidden="true" data-work-carousel-counter>1 / ${slides.length}</span>
+            </figcaption>
+          </figure>
+          <button class="work-carousel__nav" type="button" data-work-carousel-next aria-label="次の場面">›</button>
+        </div>
+        <div class="work-carousel__tabs" role="tablist" aria-label="スクリーンショットを選択">
+${tabs}
+        </div>
+        <span class="work-carousel__status" role="status" aria-live="polite" data-work-carousel-status>${escapeHtml(`1 / ${slides.length}：${slides[0].caption}`)}</span>
+        <script type="application/json" data-work-carousel-data>${carouselData}</script>
+      </div>
+    </div>
+  </section>
+  <script>
+    (() => {
+      const root = document.querySelector('[data-work-carousel="${escapeHtml(work.id)}"]');
+      const slides = JSON.parse(root.querySelector('[data-work-carousel-data]').textContent);
+      const image = root.querySelector('[data-work-carousel-image]');
+      const caption = root.querySelector('[data-work-carousel-caption]');
+      const counter = root.querySelector('[data-work-carousel-counter]');
+      const status = root.querySelector('[data-work-carousel-status]');
+      const panel = root.querySelector('[role="tabpanel"]');
+      const tabs = [...root.querySelectorAll('[data-work-carousel-index]')];
+      let activeIndex = 0;
+
+      function render(index, focusTab = false) {
+        activeIndex = (index + slides.length) % slides.length;
+        const slide = slides[activeIndex];
+        image.src = slide.src;
+        image.alt = slide.alt;
+        caption.textContent = slide.caption;
+        counter.textContent = String(activeIndex + 1) + ' / ' + String(slides.length);
+        status.textContent = String(activeIndex + 1) + ' / ' + String(slides.length) + '：' + slide.caption;
+        for (const [tabIndex, tab] of tabs.entries()) {
+          const selected = tabIndex === activeIndex;
+          tab.setAttribute('aria-selected', String(selected));
+          tab.tabIndex = selected ? 0 : -1;
+          if (selected) panel.setAttribute('aria-labelledby', tab.id);
+          if (selected && focusTab) tab.focus();
+        }
+      }
+
+      root.querySelector('[data-work-carousel-previous]').addEventListener('click', () => render(activeIndex - 1));
+      root.querySelector('[data-work-carousel-next]').addEventListener('click', () => render(activeIndex + 1));
+      for (const [index, tab] of tabs.entries()) tab.addEventListener('click', () => render(index));
+      root.addEventListener('keydown', (event) => {
+        const destinations = {
+          ArrowLeft: activeIndex - 1,
+          ArrowRight: activeIndex + 1,
+          Home: 0,
+          End: slides.length - 1,
+        };
+        if (!Object.hasOwn(destinations, event.key)) return;
+        event.preventDefault();
+        render(destinations[event.key], true);
+      });
+    })();
+  </script>`;
+}
+
 function contentType(filename) {
   if (filename.endsWith('.png')) return 'image/png';
   if (filename.endsWith('.svg')) return 'image/svg+xml';
@@ -462,7 +610,7 @@ ${renderSiteFooter('')}
 `;
 }
 
-export function renderSampleIndex(manifest) {
+export function renderSampleIndex(manifest, work) {
   const webDescription = manifest.web.enabled
     ? '<p>Web版には画像・音声・台本を組み込み済みです。TMPoseのライブラリ・モデル取得とカメラ利用にはネットワーク接続が必要です。</p>'
     : '';
@@ -502,6 +650,7 @@ export function renderSampleIndex(manifest) {
         `      <li><a href="${escapeHtml(asset.path)}"><code>${escapeHtml(asset.path)}</code></a> <small>${asset.size.toLocaleString('ja-JP')} bytes</small></li>`,
     )
     .join('\n');
+  const workMedia = renderDetailMediaGallery(work);
   return `<!doctype html>
 <html lang="ja">
 <head>
@@ -534,6 +683,7 @@ export function renderSampleIndex(manifest) {
     li { margin: .45rem 0; }
     small { color: var(--muted); }
     code { overflow-wrap: anywhere; }
+${renderDetailMediaStyles()}
   </style>
 </head>
 <body>
@@ -548,6 +698,7 @@ ${renderSiteHeader('../../')}
     <div><dt>掲載形態</dt><dd>当サイトで配布</dd></div>
     <div><dt>ライセンス・利用条件</dt><dd><a href="LICENSES.md">MPL-2.0、CC BY-SA 2.0ほか</a></dd></div>
   </dl>
+${workMedia}
   <div class="artifact-groups">
     <section class="artifact-group" data-dsl-series="3.2" aria-labelledby="dsl-32-heading">
       <h2 id="dsl-32-heading">DSL 3.2 実行版</h2>
@@ -618,6 +769,7 @@ export function renderMyUrashimaIndex(work, dsl4Manifest, dsl32Artifacts) {
     {name: '台本ファイル（YAML）', record: dsl4Manifest.source},
     {name: '作業用SB3ファイル', record: dsl4Manifest.output},
   ]);
+  const workMedia = renderDetailMediaGallery(work);
   return `<!doctype html>
 <html lang="ja">
 <head>
@@ -648,6 +800,7 @@ export function renderMyUrashimaIndex(work, dsl4Manifest, dsl32Artifacts) {
     .button { display: inline-block; padding: 10px 14px; border-radius: 8px; background: var(--accent); color: white; text-decoration: none; font-weight: 700; }
     .button.secondary { border: 1px solid var(--accent); background: white; color: var(--accent); }
     .button:disabled { cursor: not-allowed; opacity: .55; }
+${renderDetailMediaStyles()}
   </style>
 </head>
 <body>
@@ -664,6 +817,7 @@ ${renderSiteHeader('../../')}
     <div><dt>掲載形態</dt><dd>当サイトで配布</dd></div>
     <div><dt>ライセンス・利用条件</dt><dd><a href="../urashima/LICENSES.md">${escapeHtml(work.license.label)}</a></dd></div>
   </dl>
+${workMedia}
   <div class="artifact-groups">
     <section class="artifact-group" data-dsl-series="3.2" aria-labelledby="my-dsl-32-heading">
       <h2 id="my-dsl-32-heading">DSL 3.2 作業版</h2>
@@ -701,6 +855,7 @@ export function renderTutorialIndex(work, manifest) {
     {name: 'スターターファイル', record: manifest.artifacts.starter},
     {name: 'addition kitファイル', record: manifest.artifacts.additionKit},
   ]);
+  const workMedia = renderDetailMediaGallery(work);
   return `<!doctype html>
 <html lang="ja">
 <head>
@@ -728,6 +883,7 @@ export function renderTutorialIndex(work, manifest) {
     dt { color: var(--muted); font-weight: 800; }
     dd { margin: 0; overflow-wrap: anywhere; }
     @media (max-width: 560px) { dl { grid-template-columns: 1fr; } dt { margin-top: .6rem; } }
+${renderDetailMediaStyles()}
   </style>
 </head>
 <body>
@@ -739,6 +895,7 @@ ${renderSiteHeader('../../')}
     <h1>${escapeHtml(work.title)}</h1>
     <p>${escapeHtml(work.summary)}</p>
     <p>更新日: <time datetime="${work.updatedAt}">${formatDisplayDate(work.updatedAt)}</time></p>
+${workMedia}
 ${artifactSizes}
     <div class="actions">
       <a class="button" href="web-4.0/">Web版を開く</a>
@@ -1108,7 +1265,11 @@ export async function buildSite() {
     `${JSON.stringify(manifest, null, 2)}\n`,
     'utf8',
   );
-  await writeFile(path.join(outputSampleDirectory, 'index.html'), renderSampleIndex(manifest), 'utf8');
+  await writeFile(
+    path.join(outputSampleDirectory, 'index.html'),
+    renderSampleIndex(manifest, urashimaWork),
+    'utf8',
+  );
   await writeFile(
     path.join(myOutputSampleDirectory, 'dsl4-manifest.json'),
     `${JSON.stringify(myDsl4Manifest, null, 2)}\n`,

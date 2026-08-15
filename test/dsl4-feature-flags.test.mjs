@@ -69,12 +69,15 @@ test('keeps disabled DSL 4.0 Web locks reusable without publishing active links'
     2,
   );
 
-  const sampleIndex = renderSampleIndex(manifest);
+  const urashima = worksCatalog.works.find(({id}) => id === 'urashima');
+  const sampleIndex = renderSampleIndex(manifest, urashima);
   assert(sampleIndex.includes('15 MB（14,951,564 bytes）'));
   assert(sampleIndex.includes('8.7 KB（8,729 bytes）'));
   assert(!sampleIndex.includes('href="web-4.0/"'));
   assert(sampleIndex.includes('disabled aria-disabled="true">Web版（準備中）</button>'));
   assert(!sampleIndex.includes('preserved-enabled-lock'));
+  assert(sampleIndex.includes('src="card-scenes.gif"'));
+  assert(sampleIndex.includes('data-work-carousel="urashima"'));
 
   const myUrashima = worksCatalog.works.find(({id}) => id === 'my-urashima');
   const myIndex = renderMyUrashimaIndex(
