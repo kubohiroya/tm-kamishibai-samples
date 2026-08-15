@@ -46,8 +46,8 @@
     "web": {
       "path": "web-4.0/index.html",
       "contentType": "text/html",
-      "size": 21848205,
-      "sha256": "76f04d855b553e97b4182856474165a3277a234c24d1bf1925510090f34c74d2"
+      "size": 21848253,
+      "sha256": "b93333c32737a51ae90f36a13f0f1a8a17cf403ac73a857b96ffb1279acbc852"
     },
     "starter": {
       "path": "tutorial-story-starter-4.0.zip",

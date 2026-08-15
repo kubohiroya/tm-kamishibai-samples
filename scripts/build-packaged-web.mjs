@@ -7,6 +7,11 @@ import {createRequire} from 'node:module';
 
 import {strFromU8, unzipSync} from 'fflate';
 
+import {
+  packagerScratchRenderContract,
+  patchPackagerScratchRenderReadbackContext,
+} from './patch-packager-scratch-render.mjs';
+
 const require = createRequire(import.meta.url);
 const Packager = require('@turbowarp/packager');
 const installedPackager = require('@turbowarp/packager/package.json');
@@ -237,8 +242,12 @@ function verifyPackagerResult(result, webConfig) {
 async function packageOnce(loadedProject, webConfig, extensionUrls) {
   const packager = configurePackager(loadedProject, webConfig, extensionUrls);
   const result = await packager.package();
-  verifyPackagerResult(result, webConfig);
-  return result;
+  const patchedResult = {
+    ...result,
+    data: patchPackagerScratchRenderReadbackContext(result.data),
+  };
+  verifyPackagerResult(patchedResult, webConfig);
+  return patchedResult;
 }
 
 export async function buildPackagedWeb({
@@ -332,6 +341,12 @@ export async function buildPackagedWeb({
         bakeExtensions: true,
       },
       projectExtensions: extensions.records,
+      scratchRender: {
+        repository: packagerScratchRenderContract.fixedRepository,
+        commit: packagerScratchRenderContract.fixedCommit,
+        upstreamPullRequest: packagerScratchRenderContract.upstreamPullRequest,
+        readbackContext: 'willReadFrequently',
+      },
     },
     scriptMode: webConfig.scriptMode,
     assets: webConfig.assets,

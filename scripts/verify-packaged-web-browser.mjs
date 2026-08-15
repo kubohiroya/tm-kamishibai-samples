@@ -37,6 +37,7 @@ try {
   const rejectedRequests = [];
   const assetRegistrationErrors = [];
   const legacyTextWarnings = [];
+  const canvasReadbackWarnings = [];
   let fileChooserCount = 0;
 
   browser = await chromium.launch({
@@ -63,6 +64,9 @@ try {
     }
     if (text.includes('LEGACY_TEXT_ASSET_DEPRECATED')) {
       legacyTextWarnings.push(text);
+    }
+    if (message.type() === 'warning' && text.includes('willReadFrequently')) {
+      canvasReadbackWarnings.push(text);
     }
   });
   await page.addInitScript(() => {
@@ -96,6 +100,23 @@ try {
     () => window.scaffolding?.vm?.runtime?.getTargetForStage(),
     undefined,
     {timeout: 120000},
+  );
+  const pickingProfile = await page.evaluate(() => {
+    const renderer = window.scaffolding.vm.runtime.renderer;
+    const samples = 200;
+    for (let index = 0; index < 20; index += 1) {
+      renderer.pick((index % 20) - 10, (index % 16) - 8, 1, 1);
+    }
+    const startedAt = performance.now();
+    for (let index = 0; index < samples; index += 1) {
+      renderer.pick((index % 40) - 20, (index % 32) - 16, 1, 1);
+    }
+    return {elapsedMs: performance.now() - startedAt, samples};
+  });
+  assert.equal(pickingProfile.samples, 200);
+  assert(
+    pickingProfile.elapsedMs < 2000,
+    `Canvas picking profile exceeded 2 seconds: ${pickingProfile.elapsedMs.toFixed(2)}ms`,
   );
   await page.waitForFunction(
     () => {
@@ -308,6 +329,7 @@ try {
   assert.equal(fileChooserCount, 0);
   assert.deepEqual(rejectedRequests, []);
   assert.deepEqual(legacyTextWarnings, []);
+  assert.deepEqual(canvasReadbackWarnings, []);
 
   await page.waitForFunction(
     () => {
@@ -791,7 +813,7 @@ try {
   );
 
   console.log(
-    `Verified ${browserName}: clone-only title/menu UI and cleanup, responsive multiline SVG Text Narration and ending, scene-3 Fish loop behind Princess, scene-7 white transition to Smoke, 20 decoded MP3 sounds including Sewing Machine with playback, no legacy Text Asset warnings, no asset registration errors, no file picker, and ${uniqueRequests.length} allowed requests.`,
+    `Verified ${browserName}: clone-only title/menu UI and cleanup, responsive multiline SVG Text Narration and ending, scene-3 Fish loop behind Princess, scene-7 white transition to Smoke, 20 decoded MP3 sounds including Sewing Machine with playback, 200 picks in ${pickingProfile.elapsedMs.toFixed(2)}ms, no Canvas2D readback warnings, no legacy Text Asset warnings, no asset registration errors, no file picker, and ${uniqueRequests.length} allowed requests.`,
   );
 } finally {
   await browser?.close();

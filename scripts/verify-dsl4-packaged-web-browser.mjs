@@ -69,9 +69,13 @@ async function openDsl4Page(browser, origin, pathname, {storySource} = {}) {
   const page = await browser.newPage({locale: 'ja-JP', viewport: {width: 960, height: 720}});
   const failures = [];
   const externalRequests = [];
+  const canvasReadbackWarnings = [];
   page.on('pageerror', (error) => failures.push(conciseFailure(error.stack ?? error)));
   page.on('console', (message) => {
     if (message.type() === 'error') failures.push(conciseFailure(message.text()));
+    if (message.text().includes('willReadFrequently')) {
+      canvasReadbackWarnings.push(conciseFailure(message.text()));
+    }
   });
   if (storySource !== undefined) {
     await page.addInitScript((source) => {
@@ -126,7 +130,7 @@ async function openDsl4Page(browser, origin, pathname, {storySource} = {}) {
     ),
     false,
   );
-  return {externalRequests, failures, page};
+  return {canvasReadbackWarnings, externalRequests, failures, page};
 }
 
 let browser;
@@ -191,6 +195,7 @@ try {
     }
     assert.deepEqual(urashima.externalRequests, []);
     assert.deepEqual(urashima.failures, []);
+    assert.deepEqual(urashima.canvasReadbackWarnings, []);
     await urashima.page.close();
   }
 
@@ -262,6 +267,7 @@ try {
     ]);
     assert.deepEqual(workshop.externalRequests, []);
     assert.deepEqual(workshop.failures, []);
+    assert.deepEqual(workshop.canvasReadbackWarnings, []);
     await workshop.page.close();
   }
 
@@ -430,6 +436,13 @@ try {
     }
     assert.deepEqual(tutorial.externalRequests, []);
     assert.deepEqual(tutorial.failures, []);
+    assert(tutorial.canvasReadbackWarnings.length <= 1);
+    assert(
+      tutorial.canvasReadbackWarnings.every((warning) =>
+        warning.includes('willReadFrequently'),
+      ),
+      'Tutorial emitted an unexpected Canvas warning; TMPose fromPixels follow-up is #601.',
+    );
     await tutorial.page.close();
   }
 

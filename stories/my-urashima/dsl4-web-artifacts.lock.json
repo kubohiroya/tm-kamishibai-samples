@@ -10,8 +10,8 @@
   "output": {
     "path": "web-4.0/index.html",
     "contentType": "text/html",
-    "size": 26410236,
-    "sha256": "91222a2b4763e876b3db94e524714cef1d8b6056a591aa3564a773bb9199cbac"
+    "size": 26410284,
+    "sha256": "7c9d830f6c570fae6d0de9286e3367b2be5e4dbfe589b643719e9fca32ebf889"
   },
   "packager": {
     "package": "@turbowarp/packager",
@@ -33,7 +33,13 @@
         "source": "input-sb3-data-url",
         "sha256": "42aaccc91c9d4f1473facc8946864675476c49851054100858bb928d2092abb5"
       }
-    ]
+    ],
+    "scratchRender": {
+      "repository": "kubohiroya/scratch-render",
+      "commit": "1fa6cc7d23e12aabf8db16e8e3ce400538f44165",
+      "upstreamPullRequest": 21,
+      "readbackContext": "willReadFrequently"
+    }
   },
   "scriptMode": "external",
   "assets": "embedded-project",
