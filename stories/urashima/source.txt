@@ -1,7 +1,7 @@
 kamishibai=3.2
 # title: 浦島太郎
 # author: Hiroya Kubo <hiroya@cuc.ac.jp>
-# date: 2026-08-13
+# date: 2026-08-15
 setRuntimeVariable=startSceneIndex:1
 asset=Urashima-walk-1,file:assets/images/7025746029f54d4207e56f7c0c996b3c.png
 asset=Urashima-help-1,file:assets/images/1aa58d9fae49f6865d04ef042004c3c7.png

@@ -2,12 +2,12 @@
   "formatVersion": 1,
   "runtime": {
     "repository": "https://github.com/kubohiroya/tmpose-kamishibai",
-    "version": "4.0.0-rc.3",
-    "commit": "087dfa526e967bb2cc38af3f5b5a795355de7739",
+    "version": "4.0.0-rc.5",
+    "commit": "f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6",
     "basePath": "base/kamishibai-4.0.sb3",
-    "baseSourceIdentity": "sha256:f56cc0f2b2df805cc1baebcbaa08094fa7df20b0f28b2c8b62c445d9b54e8fa3",
-    "baseSize": 7652780,
-    "baseSha256": "77ac23862ef0e729ca75be93340f65f21ded9b39449fc8f9be2c904c70d4096c"
+    "baseSourceIdentity": "sha256:a6c4be01405af1b3070f6d02dc584a55bd2b45844ae48761aa3d4141ef474ca4",
+    "baseSize": 6664571,
+    "baseSha256": "2494b43f43f7b7acbd1ce9d307fcff383d239931aa46de550f76c3eb3ec40f3c"
   },
   "sourceManifest": "project.source.json",
   "projectAssets": "project-assets-dsl4.yml",
