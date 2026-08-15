@@ -82,6 +82,12 @@
       "label": "MPL-2.0",
       "href": "stories/tutorial/LICENSES.md"
     },
+    "thumbnail": {
+      "src": "stories/tutorial/card-scene.webp",
+      "alt": "教室の机の下で頭を守る人物と、できたことを伝える達成メッセージが表示されたDSL 4.0実行画面",
+      "rightsHolder": "Hiroya Kubo",
+      "licenseHref": "stories/tutorial/LICENSES.md"
+    },
     "actions": [
       {
         "label": "Web版を開く",

@@ -1,66 +1,85 @@
-import assert from 'node:assert/strict';
-import {createHash} from 'node:crypto';
-import {copyFile, cp, mkdir, readFile, readdir, rm, writeFile} from 'node:fs/promises';
-import path from 'node:path';
-import {fileURLToPath} from 'node:url';
+import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
+import {
+  copyFile,
+  cp,
+  mkdir,
+  readFile,
+  readdir,
+  rm,
+  writeFile,
+} from "node:fs/promises";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-import {buildMyUrashima} from './build-my-urashima.mjs';
-import {buildMyUrashimaDsl4} from './build-my-urashima-dsl4.mjs';
-import {buildUrashima} from './build-urashima.mjs';
-import {buildUrashimaDsl4} from './build-urashima-dsl4.mjs';
-import {buildPackagedWeb} from './build-packaged-web.mjs';
+import { buildMyUrashima } from "./build-my-urashima.mjs";
+import { buildMyUrashimaDsl4 } from "./build-my-urashima-dsl4.mjs";
+import { buildUrashima } from "./build-urashima.mjs";
+import { buildUrashimaDsl4 } from "./build-urashima-dsl4.mjs";
+import { buildPackagedWeb } from "./build-packaged-web.mjs";
 import {
   buildTutorialDsl4,
   createTutorialPublicSurfaces,
-} from './build-tutorial-dsl4.mjs';
-import {renderSiteHeader as renderContractSiteHeader} from './site-navigation.mjs';
-import {refreshChangedStoryArtifacts} from './refresh-story-artifacts.mjs';
-import {verifyTutorialCandidate} from './verify-tutorial-dsl4.mjs';
-import {verifyPublishedSite} from './verify-site.mjs';
-import {readWorksCatalog, validateWorksCatalog} from './works-catalog.mjs';
+} from "./build-tutorial-dsl4.mjs";
+import { renderSiteHeader as renderContractSiteHeader } from "./site-navigation.mjs";
+import { refreshChangedStoryArtifacts } from "./refresh-story-artifacts.mjs";
+import { verifyTutorialCandidate } from "./verify-tutorial-dsl4.mjs";
+import { verifyPublishedSite } from "./verify-site.mjs";
+import { readWorksCatalog, validateWorksCatalog } from "./works-catalog.mjs";
 
-const projectRoot = fileURLToPath(new URL('../', import.meta.url));
-const sourceDirectory = path.join(projectRoot, 'stories/urashima');
-const mySourceDirectory = path.join(projectRoot, 'stories/my-urashima');
-const tutorialSourceDirectory = path.join(projectRoot, 'stories/tutorial');
-const siteDirectory = path.join(projectRoot, 'site');
-const outputDirectory = path.join(projectRoot, 'dist');
-const tutorialCandidateOutputDirectory = path.join(projectRoot, 'tmp/tutorial-candidate');
-const outputSampleDirectory = path.join(outputDirectory, 'stories/urashima');
-const myOutputSampleDirectory = path.join(outputDirectory, 'stories/my-urashima');
-const tutorialOutputDirectory = path.join(outputDirectory, 'stories/tutorial');
-const publicUrl = 'https://kubohiroya.github.io/tmpose-kamishibai-samples/';
-const worksCatalogPath = path.join(siteDirectory, 'works.json');
-const worksSchemaPath = path.join(siteDirectory, 'works.schema.json');
+const projectRoot = fileURLToPath(new URL("../", import.meta.url));
+const sourceDirectory = path.join(projectRoot, "stories/urashima");
+const mySourceDirectory = path.join(projectRoot, "stories/my-urashima");
+const tutorialSourceDirectory = path.join(projectRoot, "stories/tutorial");
+const siteDirectory = path.join(projectRoot, "site");
+const outputDirectory = path.join(projectRoot, "dist");
+const tutorialCandidateOutputDirectory = path.join(
+  projectRoot,
+  "tmp/tutorial-candidate",
+);
+const outputSampleDirectory = path.join(outputDirectory, "stories/urashima");
+const myOutputSampleDirectory = path.join(
+  outputDirectory,
+  "stories/my-urashima",
+);
+const tutorialOutputDirectory = path.join(outputDirectory, "stories/tutorial");
+const publicUrl = "https://kubohiroya.github.io/tmpose-kamishibai-samples/";
+const worksCatalogPath = path.join(siteDirectory, "works.json");
+const worksSchemaPath = path.join(siteDirectory, "works.schema.json");
 
 function sha256(contents) {
-  return createHash('sha256').update(contents).digest('hex');
+  return createHash("sha256").update(contents).digest("hex");
 }
 
 function escapeHtml(value) {
   return value
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;');
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
 }
 
 export function formatFileSize(size) {
-  assert(Number.isSafeInteger(size) && size >= 0, 'File size must be a non-negative integer.');
+  assert(
+    Number.isSafeInteger(size) && size >= 0,
+    "File size must be a non-negative integer.",
+  );
   const units = [
-    ['GB', 1_000_000_000],
-    ['MB', 1_000_000],
-    ['KB', 1_000],
+    ["GB", 1_000_000_000],
+    ["MB", 1_000_000],
+    ["KB", 1_000],
   ];
   const unit = units.find(([, divisor]) => size >= divisor);
-  if (!unit) return `${size.toLocaleString('ja-JP')} bytes`;
+  if (!unit) return `${size.toLocaleString("ja-JP")} bytes`;
   const [label, divisor] = unit;
-  const concise = (size / divisor).toLocaleString('ja-JP', {maximumFractionDigits: 1});
-  return `${concise} ${label}（${size.toLocaleString('ja-JP')} bytes）`;
+  const concise = (size / divisor).toLocaleString("ja-JP", {
+    maximumFractionDigits: 1,
+  });
+  return `${concise} ${label}（${size.toLocaleString("ja-JP")} bytes）`;
 }
 
 function formatDisplayDate(value) {
-  const [year, month, day] = value.split('-').map(Number);
+  const [year, month, day] = value.split("-").map(Number);
   return `${year}年${month}月${day}日`;
 }
 
@@ -68,19 +87,22 @@ function renderArtifactSizes(label, artifacts) {
   const items = artifacts
     .filter((artifact) => artifact.record)
     .map(
-      ({name, record}) =>
+      ({ name, record }) =>
         `        <li>${escapeHtml(name)}: <data value="${record.size}">${formatFileSize(record.size)}</data></li>`,
     )
-    .join('\n');
+    .join("\n");
   return `      <ul class="artifact-sizes" aria-label="${escapeHtml(label)}">
 ${items}
       </ul>`;
 }
 
-function renderSiteHeader(assetPrefix, pathname = '/tmpose-kamishibai-samples/') {
+function renderSiteHeader(
+  assetPrefix,
+  pathname = "/tmpose-kamishibai-samples/",
+) {
   return renderContractSiteHeader({
     assetBase: assetPrefix,
-    site: 'tmpose-kamishibai-samples',
+    site: "tmpose-kamishibai-samples",
     pathname,
   });
 }
@@ -102,15 +124,19 @@ function renderSiteFooter(assetPrefix) {
 }
 
 function contentType(filename) {
-  if (filename.endsWith('.png')) return 'image/png';
-  if (filename.endsWith('.svg')) return 'image/svg+xml';
-  if (filename.endsWith('.mp3')) return 'audio/mpeg';
+  if (filename.endsWith(".png")) return "image/png";
+  if (filename.endsWith(".svg")) return "image/svg+xml";
+  if (filename.endsWith(".mp3")) return "audio/mpeg";
   throw new Error(`Unsupported asset format: ${filename}`);
 }
 
 async function fileRecord(filePath, publishedPath) {
   const contents = await readFile(filePath);
-  return {path: publishedPath, size: contents.length, sha256: sha256(contents)};
+  return {
+    path: publishedPath,
+    size: contents.length,
+    sha256: sha256(contents),
+  };
 }
 
 async function assetRecords(directory, kind) {
@@ -120,7 +146,7 @@ async function assetRecords(directory, kind) {
       const filePath = path.join(directory, filename);
       const contents = await readFile(filePath);
       const expectedMd5 = path.parse(filename).name;
-      const actualMd5 = createHash('md5').update(contents).digest('hex');
+      const actualMd5 = createHash("md5").update(contents).digest("hex");
       if (actualMd5 !== expectedMd5) {
         throw new Error(`Scratch md5ext mismatch: ${filename}`);
       }
@@ -139,7 +165,8 @@ function renderDisabledAction(className, label) {
 }
 
 function renderWorkAction(action, features) {
-  const className = action.style === 'secondary' ? 'button secondary' : 'button';
+  const className =
+    action.style === "secondary" ? "button secondary" : "button";
   if (action.disabled) {
     return renderDisabledAction(className, action.label);
   }
@@ -149,19 +176,21 @@ function renderWorkAction(action, features) {
       action.unavailableLabel ?? `${action.label}（準備中）`,
     );
   }
-  const download = action.download ? ' download' : '';
-  const external = action.external ? ' target="_blank" rel="noopener external"' : '';
-  const externalLabel = action.external ? '（外部サイト）' : '';
+  const download = action.download ? " download" : "";
+  const external = action.external
+    ? ' target="_blank" rel="noopener external"'
+    : "";
+  const externalLabel = action.external ? "（外部サイト）" : "";
   return `        <a class="${className}" href="${escapeHtml(action.href)}"${download}${external}>${escapeHtml(action.label)}${externalLabel}</a>`;
 }
 
 function renderWorkActions(work, features) {
   const renderedActions = work.actions
-    .map((action) => ({action, html: renderWorkAction(action, features)}))
-    .filter(({html}) => html);
-  if (!renderedActions.some(({action}) => action.group)) {
+    .map((action) => ({ action, html: renderWorkAction(action, features) }))
+    .filter(({ html }) => html);
+  if (!renderedActions.some(({ action }) => action.group)) {
     return `        <div class="actions">
-${renderedActions.map(({html}) => html).join('\n')}
+${renderedActions.map(({ html }) => html).join("\n")}
         </div>`;
   }
 
@@ -174,14 +203,17 @@ ${renderedActions.map(({html}) => html).join('\n')}
   return `        <div class="action-groups">
 ${[...groups.entries()]
   .map(
-    ([group, actions]) => `          <section class="action-group" data-action-group="${escapeHtml(group)}">
+    ([
+      group,
+      actions,
+    ]) => `          <section class="action-group" data-action-group="${escapeHtml(group)}">
             <h4>${escapeHtml(group)}</h4>
             <div class="actions">
-${actions.join('\n')}
+${actions.join("\n")}
             </div>
           </section>`,
   )
-  .join('\n')}
+  .join("\n")}
         </div>`;
 }
 
@@ -190,8 +222,18 @@ function renderWorkCard(work, features) {
   const title = work.detailHref
     ? `<a class="work-card__title-link" href="${escapeHtml(work.detailHref)}">${escapeHtml(work.title)}</a>`
     : escapeHtml(work.title);
+  const thumbnailImage = work.thumbnail
+    ? `<img src="${escapeHtml(work.thumbnail.src)}" alt="${escapeHtml(work.thumbnail.alt)}" loading="lazy" decoding="async">`
+    : "";
+  const thumbnail = work.thumbnail
+    ? `        <figure class="work-card__scene">
+          <div class="work-card__scene-frame">${work.detailHref ? `<a class="work-card__scene-link" href="${escapeHtml(work.detailHref)}" aria-label="${escapeHtml(`${work.title}の詳細を見る`)}">${thumbnailImage}</a>` : thumbnailImage}</div>
+          <figcaption>代表シーン画像：${escapeHtml(work.thumbnail.rightsHolder)}（<a href="${escapeHtml(work.thumbnail.licenseHref)}">利用条件</a>）</figcaption>
+        </figure>
+`
+    : "";
   return `      <article data-work-id="${escapeHtml(work.id)}" data-distribution="${escapeHtml(work.distribution)}">
-        <h3>${title}</h3>
+${thumbnail}        <h3>${title}</h3>
         <p>${escapeHtml(work.summary)}</p>
         <dl class="work-meta">
           <div><dt>更新日</dt><dd><time datetime="${work.updatedAt}">${formatDisplayDate(work.updatedAt)}</time></dd></div>
@@ -205,7 +247,7 @@ ${actions}
 function renderWorkCategory(category, works, features) {
   const categoryWorks = works.filter((work) => work.category === category.id);
   const contents = categoryWorks.length
-    ? `<div class="work-list">\n${categoryWorks.map((work) => renderWorkCard(work, features)).join('\n')}\n      </div>`
+    ? `<div class="work-list">\n${categoryWorks.map((work) => renderWorkCard(work, features)).join("\n")}\n      </div>`
     : `<p class="empty-state">${escapeHtml(category.emptyMessage)}</p>`;
   return `    <section class="work-category" aria-labelledby="category-${escapeHtml(category.id)}">
       <h2 id="category-${escapeHtml(category.id)}">${escapeHtml(category.title)}</h2>
@@ -221,8 +263,10 @@ export function renderRootIndex(manifest, myDsl4Manifest, worksCatalog) {
     myUrashimaDsl4Web: myDsl4Manifest.web.enabled,
   };
   const categories = worksCatalog.categories
-    .map((category) => renderWorkCategory(category, worksCatalog.works, features))
-    .join('\n');
+    .map((category) =>
+      renderWorkCategory(category, worksCatalog.works, features),
+    )
+    .join("\n");
   return `<!doctype html>
 <html lang="ja">
 <head>
@@ -243,6 +287,13 @@ export function renderRootIndex(manifest, myDsl4Manifest, worksCatalog) {
     .work-list { display: grid; grid-template-columns: 1fr; gap: 20px; }
     article { display: flex; min-width: 0; flex-direction: column; padding: 24px; border: 1px solid var(--line); border-radius: 14px; background: var(--paper); box-shadow: 0 8px 24px rgb(89 61 43 / 10%); }
     article h3 { margin-top: 0; }
+    .work-card__scene { margin: -24px -24px 20px; }
+    .work-card__scene-frame { aspect-ratio: 16 / 9; overflow: hidden; border-radius: 14px 14px 0 0; background: #111; }
+    .work-card__scene-link { display: block; width: 100%; height: 100%; }
+    .work-card__scene img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 55%; transition: transform .2s ease; }
+    .work-card__scene-link:hover img { transform: scale(1.015); }
+    .work-card__scene figcaption { padding: .6rem 24px 0; color: var(--muted); font-size: .82rem; line-height: 1.5; }
+    .work-card__scene figcaption a { color: inherit; }
     .work-card__title-link { color: var(--accent); text-decoration-thickness: .08em; text-underline-offset: .16em; }
     .work-card__title-link:hover { text-decoration-thickness: .12em; }
     .work-meta { display: grid; gap: .65rem; margin: 1rem 0 0; }
@@ -263,7 +314,7 @@ export function renderRootIndex(manifest, myDsl4Manifest, worksCatalog) {
   </style>
 </head>
 <body>
-${renderSiteHeader('')}
+${renderSiteHeader("")}
 <main id="main-content">
   <h1>TMPose紙芝居 作品ライブラリ</h1>
   <p class="lead">公式サンプル、コミュニティ作品、外部サイトで公開されている作品を、掲載形態と権利情報を区別して紹介します。</p>
@@ -273,7 +324,7 @@ ${categories}
     <p>作品ごとの対応DSL・掲載形態・ライセンスは、作品タイトルから開く詳細画面で確認できます。サイト生成コードと個別表示のないファイルには<a href="LICENSE">Mozilla Public License 2.0</a>が適用されます。</p>
   </aside>
 </main>
-${renderSiteFooter('')}
+${renderSiteFooter("")}
 </body>
 </html>
 `;
@@ -281,44 +332,47 @@ ${renderSiteFooter('')}
 
 export function renderSampleIndex(manifest) {
   const webDescription = manifest.web.enabled
-    ? '<p>Web版には画像・音声・台本を組み込み済みです。TMPoseのライブラリ・モデル取得とカメラ利用にはネットワーク接続が必要です。</p>'
-    : '';
+    ? "<p>Web版には画像・音声・台本を組み込み済みです。TMPoseのライブラリ・モデル取得とカメラ利用にはネットワーク接続が必要です。</p>"
+    : "";
   const webAction = manifest.web.enabled
     ? '    <a class="button" href="web/">Web版を開く</a>\n'
-    : '';
+    : "";
   const webHash = manifest.web.enabled
     ? `  <p>Web版 SHA-256: <code>${manifest.web.output.sha256}</code></p>\n`
-    : '';
+    : "";
   const webCredits = manifest.web.enabled
     ? `  <h2>Web版のクレジット</h2>
   <p>Web版は <a href="https://packager.turbowarp.org/">TurboWarp Packager</a> ${escapeHtml(manifest.web.packager.version)} で生成しています。PackagerはMPL-2.0で提供され、ライセンスと同梱ランタイムのクレジットは<a href="LICENSES.md">ライセンス情報</a>および生成HTML内で確認できます。</p>\n`
-    : '';
+    : "";
   const dsl4WebAction = manifest.dsl4Web.enabled
     ? '        <a class="button" href="web-4.0/">Web版を開く</a>\n'
     : '        <button class="button" type="button" disabled aria-disabled="true">Web版（準備中）</button>\n';
   const dsl4WebHash = manifest.dsl4Web.enabled
     ? `  <p>DSL 4.0 Web版 SHA-256: <code>${manifest.dsl4Web.output.sha256}</code></p>\n`
-    : '';
-  const dsl32Sizes = renderArtifactSizes('DSL 3.2成果物のファイルサイズ', [
-    {name: 'Web版ファイル', record: manifest.web.enabled ? manifest.web.output : undefined},
-    {name: '台本ファイル', record: manifest.script},
-    {name: '再生用SB3ファイル', record: manifest.profiles.player.sb3},
-    {name: '編集用SB3ファイル', record: manifest.profiles.editor.sb3},
-  ]);
-  const dsl4Sizes = renderArtifactSizes('DSL 4.0成果物のファイルサイズ', [
+    : "";
+  const dsl32Sizes = renderArtifactSizes("DSL 3.2成果物のファイルサイズ", [
     {
-      name: 'Web版ファイル',
+      name: "Web版ファイル",
+      record: manifest.web.enabled ? manifest.web.output : undefined,
+    },
+    { name: "台本ファイル", record: manifest.script },
+    { name: "再生用SB3ファイル", record: manifest.profiles.player.sb3 },
+    { name: "編集用SB3ファイル", record: manifest.profiles.editor.sb3 },
+  ]);
+  const dsl4Sizes = renderArtifactSizes("DSL 4.0成果物のファイルサイズ", [
+    {
+      name: "Web版ファイル",
       record: manifest.dsl4Web.enabled ? manifest.dsl4Web.output : undefined,
     },
-    {name: '台本ファイル（YAML）', record: manifest.source.dsl4Script},
-    {name: 'オフラインSB3ファイル', record: manifest.dsl4Offline},
+    { name: "台本ファイル（YAML）", record: manifest.source.dsl4Script },
+    { name: "オフラインSB3ファイル", record: manifest.dsl4Offline },
   ]);
   const assetItems = manifest.assets
     .map(
       (asset) =>
-        `      <li><a href="${escapeHtml(asset.path)}"><code>${escapeHtml(asset.path)}</code></a> <small>${asset.size.toLocaleString('ja-JP')} bytes</small></li>`,
+        `      <li><a href="${escapeHtml(asset.path)}"><code>${escapeHtml(asset.path)}</code></a> <small>${asset.size.toLocaleString("ja-JP")} bytes</small></li>`,
     )
-    .join('\n');
+    .join("\n");
   return `<!doctype html>
 <html lang="ja">
 <head>
@@ -354,7 +408,7 @@ export function renderSampleIndex(manifest) {
   </style>
 </head>
 <body>
-${renderSiteHeader('../../')}
+${renderSiteHeader("../../")}
 <main id="main-content">
   <nav class="local-nav" aria-label="作品内ナビゲーション"><a href="../../">作品一覧へ戻る</a></nav>
   <h1>浦島太郎</h1>
@@ -410,7 +464,7 @@ ${dsl4WebHash}${webHash}  <h2>成果物プロファイル</h2>
 ${assetItems}
   </ul>
 ${webCredits}</main>
-${renderSiteFooter('../../')}
+${renderSiteFooter("../../")}
 </body>
 </html>
 `;
@@ -422,18 +476,18 @@ export function renderMyUrashimaIndex(work, dsl4Manifest, dsl32Artifacts) {
     : '        <button class="button" type="button" disabled aria-disabled="true">Web版（準備中）</button>\n';
   const webHash = dsl4Manifest.web.enabled
     ? `  <p>DSL 4.0 Web版 SHA-256: <code>${dsl4Manifest.web.output.sha256}</code></p>\n`
-    : '';
-  const dsl32Sizes = renderArtifactSizes('DSL 3.2成果物のファイルサイズ', [
-    {name: '作業用SB3ファイル', record: dsl32Artifacts?.output.sb3},
-    {name: '台本ファイル', record: dsl32Artifacts?.output.script},
+    : "";
+  const dsl32Sizes = renderArtifactSizes("DSL 3.2成果物のファイルサイズ", [
+    { name: "作業用SB3ファイル", record: dsl32Artifacts?.output.sb3 },
+    { name: "台本ファイル", record: dsl32Artifacts?.output.script },
   ]);
-  const dsl4Sizes = renderArtifactSizes('DSL 4.0成果物のファイルサイズ', [
+  const dsl4Sizes = renderArtifactSizes("DSL 4.0成果物のファイルサイズ", [
     {
-      name: 'Web版ファイル',
+      name: "Web版ファイル",
       record: dsl4Manifest.web.enabled ? dsl4Manifest.web.output : undefined,
     },
-    {name: '台本ファイル（YAML）', record: dsl4Manifest.source},
-    {name: '作業用SB3ファイル', record: dsl4Manifest.output},
+    { name: "台本ファイル（YAML）", record: dsl4Manifest.source },
+    { name: "作業用SB3ファイル", record: dsl4Manifest.output },
   ]);
   return `<!doctype html>
 <html lang="ja">
@@ -468,7 +522,7 @@ export function renderMyUrashimaIndex(work, dsl4Manifest, dsl32Artifacts) {
   </style>
 </head>
 <body>
-${renderSiteHeader('../../')}
+${renderSiteHeader("../../")}
 <main id="main-content">
   <nav class="local-nav" aria-label="作品内ナビゲーション"><a href="../../">作品一覧へ戻る</a></nav>
   <h1>${escapeHtml(work.title)}</h1>
@@ -477,7 +531,7 @@ ${renderSiteHeader('../../')}
     <div><dt>更新日</dt><dd><time datetime="${work.updatedAt}">${formatDisplayDate(work.updatedAt)}</time></dd></div>
     <div><dt>作者</dt><dd>${escapeHtml(work.creator)}</dd></div>
     <div><dt>著作権者</dt><dd>${escapeHtml(work.rightsHolder)}</dd></div>
-    <div><dt>対応DSL</dt><dd>${work.dslSeries.map(escapeHtml).join('／')}</dd></div>
+    <div><dt>対応DSL</dt><dd>${work.dslSeries.map(escapeHtml).join("／")}</dd></div>
     <div><dt>掲載形態</dt><dd>当サイトで配布</dd></div>
     <div><dt>ライセンス・利用条件</dt><dd><a href="../urashima/LICENSES.md">${escapeHtml(work.license.label)}</a></dd></div>
   </dl>
@@ -504,19 +558,19 @@ ${webAction}        <a class="button secondary" href="my-urashima.k4.yml" downlo
   <p>DSL 4.0作業用SB3 SHA-256: <code>${dsl4Manifest.output.sha256}</code></p>
 ${webHash}  <p><a href="README.md">生成・変換の説明を見る</a></p>
 </main>
-${renderSiteFooter('../../')}
+${renderSiteFooter("../../")}
 </body>
 </html>
 `;
 }
 
 export function renderTutorialIndex(work, manifest) {
-  const artifactSizes = renderArtifactSizes('公開成果物のファイルサイズ', [
-    {name: 'Web版ファイル', record: manifest.artifacts.web},
-    {name: '完成版台本ファイル（YAML）', record: manifest.artifacts.source},
-    {name: '完成版SB3ファイル', record: manifest.artifacts.sb3},
-    {name: 'スターターファイル', record: manifest.artifacts.starter},
-    {name: 'addition kitファイル', record: manifest.artifacts.additionKit},
+  const artifactSizes = renderArtifactSizes("公開成果物のファイルサイズ", [
+    { name: "Web版ファイル", record: manifest.artifacts.web },
+    { name: "完成版台本ファイル（YAML）", record: manifest.artifacts.source },
+    { name: "完成版SB3ファイル", record: manifest.artifacts.sb3 },
+    { name: "スターターファイル", record: manifest.artifacts.starter },
+    { name: "addition kitファイル", record: manifest.artifacts.additionKit },
   ]);
   return `<!doctype html>
 <html lang="ja">
@@ -548,7 +602,7 @@ export function renderTutorialIndex(work, manifest) {
   </style>
 </head>
 <body>
-${renderSiteHeader('../../')}
+${renderSiteHeader("../../")}
 <main id="main-content">
   <nav aria-label="作品内ナビゲーション"><a href="../../">作品一覧へ戻る</a></nav>
   <article>
@@ -575,7 +629,7 @@ ${artifactSizes}
     </dl>
   </article>
 </main>
-${renderSiteFooter('../../')}
+${renderSiteFooter("../../")}
 </body>
 </html>`;
 }
@@ -606,7 +660,7 @@ function renderRightsIndex() {
   </style>
 </head>
 <body>
-${renderSiteHeader('../')}
+${renderSiteHeader("../")}
 <main id="main-content">
   <h1>ライセンス・権利表示</h1>
   <p class="lead">作品ライブラリでは、当サイトで配布する作品と、第三者サイトで公開される作品へのリンクを区別しています。作品・素材に個別表示がある場合は、その条件を優先してください。</p>
@@ -640,19 +694,19 @@ ${renderSiteHeader('../')}
     </dl>
   </section>
 </main>
-${renderSiteFooter('../')}
+${renderSiteFooter("../")}
 </body>
 </html>
 `;
 }
 
 function profileRecord(profile, build, lock) {
-  const {manifest} = build;
+  const { manifest } = build;
   return {
     profile,
     outputName: manifest.outputName,
     scriptMode: manifest.script.mode,
-    assets: 'embedded',
+    assets: "embedded",
     sb3: {
       path: manifest.outputs.sb3.filename,
       size: manifest.outputs.sb3.size,
@@ -670,13 +724,26 @@ function profileRecord(profile, build, lock) {
   };
 }
 
-export function verifyConfiguredWebBuild(web, webConfig, artifactLock, description) {
+export function verifyConfiguredWebBuild(
+  web,
+  webConfig,
+  artifactLock,
+  description,
+) {
   const enabled = webConfig?.enabled === true;
-  assert.equal(web.enabled, enabled, `${description} enabled state differs from its configuration.`);
+  assert.equal(
+    web.enabled,
+    enabled,
+    `${description} enabled state differs from its configuration.`,
+  );
   if (enabled) {
     assert.deepEqual(web, artifactLock, `${description} lock is stale.`);
   } else {
-    assert.deepEqual(web, {enabled: false}, `${description} disabled result is invalid.`);
+    assert.deepEqual(
+      web,
+      { enabled: false },
+      `${description} disabled result is invalid.`,
+    );
   }
 }
 
@@ -698,38 +765,61 @@ export async function buildSite() {
     tutorialPublicSurfaces,
   ] = await Promise.all([
     readWorksCatalog(worksCatalogPath),
-    assetRecords(path.join(sourceDirectory, 'assets/images'), 'images'),
-    assetRecords(path.join(sourceDirectory, 'assets/sounds'), 'sounds'),
-    readFile(path.join(sourceDirectory, 'dsl4-artifacts.lock.json'), 'utf8').then(JSON.parse),
-    readFile(path.join(sourceDirectory, 'dsl4-build.config.json'), 'utf8').then(JSON.parse),
-    readFile(path.join(sourceDirectory, 'dsl4-web-artifacts.lock.json'), 'utf8').then(
+    assetRecords(path.join(sourceDirectory, "assets/images"), "images"),
+    assetRecords(path.join(sourceDirectory, "assets/sounds"), "sounds"),
+    readFile(
+      path.join(sourceDirectory, "dsl4-artifacts.lock.json"),
+      "utf8",
+    ).then(JSON.parse),
+    readFile(path.join(sourceDirectory, "dsl4-build.config.json"), "utf8").then(
       JSON.parse,
     ),
-    readFile(path.join(mySourceDirectory, 'dsl4-artifacts.lock.json'), 'utf8').then(JSON.parse),
-    readFile(path.join(mySourceDirectory, 'dsl4-build.config.json'), 'utf8').then(JSON.parse),
-    readFile(path.join(mySourceDirectory, 'dsl4-web-artifacts.lock.json'), 'utf8').then(
-      JSON.parse,
-    ),
-    readFile(path.join(tutorialSourceDirectory, 'dsl4-artifacts.lock.json'), 'utf8').then(
-      JSON.parse,
-    ),
-    readFile(path.join(tutorialSourceDirectory, 'dsl4-build.config.json'), 'utf8').then(
-      JSON.parse,
-    ),
-    readFile(path.join(tutorialSourceDirectory, 'dsl4-web-artifacts.lock.json'), 'utf8').then(
-      JSON.parse,
-    ),
-    readFile(path.join(tutorialSourceDirectory, 'public-surfaces.json'), 'utf8').then(
-      JSON.parse,
-    ),
+    readFile(
+      path.join(sourceDirectory, "dsl4-web-artifacts.lock.json"),
+      "utf8",
+    ).then(JSON.parse),
+    readFile(
+      path.join(mySourceDirectory, "dsl4-artifacts.lock.json"),
+      "utf8",
+    ).then(JSON.parse),
+    readFile(
+      path.join(mySourceDirectory, "dsl4-build.config.json"),
+      "utf8",
+    ).then(JSON.parse),
+    readFile(
+      path.join(mySourceDirectory, "dsl4-web-artifacts.lock.json"),
+      "utf8",
+    ).then(JSON.parse),
+    readFile(
+      path.join(tutorialSourceDirectory, "dsl4-artifacts.lock.json"),
+      "utf8",
+    ).then(JSON.parse),
+    readFile(
+      path.join(tutorialSourceDirectory, "dsl4-build.config.json"),
+      "utf8",
+    ).then(JSON.parse),
+    readFile(
+      path.join(tutorialSourceDirectory, "dsl4-web-artifacts.lock.json"),
+      "utf8",
+    ).then(JSON.parse),
+    readFile(
+      path.join(tutorialSourceDirectory, "public-surfaces.json"),
+      "utf8",
+    ).then(JSON.parse),
   ]);
   if (images.length !== 26 || sounds.length !== 22) {
-    throw new Error(`Unexpected Urashima asset counts: ${images.length} images, ${sounds.length} sounds.`);
+    throw new Error(
+      `Unexpected Urashima asset counts: ${images.length} images, ${sounds.length} sounds.`,
+    );
   }
-  const urashimaWork = worksCatalog.works.find(({id}) => id === 'urashima');
-  if (!urashimaWork) throw new Error('urashima is missing from the works catalog.');
-  const myUrashimaWork = worksCatalog.works.find(({id}) => id === 'my-urashima');
-  if (!myUrashimaWork) throw new Error('my-urashima is missing from the works catalog.');
+  const urashimaWork = worksCatalog.works.find(({ id }) => id === "urashima");
+  if (!urashimaWork)
+    throw new Error("urashima is missing from the works catalog.");
+  const myUrashimaWork = worksCatalog.works.find(
+    ({ id }) => id === "my-urashima",
+  );
+  if (!myUrashimaWork)
+    throw new Error("my-urashima is missing from the works catalog.");
   const catalogWithTutorial = validateWorksCatalog({
     ...structuredClone(worksCatalog),
     works: [...structuredClone(worksCatalog.works), tutorialConfig.work],
@@ -738,44 +828,55 @@ export async function buildSite() {
     ? catalogWithTutorial
     : worksCatalog;
 
-  await rm(outputDirectory, {recursive: true, force: true});
-  await rm(tutorialCandidateOutputDirectory, {recursive: true, force: true});
-  await mkdir(path.dirname(outputSampleDirectory), {recursive: true});
-  await mkdir(tutorialCandidateOutputDirectory, {recursive: true});
-  await mkdir(path.join(outputDirectory, 'licenses'), {recursive: true});
+  await rm(outputDirectory, { recursive: true, force: true });
+  await rm(tutorialCandidateOutputDirectory, { recursive: true, force: true });
+  await mkdir(path.dirname(outputSampleDirectory), { recursive: true });
+  await mkdir(tutorialCandidateOutputDirectory, { recursive: true });
+  await mkdir(path.join(outputDirectory, "licenses"), { recursive: true });
   await Promise.all([
-    copyFile(path.join(siteDirectory, 'favicon.png'), path.join(outputDirectory, 'favicon.png')),
     copyFile(
-      path.join(siteDirectory, 'favicon.source.json'),
-      path.join(outputDirectory, 'favicon.source.json'),
+      path.join(siteDirectory, "favicon.png"),
+      path.join(outputDirectory, "favicon.png"),
     ),
     copyFile(
-      path.join(siteDirectory, 'site-shell.css'),
-      path.join(outputDirectory, 'site-shell.css'),
+      path.join(siteDirectory, "favicon.source.json"),
+      path.join(outputDirectory, "favicon.source.json"),
     ),
-    copyFile(worksSchemaPath, path.join(outputDirectory, 'works.schema.json')),
-    copyFile(path.join(projectRoot, 'WORKS_POLICY.md'), path.join(outputDirectory, 'WORKS_POLICY.md')),
+    copyFile(
+      path.join(siteDirectory, "site-shell.css"),
+      path.join(outputDirectory, "site-shell.css"),
+    ),
+    copyFile(worksSchemaPath, path.join(outputDirectory, "works.schema.json")),
+    copyFile(
+      path.join(projectRoot, "WORKS_POLICY.md"),
+      path.join(outputDirectory, "WORKS_POLICY.md"),
+    ),
   ]);
-  await cp(sourceDirectory, outputSampleDirectory, {recursive: true});
-  await cp(mySourceDirectory, myOutputSampleDirectory, {recursive: true});
-  const {artifactsLock, config, results} = await buildUrashima(outputSampleDirectory);
+  await cp(sourceDirectory, outputSampleDirectory, { recursive: true });
+  await cp(mySourceDirectory, myOutputSampleDirectory, { recursive: true });
+  const { artifactsLock, config, results } = await buildUrashima(
+    outputSampleDirectory,
+  );
   const myUrashimaBuild = await buildMyUrashima(myOutputSampleDirectory);
   assert.equal(
     urashimaWork.updatedAt,
     artifactsLock.storyDate.value,
-    'The Urashima card update date differs from its story date.',
+    "The Urashima card update date differs from its story date.",
   );
   assert.equal(
     myUrashimaWork.updatedAt,
     myUrashimaBuild.artifactLock.storyDate.value,
-    'The my-urashima card update date differs from its story date.',
+    "The my-urashima card update date differs from its story date.",
   );
   const dsl4Build = await buildUrashimaDsl4({
     publishedOutputPath: path.join(outputSampleDirectory, dsl4Config.output),
     verifyCommittedOutput: false,
   });
   const myDsl4Build = await buildMyUrashimaDsl4({
-    publishedOutputPath: path.join(myOutputSampleDirectory, myDsl4Config.output),
+    publishedOutputPath: path.join(
+      myOutputSampleDirectory,
+      myDsl4Config.output,
+    ),
     verifyCommittedOutput: false,
   });
   const tutorialBuild = await buildTutorialDsl4({
@@ -790,13 +891,24 @@ export async function buildSite() {
     dsl4ScriptRecord,
   ] = await Promise.all([
     readFile(path.join(sourceDirectory, config.sourceScript)),
-    readFile(path.join(sourceDirectory, config.assetManifest), 'utf8').then(JSON.parse),
-    fileRecord(path.join(sourceDirectory, config.assetManifest), config.assetManifest),
-    fileRecord(path.join(sourceDirectory, config.sourceScript), config.sourceScript),
-    fileRecord(path.join(sourceDirectory, 'urashima.k4.yml'), 'urashima.k4.yml'),
+    readFile(path.join(sourceDirectory, config.assetManifest), "utf8").then(
+      JSON.parse,
+    ),
+    fileRecord(
+      path.join(sourceDirectory, config.assetManifest),
+      config.assetManifest,
+    ),
+    fileRecord(
+      path.join(sourceDirectory, config.sourceScript),
+      config.sourceScript,
+    ),
+    fileRecord(
+      path.join(sourceDirectory, "urashima.k4.yml"),
+      "urashima.k4.yml",
+    ),
   ]);
   const embeddedPaths = new Set(
-    assetManifest.assets.map((asset) => asset.uri.replace(/^file:/u, '')),
+    assetManifest.assets.map((asset) => asset.uri.replace(/^file:/u, "")),
   );
   const playerSb3Path =
     results.player.outputPaths[results.player.manifest.outputs.sb3.filename];
@@ -818,7 +930,7 @@ export async function buildSite() {
     dsl4Web,
     dsl4Config.web,
     dsl4WebLock,
-    'Urashima DSL 4.0 Web',
+    "Urashima DSL 4.0 Web",
   );
   const myDsl4Web = await buildPackagedWeb({
     inputSb3Path: myDsl4Build.outputPath,
@@ -831,7 +943,7 @@ export async function buildSite() {
     myDsl4Web,
     myDsl4Config.web,
     myDsl4WebLock,
-    'my-urashima DSL 4.0 Web',
+    "my-urashima DSL 4.0 Web",
   );
   const tutorialWeb = await buildPackagedWeb({
     inputSb3Path: tutorialBuild.outputPath,
@@ -844,17 +956,17 @@ export async function buildSite() {
     tutorialWeb,
     tutorialConfig.web,
     tutorialWebLock,
-    'tutorial DSL 4.0 Web',
+    "tutorial DSL 4.0 Web",
   );
   const assets = [...images, ...sounds];
   const manifest = {
     formatVersion: 5,
-    sample: 'urashima',
+    sample: "urashima",
     updatedAt: urashimaWork.updatedAt,
     publicUrl: `${publicUrl}stories/urashima/`,
-    license: 'MPL-2.0',
+    license: "MPL-2.0",
     builder: config.builder,
-    baseSb3: {...config.baseSb3, published: true},
+    baseSb3: { ...config.baseSb3, published: true },
     source: {
       script: sourceScriptRecord,
       dsl4Script: dsl4ScriptRecord,
@@ -866,8 +978,16 @@ export async function buildSite() {
       sha256: results.player.manifest.outputs.script.sha256,
     },
     profiles: {
-      editor: profileRecord('editor', results.editor, artifactsLock.profiles.editor),
-      player: profileRecord('player', results.player, artifactsLock.profiles.player),
+      editor: profileRecord(
+        "editor",
+        results.editor,
+        artifactsLock.profiles.editor,
+      ),
+      player: profileRecord(
+        "player",
+        results.player,
+        artifactsLock.profiles.player,
+      ),
     },
     dsl4Offline: {
       path: dsl4Build.artifactLock.output.path,
@@ -880,7 +1000,11 @@ export async function buildSite() {
     },
     dsl4Web,
     web,
-    assetCounts: {images: images.length, sounds: sounds.length, embedded: assetManifest.assets.length},
+    assetCounts: {
+      images: images.length,
+      sounds: sounds.length,
+      embedded: assetManifest.assets.length,
+    },
     unusedSourceAssets: assets
       .filter((asset) => !embeddedPaths.has(asset.path))
       .map((asset) => asset.path),
@@ -890,55 +1014,75 @@ export async function buildSite() {
   assert.deepEqual(myDsl4Build.artifactLock, myDsl4ArtifactLock);
   assert.deepEqual(tutorialBuild.artifactLock, tutorialArtifactLock);
   assert.deepEqual(
-    createTutorialPublicSurfaces(tutorialConfig, tutorialArtifactLock, tutorialWebLock),
+    createTutorialPublicSurfaces(
+      tutorialConfig,
+      tutorialArtifactLock,
+      tutorialWebLock,
+    ),
     tutorialPublicSurfaces,
   );
   const myDsl4Manifest = {
     ...myDsl4Build.artifactLock,
-    sample: 'my-urashima',
+    sample: "my-urashima",
     publicUrl: `${publicUrl}stories/my-urashima/`,
     web: myDsl4Web,
   };
   if (sha256(sourceScript) !== sourceScriptRecord.sha256) {
-    throw new Error('Source script changed while building the site.');
+    throw new Error("Source script changed while building the site.");
   }
 
-  await copyFile(path.join(projectRoot, 'LICENSE'), path.join(outputDirectory, 'LICENSE'));
-  await writeFile(path.join(outputDirectory, '.nojekyll'), '');
+  await copyFile(
+    path.join(projectRoot, "LICENSE"),
+    path.join(outputDirectory, "LICENSE"),
+  );
+  await writeFile(path.join(outputDirectory, ".nojekyll"), "");
   await writeFile(
-    path.join(outputDirectory, 'works.json'),
+    path.join(outputDirectory, "works.json"),
     `${JSON.stringify(publishedWorksCatalog, null, 2)}\n`,
-    'utf8',
+    "utf8",
   );
   await writeFile(
-    path.join(outputDirectory, 'index.html'),
+    path.join(outputDirectory, "index.html"),
     renderRootIndex(manifest, myDsl4Manifest, publishedWorksCatalog),
-    'utf8',
+    "utf8",
   );
-  await writeFile(path.join(outputDirectory, 'licenses/index.html'), renderRightsIndex(), 'utf8');
   await writeFile(
-    path.join(outputSampleDirectory, 'manifest.json'),
+    path.join(outputDirectory, "licenses/index.html"),
+    renderRightsIndex(),
+    "utf8",
+  );
+  await writeFile(
+    path.join(outputSampleDirectory, "manifest.json"),
     `${JSON.stringify(manifest, null, 2)}\n`,
-    'utf8',
+    "utf8",
   );
-  await writeFile(path.join(outputSampleDirectory, 'index.html'), renderSampleIndex(manifest), 'utf8');
   await writeFile(
-    path.join(myOutputSampleDirectory, 'dsl4-manifest.json'),
+    path.join(outputSampleDirectory, "index.html"),
+    renderSampleIndex(manifest),
+    "utf8",
+  );
+  await writeFile(
+    path.join(myOutputSampleDirectory, "dsl4-manifest.json"),
     `${JSON.stringify(myDsl4Manifest, null, 2)}\n`,
-    'utf8',
+    "utf8",
   );
   await writeFile(
-    path.join(myOutputSampleDirectory, 'index.html'),
-    renderMyUrashimaIndex(myUrashimaWork, myDsl4Manifest, myUrashimaBuild.artifactLock),
-    'utf8',
+    path.join(myOutputSampleDirectory, "index.html"),
+    renderMyUrashimaIndex(
+      myUrashimaWork,
+      myDsl4Manifest,
+      myUrashimaBuild.artifactLock,
+    ),
+    "utf8",
   );
 
   if (tutorialConfig.publication.enabled) {
-    await mkdir(tutorialOutputDirectory, {recursive: true});
+    await mkdir(tutorialOutputDirectory, { recursive: true });
     await Promise.all([
       ...[
-        'README.md',
-        'LICENSES.md',
+        "README.md",
+        "LICENSES.md",
+        "card-scene.webp",
         tutorialConfig.source,
         tutorialConfig.artifactsLock,
         tutorialConfig.webArtifactsLock,
@@ -959,9 +1103,12 @@ export async function buildSite() {
           path.join(tutorialOutputDirectory, filename),
         ),
       ),
-      mkdir(path.join(tutorialOutputDirectory, tutorialConfig.web.outputDirectory), {
-        recursive: true,
-      }).then(() =>
+      mkdir(
+        path.join(tutorialOutputDirectory, tutorialConfig.web.outputDirectory),
+        {
+          recursive: true,
+        },
+      ).then(() =>
         copyFile(
           path.join(
             tutorialCandidateOutputDirectory,
@@ -977,9 +1124,9 @@ export async function buildSite() {
       ),
     ]);
     await writeFile(
-      path.join(tutorialOutputDirectory, 'index.html'),
+      path.join(tutorialOutputDirectory, "index.html"),
       renderTutorialIndex(tutorialConfig.work, tutorialPublicSurfaces),
-      'utf8',
+      "utf8",
     );
   }
 
