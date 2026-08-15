@@ -41,7 +41,7 @@
         "src": "stories/urashima/card-scene.webp",
         "alt": "浜辺で亀を助ける浦島太郎と、ポーズ認識・チャージUIが表示されたDSL 4.0実行画面",
         "rightsHolder": "Hiroya Kuboおよび個別素材の権利者",
-        "licenseHref": "stories/urashima/LICENSES.md"
+        "licenseHref": "CARD_SCENES.md"
       },
       "actions": [
         {
@@ -108,7 +108,7 @@
         "src": "stories/my-urashima/card-scene.webp",
         "alt": "竜宮城で乙姫と、玉手箱を差し出す浦島太郎が表示されたDSL 4.0実行画面",
         "rightsHolder": "Hiroya Kuboおよび親作品に含まれる個別素材の権利者",
-        "licenseHref": "stories/urashima/LICENSES.md"
+        "licenseHref": "CARD_SCENES.md"
       },
       "actions": [
         {

@@ -31,7 +31,7 @@ test('publishes the approved works-library categories and rights metadata', asyn
     assert.match(work.thumbnail.src, /^stories\/.+\/card-scene\.webp$/u);
     assert(work.thumbnail.alt);
     assert(work.thumbnail.rightsHolder);
-    assert(work.thumbnail.licenseHref);
+    assert.equal(work.thumbnail.licenseHref, 'CARD_SCENES.md');
   }
 
   const urashima = catalog.works.find(({id}) => id === 'urashima');

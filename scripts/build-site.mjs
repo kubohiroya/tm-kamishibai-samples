@@ -771,6 +771,10 @@ export async function buildSite() {
       path.join(outputDirectory, 'site-shell.css'),
     ),
     copyFile(worksSchemaPath, path.join(outputDirectory, 'works.schema.json')),
+    copyFile(
+      path.join(siteDirectory, 'CARD_SCENES.md'),
+      path.join(outputDirectory, 'CARD_SCENES.md'),
+    ),
     copyFile(path.join(projectRoot, 'WORKS_POLICY.md'), path.join(outputDirectory, 'WORKS_POLICY.md')),
   ]);
   await cp(sourceDirectory, outputSampleDirectory, {recursive: true});

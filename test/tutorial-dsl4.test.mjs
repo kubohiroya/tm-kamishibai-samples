@@ -31,7 +31,7 @@ test('builds a deterministic published SB3 and tutorial distribution archives', 
   assert.equal(config.work.thumbnail.src, 'stories/tutorial/card-scene.webp');
   assert(config.work.thumbnail.alt);
   assert(config.work.thumbnail.rightsHolder);
-  assert.equal(config.work.thumbnail.licenseHref, 'stories/tutorial/LICENSES.md');
+  assert.equal(config.work.thumbnail.licenseHref, 'CARD_SCENES.md');
   assert.doesNotMatch(config.publication.reason, /docs|capture/iu);
   assert.deepEqual(
     createTutorialPublicSurfaces(config, build.artifactLock, webLock),

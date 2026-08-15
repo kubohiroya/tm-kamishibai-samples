@@ -624,6 +624,7 @@ export async function verifyPublishedSite(options = {}) {
   assert(publishedFiles.includes('site-shell.css'));
   assert(publishedFiles.includes('works.json'));
   assert(publishedFiles.includes('works.schema.json'));
+  assert(publishedFiles.includes('CARD_SCENES.md'));
   assert(publishedFiles.includes('WORKS_POLICY.md'));
   assert(publishedFiles.includes('licenses/index.html'));
   assert(publishedFiles.includes('stories/my-urashima/my-urashima.sb3'));
