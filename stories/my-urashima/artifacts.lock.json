@@ -40,14 +40,14 @@
   },
   "configuration": {
     "path": "sample.config.json",
-    "size": 1790,
-    "sha256": "c27cd1a5972e5f1500cc0bc80276de5cd930d8ee6d86e9d4ed0fd5df25c63e03"
+    "size": 1765,
+    "sha256": "0b3249bc06f666f51b9ad77dd110584585feb982843704885b7f303cd5071816"
   },
   "projectAssets": {
     "manifest": {
       "path": "project-assets.yml",
-      "size": 449,
-      "sha256": "56f26e4c2670aef9e15534dc03414be435159fe43d1707acb0b1c76269f3923b"
+      "size": 428,
+      "sha256": "72b55d5fb150133e3261d55cbcc056df3a5abe4df8c6d34cf20983bc13416600"
     },
     "files": [
       {
@@ -56,9 +56,9 @@
         "target": "Princess",
         "license": "CC-BY-SA-4.0: ../../resources/20260801/LICENSES.md",
         "source": {
-          "path": "../../resources/20260801/master/Princess.png",
-          "size": 220534,
-          "sha256": "e9d1857528a619e4a56ebd232fea4767fd6bdd00b20ac67a90c859c6b3598e83"
+          "path": "assets/Princess-720.png",
+          "size": 92889,
+          "sha256": "aefb045b41322faf9dc2c8117141362206ff5dcfcf6ef9b660c3f2709ab5a178"
         }
       }
     ]
@@ -67,8 +67,8 @@
     "outputName": "my-urashima",
     "sb3": {
       "filename": "my-urashima.sb3",
-      "sha256": "d6b9512a5691dc0e6ab1b296456af255c979eb3490b04bb4977bab4df07232b8",
-      "size": 9806584
+      "sha256": "e4252248903ce2f882f535091a260597e2e093b3c2d35bf3ba4c9c396f9a2ff3",
+      "size": 9679039
     },
     "script": {
       "filename": "my-urashima.txt",
@@ -78,7 +78,7 @@
     "manifest": {
       "filename": "my-urashima.manifest.json",
       "size": 30151,
-      "sha256": "e75e33a62a4da4a1763507713dfb67f1bd3e506063ae28da27f2364299542414"
+      "sha256": "33ebcb9d8e75fe182ad65ee54acd5f94dcb984659ca6092c090f07e2d4aeb97a"
     }
   }
 }

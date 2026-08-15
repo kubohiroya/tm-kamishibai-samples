@@ -37,6 +37,34 @@
         "label": "MPL-2.0、CC BY-SA 2.0ほか",
         "href": "stories/urashima/LICENSES.md"
       },
+      "thumbnail": {
+        "src": "stories/urashima/card-scenes.gif",
+        "alt": "浦島太郎が亀と出会う浜辺、海中、竜宮城、玉手箱の4場面が切り替わるアニメーション",
+        "rightsHolder": "Hiroya Kuboおよび個別素材の権利者",
+        "licenseHref": "CARD_SCENES.md",
+        "slides": [
+          {
+            "src": "stories/urashima/card-scenes/01.webp",
+            "alt": "浜辺で亀を見つけて近づく浦島太郎",
+            "caption": "浜辺で亀を見つける"
+          },
+          {
+            "src": "stories/urashima/card-scenes/02.webp",
+            "alt": "海中で亀の背中に乗って竜宮城へ向かう浦島太郎",
+            "caption": "亀に乗って竜宮城へ"
+          },
+          {
+            "src": "stories/urashima/card-scenes/03.webp",
+            "alt": "竜宮城で乙姫に歓迎される浦島太郎",
+            "caption": "乙姫の歓迎"
+          },
+          {
+            "src": "stories/urashima/card-scenes/04.webp",
+            "alt": "竜宮城で乙姫から玉手箱を受け取る浦島太郎",
+            "caption": "玉手箱を受け取る"
+          }
+        ]
+      },
       "actions": [
         {
           "label": "Web版を開く",
@@ -97,6 +125,34 @@
       "license": {
         "label": "MPL-2.0、CC BY-SA 2.0ほか",
         "href": "stories/urashima/LICENSES.md"
+      },
+      "thumbnail": {
+        "src": "stories/my-urashima/card-scenes.gif",
+        "alt": "my-urashimaの浜辺、海中、竜宮城、玉手箱の4場面が切り替わるアニメーション",
+        "rightsHolder": "Hiroya Kuboおよび親作品に含まれる個別素材の権利者",
+        "licenseHref": "CARD_SCENES.md",
+        "slides": [
+          {
+            "src": "stories/my-urashima/card-scenes/01.webp",
+            "alt": "浜辺で亀に声をかける浦島太郎",
+            "caption": "浜辺で亀に出会う"
+          },
+          {
+            "src": "stories/my-urashima/card-scenes/02.webp",
+            "alt": "海中で亀の背中に乗る浦島太郎",
+            "caption": "海中を進む"
+          },
+          {
+            "src": "stories/my-urashima/card-scenes/03.webp",
+            "alt": "竜宮城で正規化後の乙姫に歓迎される浦島太郎",
+            "caption": "乙姫が竜宮城へ歓迎"
+          },
+          {
+            "src": "stories/my-urashima/card-scenes/04.webp",
+            "alt": "竜宮城で乙姫から玉手箱を受け取る浦島太郎",
+            "caption": "玉手箱を受け取る"
+          }
+        ]
       },
       "actions": [
         {

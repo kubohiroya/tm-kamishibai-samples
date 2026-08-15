@@ -21,8 +21,8 @@
   "projectAssets": {
     "manifest": {
       "path": "project-assets-dsl4.yml",
-      "size": 10431,
-      "sha256": "dc2fe96e41009071cfe15bb8a2354fbfdc048054ec60ae5d63ef8d4a81075bf4"
+      "size": 10410,
+      "sha256": "60c58934753aea2fefae31b10de9cacd44f626b54e5181f6e5e30afd9a1fc43b"
     },
     "files": [
       {
@@ -221,9 +221,9 @@
         "kind": "costume",
         "target": "Princess",
         "source": {
-          "path": "../../resources/20260801/master/Princess.png",
-          "size": 220534,
-          "sha256": "e9d1857528a619e4a56ebd232fea4767fd6bdd00b20ac67a90c859c6b3598e83"
+          "path": "assets/Princess-720.png",
+          "size": 92889,
+          "sha256": "aefb045b41322faf9dc2c8117141362206ff5dcfcf6ef9b660c3f2709ab5a178"
         }
       },
       {
@@ -463,8 +463,8 @@
   },
   "output": {
     "path": "my-urashima-4.0.sb3",
-    "size": 15999155,
-    "sha256": "1bb291b60a5bbeef99e3623286e807d9913e48357a3baa319f40265c0eebddd3",
+    "size": 15871602,
+    "sha256": "cd271d963b9037f93621bdb2613c4b0f02c70c48bbaf33dac81677e3a7729c79",
     "archiveEntryCount": 51,
     "targetNames": [
       "Stage",

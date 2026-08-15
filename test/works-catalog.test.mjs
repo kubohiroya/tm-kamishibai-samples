@@ -27,11 +27,24 @@ test('publishes the approved works-library categories and rights metadata', asyn
     assert(work.license.href);
     assert(work.dslSeries.length > 0);
     assert.match(work.updatedAt, /^\d{4}-\d{2}-\d{2}$/u);
+    assert(work.thumbnail);
+    assert.match(work.thumbnail.src, /^stories\/.+\/card-scenes\.gif$/u);
+    assert(work.thumbnail.alt);
+    assert(work.thumbnail.rightsHolder);
+    assert.equal(work.thumbnail.licenseHref, 'CARD_SCENES.md');
+    assert(work.thumbnail.slides.length >= 4 && work.thumbnail.slides.length <= 5);
+    for (const slide of work.thumbnail.slides) {
+      assert.match(slide.src, /^stories\/.+\/card-scenes\/\d{2}\.webp$/u);
+      assert(slide.alt);
+      assert(slide.caption);
+    }
   }
 
   const urashima = catalog.works.find(({id}) => id === 'urashima');
   assert.equal(urashima.updatedAt, '2026-08-15');
   assert.equal(urashima.detailHref, 'stories/urashima/');
+  assert.equal(urashima.thumbnail.src, 'stories/urashima/card-scenes.gif');
+  assert.equal(urashima.thumbnail.slides.length, 4);
   assert.deepEqual(
     [...new Set(urashima.actions.map(({group}) => group))],
     ['DSL 3.2 実行版', 'DSL 4.0 オフライン実行版'],
@@ -51,6 +64,8 @@ test('publishes the approved works-library categories and rights metadata', asyn
   assert.equal(urashima.actions.some(({group}) => group === '作品情報'), false);
   const myUrashima = catalog.works.find(({id}) => id === 'my-urashima');
   assert.equal(myUrashima.detailHref, 'stories/my-urashima/');
+  assert.equal(myUrashima.thumbnail.src, 'stories/my-urashima/card-scenes.gif');
+  assert.equal(myUrashima.thumbnail.slides.length, 4);
   assert.deepEqual(myUrashima.dslSeries, ['3.2', '4.0']);
   assert.deepEqual(
     [...new Set(myUrashima.actions.map(({group}) => group))],

@@ -82,6 +82,39 @@
       "label": "MPL-2.0",
       "href": "stories/tutorial/LICENSES.md"
     },
+    "thumbnail": {
+      "src": "stories/tutorial/card-scenes.gif",
+      "alt": "地震安全チュートリアルのタイトル、カメラ確認、ポーズ認識、成功、達成メッセージの5画面が切り替わるアニメーション",
+      "rightsHolder": "Hiroya Kubo",
+      "licenseHref": "CARD_SCENES.md",
+      "slides": [
+        {
+          "src": "stories/tutorial/card-scenes/01.webp",
+          "alt": "TMPose紙芝居4.0.0-rc.5のタイトル画面",
+          "caption": "4.0.0-rc.5のタイトル"
+        },
+        {
+          "src": "stories/tutorial/card-scenes/02.webp",
+          "alt": "地震安全チュートリアルでカメラ使用の許可を確認する画面",
+          "caption": "カメラ使用を確認"
+        },
+        {
+          "src": "stories/tutorial/card-scenes/03.webp",
+          "alt": "机の下で頭を守るポーズを認識している画面",
+          "caption": "頭を守るポーズを認識"
+        },
+        {
+          "src": "stories/tutorial/card-scenes/04.webp",
+          "alt": "頭を守るポーズの成功を表示する画面",
+          "caption": "ポーズ成功"
+        },
+        {
+          "src": "stories/tutorial/card-scenes/05.webp",
+          "alt": "頭を守れたことを伝える達成メッセージ画面",
+          "caption": "安全行動を達成"
+        }
+      ]
+    },
     "actions": [
       {
         "label": "Web版を開く",

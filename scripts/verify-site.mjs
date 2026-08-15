@@ -209,6 +209,21 @@ export async function verifyPublishedSite(options = {}) {
   const myDsl4WebEnabled = myDsl4Config.web?.enabled === true;
 
   validateWorksCatalog(worksCatalog);
+  for (const work of worksCatalog.works.filter(({distribution}) => distribution === 'hosted')) {
+    assert(work.thumbnail, `${work.id} is missing its representative scene image.`);
+    const thumbnail = await stat(path.join(outputDirectory, work.thumbnail.src));
+    assert(thumbnail.isFile(), `${work.id} thumbnail is not a file.`);
+    assert(thumbnail.size > 0, `${work.id} thumbnail is empty.`);
+    assert(thumbnail.size <= 200_000, `${work.id} animated thumbnail exceeds 200 KB.`);
+    assert.equal(path.extname(work.thumbnail.src), '.gif', `${work.id} thumbnail must be a GIF.`);
+    for (const [index, slide] of work.thumbnail.slides.entries()) {
+      const scene = await stat(path.join(outputDirectory, slide.src));
+      assert(scene.isFile(), `${work.id} scene ${index + 1} is not a file.`);
+      assert(scene.size > 0, `${work.id} scene ${index + 1} is empty.`);
+      assert(scene.size <= 250_000, `${work.id} scene ${index + 1} exceeds 250 KB.`);
+      assert.equal(path.extname(slide.src), '.webp', `${work.id} scene ${index + 1} must be WebP.`);
+    }
+  }
   assert.equal(
     worksSchema.$id,
     'https://kubohiroya.github.io/tmpose-kamishibai-samples/works.schema.json',
@@ -507,6 +522,16 @@ export async function verifyPublishedSite(options = {}) {
       '<h3><a class="work-card__title-link" href="stories/urashima/">浦島太郎</a></h3>',
     ),
   );
+  assert(urashimaCard.includes('src="stories/urashima/card-scenes.gif"'));
+  assert(
+    urashimaCard.includes(
+      'srcset="stories/urashima/card-scenes/01.webp"',
+    ),
+  );
+  assert(urashimaCard.includes('data-scene-gallery="urashima"'));
+  assert(urashimaCard.includes('aria-haspopup="dialog"'));
+  assert(urashimaCard.includes('loading="lazy" decoding="async"'));
+  assert(urashimaCard.includes('4場面のループ画像：Hiroya Kuboおよび個別素材の権利者'));
   assert(rootDsl32Actions.includes('<h4>DSL 3.2 実行版</h4>'));
   assert(rootDsl32Actions.includes('Web版を開く'));
   assert(rootDsl32Actions.includes('DSL 3.2台本を表示'));
@@ -535,6 +560,19 @@ export async function verifyPublishedSite(options = {}) {
       '<h3><a class="work-card__title-link" href="stories/my-urashima/">my-urashima（ワークショップにおける作業用）</a></h3>',
     ),
   );
+  assert(myUrashimaCard.includes('src="stories/my-urashima/card-scenes.gif"'));
+  assert(myUrashimaCard.includes('data-scene-gallery="my-urashima"'));
+  assert(rootIndex.includes('src="stories/tutorial/card-scenes.gif"'));
+  assert(rootIndex.includes('data-scene-gallery="tutorial-earthquake-safety"'));
+  assert.equal((rootIndex.match(/loading="lazy" decoding="async"/gu) ?? []).length, 3);
+  assert(rootIndex.includes('id="scene-gallery-dialog"'));
+  assert(rootIndex.includes('data-scene-gallery-previous'));
+  assert(rootIndex.includes('data-scene-gallery-next'));
+  assert(rootIndex.includes("event.key === 'ArrowLeft'"));
+  assert(rootIndex.includes("event.key === 'ArrowRight'"));
+  assert(rootIndex.includes("event.key === 'Escape'"));
+  assert(rootIndex.includes('dialog.showModal()'));
+  assert.equal((rootIndex.match(/class="work-card__scene-button"/gu) ?? []).length, 3);
   const myUrashimaDsl32Actions = myUrashimaCard.slice(
     myUrashimaCard.indexOf('data-action-group="DSL 3.2 作業版"'),
     myUrashimaCard.indexOf('data-action-group="DSL 4.0 作業版"'),
@@ -611,12 +649,16 @@ export async function verifyPublishedSite(options = {}) {
   assert(publishedFiles.includes('site-shell.css'));
   assert(publishedFiles.includes('works.json'));
   assert(publishedFiles.includes('works.schema.json'));
+  assert(publishedFiles.includes('CARD_SCENES.md'));
   assert(publishedFiles.includes('WORKS_POLICY.md'));
   assert(publishedFiles.includes('licenses/index.html'));
   assert(publishedFiles.includes('stories/my-urashima/my-urashima.sb3'));
   assert(publishedFiles.includes('stories/my-urashima/my-urashima.txt'));
   assert(publishedFiles.includes('stories/my-urashima/my-urashima.k4.yml'));
   assert(publishedFiles.includes('stories/my-urashima/my-urashima-4.0.sb3'));
+  assert(publishedFiles.includes('stories/my-urashima/card-scenes.gif'));
+  assert(publishedFiles.includes('stories/my-urashima/card-scenes/04.webp'));
+  assert(!publishedFiles.includes('stories/my-urashima/card-scenes/05.webp'));
   assert(publishedFiles.includes('stories/my-urashima/dsl4-manifest.json'));
   assert.equal(
     publishedFiles.includes('stories/my-urashima/web-4.0/index.html'),
@@ -625,6 +667,11 @@ export async function verifyPublishedSite(options = {}) {
   assert(publishedFiles.includes('stories/my-urashima/index.html'));
   assert(publishedFiles.includes('stories/urashima/urashima.k4.yml'));
   assert(publishedFiles.includes('stories/urashima/urashima-4.0.sb3'));
+  assert(publishedFiles.includes('stories/urashima/card-scenes.gif'));
+  assert(publishedFiles.includes('stories/urashima/card-scenes/04.webp'));
+  assert(!publishedFiles.includes('stories/urashima/card-scenes/05.webp'));
+  assert(publishedFiles.includes('stories/tutorial/card-scenes.gif'));
+  assert(publishedFiles.includes('stories/tutorial/card-scenes/05.webp'));
   assert.equal(publishedFiles.includes('stories/urashima/web-4.0/index.html'), dsl4WebEnabled);
   assert(
     publishedFiles.includes(

@@ -45,6 +45,15 @@ function escapeHtml(value) {
     .replaceAll('"', '&quot;');
 }
 
+function escapeInlineJson(value) {
+  return JSON.stringify(value)
+    .replaceAll('<', '\\u003c')
+    .replaceAll('>', '\\u003e')
+    .replaceAll('&', '\\u0026')
+    .replaceAll('\u2028', '\\u2028')
+    .replaceAll('\u2029', '\\u2029');
+}
+
 export function formatFileSize(size) {
   assert(Number.isSafeInteger(size) && size >= 0, 'File size must be a non-negative integer.');
   const units = [
@@ -190,8 +199,26 @@ function renderWorkCard(work, features) {
   const title = work.detailHref
     ? `<a class="work-card__title-link" href="${escapeHtml(work.detailHref)}">${escapeHtml(work.title)}</a>`
     : escapeHtml(work.title);
+  const thumbnailImage = work.thumbnail
+    ? `<picture>
+              <source media="(prefers-reduced-motion: reduce)" srcset="${escapeHtml(work.thumbnail.slides[0].src)}">
+              <img src="${escapeHtml(work.thumbnail.src)}" alt="${escapeHtml(work.thumbnail.alt)}" loading="lazy" decoding="async">
+            </picture>`
+    : '';
+  const thumbnail = work.thumbnail
+    ? `        <figure class="work-card__scene">
+          <div class="work-card__scene-frame">
+            <button class="work-card__scene-button" type="button" data-scene-gallery="${escapeHtml(work.id)}" aria-haspopup="dialog" aria-label="${escapeHtml(`${work.title}の${work.thumbnail.slides.length}場面を拡大表示`)}">
+              ${thumbnailImage}
+              <span class="work-card__scene-badge" aria-hidden="true">${work.thumbnail.slides.length}場面を見る</span>
+            </button>
+          </div>
+          <figcaption>${work.thumbnail.slides.length}場面のループ画像：${escapeHtml(work.thumbnail.rightsHolder)}（<a href="${escapeHtml(work.thumbnail.licenseHref)}">利用条件</a>）</figcaption>
+        </figure>
+`
+    : '';
   return `      <article data-work-id="${escapeHtml(work.id)}" data-distribution="${escapeHtml(work.distribution)}">
-        <h3>${title}</h3>
+${thumbnail}        <h3>${title}</h3>
         <p>${escapeHtml(work.summary)}</p>
         <dl class="work-meta">
           <div><dt>更新日</dt><dd><time datetime="${work.updatedAt}">${formatDisplayDate(work.updatedAt)}</time></dd></div>
@@ -223,6 +250,11 @@ export function renderRootIndex(manifest, myDsl4Manifest, worksCatalog) {
   const categories = worksCatalog.categories
     .map((category) => renderWorkCategory(category, worksCatalog.works, features))
     .join('\n');
+  const galleries = Object.fromEntries(
+    worksCatalog.works
+      .filter((work) => work.thumbnail?.slides)
+      .map((work) => [work.id, {title: work.title, slides: work.thumbnail.slides}]),
+  );
   return `<!doctype html>
 <html lang="ja">
 <head>
@@ -243,6 +275,16 @@ export function renderRootIndex(manifest, myDsl4Manifest, worksCatalog) {
     .work-list { display: grid; grid-template-columns: 1fr; gap: 20px; }
     article { display: flex; min-width: 0; flex-direction: column; padding: 24px; border: 1px solid var(--line); border-radius: 14px; background: var(--paper); box-shadow: 0 8px 24px rgb(89 61 43 / 10%); }
     article h3 { margin-top: 0; }
+    .work-card__scene { margin: -24px -24px 20px; }
+    .work-card__scene-frame { aspect-ratio: 16 / 9; overflow: hidden; border-radius: 14px 14px 0 0; background: #111; }
+    .work-card__scene-button { position: relative; display: block; width: 100%; height: 100%; padding: 0; overflow: hidden; border: 0; background: #111; color: white; cursor: zoom-in; }
+    .work-card__scene picture { display: block; width: 100%; height: 100%; }
+    .work-card__scene img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 55%; transition: transform .2s ease; }
+    .work-card__scene-button:hover img { transform: scale(1.015); }
+    .work-card__scene-button:focus-visible { outline: 4px solid #f2a33a; outline-offset: -4px; }
+    .work-card__scene-badge { position: absolute; right: 12px; bottom: 12px; padding: .4rem .65rem; border: 1px solid rgb(255 255 255 / 65%); border-radius: 999px; background: rgb(25 17 13 / 82%); font-size: .82rem; font-weight: 800; box-shadow: 0 2px 10px rgb(0 0 0 / 28%); }
+    .work-card__scene figcaption { padding: .6rem 24px 0; color: var(--muted); font-size: .82rem; line-height: 1.5; }
+    .work-card__scene figcaption a { color: inherit; }
     .work-card__title-link { color: var(--accent); text-decoration-thickness: .08em; text-underline-offset: .16em; }
     .work-card__title-link:hover { text-decoration-thickness: .12em; }
     .work-meta { display: grid; gap: .65rem; margin: 1rem 0 0; }
@@ -258,6 +300,40 @@ export function renderRootIndex(manifest, myDsl4Manifest, worksCatalog) {
     .button { display: inline-block; padding: 10px 14px; border-radius: 8px; background: var(--accent); color: white; text-decoration: none; font-weight: 700; }
     .button.secondary { border: 1px solid var(--accent); background: white; color: var(--accent); }
     .button:disabled { cursor: not-allowed; opacity: .55; }
+    .scene-gallery-dialog { width: min(1120px, calc(100vw - 32px)); max-width: none; max-height: calc(100dvh - 32px); padding: 0; overflow: hidden; border: 1px solid rgb(255 255 255 / 22%); border-radius: 16px; background: #171311; color: white; box-shadow: 0 24px 80px rgb(0 0 0 / 55%); }
+    .scene-gallery-dialog::backdrop { background: rgb(20 13 10 / 82%); backdrop-filter: blur(3px); }
+    .scene-gallery-dialog__panel { display: grid; max-height: calc(100dvh - 32px); grid-template-rows: auto minmax(0, 1fr) auto; }
+    .scene-gallery-dialog__header { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; padding: 16px 18px 12px; }
+    .scene-gallery-dialog__eyebrow { margin: 0 0 .2rem; color: #d8c9bd; font-size: .78rem; font-weight: 800; letter-spacing: .08em; }
+    .scene-gallery-dialog h2 { margin: 0; font-size: clamp(1rem, 3vw, 1.4rem); }
+    .scene-gallery-dialog__close { width: 42px; height: 42px; flex: 0 0 auto; border: 1px solid rgb(255 255 255 / 35%); border-radius: 50%; background: rgb(255 255 255 / 10%); color: white; cursor: pointer; font-size: 1.6rem; line-height: 1; }
+    .scene-gallery-dialog__stage { position: relative; display: grid; min-height: 0; grid-template-columns: 52px minmax(0, 1fr) 52px; align-items: center; background: #050505; }
+    .scene-gallery-dialog__stage figure { display: grid; min-width: 0; min-height: 0; height: 100%; margin: 0; grid-template-rows: minmax(0, 1fr) auto; }
+    .scene-gallery-dialog__image { display: block; width: 100%; height: 100%; min-height: 0; max-height: calc(100dvh - 220px); object-fit: contain; }
+    .scene-gallery-dialog__caption { display: flex; justify-content: space-between; gap: 20px; padding: .7rem .25rem .8rem; color: #f4eee8; line-height: 1.5; }
+    .scene-gallery-dialog__counter { flex: 0 0 auto; color: #c8b8ac; font-variant-numeric: tabular-nums; }
+    .scene-gallery-dialog__nav { width: 42px; height: 58px; margin: 5px; border: 1px solid rgb(255 255 255 / 35%); border-radius: 10px; background: rgb(255 255 255 / 10%); color: white; cursor: pointer; font-size: 2rem; line-height: 1; }
+    .scene-gallery-dialog__close:hover, .scene-gallery-dialog__nav:hover { background: rgb(255 255 255 / 20%); }
+    .scene-gallery-dialog__close:focus-visible, .scene-gallery-dialog__nav:focus-visible, .scene-gallery-dialog__dot:focus-visible { outline: 3px solid #f2a33a; outline-offset: 2px; }
+    .scene-gallery-dialog__dots { display: flex; gap: 8px; justify-content: center; padding: 12px 18px 16px; overflow-x: auto; }
+    .scene-gallery-dialog__dot { width: 96px; min-width: 64px; aspect-ratio: 16 / 9; padding: 0; overflow: hidden; border: 2px solid transparent; border-radius: 7px; background: #050505; cursor: pointer; opacity: .62; }
+    .scene-gallery-dialog__dot[aria-selected="true"] { border-color: #f2a33a; opacity: 1; }
+    .scene-gallery-dialog__dot img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    @media (max-width: 640px) {
+      .scene-gallery-dialog { width: 100vw; max-height: 100dvh; border: 0; border-radius: 0; }
+      .scene-gallery-dialog__panel { max-height: 100dvh; }
+      .scene-gallery-dialog__header { padding: 12px; }
+      .scene-gallery-dialog__stage { grid-template-columns: 40px minmax(0, 1fr) 40px; }
+      .scene-gallery-dialog__nav { width: 34px; height: 48px; margin: 3px; }
+      .scene-gallery-dialog__image { max-height: calc(100dvh - 200px); }
+      .scene-gallery-dialog__caption { display: block; padding: .6rem .25rem; font-size: .9rem; }
+      .scene-gallery-dialog__counter { display: block; margin-top: .2rem; }
+      .scene-gallery-dialog__dots { justify-content: flex-start; padding: 9px 12px 12px; }
+      .scene-gallery-dialog__dot { width: 76px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .work-card__scene img { transition: none; }
+    }
     footer { margin-top: 40px; color: var(--muted); }
     code { overflow-wrap: anywhere; }
   </style>
@@ -273,6 +349,113 @@ ${categories}
     <p>作品ごとの対応DSL・掲載形態・ライセンスは、作品タイトルから開く詳細画面で確認できます。サイト生成コードと個別表示のないファイルには<a href="LICENSE">Mozilla Public License 2.0</a>が適用されます。</p>
   </aside>
 </main>
+<dialog class="scene-gallery-dialog" id="scene-gallery-dialog" aria-labelledby="scene-gallery-title">
+  <div class="scene-gallery-dialog__panel">
+    <header class="scene-gallery-dialog__header">
+      <div>
+        <p class="scene-gallery-dialog__eyebrow">作品スクリーンショット</p>
+        <h2 id="scene-gallery-title" data-scene-gallery-title></h2>
+      </div>
+      <button class="scene-gallery-dialog__close" type="button" data-scene-gallery-close aria-label="カルーセルを閉じる">×</button>
+    </header>
+    <div class="scene-gallery-dialog__stage">
+      <button class="scene-gallery-dialog__nav" type="button" data-scene-gallery-previous aria-label="前の場面">‹</button>
+      <figure>
+        <img class="scene-gallery-dialog__image" data-scene-gallery-image src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="">
+        <figcaption class="scene-gallery-dialog__caption">
+          <span data-scene-gallery-caption></span>
+          <span class="scene-gallery-dialog__counter" data-scene-gallery-counter aria-live="polite"></span>
+        </figcaption>
+      </figure>
+      <button class="scene-gallery-dialog__nav" type="button" data-scene-gallery-next aria-label="次の場面">›</button>
+    </div>
+    <div class="scene-gallery-dialog__dots" data-scene-gallery-dots role="tablist" aria-label="場面を選択"></div>
+  </div>
+</dialog>
+<script type="application/json" id="scene-gallery-data">${escapeInlineJson(galleries)}</script>
+<script>
+  (() => {
+    const galleries = JSON.parse(document.querySelector('#scene-gallery-data').textContent);
+    const dialog = document.querySelector('#scene-gallery-dialog');
+    const title = dialog.querySelector('[data-scene-gallery-title]');
+    const image = dialog.querySelector('[data-scene-gallery-image]');
+    const caption = dialog.querySelector('[data-scene-gallery-caption]');
+    const counter = dialog.querySelector('[data-scene-gallery-counter]');
+    const dots = dialog.querySelector('[data-scene-gallery-dots]');
+    let activeGallery;
+    let activeIndex = 0;
+    let opener;
+
+    function renderSlide(index, focusDot = false) {
+      const slides = activeGallery.slides;
+      activeIndex = (index + slides.length) % slides.length;
+      const slide = slides[activeIndex];
+      image.src = slide.src;
+      image.alt = slide.alt;
+      caption.textContent = slide.caption;
+      counter.textContent = String(activeIndex + 1) + ' / ' + String(slides.length);
+      for (const [dotIndex, dot] of [...dots.children].entries()) {
+        const selected = dotIndex === activeIndex;
+        dot.setAttribute('aria-selected', String(selected));
+        dot.tabIndex = selected ? 0 : -1;
+        if (selected && focusDot) dot.focus();
+      }
+    }
+
+    function openGallery(button) {
+      activeGallery = galleries[button.dataset.sceneGallery];
+      if (!activeGallery) return;
+      opener = button;
+      title.textContent = activeGallery.title;
+      dots.replaceChildren();
+      for (const [index, slide] of activeGallery.slides.entries()) {
+        const dot = document.createElement('button');
+        dot.className = 'scene-gallery-dialog__dot';
+        dot.type = 'button';
+        dot.setAttribute('role', 'tab');
+        dot.setAttribute('aria-label', String(index + 1) + '枚目：' + slide.caption);
+        const thumbnail = document.createElement('img');
+        thumbnail.src = slide.src;
+        thumbnail.alt = '';
+        dot.append(thumbnail);
+        dot.addEventListener('click', () => renderSlide(index));
+        dots.append(dot);
+      }
+      renderSlide(0);
+      dialog.showModal();
+    }
+
+    for (const button of document.querySelectorAll('[data-scene-gallery]')) {
+      button.addEventListener('click', () => openGallery(button));
+    }
+    dialog.querySelector('[data-scene-gallery-close]').addEventListener('click', () => dialog.close());
+    dialog.querySelector('[data-scene-gallery-previous]').addEventListener('click', () => renderSlide(activeIndex - 1));
+    dialog.querySelector('[data-scene-gallery-next]').addEventListener('click', () => renderSlide(activeIndex + 1));
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+    dialog.addEventListener('keydown', (event) => {
+      if (!activeGallery) return;
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        renderSlide(activeIndex - 1);
+      } else if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        renderSlide(activeIndex + 1);
+      } else if (event.key === 'Home') {
+        event.preventDefault();
+        renderSlide(0, true);
+      } else if (event.key === 'End') {
+        event.preventDefault();
+        renderSlide(activeGallery.slides.length - 1, true);
+      } else if (event.key === 'Escape') {
+        event.preventDefault();
+        dialog.close();
+      }
+    });
+    dialog.addEventListener('close', () => opener?.focus());
+  })();
+</script>
 ${renderSiteFooter('')}
 </body>
 </html>
@@ -754,6 +937,10 @@ export async function buildSite() {
       path.join(outputDirectory, 'site-shell.css'),
     ),
     copyFile(worksSchemaPath, path.join(outputDirectory, 'works.schema.json')),
+    copyFile(
+      path.join(siteDirectory, 'CARD_SCENES.md'),
+      path.join(outputDirectory, 'CARD_SCENES.md'),
+    ),
     copyFile(path.join(projectRoot, 'WORKS_POLICY.md'), path.join(outputDirectory, 'WORKS_POLICY.md')),
   ]);
   await cp(sourceDirectory, outputSampleDirectory, {recursive: true});
@@ -939,6 +1126,7 @@ export async function buildSite() {
       ...[
         'README.md',
         'LICENSES.md',
+        'card-scenes.gif',
         tutorialConfig.source,
         tutorialConfig.artifactsLock,
         tutorialConfig.webArtifactsLock,
@@ -958,6 +1146,11 @@ export async function buildSite() {
           path.join(tutorialCandidateOutputDirectory, filename),
           path.join(tutorialOutputDirectory, filename),
         ),
+      ),
+      cp(
+        path.join(tutorialSourceDirectory, 'card-scenes'),
+        path.join(tutorialOutputDirectory, 'card-scenes'),
+        {recursive: true},
       ),
       mkdir(path.join(tutorialOutputDirectory, tutorialConfig.web.outputDirectory), {
         recursive: true,

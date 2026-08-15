@@ -4,14 +4,14 @@
   "input": {
     "profile": "dsl4-workshop",
     "path": "my-urashima-4.0.sb3",
-    "size": 15999155,
-    "sha256": "1bb291b60a5bbeef99e3623286e807d9913e48357a3baa319f40265c0eebddd3"
+    "size": 15871602,
+    "sha256": "cd271d963b9037f93621bdb2613c4b0f02c70c48bbaf33dac81677e3a7729c79"
   },
   "output": {
     "path": "web-4.0/index.html",
     "contentType": "text/html",
-    "size": 26569764,
-    "sha256": "e434d26746e2a4b4e668afd16f88b5d791d01c7e06acf0ea7a905dc90efbb8a3"
+    "size": 26410236,
+    "sha256": "91222a2b4763e876b3db94e524714cef1d8b6056a591aa3564a773bb9199cbac"
   },
   "packager": {
     "package": "@turbowarp/packager",
