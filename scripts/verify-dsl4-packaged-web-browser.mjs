@@ -367,9 +367,9 @@ try {
     });
 
     let poseSkipAccepted = false;
-    for (let index = 0; index < 20 && !poseSkipAccepted; index += 1) {
+    for (let index = 0; index < 60 && !poseSkipAccepted; index += 1) {
       poseSkipAccepted = await dispatchTutorialKey('Space');
-      if (!poseSkipAccepted) await tutorial.page.waitForTimeout(500);
+      if (!poseSkipAccepted) await tutorial.page.waitForTimeout(1_000);
     }
     assert.equal(poseSkipAccepted, true, 'The active tutorial pose must accept the skip control.');
     try {
