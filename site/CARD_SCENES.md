@@ -17,10 +17,10 @@
 
 - 公開ファイル: `stories/my-urashima/card-scene.webp`
 - 内容: 竜宮城で乙姫と、玉手箱を差し出す浦島太郎が表示されたDSL 4.0実行画面
-- 撮影基準: `tmpose-kamishibai@f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6`（4.0.0-rc.5）、`tmpose-kamishibai-samples@9abcee7`
+- 撮影基準: `tmpose-kamishibai@f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6`（4.0.0-rc.5）、`tmpose-kamishibai-samples@b3a62eb`
 - 撮影条件: Chrome、1280×720表示、実人物のcamera映像なし
-- 公開画像: 960×720、56,688 bytes
-- SHA-256: `64837e88b0c4edbb9e9bb21318b3c8871e6a0769123d0429b39b68e1cc607c9c`
+- 公開画像: 960×720、50,722 bytes
+- SHA-256: `91ae6b4d58966afb9f1490d9c8b757fa04180b0f67068f91cde4e2f4a291385c`
 
 ### 地震だ！頭を守ろう（DSL 4.0チュートリアル）
 
