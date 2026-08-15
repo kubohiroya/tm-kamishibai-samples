@@ -12,7 +12,7 @@
     "source": "0.6.0"
   },
   "storyDate": {
-    "value": "2026-08-13",
+    "value": "2026-08-15",
     "contentSha256": "edc984c7f0593b6d002ab59e8b9b0267e01ba7e2278b70a34b971b9950a021be"
   },
   "parentStory": {
@@ -25,7 +25,7 @@
     "sourceScript": {
       "path": "../urashima/source.txt",
       "size": 10379,
-      "sha256": "4f3df2eb4f10802ef7eb335e5c061b436a3f60142752e4cafcda151900c1a56a"
+      "sha256": "2af074f83ed77fd5dc49b547f41ed27f6de0ae907a54260a7b8f8cf5ffe78903"
     },
     "assetManifest": {
       "path": "../urashima/assets.lock.json",
@@ -72,13 +72,13 @@
     },
     "script": {
       "filename": "my-urashima.txt",
-      "sha256": "c23a5d2e84ce5ae2d1bc18f240e4bac1cd267a45f94a01fad14ce444a817a1a2",
+      "sha256": "4f9a17569f3df31a942110d7186c1b067f997451d86de556e2d7c4b74e05f8e3",
       "size": 8522
     },
     "manifest": {
       "filename": "my-urashima.manifest.json",
       "size": 30151,
-      "sha256": "519621202973abc961ccc2ae8ffabfa43e9be5bdd0ccc255363f4a82b6049681"
+      "sha256": "e75e33a62a4da4a1763507713dfb67f1bd3e506063ae28da27f2364299542414"
     }
   }
 }

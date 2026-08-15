@@ -57,7 +57,7 @@ export async function verifyTutorialCandidate(options = {}) {
   );
   assert.equal(publicSurfaces.sourceIdentity, artifactLock.sourceIdentity);
   assert.equal(publicSurfaces.releaseDependency, config.releaseDependency);
-  assert.match(config.releaseDependency, /tmpose-kamishibai\/issues\/571$/u);
+  assert.match(config.releaseDependency, /tmpose-kamishibai\/issues\/583$/u);
   assert.doesNotMatch(
     config.publication.reason,
     /docs|capture/iu,

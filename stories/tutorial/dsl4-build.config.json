@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "status": "published",
-  "version": "4.0.0-rc.3",
-  "releaseDependency": "https://github.com/kubohiroya/tmpose-kamishibai/issues/571",
+  "version": "4.0.0-rc.5",
+  "releaseDependency": "https://github.com/kubohiroya/tmpose-kamishibai/issues/583",
   "runtime": {
     "config": "../urashima/dsl4-build.config.json"
   },
@@ -26,7 +26,7 @@
   },
   "publication": {
     "enabled": true,
-    "reason": "tmpose-kamishibai 4.0.0-rc.3 is published and verified by tmpose-kamishibai#571",
+    "reason": "tmpose-kamishibai 4.0.0-rc.5 is published and verified by tmpose-kamishibai#583",
     "issue": "https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/106"
   },
   "webArtifactsLock": "dsl4-web-artifacts.lock.json",
@@ -71,7 +71,7 @@
     "id": "tutorial-earthquake-safety",
     "category": "official",
     "title": "地震だ！頭を守ろう（DSL 4.0チュートリアル）",
-    "updatedAt": "2026-08-13",
+    "updatedAt": "2026-08-15",
     "detailHref": "stories/tutorial/",
     "summary": "教室で地震の揺れを感じたときの安全行動を、見本と達成メッセージ付きで練習する4場面の公式サンプルです。",
     "creator": "Hiroya Kubo",

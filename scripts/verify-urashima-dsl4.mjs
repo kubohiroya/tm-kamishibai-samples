@@ -64,7 +64,10 @@ export async function verifyUrashimaDsl4() {
   const stage = project.targets.find((target) => target.isStage);
   assert.equal(stage?.blocks?.titleFlag?.opcode, 'event_whenflagclicked');
   assert.equal(stage?.blocks?.titleFlag?.next, 'titleFlagShow');
-  assert.equal(stage?.blocks?.titleFlagShow?.opcode, 'kubohiroyakamishibai4_showTitle');
+  assert.equal(
+    stage?.blocks?.titleFlagShow?.opcode,
+    'kubohiroyakamishibai4_kubohiroyakamishibairuntime4__showTitle',
+  );
   const extensionSource = Buffer.from(
     project.extensionURLs.kubohiroyakamishibai4.slice('data:text/javascript;base64,'.length),
     'base64',
