@@ -154,6 +154,7 @@ export async function verifyPublishedSite(options = {}) {
     rootIndex,
     sampleIndex,
     myUrashimaIndex,
+    tutorialIndex,
     rightsIndex,
     manifest,
     myDsl4Manifest,
@@ -177,6 +178,7 @@ export async function verifyPublishedSite(options = {}) {
       verifyLinks(path.join(outputDirectory, 'index.html')),
       verifyLinks(path.join(outputSampleDirectory, 'index.html')),
       verifyLinks(path.join(myUrashimaOutputDirectory, 'index.html')),
+      verifyLinks(path.join(outputDirectory, 'stories/tutorial/index.html')),
       verifyLinks(path.join(outputDirectory, 'licenses/index.html')),
       readFile(path.join(outputSampleDirectory, 'manifest.json'), 'utf8').then(JSON.parse),
       readFile(path.join(myUrashimaOutputDirectory, 'dsl4-manifest.json'), 'utf8').then(
@@ -457,9 +459,11 @@ export async function verifyPublishedSite(options = {}) {
   assert(packagerNotice.includes('MPL-2.0'));
   verifySiteHeader(rootIndex, '');
   verifySiteHeader(sampleIndex, '../../');
+  verifySiteHeader(tutorialIndex, '../../');
   verifySiteHeader(rightsIndex, '../');
   verifySiteFooter(rootIndex, '');
   verifySiteFooter(sampleIndex, '../../');
+  verifySiteFooter(tutorialIndex, '../../');
   verifySiteFooter(rightsIndex, '../');
   assert(rootIndex.includes('<title>TMPose紙芝居 作品ライブラリ</title>'));
   assert(rootIndex.includes('<h1>TMPose紙芝居 作品ライブラリ</h1>'));
@@ -476,6 +480,10 @@ export async function verifyPublishedSite(options = {}) {
   assert(sampleIndex.includes('<dt>対応DSL</dt><dd>3.2／4.0</dd>'));
   assert(sampleIndex.includes('<dt>掲載形態</dt><dd>当サイトで配布</dd>'));
   assert(sampleIndex.includes('<dt>ライセンス・利用条件</dt>'));
+  assert(sampleIndex.includes('src="card-scenes.gif"'));
+  assert(sampleIndex.includes('data-work-carousel="urashima"'));
+  assert(sampleIndex.includes('src="card-scenes/04.webp"'));
+  assert(sampleIndex.includes('href="../../CARD_SCENES.md"'));
   assert(
     myUrashimaIndex.includes(
       '<title>my-urashima（ワークショップにおける作業用） | TMPose紙芝居 作品ライブラリ</title>',
@@ -484,6 +492,22 @@ export async function verifyPublishedSite(options = {}) {
   assert(myUrashimaIndex.includes('<dt>対応DSL</dt><dd>3.2／4.0</dd>'));
   assert(myUrashimaIndex.includes('<dt>掲載形態</dt><dd>当サイトで配布</dd>'));
   assert(myUrashimaIndex.includes('<dt>ライセンス・利用条件</dt>'));
+  assert(myUrashimaIndex.includes('src="card-scenes.gif"'));
+  assert(myUrashimaIndex.includes('data-work-carousel="my-urashima"'));
+  assert(myUrashimaIndex.includes('src="card-scenes/04.webp"'));
+  assert(myUrashimaIndex.includes('href="../../CARD_SCENES.md"'));
+  assert(tutorialIndex.includes('src="card-scenes.gif"'));
+  assert(tutorialIndex.includes('data-work-carousel="tutorial-earthquake-safety"'));
+  assert(tutorialIndex.includes('src="card-scenes/05.webp"'));
+  assert(tutorialIndex.includes('href="../../CARD_SCENES.md"'));
+  for (const detailIndex of [sampleIndex, myUrashimaIndex, tutorialIndex]) {
+    assert(detailIndex.includes('>作品の場面紹介</h2>'));
+    assert(detailIndex.includes('data-work-carousel-previous'));
+    assert(detailIndex.includes('data-work-carousel-next'));
+    assert(detailIndex.includes('role="status" aria-live="polite"'));
+    assert(detailIndex.includes('ArrowLeft'));
+    assert(detailIndex.includes('ArrowRight'));
+  }
   assert(myUrashimaIndex.includes('data-dsl-series="3.2"'));
   assert(myUrashimaIndex.includes('data-dsl-series="4.0"'));
   assert(myUrashimaIndex.includes('my-urashima.k4.yml'));
