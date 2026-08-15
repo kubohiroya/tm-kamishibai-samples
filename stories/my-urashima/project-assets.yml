@@ -16,8 +16,8 @@ assets:
   Princess:
     kind: costume
     target: Princess
-    file: ../../resources/20260801/master/Princess.png
+    file: assets/Princess-720.png
     bitmapResolution: 2
-    rotationCenterX: 507
-    rotationCenterY: 507
+    rotationCenterX: 360
+    rotationCenterY: 360
     license: 'CC-BY-SA-4.0: ../../resources/20260801/LICENSES.md'

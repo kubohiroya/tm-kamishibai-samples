@@ -378,7 +378,7 @@ test('keeps my-urashima external-script-only and publishes its DSL 4.0 workshop 
       readFile(path.join(projectRoot, 'stories/my-urashima/artifacts.lock.json'), 'utf8').then(
         JSON.parse,
       ),
-      readFile(path.join(projectRoot, 'resources/20260801/master/Princess.png')),
+      readFile(path.join(projectRoot, 'stories/my-urashima/assets/Princess-720.png')),
     ]);
   const archive = unzipSync(new Uint8Array(myUrashima));
   const project = JSON.parse(strFromU8(archive['project.json']));
@@ -409,7 +409,11 @@ test('keeps my-urashima external-script-only and publishes its DSL 4.0 workshop 
       rotationCenterX: princessCostume.rotationCenterX,
       rotationCenterY: princessCostume.rotationCenterY,
     },
-    {bitmapResolution: 2, rotationCenterX: 507, rotationCenterY: 507},
+    {bitmapResolution: 2, rotationCenterX: 360, rotationCenterY: 360},
+  );
+  assert.deepEqual(
+    [princessSource.readUInt32BE(16), princessSource.readUInt32BE(20)],
+    [720, 720],
   );
   assert.equal(princess.size, 70);
   assert.equal(
@@ -457,7 +461,7 @@ test('keeps my-urashima external-script-only and publishes its DSL 4.0 workshop 
   });
   assert.deepEqual(config.projectAssets, {
     manifest: 'project-assets.yml',
-    allowedRoots: ['../../resources/20260801/master'],
+    allowedRoots: ['assets'],
   });
   assert.deepEqual(projectAssets.sprites.Princess, {
     layerOrder: 6,
@@ -473,10 +477,10 @@ test('keeps my-urashima external-script-only and publishes its DSL 4.0 workshop 
   assert.deepEqual(projectAssets.assets.Princess, {
     kind: 'costume',
     target: 'Princess',
-    file: '../../resources/20260801/master/Princess.png',
+    file: 'assets/Princess-720.png',
     bitmapResolution: 2,
-    rotationCenterX: 507,
-    rotationCenterY: 507,
+    rotationCenterX: 360,
+    rotationCenterY: 360,
     license: 'CC-BY-SA-4.0: ../../resources/20260801/LICENSES.md',
   });
   assert.equal(artifactsLock.parentStory.name, 'urashima');
@@ -496,9 +500,9 @@ test('keeps my-urashima external-script-only and publishes its DSL 4.0 workshop 
       target: 'Princess',
       license: 'CC-BY-SA-4.0: ../../resources/20260801/LICENSES.md',
       source: {
-        path: '../../resources/20260801/master/Princess.png',
-        size: 220534,
-        sha256: 'e9d1857528a619e4a56ebd232fea4767fd6bdd00b20ac67a90c859c6b3598e83',
+        path: 'assets/Princess-720.png',
+        size: 92889,
+        sha256: 'aefb045b41322faf9dc2c8117141362206ff5dcfcf6ef9b660c3f2709ab5a178',
       },
     },
   ]);

@@ -53,6 +53,15 @@ function inspectProject(sb3Bytes, expectedAssetNames) {
     [{name: 'Princess', dataFormat: 'png'}],
     'The workshop Princess target must contain only the Princess.png costume.',
   );
+  assert.deepEqual(
+    {
+      bitmapResolution: princess.costumes[0].bitmapResolution,
+      rotationCenterX: princess.costumes[0].rotationCenterX,
+      rotationCenterY: princess.costumes[0].rotationCenterY,
+    },
+    {bitmapResolution: 2, rotationCenterX: 360, rotationCenterY: 360},
+    'The workshop Princess costume must have a 360x360 logical canvas.',
+  );
   assert.equal(project.extensions.includes('kubohiroyakamishibai4'), true);
   assert.match(project.extensionURLs.kubohiroyakamishibai4, /^data:/u);
   assert.equal(
@@ -131,6 +140,7 @@ export async function buildMyUrashimaDsl4({
     const withAssets = await createDeterministicSb3(importedBase, {
       allowedAssetRoots: [
         path.join(projectRoot, 'stories/urashima'),
+        path.join(storyDirectory, 'assets'),
         path.join(projectRoot, 'resources/20260801/master'),
       ],
       projectAssetsPath,

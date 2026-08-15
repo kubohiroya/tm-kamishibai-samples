@@ -12,7 +12,7 @@
   },
   "projectAssets": {
     "manifest": "project-assets.yml",
-    "allowedRoots": ["../../resources/20260801/master"]
+    "allowedRoots": ["assets"]
   },
   "scriptReplacements": [
     {
