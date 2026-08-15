@@ -28,10 +28,11 @@ test('builds a deterministic published SB3 and tutorial distribution archives', 
   assert.equal(build.artifactLock.version, '4.0.0-rc.5');
   assert.equal(build.artifactLock.publication.enabled, true);
   assert.equal(build.artifactLock.publication.reason, config.publication.reason);
-  assert.equal(config.work.thumbnail.src, 'stories/tutorial/card-scene.webp');
+  assert.equal(config.work.thumbnail.src, 'stories/tutorial/card-scenes.gif');
   assert(config.work.thumbnail.alt);
   assert(config.work.thumbnail.rightsHolder);
   assert.equal(config.work.thumbnail.licenseHref, 'CARD_SCENES.md');
+  assert.equal(config.work.thumbnail.slides.length, 5);
   assert.doesNotMatch(config.publication.reason, /docs|capture/iu);
   assert.deepEqual(
     createTutorialPublicSurfaces(config, build.artifactLock, webLock),

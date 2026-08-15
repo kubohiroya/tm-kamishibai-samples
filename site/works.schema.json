@@ -67,12 +67,28 @@
     "thumbnail": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["src", "alt", "rightsHolder", "licenseHref"],
+      "required": ["src", "alt", "rightsHolder", "licenseHref", "slides"],
       "properties": {
         "src": {"type": "string", "minLength": 1},
         "alt": {"type": "string"},
         "rightsHolder": {"type": "string", "minLength": 1},
-        "licenseHref": {"type": "string", "minLength": 1}
+        "licenseHref": {"type": "string", "minLength": 1},
+        "slides": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 5,
+          "items": {"$ref": "#/$defs/sceneSlide"}
+        }
+      }
+    },
+    "sceneSlide": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["src", "alt", "caption"],
+      "properties": {
+        "src": {"type": "string", "minLength": 1},
+        "alt": {"type": "string", "minLength": 1},
+        "caption": {"type": "string", "minLength": 1}
       }
     },
     "work": {

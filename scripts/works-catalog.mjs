@@ -88,14 +88,26 @@ function validateAction(action, label) {
 function validateThumbnail(thumbnail, label) {
   assertKeys(
     thumbnail,
-    ['src', 'alt', 'rightsHolder', 'licenseHref'],
-    ['src', 'alt', 'rightsHolder', 'licenseHref'],
+    ['src', 'alt', 'rightsHolder', 'licenseHref', 'slides'],
+    ['src', 'alt', 'rightsHolder', 'licenseHref', 'slides'],
     label,
   );
   assertString(thumbnail.src, `${label}.src`);
   assert.equal(typeof thumbnail.alt, 'string', `${label}.alt must be a string.`);
   assertString(thumbnail.rightsHolder, `${label}.rightsHolder`);
   assertString(thumbnail.licenseHref, `${label}.licenseHref`);
+  assert(
+    Array.isArray(thumbnail.slides) && thumbnail.slides.length >= 4 && thumbnail.slides.length <= 5,
+    `${label}.slides must contain four or five scenes.`,
+  );
+  const slideSources = new Set();
+  for (const [index, slide] of thumbnail.slides.entries()) {
+    const slideLabel = `${label}.slides[${index}]`;
+    assertKeys(slide, ['src', 'alt', 'caption'], ['src', 'alt', 'caption'], slideLabel);
+    for (const key of ['src', 'alt', 'caption']) assertString(slide[key], `${slideLabel}.${key}`);
+    assert(!slideSources.has(slide.src), `${slideLabel}.src must be unique.`);
+    slideSources.add(slide.src);
+  }
 }
 
 export function validateWorksCatalog(catalog) {
@@ -202,6 +214,12 @@ export function validateWorksCatalog(catalog) {
           work.thumbnail.licenseHref.startsWith('https://'),
           `${label}.thumbnail.licenseHref must use HTTPS.`,
         );
+        for (const [index, slide] of work.thumbnail.slides.entries()) {
+          assert(
+            slide.src.startsWith('https://'),
+            `${label}.thumbnail.slides[${index}].src must use HTTPS.`,
+          );
+        }
       }
       if (work.detailHref) {
         assert(
@@ -234,6 +252,12 @@ export function validateWorksCatalog(catalog) {
           assert(
             !/^(?:[a-z]+:|\/|\.\.)/iu.test(work.thumbnail[key]),
             `${label}.thumbnail.${key} must be site-relative.`,
+          );
+        }
+        for (const [index, slide] of work.thumbnail.slides.entries()) {
+          assert(
+            !/^(?:[a-z]+:|\/|\.\.)/iu.test(slide.src),
+            `${label}.thumbnail.slides[${index}].src must be site-relative.`,
           );
         }
       }
