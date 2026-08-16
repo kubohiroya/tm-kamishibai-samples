@@ -436,12 +436,10 @@ try {
     }
     assert.deepEqual(tutorial.externalRequests, []);
     assert.deepEqual(tutorial.failures, []);
-    assert(tutorial.canvasReadbackWarnings.length <= 1);
-    assert(
-      tutorial.canvasReadbackWarnings.every((warning) =>
-        warning.includes('willReadFrequently'),
-      ),
-      'Tutorial emitted an unexpected Canvas warning; TMPose fromPixels follow-up is #601.',
+    assert.deepEqual(
+      tutorial.canvasReadbackWarnings,
+      [],
+      'Tutorial emitted a Canvas readback warning after TMPose 1.10.1.',
     );
     await tutorial.page.close();
   }

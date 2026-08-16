@@ -1,30 +1,30 @@
 kamishibai=3.2
 # title: 浦島太郎
 # author: Hiroya Kubo <hiroya@cuc.ac.jp>
-# date: 2026-08-15
+# date: 2026-08-16
 setRuntimeVariable=startSceneIndex:1
-asset=Urashima-walk-1,file:assets/images/7025746029f54d4207e56f7c0c996b3c.png
-asset=Urashima-help-1,file:assets/images/1aa58d9fae49f6865d04ef042004c3c7.png
-asset=Urashima-dance-1,file:assets/images/a4b6ac5c115f23fa9c5ebea0b94e6ca9.png
-asset=Urashima-dance-2,file:assets/images/6f73929c17369bbeaf58aefdcfc1c641.png
-asset=Urashima-ride-1,file:assets/images/d5a35f8528c3e49d89b1eb5615451753.png
-asset=Urashima-ride-2,file:assets/images/0756437e1deda6c4f4a69cd4fa5d7030.png
-asset=Urashima-box-1,file:assets/images/72068822e9ab7b09f452826921880ee4.png
-asset=Urashima-box-2,file:assets/images/3afd9d6417c43598db0363727638b53d.png
-asset=Urashima-surprised,file:assets/images/595bd4e6a5ccb1032af1d4dd89301c6c.png
-asset=Urashima-open-1,file:assets/images/60ddf2e3d760b7bb9cb96c5ccc6bdce4.png
-asset=Urashima-open-2,file:assets/images/f64d3eb6a1b5d9ee82a31a2420896e8e.png
-asset=Urashima-open-3,file:assets/images/191a0d8f2d809bb3e507759f2954620b.png
-asset=Urashima-old-1,file:assets/images/13184b33d20ebc13d7367694df94aa6c.png
-asset=Urashima-old-2,file:assets/images/bbef3d2fb452d9eef7d8a30d9607f89a.png
-asset=Turtle,file:assets/images/339dd4c3503114e661226bf3be351975.png
-asset=Princess,file:assets/images/2b7266a91c6c4ee74835e130f301609f.png
+asset=Urashima-walk-1,file:assets/images/9a8cf053f6169ea9b530a852ab62c5a0.png
+asset=Urashima-help-1,file:assets/images/5addf20c0b4eaaffaf25b43f89aacbe6.png
+asset=Urashima-dance-1,file:assets/images/d2823262fff990e461b9949e365d69e7.png
+asset=Urashima-dance-2,file:assets/images/6e5100ae8618327d33dd25283b9538f5.png
+asset=Urashima-ride-1,file:assets/images/ce4422b05e0ecb3983a54bb7f6cff375.png
+asset=Urashima-ride-2,file:assets/images/5d3b41e97d0e31d26ab923deafe6664d.png
+asset=Urashima-box-1,file:assets/images/f937d1f9c7834e9523c54d4eb501eb34.png
+asset=Urashima-box-2,file:assets/images/0ebda7a9a60220820caad99718852f63.png
+asset=Urashima-surprised,file:assets/images/2f2c5e8a10a5e8ea162340c44d8c64cc.png
+asset=Urashima-open-1,file:assets/images/34dc7c981812db18f26fae2d7c4a3032.png
+asset=Urashima-open-2,file:assets/images/5ce0a5f82c1a73d33c37ed75283799d9.png
+asset=Urashima-open-3,file:assets/images/3ee01b9e5d5cfa4c7a0962a787952539.png
+asset=Urashima-old-1,file:assets/images/55e6e813b850dcdaa5048d1adf23445b.png
+asset=Urashima-old-2,file:assets/images/04b206e9ecf2c990d9f440612578406c.png
+asset=Turtle,file:assets/images/b556a0d2cffad420a17b8ebecfae6548.png
+asset=Princess,file:assets/images/93498a96129dbd581f52776ab23a0a46.png
 #asset=p1,costume:Princess
 #asset=p2,costume:Princess
 #asset=p3,costume:Princess
 #asset=p4,costume:Princess
-asset=Fish1,file:assets/images/2ba2ab09dc7317d8a5f19d2babc26dc2.png
-asset=Fish2,file:assets/images/eb377966e823a7531b2cff0978e19cc3.png
+asset=Fish1,file:assets/images/ecb9fee0c3fd0360315be4d364b7172a.png
+asset=Fish2,file:assets/images/ffacdc18383a2965ed75755fd74ace0e.png
 setLoadingBackdrop=Stars
 setLoadingCostume=Fish1,Fish2
 asset=Beach1,file:assets/images/eb776c9010f3e8cb37c996ed28ced040.png

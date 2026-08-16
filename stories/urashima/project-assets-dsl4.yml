@@ -59,7 +59,7 @@ assets:
   Urashima-walk-1:
     kind: costume
     target: Urashima
-    file: assets/images/7025746029f54d4207e56f7c0c996b3c.png
+    file: assets/images/9a8cf053f6169ea9b530a852ab62c5a0.png
     bitmapResolution: 1
     rotationCenterX: 180
     rotationCenterY: 180
@@ -67,7 +67,7 @@ assets:
   Turtle:
     kind: costume
     target: Turtle
-    file: assets/images/339dd4c3503114e661226bf3be351975.png
+    file: assets/images/b556a0d2cffad420a17b8ebecfae6548.png
     bitmapResolution: 1
     rotationCenterX: 173
     rotationCenterY: 178
@@ -75,7 +75,7 @@ assets:
   Princess:
     kind: costume
     target: Princess
-    file: assets/images/2b7266a91c6c4ee74835e130f301609f.png
+    file: assets/images/93498a96129dbd581f52776ab23a0a46.png
     bitmapResolution: 1
     rotationCenterX: 180
     rotationCenterY: 180
@@ -83,7 +83,7 @@ assets:
   Fish1:
     kind: costume
     target: Fish
-    file: assets/images/2ba2ab09dc7317d8a5f19d2babc26dc2.png
+    file: assets/images/ecb9fee0c3fd0360315be4d364b7172a.png
     bitmapResolution: 1
     rotationCenterX: 177
     rotationCenterY: 179.5

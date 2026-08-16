@@ -6,42 +6,42 @@
 
 ### 浦島太郎
 
-- 撮影基準: `tmpose-kamishibai@f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6`（4.0.0-rc.5）、`tmpose-kamishibai-samples@60c0feb`
-- 撮影条件: Chrome、1280×720表示、実人物のカメラ映像なし。サーキュラープログレスの混入を防ぐため、撮影専用の一時台本ではポーズ待機を固定待機へ置き換えています。公開するSB3・台本の内容は変更していません。
+- 撮影基準: `tmpose-kamishibai@19474e1e49572a5997d1737e63e10bac67a179e9`（4.0.0-rc.6）、`tmpose-kamishibai-samples@a88c89f`を基準に、2026年8月16日の復元画像を組み込んだ作業ツリー
+- 撮影条件: Chrome、1280×720表示、実人物のカメラ映像なし。新しい浦島・亀・乙姫の表示を固定した撮影専用の一時台本を使用し、ローディングUIとポーズ待機を除外しています。公開するSB3・台本の内容は変更していません。
 - 場面: 浜辺で亀と出会う、亀と進む海中、乙姫の歓迎、玉手箱の受け渡し。実行中UIが重なる画面と、結末を先取りするカーテンコール以降の画面は使用していません。
-- ループGIF: `stories/urashima/card-scenes.gif`、480×270、4フレーム、93,862 bytes、SHA-256 `5859db516524ae6e4de9ac8e8f80d26e6a09bfb34b30efa88990b743fe56ca16`
+- ループGIF: `stories/urashima/card-scenes.gif`、480×270、4フレーム、94,007 bytes、SHA-256 `14017e311a55f7294d35a05abd5fdcae821146e14a3e93603a1dddec335353c2`
 
 | WebP | 寸法 | サイズ | SHA-256 |
 | --- | ---: | ---: | --- |
-| `card-scenes/01.webp` | 1280×720 | 77,748 bytes | `1756621aaa7c15a140f15941efb877c008ca6f62a3d69ce7589faed3c36d44e5` |
-| `card-scenes/02.webp` | 1280×720 | 64,398 bytes | `102f1f53b48d7fe473acd4e296101cfa7f1ae0c57c591c9515335903580dab02` |
-| `card-scenes/03.webp` | 1280×720 | 106,038 bytes | `53be169efc399cb5a36a53f92d98a7d7663542bb57fce21318bdf09142b56748` |
-| `card-scenes/04.webp` | 1280×720 | 104,862 bytes | `6cca6d404ff055408dd3d63da399fb62be70e0e0d35886316d88108a2e958c96` |
+| `card-scenes/01.webp` | 1280×720 | 86,190 bytes | `9b4b5669415f3a044e5cdf73a93e14588ce8e56a1446c1751eb87a8ddc243886` |
+| `card-scenes/02.webp` | 1280×720 | 94,400 bytes | `3516da92d36753c44c837fcbd36d45b0b795702461fda392a291e8af1f197827` |
+| `card-scenes/03.webp` | 1280×720 | 151,552 bytes | `b8bf66ed6ee492cb030f1e587d4e1061e8856de841b729afd2437a025645d9c5` |
+| `card-scenes/04.webp` | 1280×720 | 150,396 bytes | `fb7ac92cb00ee84f2946ad3114fe7e08c523a9b498dac953ecfd45079d827c10` |
 
 ### my-urashima（ワークショップにおける作業用）
 
-- 撮影基準: `tmpose-kamishibai@f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6`（4.0.0-rc.5）、`tmpose-kamishibai-samples@b3a62eb`
-- 撮影条件: Chrome、1280×720表示、実人物のカメラ映像なし。カメラ映像の混入を防ぐため、撮影専用の一時台本ではポーズ待機を固定待機へ置き換えています。公開するSB3・台本の内容は変更していません。
+- 撮影基準: `tmpose-kamishibai@19474e1e49572a5997d1737e63e10bac67a179e9`（4.0.0-rc.6）、`tmpose-kamishibai-samples@a88c89f`を基準に、2026年8月16日の復元画像を組み込んだ作業ツリー
+- 撮影条件: Chrome、1280×720表示、実人物のカメラ映像なし。共通DSL 3.2ランタイム上で、新しい浦島・亀・乙姫・魚の表示を固定した撮影専用の一時台本を使用しています。公開するSB3・台本の内容は変更していません。
 - 場面: 浜辺、亀と進む海中、正規化後の乙姫による歓迎、玉手箱の受け渡し。結末を先取りするカーテンコールは使用していません。
-- ループGIF: `stories/my-urashima/card-scenes.gif`、480×270、4フレーム、101,947 bytes、SHA-256 `d13c891d79940bc279fbd9b4b631004da0ebcb84ded01d594cbbd3c37bf897a2`
+- ループGIF: `stories/my-urashima/card-scenes.gif`、480×270、4フレーム、96,518 bytes、SHA-256 `1b33afc41316e906fafa8a97d8ff32e155e2cf06d7689a5b9c104c1e76f0c83d`
 
 | WebP | 寸法 | サイズ | SHA-256 |
 | --- | ---: | ---: | --- |
-| `card-scenes/01.webp` | 1280×720 | 77,450 bytes | `5035a695288672a70922050111abc43e0fb20cff6dc3efb1ff20203d76194e57` |
-| `card-scenes/02.webp` | 1280×720 | 64,286 bytes | `89ad25ec85900b41282a4d7ef80be05344e082ddf571341f9065752ce15d1363` |
-| `card-scenes/03.webp` | 1280×720 | 123,612 bytes | `652f355603c9ff26f515c117f7ad31ace19c2cd5c1776bf3d96b1ad9aeb4d0ee` |
-| `card-scenes/04.webp` | 960×720 | 50,722 bytes | `91ae6b4d58966afb9f1490d9c8b757fa04180b0f67068f91cde4e2f4a291385c` |
+| `card-scenes/01.webp` | 1280×720 | 86,352 bytes | `c0794984e3f8034ddeb4aedfbd83cfbf1ce9be8203ad8220ef41598fb107103e` |
+| `card-scenes/02.webp` | 1280×720 | 94,400 bytes | `3516da92d36753c44c837fcbd36d45b0b795702461fda392a291e8af1f197827` |
+| `card-scenes/03.webp` | 1280×720 | 157,440 bytes | `769042e304dff8f433d95d8d0ccfb758482e660e18e9e2caacd135757ce214e2` |
+| `card-scenes/04.webp` | 1280×720 | 150,396 bytes | `fb7ac92cb00ee84f2946ad3114fe7e08c523a9b498dac953ecfd45079d827c10` |
 
 ### 地震だ！頭を守ろう（DSL 4.0チュートリアル）
 
-- 撮影基準: タイトルは`tmpose-kamishibai@f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6`（4.0.0-rc.5）。ほか4枚は`tmpose-kamishibai-docs/docs/images/tutorials/dsl4/play/`の`tutorial-play-04`から`07`
-- 撮影条件: Chrome、1280×720、合成人物fixture、実人物のcamera映像なし
-- 場面: rc.5タイトル、camera確認、ポーズ認識、ポーズ成功、達成メッセージ
-- ループGIF: `stories/tutorial/card-scenes.gif`、480×270、5フレーム、69,725 bytes、SHA-256 `43368d595ea22a79962877e3870ec7b53aac2b3cefd0778a6310fc8fcc2a1625`
+- 撮影基準: タイトルは`tmpose-kamishibai@19474e1e49572a5997d1737e63e10bac67a179e9`（4.0.0-rc.6）。ほか4枚は`tmpose-kamishibai-docs/docs/images/tutorials/dsl4/play/`の`tutorial-play-04`から`07`
+- 撮影条件: Chrome、1280×720、合成人物fixture、実人物のcamera映像なし。タイトル画面下部の連絡先行は単色背景で除外しています。
+- 場面: rc.6タイトル、camera確認、ポーズ認識、ポーズ成功、達成メッセージ
+- ループGIF: `stories/tutorial/card-scenes.gif`、480×270、5フレーム、82,272 bytes、SHA-256 `9c1af3b448a1c5adff65f8f4b463d23d0eaf2744fb2b05c1467d8b72c1009257`
 
 | WebP | 寸法 | サイズ | SHA-256 |
 | --- | ---: | ---: | --- |
-| `card-scenes/01.webp` | 1280×720 | 35,286 bytes | `5401d2d03a1e9fea783b27a7764bc2f84f1639176e494c24837d2b1e33a906e9` |
+| `card-scenes/01.webp` | 1280×720 | 35,554 bytes | `80d9d0ccc322b9d9a1be38d588c1a32b98a79f373dacc51884d05d78e227ae2a` |
 | `card-scenes/02.webp` | 1280×720 | 35,070 bytes | `92abac9c8a76b6c1e8c6e29464cfe635cd6b6bb70bf961f6a2fb1aa53b8b06b3` |
 | `card-scenes/03.webp` | 1280×720 | 32,978 bytes | `ccb174a3e904902cf97bc21b9374b974a7711a3a8afec7c8a34b022407a027ad` |
 | `card-scenes/04.webp` | 1280×720 | 16,662 bytes | `8104143d8d297724b463dd4e7989f8cc352ad940f602edc73727b46e077e4632` |

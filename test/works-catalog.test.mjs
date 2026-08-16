@@ -41,7 +41,7 @@ test('publishes the approved works-library categories and rights metadata', asyn
   }
 
   const urashima = catalog.works.find(({id}) => id === 'urashima');
-  assert.equal(urashima.updatedAt, '2026-08-15');
+  assert.equal(urashima.updatedAt, '2026-08-16');
   assert.equal(urashima.detailHref, 'stories/urashima/');
   assert.equal(urashima.thumbnail.src, 'stories/urashima/card-scenes.gif');
   assert.equal(urashima.thumbnail.slides.length, 4);
