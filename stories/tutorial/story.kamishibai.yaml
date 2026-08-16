@@ -39,6 +39,27 @@ cover:
 poseRecognition:
   navigation:
     allowSkip: true
+  preview:
+    mirroring: mirrored
+    overlay:
+      visible: true
+      jointStyles:
+        leftWrist:
+          color: '#ff00aa'
+          opacity: 0.8
+          radius: 6
+        rightWrist:
+          color: '#ff00aa'
+          opacity: 0.8
+          radius: 6
+      boneStyle:
+        color: '#00e5ff'
+        opacity: 0.9
+        width: 3
+      minimumConfidence: 0.5
+      confidenceScaling:
+        jointOpacity: true
+        boneOpacity: true
 
 scenes:
   earthquake:

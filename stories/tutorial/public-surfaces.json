@@ -3,16 +3,16 @@
   "status": "published",
   "version": "4.0.0-rc.6",
   "published": true,
-  "releaseDependency": "https://github.com/kubohiroya/tmpose-kamishibai/pull/619",
-  "sourceIdentity": "269ffb5fa15455dec85cdd8a3c096c2c2ba3e02c52113848dec9be4bf3660512",
+  "releaseDependency": "https://github.com/kubohiroya/tmpose-kamishibai/releases/tag/v4.0.0-rc.6",
+  "sourceIdentity": "11498663759497697ddc47013a162a76df1e3fefae3df039d31ec4b457517a40",
   "runtime": {
     "repository": "https://github.com/kubohiroya/tmpose-kamishibai",
     "version": "4.0.0-rc.6",
-    "commit": "19474e1e49572a5997d1737e63e10bac67a179e9",
+    "commit": "4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6",
     "basePath": "base/kamishibai-4.0.sb3",
-    "baseSourceIdentity": "sha256:e484c32324cac1a339c6ad15e386d047627ac998adf5de2584522a3bae455b6c",
-    "baseSize": 6672057,
-    "baseSha256": "f1f0a256b32701fb1af7e8f1eece974df638ca016cec450fcb896c7fd66ea1f9"
+    "baseSourceIdentity": "sha256:ebdde314be4d929894bce9eb511f340c61879b2b9ff8366ae31cabbb00bfbf10",
+    "baseSize": 6684010,
+    "baseSha256": "be0e38d6179873894db2363751955ccd68b971a829a5b09c048e54986fbd7796"
   },
   "license": {
     "spdx": "MPL-2.0",
@@ -30,13 +30,13 @@
   "artifacts": {
     "source": {
       "path": "story.kamishibai.yaml",
-      "size": 1721,
-      "sha256": "62b940b68b7177628a0dcd29d84754fcbaff911a9a9a955c58ffe727f59fdb57"
+      "size": 2174,
+      "sha256": "6be02d8ab351364a09436f7d2436906edabe4101b68d9c07d2a9d7b1681aa77c"
     },
     "sb3": {
       "path": "tutorial-4.0.sb3",
-      "size": 12573355,
-      "sha256": "bd1dbfad7937c3434e71d5c9188f8d67f556839f5357db870d468b32f4d33a07",
+      "size": 12585353,
+      "sha256": "3ecc7f9de4f4c2f030f27e916363af7537d4dc8547acf40a9b6438a2792b4fe1",
       "archiveEntryCount": 10,
       "targetNames": [
         "Stage",
@@ -46,13 +46,13 @@
     "web": {
       "path": "web-4.0/index.html",
       "contentType": "text/html",
-      "size": 21871543,
-      "sha256": "cee7ae7eb0b186ead5c2e3e4dd01848d63d5426c4aca995f947f93f3f4c55432"
+      "size": 21927767,
+      "sha256": "81fd90b4188cd3b60f5cd859af7e45c6e1d98b11a16f13b3db9721b588d064dc"
     },
     "starter": {
       "path": "tutorial-story-starter-4.0.zip",
-      "size": 5914350,
-      "sha256": "bf0ad3b250f79d6fb49cb7584a4559d7e979e75e4b2d46923effae4b183fdfb8",
+      "size": 5914519,
+      "sha256": "3789c96c61bbb89beb10b95d456a8f5885999163319fb4c974b3c784c36b7d4b",
       "entries": [
         "tutorial-story/LICENSES.md",
         "tutorial-story/README.md",
@@ -75,8 +75,8 @@
     },
     "additionKit": {
       "path": "tutorial-story-addition-kit-4.0.zip",
-      "size": 5369,
-      "sha256": "fb3f7bbb7eb4c136d189a7a1bd3e6484146f42fc7ab4b87795d2f5892a7f3c81",
+      "size": 5538,
+      "sha256": "4e8b6c76cd850fd924806739a337a639b13eaac3ccdbb7cd7e9ef0e727a5fa38",
       "entries": [
         "tutorial-story-addition-kit/LICENSES.md",
         "tutorial-story-addition-kit/README.md",
