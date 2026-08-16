@@ -436,10 +436,11 @@ try {
     }
     assert.deepEqual(tutorial.externalRequests, []);
     assert.deepEqual(tutorial.failures, []);
-    assert.deepEqual(
-      tutorial.canvasReadbackWarnings,
-      [],
-      'Tutorial emitted a Canvas readback warning after TMPose 1.10.1.',
+    // TMPose 1.11.0 deliberately restored the normal Canvas2D context after physical-camera
+    // benchmarks found no repeatable gain from the readback hint. Chromium may warn once.
+    assert(
+      tutorial.canvasReadbackWarnings.length <= 1,
+      `Tutorial emitted repeated Canvas readback warnings: ${tutorial.canvasReadbackWarnings.join('\n')}`,
     );
     await tutorial.page.close();
   }

@@ -2,16 +2,16 @@
   "formatVersion": 1,
   "status": "published",
   "version": "4.0.0-rc.6",
-  "releaseDependency": "https://github.com/kubohiroya/tmpose-kamishibai/pull/619",
-  "sourceIdentity": "269ffb5fa15455dec85cdd8a3c096c2c2ba3e02c52113848dec9be4bf3660512",
+  "releaseDependency": "https://github.com/kubohiroya/tmpose-kamishibai/releases/tag/v4.0.0-rc.6",
+  "sourceIdentity": "11498663759497697ddc47013a162a76df1e3fefae3df039d31ec4b457517a40",
   "runtime": {
     "repository": "https://github.com/kubohiroya/tmpose-kamishibai",
     "version": "4.0.0-rc.6",
-    "commit": "19474e1e49572a5997d1737e63e10bac67a179e9",
+    "commit": "4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6",
     "basePath": "base/kamishibai-4.0.sb3",
-    "baseSourceIdentity": "sha256:e484c32324cac1a339c6ad15e386d047627ac998adf5de2584522a3bae455b6c",
-    "baseSize": 6672057,
-    "baseSha256": "f1f0a256b32701fb1af7e8f1eece974df638ca016cec450fcb896c7fd66ea1f9"
+    "baseSourceIdentity": "sha256:ebdde314be4d929894bce9eb511f340c61879b2b9ff8366ae31cabbb00bfbf10",
+    "baseSize": 6684010,
+    "baseSha256": "be0e38d6179873894db2363751955ccd68b971a829a5b09c048e54986fbd7796"
   },
   "sb3Toolchain": {
     "package": "@kubohiroya/sb3-toolchain",
@@ -20,8 +20,8 @@
   "sources": {
     "complete": {
       "path": "story.kamishibai.yaml",
-      "size": 1721,
-      "sha256": "62b940b68b7177628a0dcd29d84754fcbaff911a9a9a955c58ffe727f59fdb57"
+      "size": 2174,
+      "sha256": "6be02d8ab351364a09436f7d2436906edabe4101b68d9c07d2a9d7b1681aa77c"
     },
     "starter": {
       "path": "starter.kamishibai.yaml",
@@ -61,8 +61,8 @@
       },
       {
         "path": "README.md",
-        "size": 2354,
-        "sha256": "4130bf14d7a8ac240df968771734cbc8d88b08a7b7bd7c0c9b59b5e04fbfc77e"
+        "size": 2626,
+        "sha256": "46be1dceb08a9449fa0b3bf482a31ab65ae7bfcbd72bd5965f7d578c3eda23b9"
       },
       {
         "path": "addition-kit/README.md",
@@ -76,8 +76,8 @@
       },
       {
         "path": "addition-kit/add-pose-scene.yml.txt",
-        "size": 1721,
-        "sha256": "62b940b68b7177628a0dcd29d84754fcbaff911a9a9a955c58ffe727f59fdb57"
+        "size": 2174,
+        "sha256": "6be02d8ab351364a09436f7d2436906edabe4101b68d9c07d2a9d7b1681aa77c"
       },
       {
         "path": "addition-kit/earthquake-classroom.svg",
@@ -151,8 +151,8 @@
       },
       {
         "path": "story.kamishibai.yaml",
-        "size": 1721,
-        "sha256": "62b940b68b7177628a0dcd29d84754fcbaff911a9a9a955c58ffe727f59fdb57"
+        "size": 2174,
+        "sha256": "6be02d8ab351364a09436f7d2436906edabe4101b68d9c07d2a9d7b1681aa77c"
       },
       {
         "path": "student-ready.svg",
@@ -169,8 +169,8 @@
   "outputs": {
     "sb3": {
       "path": "tutorial-4.0.sb3",
-      "size": 12573355,
-      "sha256": "bd1dbfad7937c3434e71d5c9188f8d67f556839f5357db870d468b32f4d33a07",
+      "size": 12585353,
+      "sha256": "3ecc7f9de4f4c2f030f27e916363af7537d4dc8547acf40a9b6438a2792b4fe1",
       "archiveEntryCount": 10,
       "targetNames": [
         "Stage",
@@ -179,8 +179,8 @@
     },
     "starter": {
       "path": "tutorial-story-starter-4.0.zip",
-      "size": 5914350,
-      "sha256": "bf0ad3b250f79d6fb49cb7584a4559d7e979e75e4b2d46923effae4b183fdfb8",
+      "size": 5914519,
+      "sha256": "3789c96c61bbb89beb10b95d456a8f5885999163319fb4c974b3c784c36b7d4b",
       "entries": [
         "tutorial-story/LICENSES.md",
         "tutorial-story/README.md",
@@ -203,8 +203,8 @@
     },
     "additionKit": {
       "path": "tutorial-story-addition-kit-4.0.zip",
-      "size": 5369,
-      "sha256": "fb3f7bbb7eb4c136d189a7a1bd3e6484146f42fc7ab4b87795d2f5892a7f3c81",
+      "size": 5538,
+      "sha256": "4e8b6c76cd850fd924806739a337a639b13eaac3ccdbb7cd7e9ef0e727a5fa38",
       "entries": [
         "tutorial-story-addition-kit/LICENSES.md",
         "tutorial-story-addition-kit/README.md",
@@ -222,7 +222,7 @@
   },
   "publication": {
     "enabled": true,
-    "reason": "tmpose-kamishibai 4.0.0-rc.6 is published and verified by tmpose-kamishibai#619",
-    "issue": "https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/106"
+    "reason": "tmpose-kamishibai 4.0.0-rc.6 release artifacts are published and integrity-verified",
+    "issue": "https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/121"
   }
 }

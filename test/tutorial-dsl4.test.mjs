@@ -72,6 +72,17 @@ test('turns the starter into the final four-scene story with visible pose feedba
     'success',
   ]);
   assert.equal(complete.scenes.protect.poseModel, 'SafetyPose');
+  assert.equal(complete.poseRecognition.preview.mirroring, 'mirrored');
+  assert.deepEqual(complete.poseRecognition.preview.overlay, {
+    visible: true,
+    jointStyles: {
+      leftWrist: {color: '#ff00aa', opacity: 0.8, radius: 6},
+      rightWrist: {color: '#ff00aa', opacity: 0.8, radius: 6},
+    },
+    boneStyle: {color: '#00e5ff', opacity: 0.9, width: 3},
+    minimumConfidence: 0.5,
+    confidenceScaling: {jointOpacity: true, boneOpacity: true},
+  });
   assert.equal(
     complete.scenes.instruction[1]['Student.say'].text,
     '自分の身を守るため、丈夫な机の下に入り、両手で頭を守ろう！',
@@ -163,6 +174,6 @@ test('renders every fixed tutorial download on the published detail page', async
   assert(html.includes(manifest.sourceIdentity));
   assert(html.includes(manifest.artifacts.web.sha256));
   assert(html.includes('<time datetime="2026-08-16">2026年8月16日</time>'));
-  assert(html.includes('21.9 MB（21,871,543 bytes）'));
-  assert(html.includes('1.7 KB（1,721 bytes）'));
+  assert(html.includes('21.9 MB（21,927,767 bytes）'));
+  assert(html.includes('2.2 KB（2,174 bytes）'));
 });

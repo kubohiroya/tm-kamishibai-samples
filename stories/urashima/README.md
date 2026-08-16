@@ -96,7 +96,7 @@ scene 7では、本体3.2.2の標準コマンド`fadeToWhite`でステージの�
 - 移設元コミット: `9526c9d6391622ee261b8d7c0778b1fbbd2e6745`
 - ビルダー: npm `@kubohiroya/tmpose-kamishibai` `3.2.2` / `2b5005d293a9b63c8ba5da396fd86815d093f975`
 - 汎用ベース: `tmpose-kamishibai` / `2b5005d293a9b63c8ba5da396fd86815d093f975`
-- DSL 4.0汎用ベースのソース: `tmpose-kamishibai` / `4.0.0-rc.6` / `sha256:e484c32324cac1a339c6ad15e386d047627ac998adf5de2584522a3bae455b6c`
-- DSL 4.0ビルダー: `tmpose-kamishibai` / `4.0.0-rc.6` / `19474e1e49572a5997d1737e63e10bac67a179e9`
+- DSL 4.0汎用ベースのソース: `tmpose-kamishibai` / `4.0.0-rc.6` / `sha256:ebdde314be4d929894bce9eb511f340c61879b2b9ff8366ae31cabbb00bfbf10`
+- DSL 4.0ビルダー: `tmpose-kamishibai` / `4.0.0-rc.6` / `4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6`
 
 生成・検証・公開の実装は [Issue #2](https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/2)、Packager Web版は [Issue #7](https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/7)、DSL 4.0の自動生成は [Issue #90](https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/90) で管理します。

@@ -21,7 +21,7 @@
 
 `stories/my-urashima/`はワークショップ用の依存ストーリーです。DSL 3.2版に加え、Princess PNGを唯一のコスチュームとして持つ`Princess`スプライトと浦島太郎のプロジェクトアセットを組み込んだ、台本非埋め込みの`my-urashima-4.0.sb3`およびWeb版も生成します。生成規約と更新方法は[`stories/my-urashima/README.md`](stories/my-urashima/README.md)に記載しています。
 
-`stories/tutorial/`にはDSL 4.0チュートリアル用の4場面作品、starter、addition kit、自己完結SB3、Web版の固定情報があります。`tmpose-kamishibai#619`で固定・公開した`4.0.0-rc.6`を入力として、`publication.enabled`をONにしたPagesと作品一覧を公開します。docs側はその公開URLとintegrityを使ってcaptureとチュートリアルpublicationを行います。生成規約とロールバック方法は[`stories/tutorial/README.md`](stories/tutorial/README.md)に記載しています。
+`stories/tutorial/`にはDSL 4.0チュートリアル用の4場面作品、starter、addition kit、自己完結SB3、Web版の固定情報があります。公開済み`tmpose-kamishibai` `4.0.0-rc.6`を入力として、`publication.enabled`をONにしたPagesと作品一覧を公開します。docs側はその公開URLとintegrityを使ってcaptureとチュートリアルpublicationを行います。生成規約とロールバック方法は[`stories/tutorial/README.md`](stories/tutorial/README.md)に記載しています。
 
 正式な浦島太郎の実行用成果物はDSL 3.2のSVG Textを使い、名前付きstyle、相対font size、複数行のNarration actorを実演します。作品ライブラリでは、公式CLIで変換・検証したDSL 4.0 YAML、オフラインSB3、単一HTML Web版も併せて配布します。deprecatedな旧Text Assetは正式台本から分離したテストfixtureで互換性を確認します。
 
