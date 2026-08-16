@@ -1,18 +1,18 @@
 {
   "formatVersion": 1,
   "status": "published",
-  "version": "4.0.0-rc.6",
+  "version": "4.0.0-rc.7",
   "published": true,
-  "releaseDependency": "https://github.com/kubohiroya/tmpose-kamishibai/releases/tag/v4.0.0-rc.6",
-  "sourceIdentity": "11498663759497697ddc47013a162a76df1e3fefae3df039d31ec4b457517a40",
+  "releaseDependency": "https://github.com/kubohiroya/tmpose-kamishibai/releases/tag/v4.0.0-rc.7",
+  "sourceIdentity": "5da6f6b05106426e87d306a0d400bf187430f4252226b97b4984e29ba48c287b",
   "runtime": {
     "repository": "https://github.com/kubohiroya/tmpose-kamishibai",
-    "version": "4.0.0-rc.6",
-    "commit": "4c360cd9845f9dcdbf7ecbffaa2fe4c1462af8b6",
+    "version": "4.0.0-rc.7",
+    "commit": "3a5f31d2519dfb2b9dab32b2c377762c774d5844",
     "basePath": "base/kamishibai-4.0.sb3",
-    "baseSourceIdentity": "sha256:ebdde314be4d929894bce9eb511f340c61879b2b9ff8366ae31cabbb00bfbf10",
-    "baseSize": 6684010,
-    "baseSha256": "be0e38d6179873894db2363751955ccd68b971a829a5b09c048e54986fbd7796"
+    "baseSourceIdentity": "sha256:838e82d33a9ecb67da81eafdc115afd4fd856db2721d1160ee601a389b6a96a7",
+    "baseSize": 6684157,
+    "baseSha256": "3ad25911b9255d51273b37f24fa0d056e6ec72418f314e97c743ad52300380f8"
   },
   "license": {
     "spdx": "MPL-2.0",
@@ -35,8 +35,8 @@
     },
     "sb3": {
       "path": "tutorial-4.0.sb3",
-      "size": 12585353,
-      "sha256": "3ecc7f9de4f4c2f030f27e916363af7537d4dc8547acf40a9b6438a2792b4fe1",
+      "size": 12585286,
+      "sha256": "823245160caeb4669840e63b2e509618577aeb2f0f2ec9ea3336291a09bf3084",
       "archiveEntryCount": 10,
       "targetNames": [
         "Stage",
@@ -46,8 +46,8 @@
     "web": {
       "path": "web-4.0/index.html",
       "contentType": "text/html",
-      "size": 21927767,
-      "sha256": "81fd90b4188cd3b60f5cd859af7e45c6e1d98b11a16f13b3db9721b588d064dc"
+      "size": 21927779,
+      "sha256": "86b6bead44779f2febbec2470031e8ff7477acc47e1d633434c81de256e2c538"
     },
     "starter": {
       "path": "tutorial-story-starter-4.0.zip",
