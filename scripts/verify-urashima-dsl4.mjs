@@ -72,6 +72,22 @@ export async function verifyUrashimaDsl4() {
     project.extensionURLs.kubohiroyakamishibai4.slice('data:text/javascript;base64,'.length),
     'base64',
   ).toString('utf8');
+  const reloadIconMatch = extensionSource.match(
+    /reload:"data:image\/svg\+xml;base64,([^"]+)"/u,
+  );
+  assert(reloadIconMatch, 'Embedded DSL 4.0 runtime reload icon is missing.');
+  const reloadIcon = Buffer.from(reloadIconMatch[1], 'base64').toString('utf8');
+  assert.equal(
+    (reloadIcon.match(/<path\b/gu) ?? []).length,
+    1,
+    'Reload icon must use one continuous outline path.',
+  );
+  assert(
+    reloadIcon.includes(
+      'd="M43.5 19.4 38.2 7.1 36.2 9.4A19 19 0 1 0 42.4 28.6L36.6 27.1A13 13 0 1 1 32.4 14L30.4 16.3Z"',
+    ),
+    'Reload icon must use the balanced rc.6 arrowhead outline.',
+  );
   assert(extensionSource.includes('dsl4SpeechAdvanceTypewriter:!0'));
   assert(extensionSource.includes('data-dsl4-runtime-error'));
   assert(extensionSource.includes('@tensorflow/tfjs Copyright 2019 Google'));

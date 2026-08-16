@@ -976,7 +976,7 @@ ${renderSiteHeader('../')}
       <dt>ライセンス</dt>
       <dd><a href="https://www.mozilla.org/MPL/2.0/">Mozilla Public License 2.0</a></dd>
       <dt>出典</dt>
-      <dd><a href="../stories/urashima/assets/images/7025746029f54d4207e56f7c0c996b3c.png">作品内の元画像</a></dd>
+      <dd><a href="../stories/urashima/assets/images/9a8cf053f6169ea9b530a852ab62c5a0.png">作品内の元画像</a></dd>
     </dl>
   </section>
 </main>

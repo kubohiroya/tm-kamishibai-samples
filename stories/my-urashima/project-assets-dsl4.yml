@@ -57,7 +57,7 @@ assets:
   Urashima-walk-1:
     kind: costume
     target: Urashima
-    file: ../urashima/assets/images/7025746029f54d4207e56f7c0c996b3c.png
+    file: ../urashima/assets/images/9a8cf053f6169ea9b530a852ab62c5a0.png
     bitmapResolution: 1
     rotationCenterX: 180
     rotationCenterY: 180
@@ -65,7 +65,7 @@ assets:
   Urashima-help-1:
     kind: costume
     target: Urashima
-    file: ../urashima/assets/images/1aa58d9fae49f6865d04ef042004c3c7.png
+    file: ../urashima/assets/images/5addf20c0b4eaaffaf25b43f89aacbe6.png
     bitmapResolution: 1
     rotationCenterX: 173
     rotationCenterY: 141
@@ -73,7 +73,7 @@ assets:
   Urashima-dance-1:
     kind: costume
     target: Urashima
-    file: ../urashima/assets/images/a4b6ac5c115f23fa9c5ebea0b94e6ca9.png
+    file: ../urashima/assets/images/d2823262fff990e461b9949e365d69e7.png
     bitmapResolution: 1
     rotationCenterX: 176
     rotationCenterY: 173.25
@@ -81,7 +81,7 @@ assets:
   Urashima-dance-2:
     kind: costume
     target: Urashima
-    file: ../urashima/assets/images/6f73929c17369bbeaf58aefdcfc1c641.png
+    file: ../urashima/assets/images/6e5100ae8618327d33dd25283b9538f5.png
     bitmapResolution: 1
     rotationCenterX: 162
     rotationCenterY: 160
@@ -89,7 +89,7 @@ assets:
   Urashima-ride-1:
     kind: costume
     target: Urashima
-    file: ../urashima/assets/images/d5a35f8528c3e49d89b1eb5615451753.png
+    file: ../urashima/assets/images/ce4422b05e0ecb3983a54bb7f6cff375.png
     bitmapResolution: 1
     rotationCenterX: 178.75
     rotationCenterY: 177.5
@@ -97,7 +97,7 @@ assets:
   Urashima-ride-2:
     kind: costume
     target: Urashima
-    file: ../urashima/assets/images/0756437e1deda6c4f4a69cd4fa5d7030.png
+    file: ../urashima/assets/images/5d3b41e97d0e31d26ab923deafe6664d.png
     bitmapResolution: 1
     rotationCenterX: 180
     rotationCenterY: 180
@@ -105,7 +105,7 @@ assets:
   Urashima-box-1:
     kind: costume
     target: Urashima
-    file: ../urashima/assets/images/72068822e9ab7b09f452826921880ee4.png
+    file: ../urashima/assets/images/f937d1f9c7834e9523c54d4eb501eb34.png
     bitmapResolution: 1
     rotationCenterX: 180
     rotationCenterY: 180
@@ -113,7 +113,7 @@ assets:
   Urashima-box-2:
     kind: costume
     target: Urashima
-    file: ../urashima/assets/images/3afd9d6417c43598db0363727638b53d.png
+    file: ../urashima/assets/images/0ebda7a9a60220820caad99718852f63.png
     bitmapResolution: 1
     rotationCenterX: 160.5
     rotationCenterY: 169
@@ -121,7 +121,7 @@ assets:
   Urashima-surprised:
     kind: costume
     target: Urashima
-    file: ../urashima/assets/images/595bd4e6a5ccb1032af1d4dd89301c6c.png
+    file: ../urashima/assets/images/2f2c5e8a10a5e8ea162340c44d8c64cc.png
     bitmapResolution: 1
     rotationCenterX: 160.5
     rotationCenterY: 169
@@ -129,7 +129,7 @@ assets:
   Urashima-open-1:
     kind: costume
     target: Urashima
-    file: ../urashima/assets/images/60ddf2e3d760b7bb9cb96c5ccc6bdce4.png
+    file: ../urashima/assets/images/34dc7c981812db18f26fae2d7c4a3032.png
     bitmapResolution: 1
     rotationCenterX: 180
     rotationCenterY: 180
@@ -137,7 +137,7 @@ assets:
   Urashima-open-2:
     kind: costume
     target: Urashima
-    file: ../urashima/assets/images/f64d3eb6a1b5d9ee82a31a2420896e8e.png
+    file: ../urashima/assets/images/5ce0a5f82c1a73d33c37ed75283799d9.png
     bitmapResolution: 1
     rotationCenterX: 129.25
     rotationCenterY: 132
@@ -145,7 +145,7 @@ assets:
   Urashima-open-3:
     kind: costume
     target: Urashima
-    file: ../urashima/assets/images/191a0d8f2d809bb3e507759f2954620b.png
+    file: ../urashima/assets/images/3ee01b9e5d5cfa4c7a0962a787952539.png
     bitmapResolution: 1
     rotationCenterX: 180
     rotationCenterY: 180
@@ -153,7 +153,7 @@ assets:
   Urashima-old-1:
     kind: costume
     target: Urashima
-    file: ../urashima/assets/images/13184b33d20ebc13d7367694df94aa6c.png
+    file: ../urashima/assets/images/55e6e813b850dcdaa5048d1adf23445b.png
     bitmapResolution: 1
     rotationCenterX: 180
     rotationCenterY: 180
@@ -161,7 +161,7 @@ assets:
   Urashima-old-2:
     kind: costume
     target: Urashima
-    file: ../urashima/assets/images/bbef3d2fb452d9eef7d8a30d9607f89a.png
+    file: ../urashima/assets/images/04b206e9ecf2c990d9f440612578406c.png
     bitmapResolution: 1
     rotationCenterX: 124
     rotationCenterY: 93.5
@@ -169,7 +169,7 @@ assets:
   Turtle:
     kind: costume
     target: Turtle
-    file: ../urashima/assets/images/339dd4c3503114e661226bf3be351975.png
+    file: ../urashima/assets/images/b556a0d2cffad420a17b8ebecfae6548.png
     bitmapResolution: 1
     rotationCenterX: 173
     rotationCenterY: 178
@@ -185,7 +185,7 @@ assets:
   Fish1:
     kind: costume
     target: Fish
-    file: ../urashima/assets/images/2ba2ab09dc7317d8a5f19d2babc26dc2.png
+    file: ../urashima/assets/images/ecb9fee0c3fd0360315be4d364b7172a.png
     bitmapResolution: 1
     rotationCenterX: 177
     rotationCenterY: 179.5
@@ -193,7 +193,7 @@ assets:
   Fish2:
     kind: costume
     target: Fish
-    file: ../urashima/assets/images/eb377966e823a7531b2cff0978e19cc3.png
+    file: ../urashima/assets/images/ffacdc18383a2965ed75755fd74ace0e.png
     bitmapResolution: 1
     rotationCenterX: 173
     rotationCenterY: 180

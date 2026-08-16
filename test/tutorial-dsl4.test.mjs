@@ -25,7 +25,7 @@ test('builds a deterministic published SB3 and tutorial distribution archives', 
     readFile(path.join(storyDirectory, 'public-surfaces.json'), 'utf8').then(JSON.parse),
   ]);
   assert.equal(build.artifactLock.status, 'published');
-  assert.equal(build.artifactLock.version, '4.0.0-rc.5');
+  assert.equal(build.artifactLock.version, '4.0.0-rc.6');
   assert.equal(build.artifactLock.publication.enabled, true);
   assert.equal(build.artifactLock.publication.reason, config.publication.reason);
   assert.equal(config.work.thumbnail.src, 'stories/tutorial/card-scenes.gif');
@@ -162,7 +162,7 @@ test('renders every fixed tutorial download on the published detail page', async
   }
   assert(html.includes(manifest.sourceIdentity));
   assert(html.includes(manifest.artifacts.web.sha256));
-  assert(html.includes('<time datetime="2026-08-15">2026年8月15日</time>'));
-  assert(html.includes('21.8 MB（21,848,253 bytes）'));
+  assert(html.includes('<time datetime="2026-08-16">2026年8月16日</time>'));
+  assert(html.includes('21.9 MB（21,871,543 bytes）'));
   assert(html.includes('1.7 KB（1,721 bytes）'));
 });

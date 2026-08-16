@@ -1,8 +1,8 @@
 {
   "sourceName": "Urashima-walk-1",
   "sourceRepository": "kubohiroya/tmpose-kamishibai-samples",
-  "sourcePath": "stories/urashima/assets/images/7025746029f54d4207e56f7c0c996b3c.png",
-  "sourceSha256": "8bf234a02d3f4f3e69938efc5ef629b2d4a7519c183e2f739317915c995b3656",
+  "sourcePath": "stories/urashima/assets/images/9a8cf053f6169ea9b530a852ab62c5a0.png",
+  "sourceSha256": "617bdabd94e214551ce06b32acc67e5fb3eeb77b84e1c56b9a445f79e79f2919",
   "license": "MPL-2.0",
   "derivedAsset": "favicon.png",
   "derivation": "Transparent 192x192 crop centered on the head and upper body, nearest-neighbor scaled to 256x256, and limited to 64 colors."

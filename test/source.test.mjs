@@ -189,8 +189,8 @@ test('keeps all Urashima actor costumes as compact transparent 64-color PNGs', a
   assert.deepEqual(new Set(actorAssets.map(({name}) => name)), new Set(Object.keys(expectedGeometry)));
   assert.equal(
     actorAssets.find(({name}) => name === 'Turtle').sha256,
-    '132249b680751264c46e7dfba8df8f1be79564b374948745d4cfdd1f22871215',
-    'Turtle must preserve the original SVG horizontal mirror',
+    '5a0453a5fa35ce55ad7ba06122e983432d8c796af6fb88860a76e46ef90d3cfa',
+    'Turtle must preserve the restored right-facing composition',
   );
   for (const asset of actorAssets) {
     assert.equal(asset.contentType, 'image/png');

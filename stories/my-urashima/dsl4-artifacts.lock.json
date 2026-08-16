@@ -2,12 +2,12 @@
   "formatVersion": 1,
   "runtime": {
     "repository": "https://github.com/kubohiroya/tmpose-kamishibai",
-    "version": "4.0.0-rc.5",
-    "commit": "f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6",
+    "version": "4.0.0-rc.6",
+    "commit": "19474e1e49572a5997d1737e63e10bac67a179e9",
     "basePath": "base/kamishibai-4.0.sb3",
-    "baseSourceIdentity": "sha256:a6c4be01405af1b3070f6d02dc584a55bd2b45844ae48761aa3d4141ef474ca4",
-    "baseSize": 6664571,
-    "baseSha256": "2494b43f43f7b7acbd1ce9d307fcff383d239931aa46de550f76c3eb3ec40f3c"
+    "baseSourceIdentity": "sha256:e484c32324cac1a339c6ad15e386d047627ac998adf5de2584522a3bae455b6c",
+    "baseSize": 6672057,
+    "baseSha256": "f1f0a256b32701fb1af7e8f1eece974df638ca016cec450fcb896c7fd66ea1f9"
   },
   "sb3Toolchain": {
     "package": "@kubohiroya/sb3-toolchain",
@@ -22,7 +22,7 @@
     "manifest": {
       "path": "project-assets-dsl4.yml",
       "size": 10410,
-      "sha256": "60c58934753aea2fefae31b10de9cacd44f626b54e5181f6e5e30afd9a1fc43b"
+      "sha256": "c40bf959970549f3cd4966a5bddd2dfdfd7d072e4a19fd5f71b5809161783020"
     },
     "files": [
       {
@@ -93,9 +93,9 @@
         "kind": "costume",
         "target": "Fish",
         "source": {
-          "path": "../urashima/assets/images/2ba2ab09dc7317d8a5f19d2babc26dc2.png",
-          "size": 3024,
-          "sha256": "51a6a2bbed16eaa1c58db4a0977c2d8492182536330f53768c755b2bb2770b7d"
+          "path": "../urashima/assets/images/ecb9fee0c3fd0360315be4d364b7172a.png",
+          "size": 8374,
+          "sha256": "af282da46052d1c636c833e7e76c58f8db98faa0b2faa1db8e759d62a8426118"
         }
       },
       {
@@ -103,9 +103,9 @@
         "kind": "costume",
         "target": "Fish",
         "source": {
-          "path": "../urashima/assets/images/eb377966e823a7531b2cff0978e19cc3.png",
-          "size": 2992,
-          "sha256": "ba9a3a52d937c9e6ea9b3a6e73e820e7f48bc72bbecc99ef8ca4c7fdd33e6960"
+          "path": "../urashima/assets/images/ffacdc18383a2965ed75755fd74ace0e.png",
+          "size": 9971,
+          "sha256": "fb97ee812f53d0859af6bdd0a0989c047f8e00651b84f87ad895ff8c7939d3de"
         }
       },
       {
@@ -305,9 +305,9 @@
         "kind": "costume",
         "target": "Turtle",
         "source": {
-          "path": "../urashima/assets/images/339dd4c3503114e661226bf3be351975.png",
-          "size": 3858,
-          "sha256": "132249b680751264c46e7dfba8df8f1be79564b374948745d4cfdd1f22871215"
+          "path": "../urashima/assets/images/b556a0d2cffad420a17b8ebecfae6548.png",
+          "size": 12971,
+          "sha256": "5a0453a5fa35ce55ad7ba06122e983432d8c796af6fb88860a76e46ef90d3cfa"
         }
       },
       {
@@ -315,9 +315,9 @@
         "kind": "costume",
         "target": "Urashima",
         "source": {
-          "path": "../urashima/assets/images/72068822e9ab7b09f452826921880ee4.png",
-          "size": 2747,
-          "sha256": "4912062c9b6270bba1a69917dd6861257e5f9757fdb2604a892ec2d3df729339"
+          "path": "../urashima/assets/images/f937d1f9c7834e9523c54d4eb501eb34.png",
+          "size": 9324,
+          "sha256": "6c7287266f1bc13b681e8c9d584499c3d90cacb3c246658a127f6ca539ecee2b"
         }
       },
       {
@@ -325,9 +325,9 @@
         "kind": "costume",
         "target": "Urashima",
         "source": {
-          "path": "../urashima/assets/images/3afd9d6417c43598db0363727638b53d.png",
-          "size": 3303,
-          "sha256": "7a68855e4ed4f8f5a7cd2394eed186b2fbf0f7e9b55f55c1908db59b67b8a8d2"
+          "path": "../urashima/assets/images/0ebda7a9a60220820caad99718852f63.png",
+          "size": 9244,
+          "sha256": "098cae109cfa0d5558dd9c113b57d22e456cf7f6337400327dc9fa117695ac3c"
         }
       },
       {
@@ -335,9 +335,9 @@
         "kind": "costume",
         "target": "Urashima",
         "source": {
-          "path": "../urashima/assets/images/a4b6ac5c115f23fa9c5ebea0b94e6ca9.png",
-          "size": 3871,
-          "sha256": "f06f315db0b974e85f896b2fef240976a5fdee150be1b44cc83cd33e122a7138"
+          "path": "../urashima/assets/images/d2823262fff990e461b9949e365d69e7.png",
+          "size": 12239,
+          "sha256": "e6336bf7dbc733f116d93af5cafd0818f4aa30d9bb7c8ee967779f1d8c940389"
         }
       },
       {
@@ -345,9 +345,9 @@
         "kind": "costume",
         "target": "Urashima",
         "source": {
-          "path": "../urashima/assets/images/6f73929c17369bbeaf58aefdcfc1c641.png",
-          "size": 3962,
-          "sha256": "d16b0aa626a4a3ca8afac2467f7f7194c49c5a2bbfa0e48c2a4ea2475b35631b"
+          "path": "../urashima/assets/images/6e5100ae8618327d33dd25283b9538f5.png",
+          "size": 15558,
+          "sha256": "45e616158d384f96c6412d2d562e043648c2708f718590a81e7639d70911b4b7"
         }
       },
       {
@@ -355,9 +355,9 @@
         "kind": "costume",
         "target": "Urashima",
         "source": {
-          "path": "../urashima/assets/images/1aa58d9fae49f6865d04ef042004c3c7.png",
-          "size": 3388,
-          "sha256": "2fc45b37087fcfaec598aed26a69118f10589b79635640f5c29c886bc9558d20"
+          "path": "../urashima/assets/images/5addf20c0b4eaaffaf25b43f89aacbe6.png",
+          "size": 10478,
+          "sha256": "25e456aa5cd6e9113957823ccee38860a599b3d74f226fde90f22b0e00abd8c0"
         }
       },
       {
@@ -365,9 +365,9 @@
         "kind": "costume",
         "target": "Urashima",
         "source": {
-          "path": "../urashima/assets/images/13184b33d20ebc13d7367694df94aa6c.png",
-          "size": 3684,
-          "sha256": "92730efdb9d8c1a842e5f3c05587b2c569fb488340c6615a2a7898d16b43f096"
+          "path": "../urashima/assets/images/55e6e813b850dcdaa5048d1adf23445b.png",
+          "size": 13793,
+          "sha256": "ba2bb29fd7bb878ba8263a2efaf8fcf135fb82e88291856ffe71b82c1f192c63"
         }
       },
       {
@@ -375,9 +375,9 @@
         "kind": "costume",
         "target": "Urashima",
         "source": {
-          "path": "../urashima/assets/images/bbef3d2fb452d9eef7d8a30d9607f89a.png",
-          "size": 2711,
-          "sha256": "6058bfbdceef25c3698e6f0d22cc63990bc3ecfe28837273525051041c5ea7cb"
+          "path": "../urashima/assets/images/04b206e9ecf2c990d9f440612578406c.png",
+          "size": 10885,
+          "sha256": "fc29da869e0f61649002eba831295ce2f5d58a9184f2a7045ab86f8ae3ec83e0"
         }
       },
       {
@@ -385,9 +385,9 @@
         "kind": "costume",
         "target": "Urashima",
         "source": {
-          "path": "../urashima/assets/images/60ddf2e3d760b7bb9cb96c5ccc6bdce4.png",
-          "size": 3164,
-          "sha256": "c320912235f84fdbd0033bea56de856d4e416a38df6593da520e81b28c982ff2"
+          "path": "../urashima/assets/images/34dc7c981812db18f26fae2d7c4a3032.png",
+          "size": 9683,
+          "sha256": "7972c734cc8ea4ad311f27ac791db40b39b1e6f52fabc1aeac559649af5142bc"
         }
       },
       {
@@ -395,9 +395,9 @@
         "kind": "costume",
         "target": "Urashima",
         "source": {
-          "path": "../urashima/assets/images/f64d3eb6a1b5d9ee82a31a2420896e8e.png",
-          "size": 3494,
-          "sha256": "b6a04ebe5f229247991835e4783f10c31aca5c2642035be5954a437e8489f1fb"
+          "path": "../urashima/assets/images/5ce0a5f82c1a73d33c37ed75283799d9.png",
+          "size": 9620,
+          "sha256": "7b535a0150195b626f333adfe8d24f86241d8cea219a944709f1da0e9544859f"
         }
       },
       {
@@ -405,9 +405,9 @@
         "kind": "costume",
         "target": "Urashima",
         "source": {
-          "path": "../urashima/assets/images/191a0d8f2d809bb3e507759f2954620b.png",
-          "size": 3670,
-          "sha256": "43abf6d97b3a2ede71fa5a4207d66faff1c66dbad993c636fdec3322aa8ed80d"
+          "path": "../urashima/assets/images/3ee01b9e5d5cfa4c7a0962a787952539.png",
+          "size": 13262,
+          "sha256": "f1fc1cc85ae6906be7ca012608271447e72c6f93261e3923680b95e2978688fc"
         }
       },
       {
@@ -415,9 +415,9 @@
         "kind": "costume",
         "target": "Urashima",
         "source": {
-          "path": "../urashima/assets/images/d5a35f8528c3e49d89b1eb5615451753.png",
-          "size": 4073,
-          "sha256": "2be1573d66e15df0be12d9406d6191a331adf003ae843cc467d6748fce99485c"
+          "path": "../urashima/assets/images/ce4422b05e0ecb3983a54bb7f6cff375.png",
+          "size": 12168,
+          "sha256": "10c13758106a7644d23d582b964077f8fa13701197c4035bd15a1ce756a0ae14"
         }
       },
       {
@@ -425,9 +425,9 @@
         "kind": "costume",
         "target": "Urashima",
         "source": {
-          "path": "../urashima/assets/images/0756437e1deda6c4f4a69cd4fa5d7030.png",
-          "size": 4020,
-          "sha256": "f187e54d26126fb6ed60688b882534cca3a6bae53486270f870f806bd7c08a41"
+          "path": "../urashima/assets/images/5d3b41e97d0e31d26ab923deafe6664d.png",
+          "size": 14602,
+          "sha256": "34c0369665944b8f1682ac20eac7af5af6f02b1c5c1b510b5fa0fe5cf44fc86f"
         }
       },
       {
@@ -435,9 +435,9 @@
         "kind": "costume",
         "target": "Urashima",
         "source": {
-          "path": "../urashima/assets/images/595bd4e6a5ccb1032af1d4dd89301c6c.png",
-          "size": 3020,
-          "sha256": "1e3cff7003514c2f0a5545b2e2c6ad80b229950e784ce3f62f09a21c25fc4a0a"
+          "path": "../urashima/assets/images/2f2c5e8a10a5e8ea162340c44d8c64cc.png",
+          "size": 10737,
+          "sha256": "a73266d1025547d4376cf52aeb60417bdd3bfd6403c3a66ff57ac1eb4b9b17f9"
         }
       },
       {
@@ -445,9 +445,9 @@
         "kind": "costume",
         "target": "Urashima",
         "source": {
-          "path": "../urashima/assets/images/7025746029f54d4207e56f7c0c996b3c.png",
-          "size": 4348,
-          "sha256": "8bf234a02d3f4f3e69938efc5ef629b2d4a7519c183e2f739317915c995b3656"
+          "path": "../urashima/assets/images/9a8cf053f6169ea9b530a852ab62c5a0.png",
+          "size": 13593,
+          "sha256": "617bdabd94e214551ce06b32acc67e5fb3eeb77b84e1c56b9a445f79e79f2919"
         }
       },
       {
@@ -463,8 +463,8 @@
   },
   "output": {
     "path": "my-urashima-4.0.sb3",
-    "size": 15871602,
-    "sha256": "cd271d963b9037f93621bdb2613c4b0f02c70c48bbaf33dac81677e3a7729c79",
+    "size": 16017249,
+    "sha256": "f13a3616ba6ec3ab71ef46ccf9e8c301b1d4ac1c1629609e9c056593353a3857",
     "archiveEntryCount": 51,
     "targetNames": [
       "Stage",

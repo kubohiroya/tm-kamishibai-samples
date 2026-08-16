@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v7
         with:
           repository: kubohiroya/tmpose-kamishibai
-          ref: f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6
+          ref: 19474e1e49572a5997d1737e63e10bac67a179e9
           path: .tmp/tmpose-kamishibai
       - run: corepack enable
       - uses: actions/setup-node@v7

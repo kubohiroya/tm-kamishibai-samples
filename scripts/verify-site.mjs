@@ -275,7 +275,7 @@ export async function verifyPublishedSite(options = {}) {
   assert.equal(manifest.dsl4Offline.embeddedFileCount, 55);
   assert.equal(
     manifest.dsl4Offline.runtimeCommit,
-    'f323a5475d4c6240a255f8a6f5b6c5d68b9ea7b6',
+    '19474e1e49572a5997d1737e63e10bac67a179e9',
   );
   assert.deepEqual(manifest.dsl4Offline.sb3Toolchain, {
     package: '@kubohiroya/sb3-toolchain',
@@ -722,11 +722,11 @@ export async function verifyPublishedSite(options = {}) {
   assert.equal(faviconMetadata.sourceName, 'Urashima-walk-1');
   assert.equal(
     faviconMetadata.sourcePath,
-    'stories/urashima/assets/images/7025746029f54d4207e56f7c0c996b3c.png',
+    'stories/urashima/assets/images/9a8cf053f6169ea9b530a852ab62c5a0.png',
   );
   assert.equal(
     sha256(favicon),
-    '4e3f4942709371d5e5a935992140bcc9d46dcbaff9ad15c39755402eccb1c798',
+    'd60f222ed9bb0f52377810b4345e4817c81f90758c167af7084c0c3d3b51782c',
   );
 
   const noJekyll = await stat(path.join(outputDirectory, '.nojekyll'));

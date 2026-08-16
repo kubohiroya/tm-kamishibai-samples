@@ -59,7 +59,7 @@ test('keeps disabled DSL 4.0 Web locks reusable without publishing active links'
   );
 
   const rootIndex = renderRootIndex(manifest, myDsl4Manifest, worksCatalog);
-  assert(rootIndex.includes('<time datetime="2026-08-15">2026年8月15日</time>'));
+  assert(rootIndex.includes('<time datetime="2026-08-16">2026年8月16日</time>'));
   assert(rootIndex.includes('href="stories/urashima/web/"'));
   assert(!rootIndex.includes('href="stories/urashima/web-4.0/"'));
   assert(!rootIndex.includes('href="stories/my-urashima/web-4.0/"'));

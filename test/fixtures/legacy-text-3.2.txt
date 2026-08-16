@@ -1,7 +1,7 @@
 kamishibai=3.2
 asset=Title,backdrop
 asset=Stars,backdrop
-asset=Turtle,file:assets/images/339dd4c3503114e661226bf3be351975.png
+asset=Turtle,file:assets/images/b556a0d2cffad420a17b8ebecfae6548.png
 asset=Narration,text
 text=Narration:旧テキスト
 actor=Narration,Narration
