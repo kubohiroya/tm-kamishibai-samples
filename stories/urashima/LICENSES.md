@@ -12,7 +12,7 @@
 
 生成される `_urashima.sb3`、`urashima.sb3`、`../my-urashima/my-urashima.sb3` は、上記のMPL-2.0対象コンテンツに加えて、`tmpose-kamishibai` `3.2.2`／`2b5005d293a9b63c8ba5da396fd86815d093f975` のMPL-2.0対象ランタイムと、次節のCC BY-SA 2.0対象音声を含む結合物です。`../my-urashima/my-urashima.sb3`のPrincessコスチュームは、リポジトリでは`resources/20260801/master/Princess.png`、ワークショップ配布物では`master/Princess.png`として収録する画像を入力としており、各配布場所の`LICENSES.md`に記載されたCC BY-SA 4.0が適用されます。汎用ベース `base/kamishibai.sb3` と本体由来部分にも、[`licenses/tmpose-kamishibai-MPL-2.0.txt`](licenses/tmpose-kamishibai-MPL-2.0.txt) のMozilla Public License 2.0が適用されます。
 
-`base/kamishibai-4.0.sb3`は、`tmpose-kamishibai` `4.0.0-rc.7`の固定release source identity `sha256:838e82d33a9ecb67da81eafdc115afd4fd856db2721d1160ee601a389b6a96a7`から生成したruntime baseです。`urashima-4.0.sb3`と`../my-urashima/my-urashima-4.0.sb3`は、このbaseへtag commit `3a5f31d2519dfb2b9dab32b2c377762c774d5844`のビルダーと`@kubohiroya/sb3-toolchain@0.6.0`を適用して生成します。統合されたJavaScriptの冒頭には、各機能拡張ソースの名称、著作権表示、ライセンス表示を保持しています。浦島太郎のポーズモデルの取得元と各ファイルの固定SHA-256は`dsl4-inputs.lock.json`に記録しています。my-urashima 4.0版のPrincessコスチュームには、前述のCC BY-SA 4.0が適用されます。
+`base/kamishibai-4.0.sb3`は、`tmpose-kamishibai` `4.0.0-rc.8`の固定release source identity `sha256:8edbc02a06b3770cce0a89cf658367df129d974d53f401258b69f0713762014a`から生成したruntime baseです。`urashima-4.0.sb3`と`../my-urashima/my-urashima-4.0.sb3`は、このbaseへtag commit `29c0deadcb98badf94a0244c479ca896dc71f842`のビルダーと`@kubohiroya/sb3-toolchain@0.6.0`を適用して生成します。統合されたJavaScriptの冒頭には、各機能拡張ソースの名称、著作権表示、ライセンス表示を保持しています。浦島太郎のポーズモデルの取得元と各ファイルの固定SHA-256は`dsl4-inputs.lock.json`に記録しています。my-urashima 4.0版のPrincessコスチュームには、前述のCC BY-SA 4.0が適用されます。
 
 ## Scratch Sewing Machine {#scratch-sewing-machine}
 
