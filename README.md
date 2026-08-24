@@ -1,8 +1,8 @@
-# tmpose-kamishibai-samples
+# tm-kamishibai-samples
 
-`tmpose-kamishibai` の作品カタログ、台本、作品固有アセット、生成設定、検証、公開物を管理するリポジトリです。リポジトリ名と公開URLは互換性のため維持し、公開ページでは「TMPose紙芝居 作品ライブラリ」として提供します。
+`tmpose-kamishibai` の作品カタログ、台本、作品固有アセット、生成設定、検証、公開物を管理するリポジトリです。リポジトリ名と公開URLは互換性のため維持し、公開ページでは「TM紙芝居 作品ライブラリ」として提供します。
 
-作品ライブラリ: <https://kubohiroya.github.io/tmpose-kamishibai-samples/>
+作品ライブラリ: <https://kubohiroya.github.io/tm-kamishibai-samples/>
 
 作品の掲載区分、権利情報、配布形態は[`site/works.json`](site/works.json)で管理し、その形式を[`site/works.schema.json`](site/works.schema.json)で定義します。公式サンプル、コミュニティ作品、外部作品の扱いは[`WORKS_POLICY.md`](WORKS_POLICY.md)を参照してください。外部作品はリンクのみを掲載し、このサイトでは作品データを再配布しません。
 
@@ -92,8 +92,8 @@ pnpm deploy
 
 実装計画は次のIssueで管理します。
 
-- [サンプル生成とGitHub Pages公開](https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/1)
-- [浦島太郎の生成・検証・公開](https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/2)
-- [Packager Web版の生成・公開](https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/7)
-- [DSL 4.0 SB3・Web版の自動生成](https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/90)
-- [DSL 4.0チュートリアル作品・starter・addition kit](https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/94)
+- [サンプル生成とGitHub Pages公開](https://github.com/kubohiroya/tm-kamishibai-samples/issues/1)
+- [浦島太郎の生成・検証・公開](https://github.com/kubohiroya/tm-kamishibai-samples/issues/2)
+- [Packager Web版の生成・公開](https://github.com/kubohiroya/tm-kamishibai-samples/issues/7)
+- [DSL 4.0 SB3・Web版の自動生成](https://github.com/kubohiroya/tm-kamishibai-samples/issues/90)
+- [DSL 4.0チュートリアル作品・starter・addition kit](https://github.com/kubohiroya/tm-kamishibai-samples/issues/94)

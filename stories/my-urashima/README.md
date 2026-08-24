@@ -39,7 +39,7 @@ DSL 4.0 Web版だけを一時停止するときは、`dsl4-build.config.json`の
 
 `my-urashima.k4.yml`は、DSL 3.2版のワークショップと同じ「行頭の`#`を削除して選択肢を有効化する」操作を、標準YAMLのコメントとして表現したDSL 4.0作業用台本です。専用プリプロセッサや独自コメント文法は使用しません。
 
-元の作業手順は、[2026-08-01ワークショップ教材「6. 台本ファイルの修正をしよう」](https://kubohiroya.github.io/tmpose-kamishibai-docs/workshops/2026-08-01/tmpose-kamishibai-20260801.html#6-%E5%8F%B0%E6%9C%AC%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%81%AE%E4%BF%AE%E6%AD%A3%E3%82%92%E3%81%97%E3%82%88%E3%81%86)を参照してください。
+元の作業手順は、[2026-08-01ワークショップ教材「6. 台本ファイルの修正をしよう」](https://kubohiroya.github.io/tm-kamishibai-docs/workshops/2026-08-01/tmpose-kamishibai-20260801.html#6-%E5%8F%B0%E6%9C%AC%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%81%AE%E4%BF%AE%E6%AD%A3%E3%82%92%E3%81%97%E3%82%88%E3%81%86)を参照してください。
 
 `assets:`の直下には`p1`から`p4`までの候補を置いています。使用するポーズ数が2なら`p1`と`p2`、3なら`p1`から`p3`、4なら全4行について、行頭の`#`だけを削除します。各行はPrincessスプライトに参加者が追加した同名コスチュームを参照します。
 

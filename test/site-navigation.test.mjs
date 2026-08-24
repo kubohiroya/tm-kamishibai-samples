@@ -34,7 +34,7 @@ test('records the source of the Urashima site symbol', async () => {
   );
 
   assert.equal(metadata.sourceName, 'Urashima-walk-1');
-  assert.equal(metadata.sourceRepository, 'kubohiroya/tmpose-kamishibai-samples');
+  assert.equal(metadata.sourceRepository, 'kubohiroya/tm-kamishibai-samples');
   assert.equal(
     metadata.sourcePath,
     'stories/urashima/assets/images/9a8cf053f6169ea9b530a852ab62c5a0.png',

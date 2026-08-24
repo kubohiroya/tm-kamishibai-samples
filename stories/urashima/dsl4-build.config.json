@@ -1,7 +1,7 @@
 {
   "formatVersion": 1,
   "runtime": {
-    "repository": "https://github.com/kubohiroya/tmpose-kamishibai",
+    "repository": "https://github.com/kubohiroya/tm-kamishibai",
     "version": "4.0.0-rc.8",
     "commit": "29c0deadcb98badf94a0244c479ca896dc71f842",
     "basePath": "base/kamishibai-4.0.sb3",
@@ -37,7 +37,7 @@
         "target": "html",
         "autoplay": true,
         "app": {
-          "windowTitle": "浦島太郎 DSL 4.0 | TMPose紙芝居"
+          "windowTitle": "浦島太郎 DSL 4.0 | TM紙芝居"
         },
         "cloudVariables": {
           "mode": "disabled"

@@ -57,7 +57,7 @@ export async function verifyTutorialCandidate(options = {}) {
   );
   assert.equal(publicSurfaces.sourceIdentity, artifactLock.sourceIdentity);
   assert.equal(publicSurfaces.releaseDependency, config.releaseDependency);
-  assert.match(config.releaseDependency, /tmpose-kamishibai\/releases\/tag\/v4\.0\.0-rc\.8$/u);
+  assert.match(config.releaseDependency, /tm-kamishibai\/releases\/tag\/v4\.0\.0-rc\.8$/u);
   assert.doesNotMatch(
     config.publication.reason,
     /docs|capture/iu,
@@ -115,7 +115,7 @@ export async function verifyTutorialCandidate(options = {}) {
   );
   assert.match(web.toString('utf8', 0, 256), /^<!DOCTYPE html>/u);
   assert(
-    web.includes(Buffer.from('<title>地震だ！頭を守ろう DSL 4.0 | TMPose紙芝居</title>')),
+    web.includes(Buffer.from('<title>地震だ！頭を守ろう DSL 4.0 | TM紙芝居</title>')),
   );
 
   const starterEntries = Object.keys(unzipSync(new Uint8Array(starterArchive))).sort();

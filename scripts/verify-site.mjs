@@ -97,20 +97,20 @@ function verifySiteHeader(html, assetPrefix) {
   assert.equal((html.match(/aria-current="page"/gu) ?? []).length, 1);
   assert(
     html.includes(
-      '<a class="site-nav__link" href="https://kubohiroya.github.io/tmpose-kamishibai-docs/workshops/">ワークショップ</a>',
+      '<a class="site-nav__link" href="https://kubohiroya.github.io/tm-kamishibai-docs/workshops/">ワークショップ</a>',
     ),
   );
   assert(
     html.includes(
       renderSiteNavigation({
-        site: 'tmpose-kamishibai-samples',
-        pathname: '/tmpose-kamishibai-samples/',
+        site: 'tm-kamishibai-samples',
+        pathname: '/tm-kamishibai-samples/',
       }),
     ),
   );
   assert(
     html.includes(
-      '<a class="site-repository" href="https://github.com/kubohiroya/tmpose-kamishibai-samples" target="_blank" rel="noopener" aria-label="tmpose-kamishibai-samplesをGitHubで開く" title="tmpose-kamishibai-samplesをGitHubで開く">',
+      '<a class="site-repository" href="https://github.com/kubohiroya/tm-kamishibai-samples" target="_blank" rel="noopener" aria-label="tm-kamishibai-samplesをGitHubで開く" title="tm-kamishibai-samplesをGitHubで開く">',
     ),
   );
   assert(html.includes('<svg class="site-repository__icon"'));
@@ -126,7 +126,7 @@ function verifySiteFooter(html, assetPrefix) {
   assert(footer.includes('各文書・作品・素材には個別の利用条件が適用されます。'));
   assert(
     footer.includes(
-      '<a class="site-footer__rights" href="https://kubohiroya.github.io/tmpose-kamishibai-samples/licenses/">ライセンス・権利表示</a>',
+      '<a class="site-footer__rights" href="https://kubohiroya.github.io/tm-kamishibai-samples/licenses/">ライセンス・権利表示</a>',
     ),
   );
   assert(
@@ -228,7 +228,7 @@ export async function verifyPublishedSite(options = {}) {
   }
   assert.equal(
     worksSchema.$id,
-    'https://kubohiroya.github.io/tmpose-kamishibai-samples/works.schema.json',
+    'https://kubohiroya.github.io/tm-kamishibai-samples/works.schema.json',
   );
   assert(worksPolicy.includes('## 公式サンプル'));
   assert(worksPolicy.includes('## コミュニティ作品'));
@@ -255,7 +255,7 @@ export async function verifyPublishedSite(options = {}) {
   assert.equal(manifest.sample, 'urashima');
   assert.equal(
     manifest.publicUrl,
-    'https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/urashima/',
+    'https://kubohiroya.github.io/tm-kamishibai-samples/stories/urashima/',
   );
   assert.equal(manifest.license, 'MPL-2.0');
   assert.equal(manifest.builder.version, '3.2.2');
@@ -330,7 +330,7 @@ export async function verifyPublishedSite(options = {}) {
   assert.deepEqual(manifest.web.packager.options, {
     target: 'html',
     autoplay: true,
-    app: {windowTitle: '浦島太郎 | TMPose紙芝居'},
+    app: {windowTitle: '浦島太郎 | TM紙芝居'},
     cloudVariables: {mode: 'disabled'},
     bakeExtensions: true,
   });
@@ -363,7 +363,7 @@ export async function verifyPublishedSite(options = {}) {
   assert(webHtml.length > 0);
   assert(webHtml.length <= 104857600);
   assert(webHtml.toString('utf8', 0, 128).startsWith('<!DOCTYPE html>'));
-  assert(webHtml.includes(Buffer.from('<title>浦島太郎 | TMPose紙芝居</title>')));
+  assert(webHtml.includes(Buffer.from('<title>浦島太郎 | TM紙芝居</title>')));
   assert(!webHtml.includes(Buffer.from('class="site-footer"')));
   assert.deepEqual(
     manifest.web.allowedOnlineDependencies.map(({urlPrefix}) => urlPrefix),
@@ -398,7 +398,7 @@ export async function verifyPublishedSite(options = {}) {
       'DSL 4.0 Packager HTML',
     );
     assert.deepEqual(dsl4WebFiles, ['index.html']);
-    assert(dsl4WebHtml.includes(Buffer.from('<title>浦島太郎 DSL 4.0 | TMPose紙芝居</title>')));
+    assert(dsl4WebHtml.includes(Buffer.from('<title>浦島太郎 DSL 4.0 | TM紙芝居</title>')));
   } else {
     assert.deepEqual(manifest.dsl4Web, {enabled: false});
     assert.deepEqual(dsl4WebFiles, []);
@@ -407,7 +407,7 @@ export async function verifyPublishedSite(options = {}) {
   assert.equal(myDsl4Manifest.sample, 'my-urashima');
   assert.equal(
     myDsl4Manifest.publicUrl,
-    'https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/my-urashima/',
+    'https://kubohiroya.github.io/tm-kamishibai-samples/stories/my-urashima/',
   );
   assert.equal(myDsl4Manifest.output.path, 'my-urashima-4.0.sb3');
   assert.deepEqual(myDsl4Manifest.output.princessCostumes, ['Princess']);
@@ -437,7 +437,7 @@ export async function verifyPublishedSite(options = {}) {
     assert.deepEqual(myDsl4WebFiles, ['index.html']);
     assert(
       myDsl4WebHtml.includes(
-        Buffer.from('<title>my-urashima DSL 4.0 | TMPose紙芝居</title>'),
+        Buffer.from('<title>my-urashima DSL 4.0 | TM紙芝居</title>'),
       ),
     );
   } else {
@@ -465,8 +465,8 @@ export async function verifyPublishedSite(options = {}) {
   verifySiteFooter(sampleIndex, '../../');
   verifySiteFooter(tutorialIndex, '../../');
   verifySiteFooter(rightsIndex, '../');
-  assert(rootIndex.includes('<title>TMPose紙芝居 作品ライブラリ</title>'));
-  assert(rootIndex.includes('<h1>TMPose紙芝居 作品ライブラリ</h1>'));
+  assert(rootIndex.includes('<title>TM紙芝居 作品ライブラリ</title>'));
+  assert(rootIndex.includes('<h1>TM紙芝居 作品ライブラリ</h1>'));
   assert(rootIndex.includes('.work-list { display: grid; grid-template-columns: 1fr;'));
   assert(!rootIndex.includes('repeat(auto-fit'));
   assert(rightsIndex.includes('<h1>ライセンス・権利表示</h1>'));
@@ -474,7 +474,7 @@ export async function verifyPublishedSite(options = {}) {
   assert(rightsIndex.includes('Urashima-walk-1'));
   assert(rightsIndex.includes('Mozilla Public License 2.0'));
   assert(rightsIndex.includes('CC BY-SA 2.0'));
-  assert(sampleIndex.includes('<title>浦島太郎 | TMPose紙芝居 作品ライブラリ</title>'));
+  assert(sampleIndex.includes('<title>浦島太郎 | TM紙芝居 作品ライブラリ</title>'));
   assert(sampleIndex.includes('aria-label="作品内ナビゲーション"'));
   assert(sampleIndex.includes('>作品一覧へ戻る</a>'));
   assert(sampleIndex.includes('<dt>対応DSL</dt><dd>3.2／4.0</dd>'));
@@ -486,7 +486,7 @@ export async function verifyPublishedSite(options = {}) {
   assert(sampleIndex.includes('href="../../CARD_SCENES.md"'));
   assert(
     myUrashimaIndex.includes(
-      '<title>my-urashima（ワークショップにおける作業用） | TMPose紙芝居 作品ライブラリ</title>',
+      '<title>my-urashima（ワークショップにおける作業用） | TM紙芝居 作品ライブラリ</title>',
     ),
   );
   assert(myUrashimaIndex.includes('<dt>対応DSL</dt><dd>3.2／4.0</dd>'));
@@ -512,7 +512,7 @@ export async function verifyPublishedSite(options = {}) {
   assert(myUrashimaIndex.includes('data-dsl-series="4.0"'));
   assert(myUrashimaIndex.includes('my-urashima.k4.yml'));
   assert(!rootIndex.includes('>GitHubリポジトリ</a>'));
-  assert(!rootIndex.includes('https://kubohiroya.github.io/tmpose-kamishibai/stories/'));
+  assert(!rootIndex.includes('https://kubohiroya.github.io/tm-kamishibai/stories/'));
   assert(sampleIndex.includes(manifest.profiles.player.sb3.sha256));
   assert(sampleIndex.includes(manifest.profiles.editor.sb3.sha256));
   assert(sampleIndex.includes(manifest.web.output.sha256));

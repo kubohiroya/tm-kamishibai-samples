@@ -186,7 +186,7 @@ async function buildArchives(config) {
 }
 
 export function createTutorialPublicSurfaces(config, artifactLock, webLock) {
-  const root = 'https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/';
+  const root = 'https://kubohiroya.github.io/tm-kamishibai-samples/stories/tutorial/';
   return {
     formatVersion: 1,
     status: config.status,

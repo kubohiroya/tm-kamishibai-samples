@@ -1,7 +1,7 @@
 {
   "formatVersion": 1,
   "runtime": {
-    "repository": "https://github.com/kubohiroya/tmpose-kamishibai",
+    "repository": "https://github.com/kubohiroya/tm-kamishibai",
     "version": "4.0.0-rc.8",
     "commit": "29c0deadcb98badf94a0244c479ca896dc71f842",
     "basePath": "base/kamishibai-4.0.sb3",

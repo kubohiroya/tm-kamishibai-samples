@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://kubohiroya.github.io/tmpose-kamishibai-samples/works.schema.json",
-  "title": "TMPose紙芝居 作品ライブラリ",
+  "$id": "https://kubohiroya.github.io/tm-kamishibai-samples/works.schema.json",
+  "title": "TM紙芝居 作品ライブラリ",
   "type": "object",
   "additionalProperties": false,
   "required": ["$schema", "formatVersion", "categories", "works"],

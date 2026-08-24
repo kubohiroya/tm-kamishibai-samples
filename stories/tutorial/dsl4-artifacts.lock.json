@@ -2,10 +2,10 @@
   "formatVersion": 1,
   "status": "published",
   "version": "4.0.0-rc.8",
-  "releaseDependency": "https://github.com/kubohiroya/tmpose-kamishibai/releases/tag/v4.0.0-rc.8",
-  "sourceIdentity": "f8ba10c370618505ee7b6801457a0676d5f2e154a19a2ac56a52d3b2350bb74e",
+  "releaseDependency": "https://github.com/kubohiroya/tm-kamishibai/releases/tag/v4.0.0-rc.8",
+  "sourceIdentity": "7f7d73b93d57d81e3c7916e874b4beb77dbbeea36d4c590a60ad2e5e45eec56d",
   "runtime": {
-    "repository": "https://github.com/kubohiroya/tmpose-kamishibai",
+    "repository": "https://github.com/kubohiroya/tm-kamishibai",
     "version": "4.0.0-rc.8",
     "commit": "29c0deadcb98badf94a0244c479ca896dc71f842",
     "basePath": "base/kamishibai-4.0.sb3",
@@ -56,8 +56,8 @@
     "inputs": [
       {
         "path": "LICENSES.md",
-        "size": 1375,
-        "sha256": "f6e61d883ea5f5aa20895b3e3cd24c9522857d9a7d60f021b820f4fef91eb4ce"
+        "size": 1371,
+        "sha256": "ea567d3141d3bc872e15a94d74486e283239966379548fde0aad07334ed8b69e"
       },
       {
         "path": "README.md",
@@ -179,8 +179,8 @@
     },
     "starter": {
       "path": "tutorial-story-starter-4.0.zip",
-      "size": 5914519,
-      "sha256": "3789c96c61bbb89beb10b95d456a8f5885999163319fb4c974b3c784c36b7d4b",
+      "size": 5914515,
+      "sha256": "d44e7bf5fee9ea8c1947f5d37ab4cbe175c1b68e30dd7419ac6b72e3b5ce1f17",
       "entries": [
         "tutorial-story/LICENSES.md",
         "tutorial-story/README.md",
@@ -203,8 +203,8 @@
     },
     "additionKit": {
       "path": "tutorial-story-addition-kit-4.0.zip",
-      "size": 5538,
-      "sha256": "4e8b6c76cd850fd924806739a337a639b13eaac3ccdbb7cd7e9ef0e727a5fa38",
+      "size": 5536,
+      "sha256": "07e59050506185ee8a361ea9cd09302dd02984b1788cd6f10aaaf40497e46bd5",
       "entries": [
         "tutorial-story-addition-kit/LICENSES.md",
         "tutorial-story-addition-kit/README.md",
@@ -223,6 +223,6 @@
   "publication": {
     "enabled": true,
     "reason": "tmpose-kamishibai 4.0.0-rc.8 release artifacts are published and integrity-verified",
-    "issue": "https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/125"
+    "issue": "https://github.com/kubohiroya/tm-kamishibai-samples/issues/125"
   }
 }

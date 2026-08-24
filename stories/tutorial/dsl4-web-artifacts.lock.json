@@ -10,8 +10,8 @@
   "output": {
     "path": "web-4.0/index.html",
     "contentType": "text/html",
-    "size": 22237567,
-    "sha256": "c51db5956c3b1004125ed2aa5513d17f29f82ae0a0a4d47bc6baa7a3843df5dd"
+    "size": 22237563,
+    "sha256": "b355d9c2404b678ad65f2ea9f8e8251d15c799c179c3eb1cab29442cf92b8feb"
   },
   "packager": {
     "package": "@turbowarp/packager",
@@ -20,7 +20,7 @@
       "target": "html",
       "autoplay": true,
       "app": {
-        "windowTitle": "地震だ！頭を守ろう DSL 4.0 | TMPose紙芝居"
+        "windowTitle": "地震だ！頭を守ろう DSL 4.0 | TM紙芝居"
       },
       "cloudVariables": {
         "mode": "disabled"

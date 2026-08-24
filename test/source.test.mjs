@@ -230,7 +230,7 @@ test('pins the generic, editor, and player profile contract', async () => {
   assert.equal(config.baseSb3.profile, 'generic');
   assert.equal(
     config.baseSb3.source,
-    'github:kubohiroya/tmpose-kamishibai#2b5005d293a9b63c8ba5da396fd86815d093f975',
+    'github:kubohiroya/tm-kamishibai#2b5005d293a9b63c8ba5da396fd86815d093f975',
   );
   assert.equal(
     config.baseSb3.commit,
@@ -309,7 +309,7 @@ test('pins the generic, editor, and player profile contract', async () => {
   assert.equal(config.web.packager.version, '3.13.0');
   assert.equal(config.web.packager.options.target, 'html');
   assert.equal(config.web.packager.options.autoplay, true);
-  assert.equal(config.web.packager.options.app.windowTitle, '浦島太郎 | TMPose紙芝居');
+  assert.equal(config.web.packager.options.app.windowTitle, '浦島太郎 | TM紙芝居');
   assert.equal(config.web.packager.options.cloudVariables.mode, 'disabled');
   assert.deepEqual(artifactsLock.web.input, {
     profile: 'player',

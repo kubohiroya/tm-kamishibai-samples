@@ -8,7 +8,7 @@
 - `success.mp3`（浦島太郎サンプルの`Jump`成功音と同一bytes）
 - `safety-pose/`（浦島太郎サンプルの`6and7`モデルと同じmodel topology／weights）
 
-生成されるSB3と単一HTML Web版には、MPL-2.0のTMPose紙芝居runtimeとTurboWarp Packagerが
+生成されるSB3と単一HTML Web版には、MPL-2.0のTM紙芝居runtimeとTurboWarp Packagerが
 含まれます。TurboWarp PackagerはCopyright (C) 2021-2024 Thomas Weberです。
 
 `safety-pose`は、浦島太郎の最終場面で「ひざまずいて両手で頭を抱える」姿勢を認識する`despair`

@@ -6,7 +6,7 @@
 
 ### 浦島太郎
 
-- 撮影基準: `tmpose-kamishibai@19474e1e49572a5997d1737e63e10bac67a179e9`（4.0.0-rc.6）、`tmpose-kamishibai-samples@a88c89f`を基準に、2026年8月16日の復元画像を組み込んだ作業ツリー
+- 撮影基準: `tmpose-kamishibai@19474e1e49572a5997d1737e63e10bac67a179e9`（4.0.0-rc.6）、`tm-kamishibai-samples@a88c89f`を基準に、2026年8月16日の復元画像を組み込んだ作業ツリー
 - 撮影条件: Chrome、1280×720表示、実人物のカメラ映像なし。新しい浦島・亀・乙姫の表示を固定した撮影専用の一時台本を使用し、ローディングUIとポーズ待機を除外しています。公開するSB3・台本の内容は変更していません。
 - 場面: 浜辺で亀と出会う、亀と進む海中、乙姫の歓迎、玉手箱の受け渡し。実行中UIが重なる画面と、結末を先取りするカーテンコール以降の画面は使用していません。
 - ループGIF: `stories/urashima/card-scenes.gif`、480×270、4フレーム、94,007 bytes、SHA-256 `14017e311a55f7294d35a05abd5fdcae821146e14a3e93603a1dddec335353c2`
@@ -20,7 +20,7 @@
 
 ### my-urashima（ワークショップにおける作業用）
 
-- 撮影基準: `tmpose-kamishibai@19474e1e49572a5997d1737e63e10bac67a179e9`（4.0.0-rc.6）、`tmpose-kamishibai-samples@a88c89f`を基準に、2026年8月16日の復元画像を組み込んだ作業ツリー
+- 撮影基準: `tmpose-kamishibai@19474e1e49572a5997d1737e63e10bac67a179e9`（4.0.0-rc.6）、`tm-kamishibai-samples@a88c89f`を基準に、2026年8月16日の復元画像を組み込んだ作業ツリー
 - 撮影条件: Chrome、1280×720表示、実人物のカメラ映像なし。共通DSL 3.2ランタイム上で、新しい浦島・亀・乙姫・魚の表示を固定した撮影専用の一時台本を使用しています。公開するSB3・台本の内容は変更していません。
 - 場面: 浜辺、亀と進む海中、正規化後の乙姫による歓迎、玉手箱の受け渡し。結末を先取りするカーテンコールは使用していません。
 - ループGIF: `stories/my-urashima/card-scenes.gif`、480×270、4フレーム、96,518 bytes、SHA-256 `1b33afc41316e906fafa8a97d8ff32e155e2cf06d7689a5b9c104c1e76f0c83d`
@@ -34,7 +34,7 @@
 
 ### 地震だ！頭を守ろう（DSL 4.0チュートリアル）
 
-- 撮影基準: タイトルは`tmpose-kamishibai@19474e1e49572a5997d1737e63e10bac67a179e9`（4.0.0-rc.6）。ほか4枚は`tmpose-kamishibai-docs/docs/images/tutorials/dsl4/play/`の`tutorial-play-04`から`07`
+- 撮影基準: タイトルは`tmpose-kamishibai@19474e1e49572a5997d1737e63e10bac67a179e9`（4.0.0-rc.6）。ほか4枚は`tm-kamishibai-docs/docs/images/tutorials/dsl4/play/`の`tutorial-play-04`から`07`
 - 撮影条件: Chrome、1280×720、合成人物fixture、実人物のcamera映像なし。タイトル画面下部の連絡先行は単色背景で除外しています。
 - 場面: rc.6タイトル、camera確認、ポーズ認識、ポーズ成功、達成メッセージ
 - ループGIF: `stories/tutorial/card-scenes.gif`、480×270、5フレーム、82,272 bytes、SHA-256 `9c1af3b448a1c5adff65f8f4b463d23d0eaf2744fb2b05c1467d8b72c1009257`
@@ -49,7 +49,7 @@
 
 ## 権利とライセンス
 
-画面内のTMPose紙芝居runtime、UI、台本、背景、Actor画像などには、各作品のライセンス・利用条件が適用されます。
+画面内のTM紙芝居runtime、UI、台本、背景、Actor画像などには、各作品のライセンス・利用条件が適用されます。
 
 - [浦島太郎・my-urashimaのライセンス](stories/urashima/LICENSES.md)
 - [DSL 4.0チュートリアルのライセンス](stories/tutorial/LICENSES.md)

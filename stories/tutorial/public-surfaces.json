@@ -3,10 +3,10 @@
   "status": "published",
   "version": "4.0.0-rc.8",
   "published": true,
-  "releaseDependency": "https://github.com/kubohiroya/tmpose-kamishibai/releases/tag/v4.0.0-rc.8",
-  "sourceIdentity": "f8ba10c370618505ee7b6801457a0676d5f2e154a19a2ac56a52d3b2350bb74e",
+  "releaseDependency": "https://github.com/kubohiroya/tm-kamishibai/releases/tag/v4.0.0-rc.8",
+  "sourceIdentity": "7f7d73b93d57d81e3c7916e874b4beb77dbbeea36d4c590a60ad2e5e45eec56d",
   "runtime": {
-    "repository": "https://github.com/kubohiroya/tmpose-kamishibai",
+    "repository": "https://github.com/kubohiroya/tm-kamishibai",
     "version": "4.0.0-rc.8",
     "commit": "29c0deadcb98badf94a0244c479ca896dc71f842",
     "basePath": "base/kamishibai-4.0.sb3",
@@ -16,16 +16,16 @@
   },
   "license": {
     "spdx": "MPL-2.0",
-    "url": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/LICENSES.md"
+    "url": "https://kubohiroya.github.io/tm-kamishibai-samples/stories/tutorial/LICENSES.md"
   },
   "surfaces": {
-    "detailUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/",
-    "webUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/web-4.0/",
-    "sourceUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/story.kamishibai.yaml",
-    "sb3Url": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/tutorial-4.0.sb3",
-    "starterUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/tutorial-story-starter-4.0.zip",
-    "additionKitUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/tutorial-story-addition-kit-4.0.zip",
-    "manifestUrl": "https://kubohiroya.github.io/tmpose-kamishibai-samples/stories/tutorial/public-surfaces.json"
+    "detailUrl": "https://kubohiroya.github.io/tm-kamishibai-samples/stories/tutorial/",
+    "webUrl": "https://kubohiroya.github.io/tm-kamishibai-samples/stories/tutorial/web-4.0/",
+    "sourceUrl": "https://kubohiroya.github.io/tm-kamishibai-samples/stories/tutorial/story.kamishibai.yaml",
+    "sb3Url": "https://kubohiroya.github.io/tm-kamishibai-samples/stories/tutorial/tutorial-4.0.sb3",
+    "starterUrl": "https://kubohiroya.github.io/tm-kamishibai-samples/stories/tutorial/tutorial-story-starter-4.0.zip",
+    "additionKitUrl": "https://kubohiroya.github.io/tm-kamishibai-samples/stories/tutorial/tutorial-story-addition-kit-4.0.zip",
+    "manifestUrl": "https://kubohiroya.github.io/tm-kamishibai-samples/stories/tutorial/public-surfaces.json"
   },
   "artifacts": {
     "source": {
@@ -46,13 +46,13 @@
     "web": {
       "path": "web-4.0/index.html",
       "contentType": "text/html",
-      "size": 22237567,
-      "sha256": "c51db5956c3b1004125ed2aa5513d17f29f82ae0a0a4d47bc6baa7a3843df5dd"
+      "size": 22237563,
+      "sha256": "b355d9c2404b678ad65f2ea9f8e8251d15c799c179c3eb1cab29442cf92b8feb"
     },
     "starter": {
       "path": "tutorial-story-starter-4.0.zip",
-      "size": 5914519,
-      "sha256": "3789c96c61bbb89beb10b95d456a8f5885999163319fb4c974b3c784c36b7d4b",
+      "size": 5914515,
+      "sha256": "d44e7bf5fee9ea8c1947f5d37ab4cbe175c1b68e30dd7419ac6b72e3b5ce1f17",
       "entries": [
         "tutorial-story/LICENSES.md",
         "tutorial-story/README.md",
@@ -75,8 +75,8 @@
     },
     "additionKit": {
       "path": "tutorial-story-addition-kit-4.0.zip",
-      "size": 5538,
-      "sha256": "4e8b6c76cd850fd924806739a337a639b13eaac3ccdbb7cd7e9ef0e727a5fa38",
+      "size": 5536,
+      "sha256": "07e59050506185ee8a361ea9cd09302dd02984b1788cd6f10aaaf40497e46bd5",
       "entries": [
         "tutorial-story-addition-kit/LICENSES.md",
         "tutorial-story-addition-kit/README.md",

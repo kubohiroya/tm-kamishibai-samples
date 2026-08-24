@@ -92,11 +92,11 @@ scene 7では、本体3.2.2の標準コマンド`fadeToWhite`でステージの�
 
 台本、画像、音声、生成設定はMozilla Public License 2.0（SPDX: `MPL-2.0`）で提供します。本体ランタイムを含む生成物の適用範囲は [`LICENSES.md`](LICENSES.md) を参照してください。
 
-- 移設元: [`kubohiroya/tmpose-kamishibai`](https://github.com/kubohiroya/tmpose-kamishibai) PR #44
+- 移設元: [`kubohiroya/tm-kamishibai`](https://github.com/kubohiroya/tm-kamishibai) PR #44
 - 移設元コミット: `9526c9d6391622ee261b8d7c0778b1fbbd2e6745`
 - ビルダー: npm `@kubohiroya/tmpose-kamishibai` `3.2.2` / `2b5005d293a9b63c8ba5da396fd86815d093f975`
 - 汎用ベース: `tmpose-kamishibai` / `2b5005d293a9b63c8ba5da396fd86815d093f975`
 - DSL 4.0汎用ベースのソース: `tmpose-kamishibai` / `4.0.0-rc.8` / `sha256:8edbc02a06b3770cce0a89cf658367df129d974d53f401258b69f0713762014a`
 - DSL 4.0ビルダー: `tmpose-kamishibai` / `4.0.0-rc.8` / `29c0deadcb98badf94a0244c479ca896dc71f842`
 
-生成・検証・公開の実装は [Issue #2](https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/2)、Packager Web版は [Issue #7](https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/7)、DSL 4.0の自動生成は [Issue #90](https://github.com/kubohiroya/tmpose-kamishibai-samples/issues/90) で管理します。
+生成・検証・公開の実装は [Issue #2](https://github.com/kubohiroya/tm-kamishibai-samples/issues/2)、Packager Web版は [Issue #7](https://github.com/kubohiroya/tm-kamishibai-samples/issues/7)、DSL 4.0の自動生成は [Issue #90](https://github.com/kubohiroya/tm-kamishibai-samples/issues/90) で管理します。

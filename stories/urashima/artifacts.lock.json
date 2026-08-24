@@ -53,8 +53,8 @@
     "output": {
       "path": "web/index.html",
       "contentType": "text/html",
-      "size": 15141351,
-      "sha256": "a145d09e6427e03b1444ad590f0564a8f7ce11815624212494b408b6a9aa1ec3"
+      "size": 15141151,
+      "sha256": "50de1e13825d41bb74251a8b08c4b3ca9a8630e908fe7bdd3c770610289d110f"
     }
   }
 }
