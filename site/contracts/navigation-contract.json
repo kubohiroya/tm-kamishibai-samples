@@ -3,9 +3,9 @@
   "contractVersion": "1.0.0",
   "status": "active",
   "siteSettings": {
-    "tmpose-kamishibai": {
+    "tm-kamishibai": {
       "repository": "https://github.com/kubohiroya/tm-kamishibai",
-      "repositoryLabel": "tmpose-kamishibai"
+      "repositoryLabel": "tm-kamishibai"
     },
     "tm-kamishibai-docs": {
       "repository": "https://github.com/kubohiroya/tm-kamishibai-docs",
@@ -45,18 +45,18 @@
   ],
   "currentSectionRules": [
     {
-      "site": "tmpose-kamishibai",
-      "pathPrefix": "/tmpose-kamishibai/downloads/",
+      "site": "tm-kamishibai",
+      "pathPrefix": "/tm-kamishibai/downloads/",
       "current": "downloads"
     },
     {
-      "site": "tmpose-kamishibai",
-      "pathPrefix": "/tmpose-kamishibai/docs/",
+      "site": "tm-kamishibai",
+      "pathPrefix": "/tm-kamishibai/docs/",
       "current": "documents"
     },
     {
-      "site": "tmpose-kamishibai",
-      "pathPrefix": "/tmpose-kamishibai/",
+      "site": "tm-kamishibai",
+      "pathPrefix": "/tm-kamishibai/",
       "current": "home"
     },
     {
