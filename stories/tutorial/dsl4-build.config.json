@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "status": "published",
-  "version": "4.0.0-rc.8",
-  "releaseDependency": "https://github.com/kubohiroya/tm-kamishibai/releases/tag/v4.0.0-rc.8",
+  "version": "4.0.0-rc.10",
+  "releaseDependency": "https://github.com/kubohiroya/tm-kamishibai/releases/tag/v4.0.0-rc.10",
   "runtime": {
     "config": "../urashima/dsl4-build.config.json"
   },
@@ -26,7 +26,7 @@
   },
   "publication": {
     "enabled": true,
-    "reason": "TM Kamishibai 4.0.0-rc.8 release artifacts are published and integrity-verified",
+    "reason": "TM Kamishibai 4.0.0-rc.10 release artifacts are published and integrity-verified",
     "issue": "https://github.com/kubohiroya/tm-kamishibai-samples/issues/125"
   },
   "webArtifactsLock": "dsl4-web-artifacts.lock.json",
@@ -76,7 +76,9 @@
     "summary": "教室で地震の揺れを感じたときの安全行動を、見本と達成メッセージ付きで練習する4場面の公式サンプルです。",
     "creator": "Hiroya Kubo",
     "rightsHolder": "Hiroya Kubo",
-    "dslSeries": ["4.0"],
+    "dslSeries": [
+      "4.0"
+    ],
     "distribution": "hosted",
     "license": {
       "label": "MPL-2.0",

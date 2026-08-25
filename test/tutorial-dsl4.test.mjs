@@ -12,7 +12,7 @@ import {
   buildTutorialDsl4,
   createTutorialPublicSurfaces,
 } from '../scripts/build-tutorial-dsl4.mjs';
-import {renderTutorialIndex} from '../scripts/build-site.mjs';
+import {formatFileSize, renderTutorialIndex} from '../scripts/build-site.mjs';
 
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 const storyDirectory = path.join(projectRoot, 'stories/tutorial');
@@ -25,7 +25,7 @@ test('builds a deterministic published SB3 and tutorial distribution archives', 
     readFile(path.join(storyDirectory, 'public-surfaces.json'), 'utf8').then(JSON.parse),
   ]);
   assert.equal(build.artifactLock.status, 'published');
-  assert.equal(build.artifactLock.version, '4.0.0-rc.8');
+  assert.equal(build.artifactLock.version, '4.0.0-rc.10');
   assert.equal(build.artifactLock.publication.enabled, true);
   assert.equal(build.artifactLock.publication.reason, config.publication.reason);
   assert.equal(config.work.thumbnail.src, 'stories/tutorial/card-scenes.gif');
@@ -174,6 +174,6 @@ test('renders every fixed tutorial download on the published detail page', async
   assert(html.includes(manifest.sourceIdentity));
   assert(html.includes(manifest.artifacts.web.sha256));
   assert(html.includes('<time datetime="2026-08-16">2026年8月16日</time>'));
-  assert(html.includes('22.2 MB（22,237,563 bytes）'));
-  assert(html.includes('2.2 KB（2,174 bytes）'));
+  assert(html.includes(formatFileSize(manifest.artifacts.web.size)));
+  assert(html.includes(formatFileSize(manifest.artifacts.source.size)));
 });

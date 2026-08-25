@@ -1,21 +1,21 @@
 {
   "formatVersion": 1,
   "status": "published",
-  "version": "4.0.0-rc.8",
-  "releaseDependency": "https://github.com/kubohiroya/tm-kamishibai/releases/tag/v4.0.0-rc.8",
-  "sourceIdentity": "2cff5cf5f733d4b92f4dcc23ed79fdef93dd429ba792f2dc9e2dd15103eeb6fa",
+  "version": "4.0.0-rc.10",
+  "releaseDependency": "https://github.com/kubohiroya/tm-kamishibai/releases/tag/v4.0.0-rc.10",
+  "sourceIdentity": "0dd511a76748c2c64f3d86012d87b62c170d11edb12fe2ce37fdcb83fd3c0f95",
   "runtime": {
     "repository": "https://github.com/kubohiroya/tm-kamishibai",
-    "version": "4.0.0-rc.8",
-    "commit": "29c0deadcb98badf94a0244c479ca896dc71f842",
+    "version": "4.0.0-rc.10",
+    "commit": "65f5e705921b6c92ba6ec5373ec13eff5101f2c6",
     "basePath": "base/kamishibai-4.0.sb3",
-    "baseSourceIdentity": "sha256:8edbc02a06b3770cce0a89cf658367df129d974d53f401258b69f0713762014a",
-    "baseSize": 6749955,
-    "baseSha256": "91d7f594aaf922450fba359a90c7c26e7c1dfda51cf002534cb4605dbb0d7041"
+    "baseSourceIdentity": "sha256:ed05e732c9c0a0d7f43d85802450c88871bdab938a6809f7898815ae3cea714f",
+    "baseSize": 6787273,
+    "baseSha256": "a8620868f5da118c142cf2a11db6679ce7fab8b8ef84f5e6cce26887d61e94ec"
   },
   "sb3Toolchain": {
     "package": "@kubohiroya/sb3-toolchain",
-    "version": "0.8.0"
+    "version": "0.9.0"
   },
   "sources": {
     "complete": {
@@ -61,8 +61,8 @@
       },
       {
         "path": "README.md",
-        "size": 2568,
-        "sha256": "08e1fc7e3fe22a23222a1387ac6f3d5c0a3d5c2532dcc2921298c2f328a84e8e"
+        "size": 2570,
+        "sha256": "4c7a0832cc76d37bb9cc72187d6abf6c08b4242167891a660211264652f6bc25"
       },
       {
         "path": "addition-kit/README.md",
@@ -169,8 +169,8 @@
   "outputs": {
     "sb3": {
       "path": "tutorial-4.0.sb3",
-      "size": 12649874,
-      "sha256": "d19fa36211f9353f4d66b90f911ced6f9f62d5c7fc426ae10f4af8457824baaa",
+      "size": 12688933,
+      "sha256": "34d6401af1340f2f8d68a8c2988d7dbca729d83a8baa763c127b63c246a6ecef",
       "archiveEntryCount": 10,
       "targetNames": [
         "Stage",
@@ -222,7 +222,7 @@
   },
   "publication": {
     "enabled": true,
-    "reason": "TM Kamishibai 4.0.0-rc.8 release artifacts are published and integrity-verified",
+    "reason": "TM Kamishibai 4.0.0-rc.10 release artifacts are published and integrity-verified",
     "issue": "https://github.com/kubohiroya/tm-kamishibai-samples/issues/125"
   }
 }
