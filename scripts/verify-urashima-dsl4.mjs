@@ -26,7 +26,7 @@ export async function verifyUrashimaDsl4() {
     readFile(path.join(storyDirectory, 'urashima.k4.yml')),
   ]);
   assert.equal(artifactLock.formatVersion, 1);
-  assert.equal(artifactLock.sb3Toolchain.version, '0.6.0');
+  assert.equal(artifactLock.sb3Toolchain.version, '0.8.0');
   assert.equal(sourceBytes.length, artifactLock.source.size);
   assert.equal(sha256(sourceBytes), artifactLock.source.sha256);
 

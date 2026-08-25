@@ -48,7 +48,7 @@
     "runtimeCapabilities": [
       {
         "capability": "camera",
-        "purpose": "TMPoseによるポーズ認識"
+        "purpose": "TurboWarp TMによるポーズ認識"
       },
       {
         "capability": "audio",

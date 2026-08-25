@@ -6,14 +6,16 @@
   "description": "TM紙芝居の作品カタログとGitHub Pagesサイト",
   "homepage": "https://kubohiroya.github.io/tm-kamishibai-samples/",
   "license": "MPL-2.0",
-  "packageManager": "pnpm@11.17.0",
+  "packageManager": "pnpm@11.18.0",
   "scripts": {
     "build": "node scripts/build-site.mjs",
     "build-workshop-20260801": "node scripts/build-workshop-20260801.mjs",
+    "check": "pnpm test && pnpm build && pnpm test:web && pnpm verify && pnpm run repo:check",
     "compact:urashima-actors": "node scripts/compact-urashima-actor-assets.mjs",
     "deploy": "gh workflow run deploy.yml --ref main",
     "test": "node --test test/*.test.mjs",
     "test:web": "node scripts/verify-packaged-web-browser.mjs && node scripts/verify-packaged-web-webkit-audio.mjs && node scripts/verify-dsl4-packaged-web-browser.mjs",
+    "pack:dry-run": "pnpm pack --pack-destination .tmp/pack",
     "update:my-urashima": "node scripts/refresh-story-artifacts.mjs --force-my",
     "update:urashima-dsl4-inputs": "node scripts/update-urashima-dsl4-inputs.mjs --download",
     "update:urashima-dsl4": "pnpm update:urashima-dsl4-inputs && node scripts/build-urashima-dsl4.mjs --write-lock",
@@ -22,22 +24,24 @@
     "update:dsl4-web-artifacts": "node scripts/update-dsl4-web-artifacts.mjs",
     "update:dsl4-artifacts": "pnpm update:urashima-dsl4 && pnpm update:my-urashima-dsl4 && pnpm update:dsl4-web-artifacts && pnpm update:tutorial-dsl4",
     "validate:my-urashima-dsl4": "node scripts/validate-my-urashima-dsl4.mjs",
-    "validate:urashima-dsl4": "node ../tmpose-kamishibai/bin/tmpose-kamishibai.mjs validate-dsl4 --input stories/urashima/urashima.k4.yml --max-source-bytes 262144 --format pretty",
+    "validate:urashima-dsl4": "node ${TM_KAMISHIBAI_DSL4_ROOT:-../tm-kamishibai}/bin/tmpose-kamishibai.mjs validate-dsl4 --input stories/urashima/urashima.k4.yml --max-source-bytes 262144 --format pretty",
     "verify:urashima-dsl4": "node scripts/verify-urashima-dsl4.mjs",
     "verify:my-urashima-dsl4": "node scripts/build-my-urashima-dsl4.mjs",
     "update:artifacts-lock": "node scripts/refresh-story-artifacts.mjs --force",
     "verify": "node scripts/verify-site.mjs && node scripts/verify-tutorial-dsl4.mjs",
-    "verify:external-links": "node scripts/verify-external-works.mjs"
+    "verify:external-links": "node scripts/verify-external-works.mjs",
+    "repo:check": "node scripts/check-repo.mjs",
+    "release:check": "pnpm run check && pnpm run pack:dry-run"
   },
   "engines": {
     "node": ">=22.12.0"
   },
   "dependencies": {
-    "@kubohiroya/tmpose-kamishibai": "3.2.2",
+    "@kubohiroya/tmpose-kamishibai": "3.2.3",
     "fflate": "0.8.3"
   },
   "devDependencies": {
-    "@kubohiroya/sb3-toolchain": "0.6.0",
+    "@kubohiroya/sb3-toolchain": "0.8.0",
     "@turbowarp/packager": "3.13.0",
     "playwright": "1.61.1",
     "yaml": "2.9.0"

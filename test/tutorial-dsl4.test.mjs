@@ -136,7 +136,7 @@ test('provides one intentional CLI diagnostic with an exact starter fix', async 
   assert.equal(diagnosticExercise.replace('Student.sya:', 'Student.say:'), starter);
 
   const kamishibaiRoot = path.resolve(
-    process.env.TMPOSE_KAMISHIBAI_DSL4_ROOT ?? path.join(projectRoot, '../tmpose-kamishibai'),
+    process.env.TM_KAMISHIBAI_DSL4_ROOT ?? path.join(projectRoot, '../tm-kamishibai'),
   );
   const result = spawnSync(
     process.execPath,
