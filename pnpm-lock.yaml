@@ -16,8 +16,8 @@ importers:
         version: 0.8.3
     devDependencies:
       '@kubohiroya/sb3-toolchain':
-        specifier: 0.8.0
-        version: 0.8.0
+        specifier: 0.9.0
+        version: 0.9.0
       '@turbowarp/packager':
         specifier: 3.13.0
         version: 3.13.0
@@ -41,8 +41,8 @@ packages:
     resolution: {integrity: sha512-XuhF/edg+iIvXjkCWgfj6fWtRi/KrEPg2ILXj1l86EN4EssuOiPcLKgkMDr9cL8jTGtVd/MKUWW6Y0/ZVf1PGA==}
     engines: {node: '>=8'}
 
-  '@kubohiroya/sb3-toolchain@0.8.0':
-    resolution: {integrity: sha512-PysMdwlv8MixaUNrvBPu2fK8Bn3LOLVheQO6UEIGL7h/j8w62HO1CEdrRIvzf1NW1njU/I4FODBxQwdRCtOXQw==}
+  '@kubohiroya/sb3-toolchain@0.9.0':
+    resolution: {integrity: sha512-A7Dj4hkYFb12P2w+T6BJWJvI9XGbd8dzZQhdXSWdc6ToZx8PmCRzmUQcJeTwyND159QCqMa0xRficG5Uu1V3Ew==}
     engines: {node: '>=22.12.0'}
     hasBin: true
 
@@ -328,7 +328,7 @@ snapshots:
 
   '@fiahfy/packbits@0.0.6': {}
 
-  '@kubohiroya/sb3-toolchain@0.8.0':
+  '@kubohiroya/sb3-toolchain@0.9.0':
     dependencies:
       fflate: 0.8.3
       music-metadata: 11.14.0

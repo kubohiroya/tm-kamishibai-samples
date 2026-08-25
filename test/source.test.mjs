@@ -486,8 +486,8 @@ test('keeps my-urashima external-script-only and publishes its DSL 4.0 workshop 
   assert.equal(artifactsLock.parentStory.name, 'urashima');
   assert.deepEqual(artifactsLock.sb3Toolchain, {
     package: '@kubohiroya/sb3-toolchain',
-    version: '0.8.0',
-    source: '0.8.0',
+    version: '0.9.0',
+    source: '0.9.0',
   });
   assert.equal(artifactsLock.parentStory.sourceScript.path, '../urashima/source.txt');
   assert.equal(artifactsLock.parentStory.assetManifest.path, '../urashima/assets.lock.json');

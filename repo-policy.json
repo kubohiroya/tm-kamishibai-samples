@@ -19,7 +19,7 @@
     "builderPackage": "@kubohiroya/tmpose-kamishibai",
     "builderVersion": "3.2.3",
     "builderGitHead": "28015ac9ff5221f371e8bd0357a7750ce40bbf7c",
-    "sb3Toolchain": "0.8.0",
+    "sb3Toolchain": "0.9.0",
     "packager": "3.13.0"
   },
   "licenseBoundaries": {
