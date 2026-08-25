@@ -2,8 +2,8 @@
   "formatVersion": 2,
   "builder": {
     "package": "@kubohiroya/tmpose-kamishibai",
-    "version": "3.2.2",
-    "commit": "2b5005d293a9b63c8ba5da396fd86815d093f975"
+    "version": "3.2.3",
+    "commit": "28015ac9ff5221f371e8bd0357a7750ce40bbf7c"
   },
   "storyDate": {
     "value": "2026-08-16",
@@ -21,7 +21,7 @@
         "sha256": "584b84fc5550c401839002aed0f6fe2d0cc2ac41971926f36ed2589a8132f93a"
       },
       "manifest": {
-        "sha256": "a644d27e9e58e0a14af6cb4ed9ac7a2960c17d5af77520d84478c59f5cf69f88"
+        "sha256": "ab6b41e2f07464910e8bdabca9c75c1307360f352432d6455659363e6381717f"
       }
     },
     "player": {
@@ -35,7 +35,7 @@
         "sha256": "584b84fc5550c401839002aed0f6fe2d0cc2ac41971926f36ed2589a8132f93a"
       },
       "manifest": {
-        "sha256": "e2b52d4a399b00821431f6aae7de7afdd8c0cf2443e769dd62ec984f4cae8003"
+        "sha256": "aba2b96665ecf91607819688f71f9694365e5c4ad9fa3bb76d34b2865b3767fd"
       }
     }
   },

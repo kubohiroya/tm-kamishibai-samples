@@ -19,15 +19,15 @@ import { unzipSync, zipSync } from "fflate";
 import { buildSite } from "./build-site.mjs";
 
 export const workshopEdition = "20260801";
-export const workshopPdfEnvironmentVariable = "TMPOSE_KAMISHIBAI_WORKSHOP_PDF";
+export const workshopPdfEnvironmentVariable = "TM_KAMISHIBAI_WORKSHOP_PDF";
 export const workshopResourceDirectories = Object.freeze([
   "drafts",
   "draft-samples",
   "master",
   "generated",
   "generated-samples",
-  "tmpose",
-  "tmpose-samples",
+  "tm",
+  "tm-samples",
 ]);
 
 const projectRoot = fileURLToPath(new URL("../", import.meta.url));
@@ -121,10 +121,10 @@ export async function verifyWorkshopArchive(zipPath) {
     `${workshopEdition}/README.md`,
     `${workshopEdition}/LICENSE`,
     `${workshopEdition}/LICENSES.md`,
-    `${workshopEdition}/tmpose-kamishibai-20260801.pdf`,
+    `${workshopEdition}/tm-kamishibai-20260801.pdf`,
     `${workshopEdition}/stories/urashima/urashima.sb3`,
     `${workshopEdition}/stories/urashima/urashima.txt`,
-    `${workshopEdition}/stories/urashima/licenses/tmpose-kamishibai-MPL-2.0.txt`,
+    `${workshopEdition}/stories/urashima/licenses/tm-kamishibai-MPL-2.0.txt`,
     `${workshopEdition}/stories/my-urashima/my-urashima.sb3`,
     `${workshopEdition}/stories/my-urashima/my-urashima.txt`,
     `${workshopEdition}/stories/my-urashima/my-urashima.k4.yml`,
@@ -144,7 +144,7 @@ export async function verifyWorkshopArchive(zipPath) {
       `Workshop ZIP contains .gitkeep: ${entry}`,
     );
     assert(
-      !entry.endsWith("/licenses/tmpose-kamishibai-MIT.txt"),
+      !entry.endsWith("/licenses/tm-kamishibai-MIT.txt"),
       `Workshop ZIP contains the retired runtime license: ${entry}`,
     );
   }
@@ -235,7 +235,7 @@ export async function assembleWorkshopDistribution({
       copyFile(licensePath, path.join(stagingDirectory, "LICENSE")),
       copyFile(
         pdfPath,
-        path.join(stagingDirectory, "tmpose-kamishibai-20260801.pdf"),
+        path.join(stagingDirectory, "tm-kamishibai-20260801.pdf"),
       ),
       ...storyFiles.map(async ([story, filename]) => {
         const storyOutputDirectory = path.join(
@@ -282,7 +282,7 @@ export async function buildWorkshop20260801({
 } = {}) {
   const defaultPdfPath = path.resolve(
     projectRoot,
-    "../tmpose-kamishibai/output/pdf/workshops/2026-08-01/tmpose-kamishibai-20260801.pdf",
+    "../tm-kamishibai/output/pdf/workshops/2026-08-01/tm-kamishibai-20260801.pdf",
   );
   const pdfPath = environment[workshopPdfEnvironmentVariable]
     ? path.resolve(environment[workshopPdfEnvironmentVariable])

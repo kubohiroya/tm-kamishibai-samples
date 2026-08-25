@@ -26,7 +26,7 @@
   },
   "publication": {
     "enabled": true,
-    "reason": "tmpose-kamishibai 4.0.0-rc.8 release artifacts are published and integrity-verified",
+    "reason": "TM Kamishibai 4.0.0-rc.8 release artifacts are published and integrity-verified",
     "issue": "https://github.com/kubohiroya/tm-kamishibai-samples/issues/125"
   },
   "webArtifactsLock": "dsl4-web-artifacts.lock.json",

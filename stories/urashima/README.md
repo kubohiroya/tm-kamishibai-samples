@@ -29,12 +29,12 @@
 - `dsl4-inputs.lock.json`: DSL 4.0で追加するStars／TextPlaceholderと3ポーズモデルの取得元、サイズ、SHA-256
 - `project-assets-dsl4.yml`: DSL 4.0 actor IDと同名の物理Scratch target 5件を作る`sb3-toolchain --project-assets`入力
 - `project.source.json`: `urashima.k4.yml`を選ぶ固定cache identity付きDSL 4.0 source manifest
-- `dsl4-build.config.json`: 4.0 runtime base、tmpose-kamishibai commit、入力上限を固定する生成設定
+- `dsl4-build.config.json`: 4.0 runtime base、TM Kamishibai commit、入力上限を固定する生成設定
 - `dsl4-artifacts.lock.json`: `urashima-4.0.sb3`の入力・出力ハッシュとtarget構成
 - `dsl4-web-artifacts.lock.json`: `web-4.0/index.html`の入力・出力ハッシュとPackager設定
 - `sample.config.json`: ベース、ビルダー、プロファイル、出力名、既定OFFのWeb生成機能を浦島太郎で有効にする設定
 - `artifacts.lock.json`: `_urashima` / `urashima` / `web/index.html` の再現可能な出力ハッシュ
-- `base/kamishibai.sb3`: `tmpose-kamishibai` のclone-only UI `generic` 成果物
+- `base/kamishibai.sb3`: TM Kamishibai のclone-only UI `generic` 成果物
 - `base/kamishibai-4.0.sb3`: DSL 4.0.0-rc.8の固定release sourceから生成した`generic`ベース
 
 `source.txt`の`# date:`はビルドが自動管理します。日付行を除いた内容fingerprintが`artifacts.lock.json`の記録から変わった場合だけ、ビルド環境のローカル今日へ更新し、`urashima.txt`、両プロファイル、Web版、my-urashimaを再生成します。内容が同じ再ビルドでは日付も成果物も更新しません。
@@ -54,7 +54,7 @@ pnpm verify:urashima-dsl4
 
 ## DSL 4.0オフラインSB3の生成
 
-`dsl4-build.config.json`に固定した`tmpose-kamishibai` tag commitを、既定では隣接する`../tmpose-kamishibai`にcheckoutして依存関係をインストールします。CIでは同じcommitを`.tmp/tmpose-kamishibai`へcheckoutし、`TMPOSE_KAMISHIBAI_DSL4_ROOT`でその場所を指定します。入力となる`base/kamishibai-4.0.sb3`も、DSL 4.0.0-rc.8のrelease source identity、サイズ、SHA-256を設定に固定しています。
+`dsl4-build.config.json`に固定したTM Kamishibai tag commitを、既定では隣接する`../tm-kamishibai`にcheckoutして依存関係をインストールします。CIでは同じcommitを`.tmp/tm-kamishibai`へcheckoutし、`TM_KAMISHIBAI_DSL4_ROOT`でその場所を指定します。入力となる`base/kamishibai-4.0.sb3`も、DSL 4.0.0-rc.8のrelease source identity、サイズ、SHA-256を設定に固定しています。
 
 ```bash
 pnpm update:dsl4-artifacts
@@ -64,7 +64,7 @@ pnpm update:dsl4-artifacts
 
 1. `dsl4-inputs.lock.json`に固定したポーズモデルを必要時だけ取得し、Stars／TextPlaceholderを3.2 generic baseから検証付きで抽出する。
 2. 4.0 generic baseを`sb3-toolchain`へimportし、`project-assets-dsl4.yml`でUrashima／Turtle／Princess／Fish／Narration targetを追加して決定的再構築する。
-3. `tmpose-kamishibai build-dsl4`で台本、画像、音声、ポーズモデルをbundled runtime componentへ埋め込む。
+3. TM Kamishibai CLIの`build-dsl4`で台本、画像、音声、ポーズモデルをbundled runtime componentへ埋め込む。
 4. 生成途中のSB3をもう一度`sb3-toolchain`へimportし、最終`urashima-4.0.sb3`を決定的再構築する。
 5. 完成したSB3をTurboWarp Packager 3.13.0へ渡し、二度の生成結果が一致することを確認してWeb版ロックを更新する。
 
@@ -82,9 +82,9 @@ DSL 4.0 Web版だけを一時停止するときは、`dsl4-build.config.json`の
 
 scene 3の魚アニメーションでは、`Fish`クローンを乙姫と同じ中心座標に置き、背面レイヤーで`Fish1`と`Fish2`をloop再生します。固定済み汎用ベースのAsset Managerは`actorName`変数からクローンを解決し、クローンの表示サイズを保持します。
 
-scene 7では、本体3.2.2の標準コマンド`fadeToWhite`でステージの明るさを`+100`へ上げたまま保持してから背景をSmokeへ切り替え、`fadeFromWhite`で`0`へ戻して煙を見せます。通常の`fadeOut`（`-100`で保持）と`fadeUp`（`0`へ復帰）は変更しません。本体のAsset Managerにはproject asset検証、clone削除時の表示状態解放、`actorName`クローン解決、cloneサイズ保持が含まれます。samples側ではSB3内のランタイムコードを変更しません。
+scene 7では、本体3.2.3の標準コマンド`fadeToWhite`でステージの明るさを`+100`へ上げたまま保持してから背景をSmokeへ切り替え、`fadeFromWhite`で`0`へ戻して煙を見せます。通常の`fadeOut`（`-100`で保持）と`fadeUp`（`0`へ復帰）は変更しません。本体のAsset Managerにはproject asset検証、clone削除時の表示状態解放、`actorName`クローン解決、cloneサイズ保持が含まれます。samples側ではSB3内のランタイムコードを変更しません。
 
-3.2 Web版は`player`の`urashima.sb3`、4.0 Web版は`dsl4-offline`の`urashima-4.0.sb3`をTurboWarp Packager 3.13.0へ渡して生成します。音声はブラウザ互換性を考慮してMP3（44.1kHz、モノラル、128kbps）へ統一しています。3.2の`web.audioUnlock.enabled`を有効にすると、WebKitがユーザー操作として扱うタイトル画面のタップ完了をキャプチャしてWeb Audioを再開し、音声クロックの進行まで確認します。バックグラウンドからの復帰時にも再確認するため、iPadOSでもタイトル自動表示と本編開始1タップを維持できます。Packagerは外部URLのScratch拡張も単一HTMLへ取り込みます。3.2版が実行時にオンライン取得するものはmanifestで許可したTMPoseのTensorFlow.js、Teachable Machine Pose、モデルに限定します。4.0版の台本固有画像・音声・台本・ポーズモデルはすべてSB3に組み込み、検証では外部ネットワークを遮断して再生開始を確認します。
+3.2 Web版は`player`の`urashima.sb3`、4.0 Web版は`dsl4-offline`の`urashima-4.0.sb3`をTurboWarp Packager 3.13.0へ渡して生成します。音声はブラウザ互換性を考慮してMP3（44.1kHz、モノラル、128kbps）へ統一しています。3.2の`web.audioUnlock.enabled`を有効にすると、WebKitがユーザー操作として扱うタイトル画面のタップ完了をキャプチャしてWeb Audioを再開し、音声クロックの進行まで確認します。バックグラウンドからの復帰時にも再確認するため、iPadOSでもタイトル自動表示と本編開始1タップを維持できます。Packagerは外部URLのScratch拡張も単一HTMLへ取り込みます。3.2版が実行時にオンライン取得するものはmanifestで許可したTensorFlow.js、Teachable Machine Pose、モデルに限定します。4.0版の台本固有画像・音声・台本・ポーズモデルはすべてSB3に組み込み、検証では外部ネットワークを遮断して再生開始を確認します。
 
 アセットは、本体PR #44で浦島太郎固有コンテンツを分離する直前の `app/assets/` から同一バイト列で移設しています。ファイル名はScratchの `md5ext` 名を維持しています。
 
@@ -94,9 +94,9 @@ scene 7では、本体3.2.2の標準コマンド`fadeToWhite`でステージの�
 
 - 移設元: [`kubohiroya/tm-kamishibai`](https://github.com/kubohiroya/tm-kamishibai) PR #44
 - 移設元コミット: `9526c9d6391622ee261b8d7c0778b1fbbd2e6745`
-- ビルダー: npm `@kubohiroya/tmpose-kamishibai` `3.2.2` / `2b5005d293a9b63c8ba5da396fd86815d093f975`
-- 汎用ベース: `tmpose-kamishibai` / `2b5005d293a9b63c8ba5da396fd86815d093f975`
-- DSL 4.0汎用ベースのソース: `tmpose-kamishibai` / `4.0.0-rc.8` / `sha256:8edbc02a06b3770cce0a89cf658367df129d974d53f401258b69f0713762014a`
-- DSL 4.0ビルダー: `tmpose-kamishibai` / `4.0.0-rc.8` / `29c0deadcb98badf94a0244c479ca896dc71f842`
+- ビルダー: TM Kamishibai 3.2 npm artifact `3.2.3` / `28015ac9ff5221f371e8bd0357a7750ce40bbf7c`
+- 汎用ベース: TM Kamishibai / `2b5005d293a9b63c8ba5da396fd86815d093f975`
+- DSL 4.0汎用ベースのソース: TM Kamishibai / `4.0.0-rc.8` / `sha256:8edbc02a06b3770cce0a89cf658367df129d974d53f401258b69f0713762014a`
+- DSL 4.0ビルダー: TM Kamishibai / `4.0.0-rc.8` / `29c0deadcb98badf94a0244c479ca896dc71f842`
 
 生成・検証・公開の実装は [Issue #2](https://github.com/kubohiroya/tm-kamishibai-samples/issues/2)、Packager Web版は [Issue #7](https://github.com/kubohiroya/tm-kamishibai-samples/issues/7)、DSL 4.0の自動生成は [Issue #90](https://github.com/kubohiroya/tm-kamishibai-samples/issues/90) で管理します。

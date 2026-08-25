@@ -68,9 +68,9 @@ test("tracks the declared workshop sources with their mixed-license notice", asy
     "master/Princess.png",
     "master/Urashima.png",
     "README.md",
-    "tmpose/my-urashima/.gitkeep",
-    "tmpose/urashima/.gitkeep",
-    "tmpose-samples/project.tm",
+    "tm/my-urashima/.gitkeep",
+    "tm/urashima/.gitkeep",
+    "tm-samples/project.tm",
   ]);
   const licenses = await readFile(
     path.join(resourcesDirectory, "LICENSES.md"),
@@ -80,7 +80,7 @@ test("tracks the declared workshop sources with their mixed-license notice", asy
   assert.match(licenses, /CC BY-SA 4\.0/u);
   assert.match(
     licenses,
-    /tmpose-kamishibai-20260801\.pdf[^]*All rights reserved\./u,
+    /tm-kamishibai-20260801\.pdf[^]*All rights reserved\./u,
   );
 });
 
@@ -123,7 +123,7 @@ test("assembles a deterministic workshop directory and ZIP with explicit license
         "placeholder",
       ),
       writeFixture(
-        path.join(resourcesDirectory, "tmpose-samples/project.tm"),
+        path.join(resourcesDirectory, "tm-samples/project.tm"),
         "tm",
       ),
       writeFixture(path.join(resourcesDirectory, ".DS_Store"), "metadata"),
@@ -160,7 +160,7 @@ test("assembles a deterministic workshop directory and ZIP with explicit license
       writeFixture(
         path.join(
           siteOutputDirectory,
-          "stories/urashima/licenses/tmpose-kamishibai-MPL-2.0.txt",
+          "stories/urashima/licenses/tm-kamishibai-MPL-2.0.txt",
         ),
         "Mozilla Public License Version 2.0",
       ),
@@ -185,11 +185,11 @@ test("assembles a deterministic workshop directory and ZIP with explicit license
     assert.deepEqual(await verifyWorkshopArchive(zipPath), secondVerification);
     const archive = unzipSync(new Uint8Array(secondZip));
     assert(Object.hasOwn(archive, `${workshopEdition}/generated/`));
-    assert(Object.hasOwn(archive, `${workshopEdition}/tmpose/`));
+    assert(Object.hasOwn(archive, `${workshopEdition}/tm/`));
     assert(
       Object.hasOwn(
         archive,
-        `${workshopEdition}/stories/urashima/licenses/tmpose-kamishibai-MPL-2.0.txt`,
+        `${workshopEdition}/stories/urashima/licenses/tm-kamishibai-MPL-2.0.txt`,
       ),
     );
     assert(

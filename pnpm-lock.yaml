@@ -9,15 +9,15 @@ importers:
   .:
     dependencies:
       '@kubohiroya/tmpose-kamishibai':
-        specifier: 3.2.2
-        version: 3.2.2
+        specifier: 3.2.3
+        version: 3.2.3
       fflate:
         specifier: 0.8.3
         version: 0.8.3
     devDependencies:
       '@kubohiroya/sb3-toolchain':
-        specifier: 0.6.0
-        version: 0.6.0
+        specifier: 0.8.0
+        version: 0.8.0
       '@turbowarp/packager':
         specifier: 3.13.0
         version: 3.13.0
@@ -41,18 +41,18 @@ packages:
     resolution: {integrity: sha512-XuhF/edg+iIvXjkCWgfj6fWtRi/KrEPg2ILXj1l86EN4EssuOiPcLKgkMDr9cL8jTGtVd/MKUWW6Y0/ZVf1PGA==}
     engines: {node: '>=8'}
 
-  '@kubohiroya/sb3-toolchain@0.6.0':
-    resolution: {integrity: sha512-xV8hFlN1SF9QU/L2RIf68ty8IxhQzFxwFEZ2kuwq1U1hNdYNCY/WE4j+0HQ2M5iQ8pMMoNHqASpEAEwKwGGRyQ==}
+  '@kubohiroya/sb3-toolchain@0.8.0':
+    resolution: {integrity: sha512-PysMdwlv8MixaUNrvBPu2fK8Bn3LOLVheQO6UEIGL7h/j8w62HO1CEdrRIvzf1NW1njU/I4FODBxQwdRCtOXQw==}
     engines: {node: '>=22.12.0'}
     hasBin: true
 
-  '@kubohiroya/tmpose-kamishibai@3.2.2':
-    resolution: {integrity: sha512-pHHDdOIDgSKOK+QRQX+TnGlcWx/Aif9i5r4Gf0Vs2Tv3Tkf2gad4YDCJ/+xY8piNOiMdpJ3HExjba9SSz6kn/Q==}
+  '@kubohiroya/tmpose-kamishibai@3.2.3':
+    resolution: {integrity: sha512-U/A7p9OL6HGpJUwrFmQ3BR8QxWhN5UwvK4VL2OdnMqdsZJ9upxLWRVEzV2AZWLRWpE4KtZ4DZDSFlei88WNRvA==}
     engines: {node: '>=22.12.0'}
     hasBin: true
 
-  '@kubohiroya/turbowarp-svg-text@0.1.0':
-    resolution: {integrity: sha512-TdjyxkTLJbr2A1GUDA6x+IjYEv+DJv+austdSteZrZ8lc0fIAr5WMeEskjdvzRDcLyaGuaxD5E2zgx6nhNryIg==}
+  '@kubohiroya/turbowarp-svg-text@0.2.1':
+    resolution: {integrity: sha512-N5Ainmm8l4IfTytfQGlKZWy/gOTkbJ1P3vTsbVmpKVlaIwt8BcFF8pzAQHrJYgtGm+VoBqV8bQrc7631bBG6oA==}
 
   '@tokenizer/inflate@0.4.1':
     resolution: {integrity: sha512-2mAv+8pkG6GIZiF1kNg1jAjh27IDxEPKwdGul3snfztFerfPGI1LjDezZp3i7BElXompqEtPmoPx6c2wgtWsOA==}
@@ -328,7 +328,7 @@ snapshots:
 
   '@fiahfy/packbits@0.0.6': {}
 
-  '@kubohiroya/sb3-toolchain@0.6.0':
+  '@kubohiroya/sb3-toolchain@0.8.0':
     dependencies:
       fflate: 0.8.3
       music-metadata: 11.14.0
@@ -336,12 +336,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@kubohiroya/tmpose-kamishibai@3.2.2':
+  '@kubohiroya/tmpose-kamishibai@3.2.3':
     dependencies:
-      '@kubohiroya/turbowarp-svg-text': 0.1.0
+      '@kubohiroya/turbowarp-svg-text': 0.2.1
       fflate: 0.8.3
 
-  '@kubohiroya/turbowarp-svg-text@0.1.0': {}
+  '@kubohiroya/turbowarp-svg-text@0.2.1': {}
 
   '@tokenizer/inflate@0.4.1':
     dependencies:
