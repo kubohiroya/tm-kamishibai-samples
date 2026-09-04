@@ -639,7 +639,7 @@ ${renderSiteFooter('')}
 
 export function renderSampleIndex(manifest: SiteManifest, work: WorkEntry): string {
   const webDescription = manifest.web.enabled
-    ? '<p>Web版には画像・音声・台本を組み込み済みです。TMPoseのライブラリ・モデル取得とカメラ利用にはネットワーク接続が必要です。</p>'
+    ? '<p>Web版には画像・音声・台本を組み込み済みです。TurboWarp TMのライブラリ・モデル取得とカメラ利用にはネットワーク接続が必要です。</p>'
     : '';
   const webAction = manifest.web.enabled
     ? '    <a class="button" href="web/">Web版を開く</a>\n'

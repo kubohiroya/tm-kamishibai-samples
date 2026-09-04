@@ -6,16 +6,18 @@
   "description": "TM紙芝居の作品カタログとGitHub Pagesサイト",
   "homepage": "https://kubohiroya.github.io/tm-kamishibai-samples/",
   "license": "MPL-2.0",
-  "packageManager": "pnpm@11.17.0",
+  "packageManager": "pnpm@11.18.0",
   "scripts": {
     "build": "node scripts/build-site.ts",
     "build:site-navigation": "node scripts/build-site-navigation.ts",
     "check:site-navigation": "node scripts/build-site-navigation.ts --check",
     "build-workshop-20260801": "node scripts/build-workshop-20260801.ts",
+    "check": "pnpm typecheck && pnpm test && pnpm build && pnpm test:web && pnpm verify && pnpm run repo:check",
     "compact:urashima-actors": "node scripts/compact-urashima-actor-assets.ts",
     "deploy": "gh workflow run deploy.yml --ref main",
     "test": "vitest run",
     "test:web": "node scripts/verify-packaged-web-browser.ts && node scripts/verify-packaged-web-webkit-audio.ts && node scripts/verify-dsl4-packaged-web-browser.ts",
+    "pack:dry-run": "pnpm pack --pack-destination .tmp/pack",
     "update:my-urashima": "node scripts/refresh-story-artifacts.ts --force-my",
     "update:urashima-dsl4-inputs": "node scripts/update-urashima-dsl4-inputs.ts --download",
     "update:urashima-dsl4": "pnpm update:urashima-dsl4-inputs && node scripts/build-urashima-dsl4.ts --write-lock",
@@ -24,12 +26,14 @@
     "update:dsl4-web-artifacts": "node scripts/update-dsl4-web-artifacts.ts",
     "update:dsl4-artifacts": "pnpm update:urashima-dsl4 && pnpm update:my-urashima-dsl4 && pnpm update:dsl4-web-artifacts && pnpm update:tutorial-dsl4",
     "validate:my-urashima-dsl4": "node scripts/validate-my-urashima-dsl4.ts",
-    "validate:urashima-dsl4": "node ../tmpose-kamishibai/bin/tmpose-kamishibai.mjs validate-dsl4 --input stories/urashima/urashima.k4.yml --max-source-bytes 262144 --format pretty",
+    "validate:urashima-dsl4": "node ${TM_KAMISHIBAI_DSL4_ROOT:-../tm-kamishibai}/bin/tmpose-kamishibai.mjs validate-dsl4 --input stories/urashima/urashima.k4.yml --max-source-bytes 262144 --format pretty",
     "verify:urashima-dsl4": "node scripts/verify-urashima-dsl4.ts",
     "verify:my-urashima-dsl4": "node scripts/build-my-urashima-dsl4.ts",
     "update:artifacts-lock": "node scripts/refresh-story-artifacts.ts --force",
     "verify": "node scripts/build-site-navigation.ts --check && node scripts/verify-site.ts && node scripts/verify-tutorial-dsl4.ts",
     "verify:external-links": "node scripts/verify-external-works.ts",
+    "repo:check": "node scripts/check-repo.ts",
+    "release:check": "pnpm run check && pnpm run pack:dry-run",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit"
   },
@@ -37,17 +41,17 @@
     "node": ">=22.18.0"
   },
   "dependencies": {
-    "@kubohiroya/tmpose-kamishibai": "3.2.2",
+    "@kubohiroya/tmpose-kamishibai": "3.2.3",
     "fflate": "0.8.3"
   },
   "devDependencies": {
-    "@kubohiroya/sb3-toolchain": "0.6.0",
+    "@kubohiroya/sb3-toolchain": "0.9.0",
     "@turbowarp/packager": "3.13.0",
-    "@types/node": "^26.4.1",
+    "@types/node": "26.4.1",
     "playwright": "1.61.1",
     "typescript": "6.0.3",
-    "vite": "^8.2.2",
-    "vitest": "^5.0.0",
+    "vite": "8.2.2",
+    "vitest": "5.0.0",
     "yaml": "2.9.0"
   }
 }

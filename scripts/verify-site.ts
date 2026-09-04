@@ -111,7 +111,7 @@ async function verifyProfile(
   assert.equal(builderManifest.outputName, record.outputName);
   assert.equal(builderManifest.assets.length, 44);
   assert.equal(builderManifest.builder.package, '@kubohiroya/tmpose-kamishibai');
-  assert.equal(builderManifest.builder.version, '3.2.2');
+  assert.equal(builderManifest.builder.version, '3.2.3');
   validateBundle({sb3Bytes: sb3Contents, scriptBytes: scriptContents, manifest: builderManifest});
   assert.equal(/^(?:asset=.*,(?:file|https?):)/mu.test(scriptContents.toString('utf8')), false);
   return {builderManifest, sb3Contents, scriptContents};
@@ -239,7 +239,7 @@ export async function verifyPublishedSite(options: VerifyPublishedSiteOptions = 
       readFile(
         path.join(
           outputSampleDirectory,
-          'licenses/tmpose-kamishibai-MPL-2.0.txt',
+          'licenses/tm-kamishibai-MPL-2.0.txt',
         ),
         'utf8',
       ),
@@ -307,7 +307,7 @@ export async function verifyPublishedSite(options: VerifyPublishedSiteOptions = 
     'https://kubohiroya.github.io/tm-kamishibai-samples/stories/urashima/',
   );
   assert.equal(manifest.license, 'MPL-2.0');
-  assert.equal(manifest.builder.version, '3.2.2');
+  assert.equal(manifest.builder.version, '3.2.3');
   assert.equal(packageJson.devDependencies['@turbowarp/packager'], '3.13.0');
   assert.equal(manifest.baseSb3.profile, 'generic');
   assert.equal(manifest.baseSb3.published, true);
@@ -324,11 +324,11 @@ export async function verifyPublishedSite(options: VerifyPublishedSiteOptions = 
   assert.equal(manifest.dsl4Offline.embeddedFileCount, 55);
   assert.equal(
     manifest.dsl4Offline.runtimeCommit,
-    '29c0deadcb98badf94a0244c479ca896dc71f842',
+    '65f5e705921b6c92ba6ec5373ec13eff5101f2c6',
   );
   assert.deepEqual(manifest.dsl4Offline.sb3Toolchain, {
     package: '@kubohiroya/sb3-toolchain',
-    version: '0.6.0',
+    version: '0.9.0',
   });
   assert.equal(
     manifest.assets
@@ -396,7 +396,7 @@ export async function verifyPublishedSite(options: VerifyPublishedSiteOptions = 
   assert.equal(manifest.web.packager.projectExtensions.length, 12);
   assert(
     manifest.web.packager.projectExtensions.some(({id}) => id === 'tmposebundle'),
-    'TMPose extension bundle is missing from the Packager manifest.',
+    'TM extension bundle is missing from the Packager manifest.',
   );
   assert.equal(manifest.web.scriptMode, 'embedded');
   assert.equal(manifest.web.assets, 'embedded');
@@ -498,8 +498,8 @@ export async function verifyPublishedSite(options: VerifyPublishedSiteOptions = 
   assert(runtimeLicense.startsWith('Mozilla Public License Version 2.0'));
   assert.equal(runtimeLicense, license);
   assert(licenseSummary.includes('MPL-2.0'));
-  assert(licenseSummary.includes('tmpose-kamishibai-MPL-2.0.txt'));
-  assert(!licenseSummary.includes('tmpose-kamishibai-MIT.txt'));
+  assert(licenseSummary.includes('tm-kamishibai-MPL-2.0.txt'));
+  assert(!licenseSummary.includes('tm-kamishibai-MIT.txt'));
   assert(licenseSummary.includes('turbowarp-packager-NOTICE.md'));
   assert(licenseSummary.includes('3.2 Web版'));
   assert(licenseSummary.includes('urashima-4.0.sb3'));
@@ -748,11 +748,11 @@ export async function verifyPublishedSite(options: VerifyPublishedSiteOptions = 
   assert.equal(publishedFiles.includes('stories/urashima/web-4.0/index.html'), dsl4WebEnabled);
   assert(
     publishedFiles.includes(
-      'stories/urashima/licenses/tmpose-kamishibai-MPL-2.0.txt',
+      'stories/urashima/licenses/tm-kamishibai-MPL-2.0.txt',
     ),
   );
   assert(
-    !publishedFiles.includes('stories/urashima/licenses/tmpose-kamishibai-MIT.txt'),
+    !publishedFiles.includes('stories/urashima/licenses/tm-kamishibai-MIT.txt'),
   );
   await verifyMyUrashimaOutput(path.join(outputDirectory, 'stories/my-urashima'));
 

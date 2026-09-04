@@ -2,6 +2,6 @@ packages:
   - .
 
 minimumReleaseAgeExclude:
-  - '@kubohiroya/tmpose-kamishibai@3.2.2'
+  - '@kubohiroya/tmpose-kamishibai@3.2.3'
   - '@kubohiroya/turbowarp-svg-text@0.1.0'
-  - '@kubohiroya/sb3-toolchain@0.6.0'
+  - '@kubohiroya/sb3-toolchain@0.8.0 || 0.9.0'

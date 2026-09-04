@@ -9,20 +9,20 @@ importers:
   .:
     dependencies:
       '@kubohiroya/tmpose-kamishibai':
-        specifier: 3.2.2
-        version: 3.2.2
+        specifier: 3.2.3
+        version: 3.2.3
       fflate:
         specifier: 0.8.3
         version: 0.8.3
     devDependencies:
       '@kubohiroya/sb3-toolchain':
-        specifier: 0.6.0
-        version: 0.6.0
+        specifier: 0.9.0
+        version: 0.9.0
       '@turbowarp/packager':
         specifier: 3.13.0
         version: 3.13.0
       '@types/node':
-        specifier: ^26.4.1
+        specifier: 26.4.1
         version: 26.4.1
       playwright:
         specifier: 1.61.1
@@ -31,10 +31,10 @@ importers:
         specifier: 6.0.3
         version: 6.0.3
       vite:
-        specifier: ^8.2.2
+        specifier: 8.2.2
         version: 8.2.2(@types/node@26.4.1)(yaml@2.9.0)
       vitest:
-        specifier: ^5.0.0
+        specifier: 5.0.0
         version: 5.0.0(@types/node@26.4.1)(vite@8.2.2(@types/node@26.4.1)(yaml@2.9.0))
       yaml:
         specifier: 2.9.0
@@ -63,18 +63,18 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@kubohiroya/sb3-toolchain@0.6.0':
-    resolution: {integrity: sha512-xV8hFlN1SF9QU/L2RIf68ty8IxhQzFxwFEZ2kuwq1U1hNdYNCY/WE4j+0HQ2M5iQ8pMMoNHqASpEAEwKwGGRyQ==}
+  '@kubohiroya/sb3-toolchain@0.9.0':
+    resolution: {integrity: sha512-A7Dj4hkYFb12P2w+T6BJWJvI9XGbd8dzZQhdXSWdc6ToZx8PmCRzmUQcJeTwyND159QCqMa0xRficG5Uu1V3Ew==}
     engines: {node: '>=22.12.0'}
     hasBin: true
 
-  '@kubohiroya/tmpose-kamishibai@3.2.2':
-    resolution: {integrity: sha512-pHHDdOIDgSKOK+QRQX+TnGlcWx/Aif9i5r4Gf0Vs2Tv3Tkf2gad4YDCJ/+xY8piNOiMdpJ3HExjba9SSz6kn/Q==}
+  '@kubohiroya/tmpose-kamishibai@3.2.3':
+    resolution: {integrity: sha512-U/A7p9OL6HGpJUwrFmQ3BR8QxWhN5UwvK4VL2OdnMqdsZJ9upxLWRVEzV2AZWLRWpE4KtZ4DZDSFlei88WNRvA==}
     engines: {node: '>=22.12.0'}
     hasBin: true
 
-  '@kubohiroya/turbowarp-svg-text@0.1.0':
-    resolution: {integrity: sha512-TdjyxkTLJbr2A1GUDA6x+IjYEv+DJv+austdSteZrZ8lc0fIAr5WMeEskjdvzRDcLyaGuaxD5E2zgx6nhNryIg==}
+  '@kubohiroya/turbowarp-svg-text@0.2.1':
+    resolution: {integrity: sha512-N5Ainmm8l4IfTytfQGlKZWy/gOTkbJ1P3vTsbVmpKVlaIwt8BcFF8pzAQHrJYgtGm+VoBqV8bQrc7631bBG6oA==}
 
   '@oxc-project/types@0.148.0':
     resolution: {integrity: sha512-Nm4s/jB+4FpFsPhWGEC4h7rzksesmtnMXomo6rCMcg/b8zLQuOziRgkCS1fxDCXOlJB/6Q8oABOZ/OP6RIPj9A==}
@@ -747,7 +747,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.6.0
 
-  '@kubohiroya/sb3-toolchain@0.6.0':
+  '@kubohiroya/sb3-toolchain@0.9.0':
     dependencies:
       fflate: 0.8.3
       music-metadata: 11.14.0
@@ -755,12 +755,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@kubohiroya/tmpose-kamishibai@3.2.2':
+  '@kubohiroya/tmpose-kamishibai@3.2.3':
     dependencies:
-      '@kubohiroya/turbowarp-svg-text': 0.1.0
+      '@kubohiroya/turbowarp-svg-text': 0.2.1
       fflate: 0.8.3
 
-  '@kubohiroya/turbowarp-svg-text@0.1.0': {}
+  '@kubohiroya/turbowarp-svg-text@0.2.1': {}
 
   '@oxc-project/types@0.148.0': {}
 

@@ -11,7 +11,7 @@ import {verifyEndCreditCheerDelay} from './verify-end-credit.ts';
 
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 const sourcePath = path.join(projectRoot, 'stories/my-urashima/my-urashima.k4.yml');
-const validatorPath = path.resolve(projectRoot, '../tmpose-kamishibai/bin/tmpose-kamishibai.mjs');
+const validatorPath = path.resolve(projectRoot, '../tm-kamishibai/bin/tmpose-kamishibai.mjs');
 
 function uncommentExactlyOnce(source: string, line: string): string {
   const replacement = line.slice(1);

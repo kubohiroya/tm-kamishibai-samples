@@ -36,7 +36,7 @@
     "allowedOnlineDependencies": [
       {
         "urlPrefix": "https://sqs.prof.cuc.ac.jp/kamishibai/20260630/",
-        "purpose": "ワークショップ台本で指定するTMPoseモデル"
+        "purpose": "ワークショップ台本で指定するTeachable Machine Poseモデル"
       }
     ],
     "runtimeCapabilities": [
@@ -46,7 +46,7 @@
       },
       {
         "capability": "camera",
-        "purpose": "TMPoseによるポーズ認識"
+        "purpose": "TurboWarp TMによるポーズ認識"
       },
       {
         "capability": "audio",

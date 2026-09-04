@@ -126,7 +126,7 @@ test('licenses the repository, runtime, Urashima content, and Packager notices',
     readFile(runtimePackageLicensePath, 'utf8'),
     readFile(path.join(sampleDirectory, 'LICENSES.md'), 'utf8'),
     readFile(
-      path.join(sampleDirectory, 'licenses/tmpose-kamishibai-MPL-2.0.txt'),
+      path.join(sampleDirectory, 'licenses/tm-kamishibai-MPL-2.0.txt'),
       'utf8',
     ),
     readFile(path.join(sampleDirectory, 'licenses/turbowarp-packager-NOTICE.md'), 'utf8'),
@@ -138,8 +138,8 @@ test('licenses the repository, runtime, Urashima content, and Packager notices',
   assert(licenseSummary.includes('MPL-2.0'));
   assert(licenseSummary.includes('CC BY-SA 2.0'));
   assert(licenseSummary.includes('7bd800cb66d6fb18886a4c5cea1b76a6'));
-  assert(licenseSummary.includes('tmpose-kamishibai-MPL-2.0.txt'));
-  assert(licenseSummary.includes('2b5005d293a9b63c8ba5da396fd86815d093f975'));
+  assert(licenseSummary.includes('tm-kamishibai-MPL-2.0.txt'));
+  assert(licenseSummary.includes('28015ac9ff5221f371e8bd0357a7750ce40bbf7c'));
   assert(runtimeLicense.startsWith('Mozilla Public License Version 2.0'));
   assert.equal(runtimeLicense, runtimePackageLicense);
   assert.equal(runtimeLicense, license);
@@ -247,10 +247,10 @@ test('pins the generic, editor, and player profile contract', async () => {
   ]);
   assert.equal(
     packageJson.dependencies['@kubohiroya/tmpose-kamishibai'],
-    '3.2.2',
+    '3.2.3',
   );
-  assert.equal(config.builder.version, '3.2.2');
-  assert.equal(config.builder.commit, '2b5005d293a9b63c8ba5da396fd86815d093f975');
+  assert.equal(config.builder.version, '3.2.3');
+  assert.equal(config.builder.commit, '28015ac9ff5221f371e8bd0357a7750ce40bbf7c');
   assert.equal(config.baseSb3.profile, 'generic');
   assert.equal(
     config.baseSb3.source,
@@ -530,8 +530,8 @@ test('keeps my-urashima external-script-only and publishes its DSL 4.0 workshop 
   assert.equal(artifactsLock.parentStory.name, 'urashima');
   assert.deepEqual(artifactsLock.sb3Toolchain, {
     package: '@kubohiroya/sb3-toolchain',
-    version: '0.6.0',
-    source: '0.6.0',
+    version: '0.9.0',
+    source: '0.9.0',
   });
   assert.equal(artifactsLock.parentStory.sourceScript.path, '../urashima/source.txt');
   assert.equal(artifactsLock.parentStory.assetManifest.path, '../urashima/assets.lock.json');

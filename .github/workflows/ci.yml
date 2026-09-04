@@ -11,14 +11,14 @@ jobs:
     runs-on: ubuntu-latest
     env:
       TZ: Asia/Tokyo
-      TMPOSE_KAMISHIBAI_DSL4_ROOT: ${{ github.workspace }}/.tmp/tmpose-kamishibai
+      TM_KAMISHIBAI_DSL4_ROOT: ${{ github.workspace }}/.tmp/tm-kamishibai
     steps:
       - uses: actions/checkout@v7
       - uses: actions/checkout@v7
         with:
-          repository: kubohiroya/tmpose-kamishibai
-          ref: 29c0deadcb98badf94a0244c479ca896dc71f842
-          path: .tmp/tmpose-kamishibai
+          repository: kubohiroya/tm-kamishibai
+          ref: 65f5e705921b6c92ba6ec5373ec13eff5101f2c6
+          path: .tmp/tm-kamishibai
       - run: corepack enable
       - uses: actions/setup-node@v7
         with:
@@ -26,13 +26,9 @@ jobs:
           cache: pnpm
           cache-dependency-path: |
             pnpm-lock.yaml
-            .tmp/tmpose-kamishibai/pnpm-lock.yaml
+            .tmp/tm-kamishibai/pnpm-lock.yaml
       - run: pnpm install --frozen-lockfile
       - run: pnpm install --frozen-lockfile
-        working-directory: .tmp/tmpose-kamishibai
+        working-directory: .tmp/tm-kamishibai
       - run: pnpm exec playwright install --with-deps chromium webkit
-      - run: pnpm typecheck
-      - run: pnpm test
-      - run: pnpm build
-      - run: pnpm test:web
-      - run: pnpm verify
+      - run: pnpm run check

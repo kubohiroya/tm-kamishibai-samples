@@ -10,7 +10,7 @@
 - `draft-samples/`配下の画像
 - `master/`配下の画像
 - `generated-samples/`配下の画像
-- `tmpose-samples/project.tm`
+- `tm-samples/project.tm`
 
 Copyright © 2026 Hiroya Kubo
 
@@ -18,7 +18,7 @@ Copyright © 2026 Hiroya Kubo
 
 ## PDF教材
 
-`tmpose-kamishibai-20260801.pdf`は、上記のCC BY-SA 4.0ライセンスの対象外です。
+`tm-kamishibai-20260801.pdf`は、上記のCC BY-SA 4.0ライセンスの対象外です。
 
 Copyright © 2026 Hiroya Kubo. All rights reserved.
 

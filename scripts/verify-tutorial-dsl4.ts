@@ -100,7 +100,7 @@ export async function verifyTutorialCandidate(
   assert.equal(publicSurfaces.releaseDependency, config.releaseDependency);
   assert.match(
     config.releaseDependency as string,
-    /tm-kamishibai\/releases\/tag\/v4\.0\.0-rc\.8$/u,
+    /tm-kamishibai\/releases\/tag\/v4\.0\.0-rc\.10$/u,
   );
   assert.doesNotMatch(
     publication.reason,
