@@ -4,12 +4,16 @@ on:
   push:
     paths:
       - "site/contracts/navigation-contract.json"
+      - "scripts/site-navigation.ts"
       - "scripts/site-navigation.mjs"
+      - "scripts/build-site-navigation.ts"
       - ".github/workflows/navigation-contract.yml"
   pull_request:
     paths:
       - "site/contracts/navigation-contract.json"
+      - "scripts/site-navigation.ts"
       - "scripts/site-navigation.mjs"
+      - "scripts/build-site-navigation.ts"
       - ".github/workflows/navigation-contract.yml"
 
 permissions:
@@ -28,6 +32,16 @@ jobs:
           ref: 45d7e0ae318aa5f38e08d10e3d259bccdf268fd0
           path: .navigation-contract-source
           fetch-depth: 1
+      - run: corepack enable
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      # scripts/site-navigation.mjs は scripts/site-navigation.ts からの生成物。
+      # まず生成物が最新であることを確認してから、他リポジトリとの一致を比較する。
+      - name: Check the generated renderer is current
+        run: pnpm check:site-navigation
       - name: Compare generated contract and renderer
         run: |
           cmp .navigation-contract-source/docs/tutorials/navigation-contract.json site/contracts/navigation-contract.json
