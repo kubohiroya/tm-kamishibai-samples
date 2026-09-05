@@ -60,7 +60,7 @@ pnpm run release:check
 
 ビルド・検証スクリプトとテストはTypeScript 6で書かれています。Nodeのネイティブ型剥がしで`.ts`をそのまま実行するため、ビルド成果物や事前のトランスパイルはありません（`node scripts/build-site.ts`）。`pnpm typecheck`は`tsc --noEmit`による型検査だけを行い、`pnpm test`はVitestでテストを実行します。Viteはブラウザ向けバンドルを持たないこのリポジトリではVitest設定（`vite.config.ts`）のホストとして使います。型剥がしの前提としてNode 22.18以上が必要です。
 
-`scripts/site-navigation.mjs`はtm-kamishibaiの3リポジトリ間で`cmp`によりバイト一致を保つ契約ファイルです。正本は`scripts/site-navigation.ts`で、`pnpm build:site-navigation`が`.mjs`を生成します。`pnpm verify`（および`.github/workflows/navigation-contract.yml`）は`pnpm check:site-navigation`で生成物が最新かを検査します。ナビゲーション描画を変更するときは`.ts`を編集して再生成し、生成された`.mjs`を各リポジトリへ配布します。
+`scripts/site-navigation.mjs`はtm-kamishibaiの3リポジトリ間で`cmp`によりバイト一致を保つ契約ファイルです。正本は`scripts/site-navigation.ts`で、`pnpm build:site-navigation`が`.mjs`を生成します。生成はNode自身の型剥がし（`module.stripTypeScriptTypes`）で行うため、元の整形と空行がそのまま残り、生成物は各リポジトリの現行ファイルとバイト単位で一致します。仕上げのPrettierは契約先リポジトリの`.prettierrc.json`と同じ設定です。`pnpm verify`（および`.github/workflows/navigation-contract.yml`）は`pnpm check:site-navigation`で生成物が最新かを検査します。ナビゲーション描画を変更するときは`.ts`を編集して再生成し、生成された`.mjs`を各リポジトリへ配布します。`.mjs`を直接編集した場合は`pnpm check:site-navigation`が検出します。
 
 `pnpm build` は空の `dist/` からDSL 3.2／4.0のSB3、Packager Web版、公開サイトを生成し、台本・SB3・HTML・全アセット・ライセンス・リンク・SHA-256を検証します。同じ入力から各Web版を2回生成してハッシュが一致することも確認します。`pnpm test:web` はPages相当のHTTPサーバで各Web版を開きます。DSL 4.0浦島太郎では外部ネットワークを遮断した状態でタイトル画面から組み込み台本が開始すること、my-urashimaではタイトルからメニューへ進み、`.k4.yml`をファイル選択して物語が開始すること、tutorial公開版では偽カメラを使って4場面を最後まで進められることをheadless Chromiumで検証します。
 
