@@ -193,15 +193,15 @@ assets:
     target: Narration
     file: assets/images/b6c18d2f3df8b5d12e2b6a529109fec2.svg
   PoseModel1:
-    kind: poseModel
+    kind: recognitionModel
     file: pose-models/1and2
     loading: lazy
   PoseModel2:
-    kind: poseModel
+    kind: recognitionModel
     file: pose-models/3and4
     loading: lazy
   PoseModel3:
-    kind: poseModel
+    kind: recognitionModel
     file: pose-models/6and7
     loading: lazy
 actors:
@@ -239,7 +239,7 @@ loading:
   costumes:
     - Fish1
     - Fish2
-poseRecognition:
+recognition:
   idleSound: Clock Ticking
   chargeSound: Sewing Machine
   navigation:
@@ -276,7 +276,7 @@ scenes:
         text: ""
         style: narration
   beach:
-    poseModel: PoseModel1
+    recognitionModel: PoseModel1
     actions:
       - transition:
           effect: fadeOut
@@ -376,7 +376,7 @@ scenes:
       - bgm: Odesong
       - wait: 1.2
   ocean:
-    poseModel: PoseModel1
+    recognitionModel: PoseModel1
     actions:
       - stage: Ocean
       - wait: 1.5
@@ -438,7 +438,7 @@ scenes:
           y: -5
           seconds: 0.25
   welcome to dragon castle:
-    poseModel: PoseModel2
+    recognitionModel: PoseModel2
     actions:
       - stage: Dragon Castle
       - wait: 0.5
@@ -497,7 +497,7 @@ scenes:
               sound: Drum Funky
       - wait: 2
   goodbye dragon castle:
-    poseModel: PoseModel2
+    recognitionModel: PoseModel2
     actions:
       - stage: Dragon Castle
       - wait: 2
@@ -577,7 +577,7 @@ scenes:
         seconds: 3
     - wait: 1
   open the box:
-    poseModel: PoseModel3
+    recognitionModel: PoseModel3
     actions:
       - stage: Beach2
       - Urashima.show:
@@ -605,7 +605,7 @@ scenes:
           seconds: 0
       - wait: 2
   regret:
-    poseModel: PoseModel3
+    recognitionModel: PoseModel3
     actions:
       - transition:
           effect: fadeToWhite

@@ -23,7 +23,7 @@ assets:
     target: Student
     file: protect-head.svg
   SafetyPose:
-    kind: poseModel
+    kind: recognitionModel
     file: safety-pose
     loading: lazy
   SuccessSound:
@@ -36,7 +36,7 @@ actors:
 cover:
   backdrop: Classroom
 
-poseRecognition:
+recognition:
   navigation:
     allowSkip: true
   preview:
@@ -78,7 +78,7 @@ scenes:
         text: 自分の身を守るため、丈夫な机の下に入り、両手で頭を守ろう！
         seconds: 4
   protect:
-    poseModel: SafetyPose
+    recognitionModel: SafetyPose
     actions:
       - stage: EarthquakeClassroom
       - Student.show:

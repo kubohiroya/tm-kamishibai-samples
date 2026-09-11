@@ -116,6 +116,20 @@ async function openDsl4Page(
       });
     }, storySource);
   }
+  // Since TM Kamishibai 4.0.0-rc.12 the Standard runtime renders every say and think
+  // through TurboWarp Bubble's SVG overlay, which the packaged stage mounts over the
+  // renderer canvas. `Scratch.looks` is deliberately left untouched by that path, so the
+  // speech a viewer actually reads has to come off the overlay.
+  await page.addInitScript(() => {
+    Object.defineProperty(globalThis, '__dsl4SpeechText', {
+      configurable: true,
+      value: () =>
+        Array.from(document.querySelectorAll('svg text, svg foreignObject'))
+          .map((element) => (element.textContent ?? '').trim())
+          .filter(Boolean)
+          .join(''),
+    });
+  });
   await page.route('**/*', async (route: any) => {
     const url = route.request().url();
     if (url.startsWith(origin) || url.startsWith('blob:') || url.startsWith('data:')) {
@@ -357,10 +371,7 @@ try {
         const student = vm?.runtime?.targets?.find(
           (target: any) => !target.isStage && target.getName() === 'Student',
         );
-        return (
-          student?.visible === true &&
-          (student.getCustomState('Scratch.looks')?.text ?? '') === ''
-        );
+        return student?.visible === true && globalThis.__dsl4SpeechText() === '';
       },
       undefined,
       {timeout: 120_000},
@@ -396,7 +407,7 @@ try {
           );
           return (
             student?.visible === true &&
-            student.getCustomState('Scratch.looks')?.text ===
+            globalThis.__dsl4SpeechText() ===
               'できた！ 頭を守れたね。揺れがおさまるまで、そのまま待とう。' &&
             document.querySelector<HTMLElement>('[data-dsl4-application-menu=true]')?.style.display !== 'block'
           );
@@ -411,7 +422,7 @@ try {
           (target: any) => !target.isStage && target.getName() === 'Student',
         );
         return {
-          bubble: student?.getCustomState('Scratch.looks')?.text ?? '',
+          bubble: globalThis.__dsl4SpeechText(),
           errorDisplay: document.querySelector<HTMLElement>('[data-dsl4-runtime-error=true]')?.style.display,
           errorText: document.querySelector<HTMLElement>('[data-dsl4-runtime-error=true]')?.textContent,
           menuDisplay: document.querySelector<HTMLElement>('[data-dsl4-application-menu=true]')?.style.display,

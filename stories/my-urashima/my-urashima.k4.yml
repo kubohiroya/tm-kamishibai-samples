@@ -65,19 +65,19 @@ assets:
     target: Narration
     name: ui-placeholder
   PoseModel1:
-    kind: poseModel
+    kind: recognitionModel
     delivery: remote
     source:
       url: https://sqs.prof.cuc.ac.jp/kamishibai/20260630/1and2/
     loading: lazy
   PoseModel2:
-    kind: poseModel
+    kind: recognitionModel
     delivery: remote
     source:
       url: https://sqs.prof.cuc.ac.jp/kamishibai/20260630/3and4/
     loading: lazy
   PoseModel3:
-    kind: poseModel
+    kind: recognitionModel
     delivery: remote
     source:
       url: https://sqs.prof.cuc.ac.jp/kamishibai/20260630/6and7/
@@ -117,7 +117,7 @@ loading:
   costumes:
     - Fish1
     - Fish2
-poseRecognition:
+recognition:
   idleSound: Clock Ticking
   chargeSound: Sewing Machine
   navigation:
@@ -154,7 +154,7 @@ scenes:
         text: ""
         style: narration
   beach:
-    poseModel: PoseModel1
+    recognitionModel: PoseModel1
     actions:
       - transition:
           effect: fadeOut
@@ -254,7 +254,7 @@ scenes:
       - bgm: Odesong
       - wait: 1.2
   ocean:
-    poseModel: PoseModel1
+    recognitionModel: PoseModel1
     actions:
       - stage: Ocean
       - wait: 1.5
@@ -316,7 +316,7 @@ scenes:
           y: -5
           seconds: 0.25
   welcome to dragon castle:
-    poseModel: PoseModel2
+    recognitionModel: PoseModel2
     actions:
       - stage: Dragon Castle
       - wait: 0.5
@@ -362,7 +362,7 @@ scenes:
 #      - Princess.pose: {steps: [{pose: p1, skin: p1, sound: Drum Funky}, {pose: p2, skin: p2, sound: Drum Funky}, {pose: p3, skin: p3, sound: Drum Funky}, {pose: p4, skin: p4, sound: Drum Funky}, {pose: p1, skin: p1, sound: Drum Funky}, {pose: p2, skin: p2, sound: Drum Funky}, {pose: p3, skin: p3, sound: Drum Funky}, {pose: p4, skin: p4, sound: Drum Funky}]}
       - wait: 2
   goodbye dragon castle:
-    poseModel: PoseModel2
+    recognitionModel: PoseModel2
     actions:
       - stage: Dragon Castle
       - wait: 2
@@ -442,7 +442,7 @@ scenes:
         seconds: 3
     - wait: 1
   open the box:
-    poseModel: PoseModel3
+    recognitionModel: PoseModel3
     actions:
       - stage: Beach2
       - Urashima.show:
@@ -470,7 +470,7 @@ scenes:
           seconds: 0
       - wait: 2
   regret:
-    poseModel: PoseModel3
+    recognitionModel: PoseModel3
     actions:
       - transition:
           effect: fadeToWhite

@@ -71,9 +71,9 @@ test('turns the starter into the final four-scene story with visible pose feedba
     'protect',
     'success',
   ]);
-  assert.equal(complete.scenes.protect.poseModel, 'SafetyPose');
-  assert.equal(complete.poseRecognition.preview.mirroring, 'mirrored');
-  assert.deepEqual(complete.poseRecognition.preview.overlay, {
+  assert.equal(complete.scenes.protect.recognitionModel, 'SafetyPose');
+  assert.equal(complete.recognition.preview.mirroring, 'mirrored');
+  assert.deepEqual(complete.recognition.preview.overlay, {
     visible: true,
     jointStyles: {
       leftWrist: {color: '#ff00aa', opacity: 0.8, radius: 6},
@@ -141,7 +141,7 @@ test('provides one intentional CLI diagnostic with an exact starter fix', async 
   const result = spawnSync(
     process.execPath,
     [
-      path.join(kamishibaiRoot, 'bin/tmpose-kamishibai.mjs'),
+      path.join(kamishibaiRoot, 'bin/tm-kamishibai.mjs'),
       'validate-dsl4',
       '--input',
       path.join(storyDirectory, 'addition-kit/intentional-diagnostic.kamishibai.yaml.txt'),

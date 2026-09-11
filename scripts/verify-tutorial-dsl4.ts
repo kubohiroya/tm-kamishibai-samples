@@ -130,7 +130,7 @@ export async function verifyTutorialCandidate(
     string,
     Record<string, {text: string}>
   >;
-  assert.equal(protectScene.poseModel, 'SafetyPose');
+  assert.equal(protectScene.recognitionModel, 'SafetyPose');
   assert.equal(
     instructionScene[1]?.['Student.say']?.text,
     '自分の身を守るため、丈夫な机の下に入り、両手で頭を守ろう！',
