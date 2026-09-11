@@ -2,12 +2,12 @@
   "formatVersion": 1,
   "runtime": {
     "repository": "https://github.com/kubohiroya/tm-kamishibai",
-    "version": "4.0.0-rc.12",
-    "commit": "76d9c4085d0564467476734d540c00926692bb4c",
+    "version": "4.0.0-rc.13",
+    "commit": "5355abe74db95881711d17e5ad35db6daea7fd94",
     "basePath": "base/kamishibai-4.0.sb3",
-    "baseSourceIdentity": "sha256:f8de24992c313370ccf22d0a1a5286c5d5f58f1ec620f3a27fce929f61cf49cb",
-    "baseSize": 6790297,
-    "baseSha256": "3d588063973cbd217efc05ce3d0a4c9be7cdeeeac02181f9be4358dd1fa00313"
+    "baseSourceIdentity": "sha256:f75aebacbca61b85c48b36d59d4aaa4d3938cd4b7065cbfb7992475c30e3eba9",
+    "baseSize": 6790300,
+    "baseSha256": "f1a90bb99e58b8f0739a8d2ff8e6063c611b541c332abf87ee150a92a4c2ec3a"
   },
   "sb3Toolchain": {
     "package": "@kubohiroya/sb3-toolchain",
@@ -22,8 +22,8 @@
   },
   "output": {
     "path": "urashima-4.0.sb3",
-    "size": 34244103,
-    "sha256": "0af258dbc1deee10b995c439c17509f09b2c0350fcdc234ab1b9e88d4e645f29",
+    "size": 34244104,
+    "sha256": "96fc508d37e750e5ae18c25762e76716887057acddebf883b256cf1a7f35b2b0",
     "archiveEntryCount": 10,
     "targetNames": [
       "Stage",

@@ -6,12 +6,12 @@
   "sourceIdentity": "59721ed9dd5e4202e3ed2bbaee171c1f96f6d1451521cc34ff66e5ce4452899c",
   "runtime": {
     "repository": "https://github.com/kubohiroya/tm-kamishibai",
-    "version": "4.0.0-rc.12",
-    "commit": "76d9c4085d0564467476734d540c00926692bb4c",
+    "version": "4.0.0-rc.13",
+    "commit": "5355abe74db95881711d17e5ad35db6daea7fd94",
     "basePath": "base/kamishibai-4.0.sb3",
-    "baseSourceIdentity": "sha256:f8de24992c313370ccf22d0a1a5286c5d5f58f1ec620f3a27fce929f61cf49cb",
-    "baseSize": 6790297,
-    "baseSha256": "3d588063973cbd217efc05ce3d0a4c9be7cdeeeac02181f9be4358dd1fa00313"
+    "baseSourceIdentity": "sha256:f75aebacbca61b85c48b36d59d4aaa4d3938cd4b7065cbfb7992475c30e3eba9",
+    "baseSize": 6790300,
+    "baseSha256": "f1a90bb99e58b8f0739a8d2ff8e6063c611b541c332abf87ee150a92a4c2ec3a"
   },
   "sb3Toolchain": {
     "package": "@kubohiroya/sb3-toolchain",
@@ -169,8 +169,8 @@
   "outputs": {
     "sb3": {
       "path": "tutorial-4.0.sb3",
-      "size": 12685681,
-      "sha256": "feb34a3ebde09f3922c0337f68d899e1904ede835666bf352471703a988da57b",
+      "size": 12685695,
+      "sha256": "74708027a6457f5087c0d202f538b4a6942a7fa1c4372eb2a263d6aea392ff2f",
       "archiveEntryCount": 10,
       "targetNames": [
         "Stage",
