@@ -549,6 +549,14 @@ export async function verifyPublishedSite(options: VerifyPublishedSiteOptions = 
   assert(tutorialIndex.includes('data-work-carousel="tutorial-earthquake-safety"'));
   assert(tutorialIndex.includes('src="card-scenes/05.webp"'));
   assert(tutorialIndex.includes('href="../../CARD_SCENES.md"'));
+  // カメラを使う作品は、起動リンクの前に確認段を挟む。script はページ側に常駐し、
+  // 注意文と data 属性は Web 版が有効なときだけ描画される。
+  for (const capabilityPage of [rootIndex, sampleIndex, myUrashimaIndex, tutorialIndex]) {
+    assert(
+      capabilityPage.includes("document.querySelectorAll('a[data-capability-launch]')"),
+      'capability launch script is missing.',
+    );
+  }
   for (const detailIndex of [sampleIndex, myUrashimaIndex, tutorialIndex]) {
     assert(detailIndex.includes('>作品の場面紹介</h2>'));
     assert(detailIndex.includes('data-work-carousel-previous'));
@@ -590,6 +598,15 @@ export async function verifyPublishedSite(options: VerifyPublishedSiteOptions = 
   const rootDsl40Actions = urashimaCard.slice(
     urashimaCard.indexOf('data-action-group="DSL 4.0 オフライン実行版"'),
   );
+  assert(urashimaCard.includes('class="capability-note"'));
+  assert.equal(rootDsl32Actions.includes('data-capability-launch="camera"'), manifest.web.enabled);
+  assert.equal(rootDsl40Actions.includes('data-capability-launch="camera"'), dsl4WebEnabled);
+  assert(sampleIndex.includes('data-capability-launch="camera"'));
+  assert.equal(
+    myUrashimaIndex.includes('data-capability-launch="camera"'),
+    myDsl4Manifest.web.enabled,
+  );
+  assert(tutorialIndex.includes('data-capability-launch="camera"'));
   assert(
     urashimaCard.includes(
       '<h3><a class="work-card__title-link" href="stories/urashima/">浦島太郎</a></h3>',

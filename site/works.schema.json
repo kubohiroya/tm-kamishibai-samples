@@ -4,91 +4,218 @@
   "title": "TurboWarp紙芝居 作品ライブラリ",
   "type": "object",
   "additionalProperties": false,
-  "required": ["$schema", "formatVersion", "categories", "works"],
+  "required": [
+    "$schema",
+    "formatVersion",
+    "categories",
+    "works"
+  ],
   "properties": {
-    "$schema": {"const": "./works.schema.json"},
-    "formatVersion": {"const": 1},
+    "$schema": {
+      "const": "./works.schema.json"
+    },
+    "formatVersion": {
+      "const": 1
+    },
     "categories": {
       "type": "array",
       "minItems": 3,
-      "items": {"$ref": "#/$defs/category"}
+      "items": {
+        "$ref": "#/$defs/category"
+      }
     },
     "works": {
       "type": "array",
-      "items": {"$ref": "#/$defs/work"}
+      "items": {
+        "$ref": "#/$defs/work"
+      }
     }
   },
   "$defs": {
     "category": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "title", "description", "emptyMessage"],
+      "required": [
+        "id",
+        "title",
+        "description",
+        "emptyMessage"
+      ],
       "properties": {
-        "id": {"enum": ["official", "community", "external"]},
-        "title": {"type": "string", "minLength": 1},
-        "description": {"type": "string", "minLength": 1},
-        "emptyMessage": {"type": "string", "minLength": 1}
+        "id": {
+          "enum": [
+            "official",
+            "community",
+            "external"
+          ]
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "emptyMessage": {
+          "type": "string",
+          "minLength": 1
+        }
       }
     },
     "license": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["label", "href"],
+      "required": [
+        "label",
+        "href"
+      ],
       "properties": {
-        "label": {"type": "string", "minLength": 1},
-        "href": {"type": "string", "minLength": 1}
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "href": {
+          "type": "string",
+          "minLength": 1
+        }
       }
     },
     "action": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["label", "style"],
+      "required": [
+        "label",
+        "style"
+      ],
       "properties": {
-        "label": {"type": "string", "minLength": 1},
-        "href": {"type": "string", "minLength": 1},
-        "style": {"enum": ["primary", "secondary"]},
-        "download": {"type": "boolean"},
-        "external": {"type": "boolean"},
-        "requires": {
-          "enum": ["urashimaWeb", "urashimaDsl4Web", "myUrashimaDsl4Web"]
+        "label": {
+          "type": "string",
+          "minLength": 1
         },
-        "unavailableLabel": {"type": "string", "minLength": 1},
-        "group": {"type": "string", "minLength": 1},
-        "disabled": {"const": true}
+        "href": {
+          "type": "string",
+          "minLength": 1
+        },
+        "style": {
+          "enum": [
+            "primary",
+            "secondary"
+          ]
+        },
+        "download": {
+          "type": "boolean"
+        },
+        "external": {
+          "type": "boolean"
+        },
+        "requires": {
+          "enum": [
+            "urashimaWeb",
+            "urashimaDsl4Web",
+            "myUrashimaDsl4Web"
+          ]
+        },
+        "unavailableLabel": {
+          "type": "string",
+          "minLength": 1
+        },
+        "group": {
+          "type": "string",
+          "minLength": 1
+        },
+        "disabled": {
+          "const": true
+        },
+        "launch": {
+          "const": "web"
+        }
       },
       "oneOf": [
-        {"required": ["href"], "not": {"required": ["disabled"]}},
-        {"required": ["disabled"], "not": {"required": ["href"]}}
+        {
+          "required": [
+            "href"
+          ],
+          "not": {
+            "required": [
+              "disabled"
+            ]
+          }
+        },
+        {
+          "required": [
+            "disabled"
+          ],
+          "not": {
+            "required": [
+              "href"
+            ]
+          }
+        }
       ],
       "dependentRequired": {
-        "requires": ["unavailableLabel"]
+        "requires": [
+          "unavailableLabel"
+        ]
       }
     },
     "thumbnail": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["src", "alt", "rightsHolder", "licenseHref", "slides"],
+      "required": [
+        "src",
+        "alt",
+        "rightsHolder",
+        "licenseHref",
+        "slides"
+      ],
       "properties": {
-        "src": {"type": "string", "minLength": 1},
-        "alt": {"type": "string"},
-        "rightsHolder": {"type": "string", "minLength": 1},
-        "licenseHref": {"type": "string", "minLength": 1},
+        "src": {
+          "type": "string",
+          "minLength": 1
+        },
+        "alt": {
+          "type": "string"
+        },
+        "rightsHolder": {
+          "type": "string",
+          "minLength": 1
+        },
+        "licenseHref": {
+          "type": "string",
+          "minLength": 1
+        },
         "slides": {
           "type": "array",
           "minItems": 4,
           "maxItems": 5,
-          "items": {"$ref": "#/$defs/sceneSlide"}
+          "items": {
+            "$ref": "#/$defs/sceneSlide"
+          }
         }
       }
     },
     "sceneSlide": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["src", "alt", "caption"],
+      "required": [
+        "src",
+        "alt",
+        "caption"
+      ],
       "properties": {
-        "src": {"type": "string", "minLength": 1},
-        "alt": {"type": "string", "minLength": 1},
-        "caption": {"type": "string", "minLength": 1}
+        "src": {
+          "type": "string",
+          "minLength": 1
+        },
+        "alt": {
+          "type": "string",
+          "minLength": 1
+        },
+        "caption": {
+          "type": "string",
+          "minLength": 1
+        }
       }
     },
     "work": {
@@ -108,49 +235,123 @@
         "actions"
       ],
       "properties": {
-        "id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
-        "category": {"enum": ["official", "community", "external"]},
-        "title": {"type": "string", "minLength": 1},
-        "updatedAt": {"type": "string", "format": "date"},
-        "detailHref": {"type": "string", "minLength": 1},
-        "summary": {"type": "string", "minLength": 1},
-        "creator": {"type": "string", "minLength": 1},
-        "rightsHolder": {"type": "string", "minLength": 1},
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "category": {
+          "enum": [
+            "official",
+            "community",
+            "external"
+          ]
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date"
+        },
+        "detailHref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "creator": {
+          "type": "string",
+          "minLength": 1
+        },
+        "rightsHolder": {
+          "type": "string",
+          "minLength": 1
+        },
         "dslSeries": {
           "type": "array",
           "minItems": 1,
-          "items": {"type": "string", "minLength": 1}
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
         },
-        "distribution": {"enum": ["hosted", "link-only"]},
-        "license": {"$ref": "#/$defs/license"},
+        "distribution": {
+          "enum": [
+            "hosted",
+            "link-only"
+          ]
+        },
+        "license": {
+          "$ref": "#/$defs/license"
+        },
+        "capabilities": {
+          "$ref": "#/$defs/capabilities"
+        },
         "actions": {
           "type": "array",
           "minItems": 1,
-          "items": {"$ref": "#/$defs/action"}
+          "items": {
+            "$ref": "#/$defs/action"
+          }
         },
-        "thumbnail": {"$ref": "#/$defs/thumbnail"}
+        "thumbnail": {
+          "$ref": "#/$defs/thumbnail"
+        }
       },
       "allOf": [
         {
-          "if": {"properties": {"category": {"const": "external"}}},
+          "if": {
+            "properties": {
+              "category": {
+                "const": "external"
+              }
+            }
+          },
           "then": {
             "properties": {
-              "distribution": {"const": "link-only"},
+              "distribution": {
+                "const": "link-only"
+              },
               "actions": {
                 "maxItems": 1,
                 "items": {
                   "properties": {
-                    "href": {"type": "string", "pattern": "^https://"},
-                    "external": {"const": true},
-                    "download": {"const": false}
+                    "href": {
+                      "type": "string",
+                      "pattern": "^https://"
+                    },
+                    "external": {
+                      "const": true
+                    },
+                    "download": {
+                      "const": false
+                    }
                   },
-                  "required": ["external"]
+                  "required": [
+                    "external"
+                  ]
                 }
               }
             }
           }
         }
       ]
+    },
+    "capabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "camera": {
+          "const": true
+        },
+        "microphone": {
+          "const": true
+        }
+      }
     }
   }
 }

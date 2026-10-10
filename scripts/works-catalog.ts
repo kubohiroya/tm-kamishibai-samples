@@ -19,6 +19,8 @@ export interface WorkAction {
   unavailableLabel?: string;
   group?: string;
   disabled?: true;
+  /** ブラウザで作品を開始するアクション。capabilities の確認段を挟む対象になる。 */
+  launch?: 'web';
 }
 
 export interface WorkThumbnailSlide {
@@ -40,6 +42,12 @@ export interface WorkLicense {
   href: string;
 }
 
+/** 作品の実行に必要なブラウザ機能。宣言した機能は true だけを取る。 */
+export interface WorkCapabilities {
+  camera?: true;
+  microphone?: true;
+}
+
 export interface WorkEntry {
   id: string;
   category: WorkCategoryId;
@@ -52,6 +60,7 @@ export interface WorkEntry {
   dslSeries: string[];
   distribution: WorkDistribution;
   license: WorkLicense;
+  capabilities?: WorkCapabilities;
   actions: WorkAction[];
   thumbnail?: WorkThumbnail;
 }
@@ -123,6 +132,7 @@ function validateAction(action: unknown, label: string): asserts action is WorkA
       'unavailableLabel',
       'group',
       'disabled',
+      'launch',
     ],
     ['label', 'style'],
     label,
@@ -140,11 +150,14 @@ function validateAction(action: unknown, label: string): asserts action is WorkA
     assert.equal(action.disabled, true, `${label}.disabled must be true when present.`);
   }
   if (action.disabled) {
-    for (const key of ['href', 'download', 'external', 'requires']) {
+    for (const key of ['href', 'download', 'external', 'requires', 'launch']) {
       assert(!Object.hasOwn(action, key), `${label}.${key} is not allowed when disabled.`);
     }
   } else {
     assertString(action.href, `${label}.href`);
+  }
+  if (Object.hasOwn(action, 'launch')) {
+    assert.equal(action.launch, 'web', `${label}.launch must be "web" when present.`);
   }
   if (Object.hasOwn(action, 'download')) assert.equal(typeof action.download, 'boolean');
   if (Object.hasOwn(action, 'external')) assert.equal(typeof action.external, 'boolean');
@@ -159,6 +172,18 @@ function validateAction(action: unknown, label: string): asserts action is WorkA
       Object.hasOwn(action, 'unavailableLabel'),
       `${label}.unavailableLabel is required with requires.`,
     );
+  }
+}
+
+function validateCapabilities(
+  capabilities: unknown,
+  label: string,
+): asserts capabilities is WorkCapabilities {
+  assertKeys(capabilities, ['camera', 'microphone'], [], label);
+  const declared = Object.keys(capabilities);
+  assert(declared.length > 0, `${label} must declare at least one capability.`);
+  for (const key of declared) {
+    assert.equal(capabilities[key], true, `${label}.${key} must be true when present.`);
   }
 }
 
@@ -234,6 +259,7 @@ export function validateWorksCatalog(catalog: unknown): WorksCatalog {
         'dslSeries',
         'distribution',
         'license',
+        'capabilities',
         'actions',
         'thumbnail',
       ],
