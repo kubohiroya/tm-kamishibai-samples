@@ -20,7 +20,7 @@
 
 Attribution: Scratch is developed by the Lifelong Kindergarten Group at the MIT Media Lab. See https://scratch.mit.edu/.
 
-`web/index.html`、`web-4.0/index.html`、`../my-urashima/web-4.0/index.html`は、それぞれ対応するSB3からTurboWarp Packager 3.13.0で生成する単一HTMLです。TurboWarp PackagerはMPL-2.0で提供され、Copyright (C) 2021-2024 Thomas Weberです。詳細は[`licenses/turbowarp-packager-NOTICE.md`](licenses/turbowarp-packager-NOTICE.md)を参照してください。生成HTMLにはPackagerが付与するTurboWarp PackagerおよびScratchのライセンス告知も保持されます。
+`web/index.html`、`web-4.0/index.html`、`../my-urashima/web-4.0/index.html`は、それぞれ対応するSB3からTurboWarp Packager 3.13.0で生成する単一HTMLです。TurboWarp PackagerはMPL-2.0で提供され、Copyright (C) 2021-2024 Thomas Weberです。詳細は[`licenses/turbowarp-packager-NOTICE.md`](licenses/turbowarp-packager-NOTICE.md)を参照してください。生成HTMLにはPackagerが付与するTurboWarp PackagerおよびScratchのライセンス告知も保持されます。3.2版の`web/index.html`には、TurboWarp Extension Galleryの拡張機能6件（MIT、LGPL-3.0、MPL-2.0）も組み込みます。これらは[`resources/turbowarp-extensions/`](../../resources/turbowarp-extensions/README.md)に固定した複製を使い、各ファイルのライセンスに従います。
 
 3.2 Web版の画像・音声・台本は組み込み済みですが、台本で指定するTeachable Machine Poseモデルはオンライン取得します。一方、浦島太郎4.0版は3ポーズモデルも組み込んでおり、実行時のモデル取得は不要です。my-urashima 4.0版ではワークショップ参加者が台本に指定したTeachable Machine Poseモデルをオンライン取得します。ポーズ認識にはブラウザのカメラ権限が必要です。
 
