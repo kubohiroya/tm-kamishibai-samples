@@ -311,6 +311,13 @@ async function assetRecords(directory: string, kind: string): Promise<AssetRecor
   );
 }
 
+/**
+ * 段階2の `<usermedia>` 事前許可を描画するか。問題が出たときは false にして、
+ * 注意文と確認段だけの段階1の挙動へ戻す。
+ * @see https://github.com/kubohiroya/turbowarp-kamishibai-samples/issues/127
+ */
+const capabilityPreflightEnabled = true;
+
 /** capabilities を宣言した作品に出す、起動前の注意文。 */
 function renderCapabilityNotice(capabilities: WorkCapabilities | undefined, indent = '        '): string {
   if (!capabilities?.camera) return '';
@@ -344,9 +351,11 @@ function renderCapabilityLaunchScript(): string {
         gate.className = 'capability-gate';
         gate.setAttribute('role', 'group');
         gate.setAttribute('aria-label', 'カメラの使用確認');
+        const preflight = ${String(capabilityPreflightEnabled)} && 'HTMLUserMediaElement' in window;
         const message = document.createElement('p');
-        message.textContent =
-          'この作品ではカメラを使います。はじめると、ブラウザがカメラの使用許可を求めます。';
+        message.textContent = preflight
+          ? 'この作品ではカメラを使います。先にカメラの使用を許可できます。'
+          : 'この作品ではカメラを使います。はじめると、ブラウザがカメラの使用許可を求めます。';
         const start = document.createElement('a');
         start.className = 'button';
         start.href = link.href;
@@ -359,7 +368,35 @@ function renderCapabilityLaunchScript(): string {
           gate.remove();
           link.focus();
         });
-        gate.append(message, start, cancel);
+        if (preflight) {
+          // <usermedia> は子の button を自分のラベルとして使う。要素側に contrast や
+          // サイズの制約があるため、ここでは CSS を当てない。
+          const picker = document.createElement('usermedia');
+          const pickerLabel = document.createElement('button');
+          pickerLabel.type = 'button';
+          pickerLabel.textContent = 'カメラの使用を許可する';
+          picker.append(pickerLabel);
+          picker.setConstraints?.({video: {}});
+          picker.addEventListener('stream', () => {
+            // 許可だけを残して stream は閉じる。作品側の TM が自分で開き直すため、
+            // 開いたままにすると同一デバイスの二重取得で失敗する環境がある。
+            for (const track of picker.stream?.getTracks() ?? []) track.stop();
+            message.textContent = 'カメラの準備ができました。作品をはじめてください。';
+            pickerLabel.disabled = true;
+            start.focus();
+          });
+          picker.addEventListener('cancel', () => {
+            message.textContent =
+              '許可しないままでも作品は開始できますが、ポーズ認識は動きません。';
+          });
+          picker.addEventListener('error', () => {
+            message.textContent =
+              'カメラを準備できませんでした。作品をはじめると、ブラウザが改めて使用許可を求めます。';
+          });
+          gate.append(message, picker, start, cancel);
+        } else {
+          gate.append(message, start, cancel);
+        }
         link.insertAdjacentElement('afterend', gate);
         start.focus();
       });
