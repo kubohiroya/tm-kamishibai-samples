@@ -371,7 +371,7 @@ export async function buildTutorialDsl4({
   const starterBytes = await readFile(path.join(storyDirectory, starterSourceName));
   const complete = inspectSource(sourceBytes.toString('utf8'), sourceName);
   const starter = inspectSource(starterBytes.toString('utf8'), starterSourceName);
-  const builderCli = path.join(kamishibaiRoot, 'bin/tm-kamishibai.mjs');
+  const builderCli = path.join(kamishibaiRoot, 'bin/turbowarp-kamishibai.mjs');
   for (const source of [sourceName, starterSourceName]) {
     commandResult(
       process.execPath,

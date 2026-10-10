@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v7
         with:
           repository: kubohiroya/turbowarp-kamishibai-app
-          ref: 5355abe74db95881711d17e5ad35db6daea7fd94
+          ref: 8eec5445aeff455dc5c70329feaf4223b187aa1b
           path: .tmp/turbowarp-kamishibai-app
       - run: corepack enable
       - uses: actions/setup-node@v7
@@ -30,8 +30,8 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm install --frozen-lockfile
         working-directory: .tmp/turbowarp-kamishibai-app
-      # Since TurboWarp-Kamishibai 4.0.0-rc.12 bin/tm-kamishibai.mjs runs the compiled dist/,
-      # which the repository does not commit.
+      # Since 4.0.0-rc.12 the pinned CLI runs the compiled dist/, which
+      # TurboWarp-Kamishibai does not commit.
       - run: pnpm run build:lib
         working-directory: .tmp/turbowarp-kamishibai-app
       - run: pnpm exec playwright install --with-deps chromium webkit
