@@ -136,20 +136,20 @@ function verifySiteHeader(html: string, assetPrefix: string): void {
   assert.equal((html.match(/aria-current="page"/gu) ?? []).length, 1);
   assert(
     html.includes(
-      '<a class="site-nav__link" href="https://kubohiroya.github.io/tm-kamishibai-docs/workshops/">ワークショップ</a>',
+      '<a class="site-nav__link" href="https://kubohiroya.github.io/turbowarp-kamishibai-docs/workshops/">ワークショップ</a>',
     ),
   );
   assert(
     html.includes(
       renderSiteNavigation({
-        site: 'tm-kamishibai-samples',
-        pathname: '/tm-kamishibai-samples/',
+        site: 'turbowarp-kamishibai-samples',
+        pathname: '/turbowarp-kamishibai-samples/',
       }),
     ),
   );
   assert(
     html.includes(
-      '<a class="site-repository" href="https://github.com/kubohiroya/tm-kamishibai-samples" target="_blank" rel="noopener" aria-label="tm-kamishibai-samplesをGitHubで開く" title="tm-kamishibai-samplesをGitHubで開く">',
+      '<a class="site-repository" href="https://github.com/kubohiroya/turbowarp-kamishibai-samples" target="_blank" rel="noopener" aria-label="turbowarp-kamishibai-samplesをGitHubで開く" title="turbowarp-kamishibai-samplesをGitHubで開く">',
     ),
   );
   assert(html.includes('<svg class="site-repository__icon"'));
@@ -165,7 +165,7 @@ function verifySiteFooter(html: string, assetPrefix: string): void {
   assert(footer.includes('各文書・作品・素材には個別の利用条件が適用されます。'));
   assert(
     footer.includes(
-      '<a class="site-footer__rights" href="https://kubohiroya.github.io/tm-kamishibai-samples/licenses/">ライセンス・権利表示</a>',
+      '<a class="site-footer__rights" href="https://kubohiroya.github.io/turbowarp-kamishibai-samples/licenses/">ライセンス・権利表示</a>',
     ),
   );
   assert(
@@ -277,7 +277,7 @@ export async function verifyPublishedSite(options: VerifyPublishedSiteOptions = 
   }
   assert.equal(
     worksSchema.$id,
-    'https://kubohiroya.github.io/tm-kamishibai-samples/works.schema.json',
+    'https://kubohiroya.github.io/turbowarp-kamishibai-samples/works.schema.json',
   );
   assert(worksPolicy.includes('## 公式サンプル'));
   assert(worksPolicy.includes('## コミュニティ作品'));
@@ -304,7 +304,7 @@ export async function verifyPublishedSite(options: VerifyPublishedSiteOptions = 
   assert.equal(manifest.sample, 'urashima');
   assert.equal(
     manifest.publicUrl,
-    'https://kubohiroya.github.io/tm-kamishibai-samples/stories/urashima/',
+    'https://kubohiroya.github.io/turbowarp-kamishibai-samples/stories/urashima/',
   );
   assert.equal(manifest.license, 'MPL-2.0');
   assert.equal(manifest.builder.version, '3.2.3');
@@ -456,7 +456,7 @@ export async function verifyPublishedSite(options: VerifyPublishedSiteOptions = 
   assert.equal(myDsl4Manifest.sample, 'my-urashima');
   assert.equal(
     myDsl4Manifest.publicUrl,
-    'https://kubohiroya.github.io/tm-kamishibai-samples/stories/my-urashima/',
+    'https://kubohiroya.github.io/turbowarp-kamishibai-samples/stories/my-urashima/',
   );
   assert.equal(myDsl4Manifest.output.path, 'my-urashima-4.0.sb3');
   assert.deepEqual(myDsl4Manifest.output.princessCostumes, ['Princess']);
@@ -514,8 +514,8 @@ export async function verifyPublishedSite(options: VerifyPublishedSiteOptions = 
   verifySiteFooter(sampleIndex, '../../');
   verifySiteFooter(tutorialIndex, '../../');
   verifySiteFooter(rightsIndex, '../');
-  assert(rootIndex.includes('<title>TM紙芝居 作品ライブラリ</title>'));
-  assert(rootIndex.includes('<h1>TM紙芝居 作品ライブラリ</h1>'));
+  assert(rootIndex.includes('<title>TurboWarp紙芝居 作品ライブラリ</title>'));
+  assert(rootIndex.includes('<h1>TurboWarp紙芝居 作品ライブラリ</h1>'));
   assert(rootIndex.includes('.work-list { display: grid; grid-template-columns: 1fr;'));
   assert(!rootIndex.includes('repeat(auto-fit'));
   assert(rightsIndex.includes('<h1>ライセンス・権利表示</h1>'));
@@ -523,7 +523,7 @@ export async function verifyPublishedSite(options: VerifyPublishedSiteOptions = 
   assert(rightsIndex.includes('Urashima-walk-1'));
   assert(rightsIndex.includes('Mozilla Public License 2.0'));
   assert(rightsIndex.includes('CC BY-SA 2.0'));
-  assert(sampleIndex.includes('<title>浦島太郎 | TM紙芝居 作品ライブラリ</title>'));
+  assert(sampleIndex.includes('<title>浦島太郎 | TurboWarp紙芝居 作品ライブラリ</title>'));
   assert(sampleIndex.includes('aria-label="作品内ナビゲーション"'));
   assert(sampleIndex.includes('>作品一覧へ戻る</a>'));
   assert(sampleIndex.includes('<dt>対応DSL</dt><dd>3.2／4.0</dd>'));
@@ -535,7 +535,7 @@ export async function verifyPublishedSite(options: VerifyPublishedSiteOptions = 
   assert(sampleIndex.includes('href="../../CARD_SCENES.md"'));
   assert(
     myUrashimaIndex.includes(
-      '<title>my-urashima（ワークショップにおける作業用） | TM紙芝居 作品ライブラリ</title>',
+      '<title>my-urashima（ワークショップにおける作業用） | TurboWarp紙芝居 作品ライブラリ</title>',
     ),
   );
   assert(myUrashimaIndex.includes('<dt>対応DSL</dt><dd>3.2／4.0</dd>'));
@@ -561,7 +561,7 @@ export async function verifyPublishedSite(options: VerifyPublishedSiteOptions = 
   assert(myUrashimaIndex.includes('data-dsl-series="4.0"'));
   assert(myUrashimaIndex.includes('my-urashima.k4.yml'));
   assert(!rootIndex.includes('>GitHubリポジトリ</a>'));
-  assert(!rootIndex.includes('https://kubohiroya.github.io/tm-kamishibai/stories/'));
+  assert(!rootIndex.includes('https://kubohiroya.github.io/turbowarp-kamishibai-app/stories/'));
   assert(sampleIndex.includes(manifest.profiles.player.sb3.sha256));
   assert(sampleIndex.includes(manifest.profiles.editor.sb3.sha256));
   assert(sampleIndex.includes(manifest.web.output.sha256));

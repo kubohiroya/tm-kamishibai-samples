@@ -112,7 +112,7 @@ type ZipEntrySpecification = [archivePath: string, sourcePath: string];
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 const storyDirectory = path.join(projectRoot, 'stories/tutorial');
 const configPath = path.join(storyDirectory, 'dsl4-build.config.json');
-const defaultKamishibaiRoot = path.resolve(projectRoot, '../tm-kamishibai');
+const defaultKamishibaiRoot = path.resolve(projectRoot, '../turbowarp-kamishibai-app');
 const kamishibaiRootEnvironmentName = 'TM_KAMISHIBAI_DSL4_ROOT';
 const zipTimestamp = new Date('2026-08-12T00:00:00.000Z');
 
@@ -298,7 +298,7 @@ export function createTutorialPublicSurfaces(
   artifactLock: TutorialArtifactLock,
   webLock: PackagedWebResult,
 ): TutorialPublicSurfaces {
-  const root = 'https://kubohiroya.github.io/tm-kamishibai-samples/stories/tutorial/';
+  const root = 'https://kubohiroya.github.io/turbowarp-kamishibai-samples/stories/tutorial/';
   return {
     formatVersion: 1,
     status: config.status as string,
@@ -349,12 +349,12 @@ export async function buildTutorialDsl4({
   assert.equal(
     runtimeCommit,
     runtimeConfig.runtime.commit,
-    'TM Kamishibai checkout differs from the tutorial runtime configuration.',
+    'TurboWarp-Kamishibai checkout differs from the tutorial runtime configuration.',
   );
   assert.equal(
     commandResult('git', ['status', '--porcelain'], {cwd: kamishibaiRoot}),
     '',
-    'TM Kamishibai checkout must be clean.',
+    'TurboWarp-Kamishibai checkout must be clean.',
   );
 
   const basePath = path.resolve(

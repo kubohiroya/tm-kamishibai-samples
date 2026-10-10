@@ -1,10 +1,10 @@
 {
-  "name": "tm-kamishibai-samples",
+  "name": "turbowarp-kamishibai-samples",
   "version": "1.1.0",
   "private": true,
   "type": "module",
-  "description": "TM紙芝居の作品カタログとGitHub Pagesサイト",
-  "homepage": "https://kubohiroya.github.io/tm-kamishibai-samples/",
+  "description": "TurboWarp紙芝居の作品カタログとGitHub Pagesサイト",
+  "homepage": "https://kubohiroya.github.io/turbowarp-kamishibai-samples/",
   "license": "MPL-2.0",
   "packageManager": "pnpm@11.18.0",
   "scripts": {
@@ -26,7 +26,7 @@
     "update:dsl4-web-artifacts": "node scripts/update-dsl4-web-artifacts.ts",
     "update:dsl4-artifacts": "pnpm update:urashima-dsl4 && pnpm update:my-urashima-dsl4 && pnpm update:dsl4-web-artifacts && pnpm update:tutorial-dsl4",
     "validate:my-urashima-dsl4": "node scripts/validate-my-urashima-dsl4.ts",
-    "validate:urashima-dsl4": "node ${TM_KAMISHIBAI_DSL4_ROOT:-../tm-kamishibai}/bin/tm-kamishibai.mjs validate-dsl4 --input stories/urashima/urashima.k4.yml --max-source-bytes 262144 --format pretty",
+    "validate:urashima-dsl4": "node ${TM_KAMISHIBAI_DSL4_ROOT:-../turbowarp-kamishibai-app}/bin/tm-kamishibai.mjs validate-dsl4 --input stories/urashima/urashima.k4.yml --max-source-bytes 262144 --format pretty",
     "verify:urashima-dsl4": "node scripts/verify-urashima-dsl4.ts",
     "verify:my-urashima-dsl4": "node scripts/build-my-urashima-dsl4.ts",
     "update:artifacts-lock": "node scripts/refresh-story-artifacts.ts --force",

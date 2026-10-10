@@ -310,7 +310,7 @@ export async function buildWorkshop20260801({
 } = {}) {
   const defaultPdfPath = path.resolve(
     projectRoot,
-    "../tm-kamishibai/output/pdf/workshops/2026-08-01/tm-kamishibai-20260801.pdf",
+    "../turbowarp-kamishibai-app/output/pdf/workshops/2026-08-01/tm-kamishibai-20260801.pdf",
   );
   const pdfPath = environment[workshopPdfEnvironmentVariable]
     ? path.resolve(environment[workshopPdfEnvironmentVariable])

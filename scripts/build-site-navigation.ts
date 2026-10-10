@@ -1,7 +1,7 @@
 /**
  * scripts/site-navigation.ts から契約配布物 scripts/site-navigation.mjs を生成する。
  *
- * ナビゲーション描画コードは tm-kamishibai / tm-kamishibai-docs / tm-kamishibai-samples の
+ * ナビゲーション描画コードは turbowarp-kamishibai-app / turbowarp-kamishibai-docs / turbowarp-kamishibai-samples の
  * 三リポジトリで `cmp` によりバイト一致を保つ契約物になっている。TypeScript 化後は
  * このリポジトリの .ts を正本とし、生成した .mjs を各リポジトリが取り込む。
  *
@@ -34,7 +34,7 @@ export const navigationSourcePath = path.join(projectRoot, 'scripts/site-navigat
 export const navigationArtifactPath = path.join(projectRoot, 'scripts/site-navigation.mjs');
 
 /**
- * 契約先リポジトリ（tm-kamishibai / tm-kamishibai-docs）の .prettierrc.json と同じ設定。
+ * 契約先リポジトリ（turbowarp-kamishibai-app / turbowarp-kamishibai-docs）の .prettierrc.json と同じ設定。
  * 生成物はあちらの `prettier --check` も通る必要があるため、ここを勝手に変えない。
  */
 const prettierOptions = {
