@@ -462,8 +462,9 @@ try {
     }
     assert.deepEqual(tutorial.externalRequests, []);
     assert.deepEqual(tutorial.failures, []);
-    // TMPose 1.12.0 retains the normal Canvas2D context after physical-camera
-    // benchmarks found no repeatable gain from the readback hint. Chromium may warn once.
+    // The embedded Teachable Machine extension at 1.12.0 retains the normal Canvas2D context
+    // after physical-camera benchmarks found no repeatable gain from the readback hint.
+    // Chromium may warn once.
     assert(
       tutorial.canvasReadbackWarnings.length <= 1,
       `Tutorial emitted repeated Canvas readback warnings: ${tutorial.canvasReadbackWarnings.join('\n')}`,

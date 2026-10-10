@@ -101,6 +101,6 @@ scene 7では、本体3.2.3の標準コマンド`fadeToWhite`でステージの�
 - ビルダー: TurboWarp-Kamishibai 3.2 npm artifact `3.2.3` / `28015ac9ff5221f371e8bd0357a7750ce40bbf7c`
 - 汎用ベース: TurboWarp-Kamishibai / `2b5005d293a9b63c8ba5da396fd86815d093f975`
 - DSL 4.0汎用ベースのソース: TurboWarp-Kamishibai / `4.0.0-rc.15`（公開版） / `sha256:205017e79e5a33fff00c28f1674b17e2e1dd9e07979e28f7aa19f6dc111b5e61`
-- DSL 4.0ビルダー: TurboWarp-Kamishibai / `4.0.0-rc.15`（公開版） / `ed2a5b586189aa90e6f9e6576898975a150b2a3a`（埋め込みTurboWarp TM 3.2.0）
+- DSL 4.0ビルダー: TurboWarp-Kamishibai / `4.0.0-rc.15`（公開版） / `ed2a5b586189aa90e6f9e6576898975a150b2a3a`（埋め込みTeachable Machine拡張 3.3.0）
 
 生成・検証・公開の実装は [Issue #2](https://github.com/kubohiroya/turbowarp-kamishibai-samples/issues/2)、Packager Web版は [Issue #7](https://github.com/kubohiroya/turbowarp-kamishibai-samples/issues/7)、DSL 4.0の自動生成は [Issue #90](https://github.com/kubohiroya/turbowarp-kamishibai-samples/issues/90) で管理します。

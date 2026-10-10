@@ -40,4 +40,4 @@ docs側はその公開surfaceを使ってcaptureとチュートリアルpublicat
 sourceから成果物を再現してブラウザー検証し、`dist/`と作品一覧へ公開します。docs側のcapture完了は
 公開条件にしません。問題時はフラグをOFFへ戻して4.0チュートリアルの公開導線だけを停止し、既存3.2成果物を維持します。
 
-完成版とaddition kitは`poseRecognition.preview.overlay`を使い、手首ジョイントとボーンをカメラ映像へ重ねて表示します。これはTurboWarp TMのoverlay APIを利用する例です。
+完成版とaddition kitは`poseRecognition.preview.overlay`を使い、手首ジョイントとボーンをカメラ映像へ重ねて表示します。これはTeachable Machine拡張のoverlay APIを利用する例です。

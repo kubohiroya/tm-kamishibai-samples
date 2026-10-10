@@ -3,7 +3,7 @@
   "status": "published",
   "version": "4.0.0-rc.10",
   "releaseDependency": "https://github.com/kubohiroya/turbowarp-kamishibai-app/releases/tag/v4.0.0-rc.10",
-  "sourceIdentity": "e79a825ef2edffa355ad3b1a7ce6badc0cebb530b0dc239cf3fab12e07750efb",
+  "sourceIdentity": "8fc8a89e36aa3287348051123cedf62dc3ca8f810e750b947ffea372c03621d2",
   "runtime": {
     "repository": "https://github.com/kubohiroya/turbowarp-kamishibai-app",
     "version": "4.0.0-rc.15",
@@ -61,8 +61,8 @@
       },
       {
         "path": "README.md",
-        "size": 2996,
-        "sha256": "41d0aa7d78ee67e75c1aca8329006004c066d6f00dbaa7f46f4634e8a12d00e7"
+        "size": 3007,
+        "sha256": "565d00749937ca95dc40f046908e4d682ff04e5cc9e0473f0d52c0a8e1b56389"
       },
       {
         "path": "addition-kit/README.md",

@@ -427,7 +427,7 @@ function renderCapabilityLaunchScript(): string {
           picker.append(pickerLabel);
           picker.setConstraints?.({video: {}});
           picker.addEventListener('stream', () => {
-            // 許可だけを残して stream は閉じる。作品側の TM が自分で開き直すため、
+            // 許可だけを残して stream は閉じる。作品側のTeachable Machine拡張が自分で開き直すため、
             // 開いたままにすると同一デバイスの二重取得で失敗する環境がある。
             for (const track of picker.stream?.getTracks() ?? []) track.stop();
             message.textContent = 'カメラの準備ができました。作品をはじめてください。';
@@ -790,7 +790,7 @@ ${renderSiteFooter('')}
 
 export function renderSampleIndex(manifest: SiteManifest, work: WorkEntry): string {
   const webDescription = manifest.web.enabled
-    ? '<p>Web版には画像・音声・台本を組み込み済みです。TurboWarp TMのライブラリ・モデル取得とカメラ利用にはネットワーク接続が必要です。</p>'
+    ? '<p>Web版には画像・音声・台本を組み込み済みです。Teachable Machine拡張のライブラリ・モデル取得とカメラ利用にはネットワーク接続が必要です。</p>'
     : '';
   const webAction = manifest.web.enabled
     ? `${renderCapabilityNotice({camera: true}, '    ')}    <a class="button" href="web/" data-capability-launch="camera">Web版を開く</a>\n`
