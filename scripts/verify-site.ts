@@ -324,7 +324,7 @@ export async function verifyPublishedSite(options: VerifyPublishedSiteOptions = 
   assert.equal(manifest.dsl4Offline.embeddedFileCount, 55);
   assert.equal(
     manifest.dsl4Offline.runtimeCommit,
-    '9fdf447bf7995617dab3112f6a80fd3462e0e4e0',
+    'ed2a5b586189aa90e6f9e6576898975a150b2a3a',
   );
   assert.deepEqual(manifest.dsl4Offline.sb3Toolchain, {
     package: '@kubohiroya/sb3-toolchain',

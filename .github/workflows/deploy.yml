@@ -29,7 +29,7 @@ jobs:
       - uses: actions/checkout@v7
         with:
           repository: kubohiroya/turbowarp-kamishibai-app
-          ref: 9fdf447bf7995617dab3112f6a80fd3462e0e4e0
+          ref: ed2a5b586189aa90e6f9e6576898975a150b2a3a
           path: .tmp/turbowarp-kamishibai-app
       - run: corepack enable
       - uses: actions/setup-node@v7
