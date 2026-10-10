@@ -22,6 +22,7 @@ import {
   readWorksCatalog,
   validateWorksCatalog,
   type WorkAction,
+  type WorkCapabilities,
   type WorkCategory,
   type WorkEntry,
   type WorksCatalog,
@@ -310,11 +311,72 @@ async function assetRecords(directory: string, kind: string): Promise<AssetRecor
   );
 }
 
+/** capabilities を宣言した作品に出す、起動前の注意文。 */
+function renderCapabilityNotice(capabilities: WorkCapabilities | undefined, indent = '        '): string {
+  if (!capabilities?.camera) return '';
+  return `${indent}<p class="capability-note">この作品ではカメラを使います。ブラウザがカメラの使用許可を求めたら、許可してください。</p>\n`;
+}
+
+function renderCapabilityLaunchStyles(): string {
+  return `    .capability-note { margin: .5rem 0; font-size: .9rem; }
+    .capability-gate { margin: .5rem 0; padding: .75rem; border: 1px solid currentColor; border-radius: .4rem; }
+    .capability-gate p { margin: 0 0 .5rem; }
+`;
+}
+
+/**
+ * capabilities を宣言した作品では、起動リンクを一度受け止めて確認段を出す。
+ * JavaScript が無い環境ではリンクがそのまま働く progressive enhancement。
+ */
+function renderCapabilityLaunchScript(): string {
+  return `<script>
+  (() => {
+    for (const link of document.querySelectorAll('a[data-capability-launch]')) {
+      link.addEventListener('click', (event) => {
+        if (link.dataset.capabilityConfirmed === 'true') return;
+        event.preventDefault();
+        const existing = link.parentElement?.querySelector('.capability-gate');
+        if (existing) {
+          existing.querySelector('a')?.focus();
+          return;
+        }
+        const gate = document.createElement('div');
+        gate.className = 'capability-gate';
+        gate.setAttribute('role', 'group');
+        gate.setAttribute('aria-label', 'カメラの使用確認');
+        const message = document.createElement('p');
+        message.textContent =
+          'この作品ではカメラを使います。はじめると、ブラウザがカメラの使用許可を求めます。';
+        const start = document.createElement('a');
+        start.className = 'button';
+        start.href = link.href;
+        start.textContent = '作品をはじめる';
+        const cancel = document.createElement('button');
+        cancel.className = 'button secondary';
+        cancel.type = 'button';
+        cancel.textContent = 'やめる';
+        cancel.addEventListener('click', () => {
+          gate.remove();
+          link.focus();
+        });
+        gate.append(message, start, cancel);
+        link.insertAdjacentElement('afterend', gate);
+        start.focus();
+      });
+    }
+  })();
+  </script>`;
+}
+
 function renderDisabledAction(className: string, label: string): string {
   return `        <button class="${className}" type="button" disabled aria-disabled="true">${escapeHtml(label)}</button>`;
 }
 
-function renderWorkAction(action: WorkAction, features: SiteFeatures): string {
+function renderWorkAction(
+  action: WorkAction,
+  features: SiteFeatures,
+  capabilities?: WorkCapabilities,
+): string {
   const className = action.style === 'secondary' ? 'button secondary' : 'button';
   if (action.disabled) {
     return renderDisabledAction(className, action.label);
@@ -328,12 +390,14 @@ function renderWorkAction(action: WorkAction, features: SiteFeatures): string {
   const download = action.download ? ' download' : '';
   const external = action.external ? ' target="_blank" rel="noopener external"' : '';
   const externalLabel = action.external ? '（外部サイト）' : '';
-  return `        <a class="${className}" href="${escapeHtml(action.href ?? '')}"${download}${external}>${escapeHtml(action.label)}${externalLabel}</a>`;
+  const capabilityLaunch =
+    action.launch === 'web' && capabilities?.camera ? ' data-capability-launch="camera"' : '';
+  return `        <a class="${className}" href="${escapeHtml(action.href ?? '')}"${download}${external}${capabilityLaunch}>${escapeHtml(action.label)}${externalLabel}</a>`;
 }
 
 function renderWorkActions(work: WorkEntry, features: SiteFeatures): string {
   const renderedActions = work.actions
-    .map((action) => ({action, html: renderWorkAction(action, features)}))
+    .map((action) => ({action, html: renderWorkAction(action, features, work.capabilities)}))
     .filter(({html}) => html);
   if (!renderedActions.some(({action}) => action.group)) {
     return `        <div class="actions">
@@ -392,7 +456,7 @@ ${thumbnail}        <h3>${title}</h3>
           <div><dt>作者</dt><dd>${escapeHtml(work.creator)}</dd></div>
           <div><dt>著作権者</dt><dd>${escapeHtml(work.rightsHolder)}</dd></div>
         </dl>
-${actions}
+${renderCapabilityNotice(work.capabilities)}${actions}
       </article>`;
 }
 
@@ -475,7 +539,7 @@ export function renderRootIndex(
     .button { display: inline-block; padding: 10px 14px; border-radius: 8px; background: var(--accent); color: white; text-decoration: none; font-weight: 700; }
     .button.secondary { border: 1px solid var(--accent); background: white; color: var(--accent); }
     .button:disabled { cursor: not-allowed; opacity: .55; }
-    .scene-gallery-dialog { width: min(1120px, calc(100vw - 32px)); max-width: none; max-height: calc(100dvh - 32px); padding: 0; overflow: hidden; border: 1px solid rgb(255 255 255 / 22%); border-radius: 16px; background: #171311; color: white; box-shadow: 0 24px 80px rgb(0 0 0 / 55%); }
+${renderCapabilityLaunchStyles()}    .scene-gallery-dialog { width: min(1120px, calc(100vw - 32px)); max-width: none; max-height: calc(100dvh - 32px); padding: 0; overflow: hidden; border: 1px solid rgb(255 255 255 / 22%); border-radius: 16px; background: #171311; color: white; box-shadow: 0 24px 80px rgb(0 0 0 / 55%); }
     .scene-gallery-dialog::backdrop { background: rgb(20 13 10 / 82%); backdrop-filter: blur(3px); }
     .scene-gallery-dialog__panel { display: grid; max-height: calc(100dvh - 32px); grid-template-rows: auto minmax(0, 1fr) auto; }
     .scene-gallery-dialog__header { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; padding: 16px 18px 12px; }
@@ -631,6 +695,7 @@ ${categories}
     dialog.addEventListener('close', () => opener?.focus());
   })();
 </script>
+${renderCapabilityLaunchScript()}
 ${renderSiteFooter('')}
 </body>
 </html>
@@ -642,7 +707,7 @@ export function renderSampleIndex(manifest: SiteManifest, work: WorkEntry): stri
     ? '<p>Web版には画像・音声・台本を組み込み済みです。TurboWarp TMのライブラリ・モデル取得とカメラ利用にはネットワーク接続が必要です。</p>'
     : '';
   const webAction = manifest.web.enabled
-    ? '    <a class="button" href="web/">Web版を開く</a>\n'
+    ? `${renderCapabilityNotice({camera: true}, '    ')}    <a class="button" href="web/" data-capability-launch="camera">Web版を開く</a>\n`
     : '';
   const webHash = manifest.web.enabled
     ? `  <p>Web版 SHA-256: <code>${manifest.web.output.sha256}</code></p>\n`
@@ -652,7 +717,7 @@ export function renderSampleIndex(manifest: SiteManifest, work: WorkEntry): stri
   <p>Web版は <a href="https://packager.turbowarp.org/">TurboWarp Packager</a> ${escapeHtml(manifest.web.packager.version)} で生成しています。PackagerはMPL-2.0で提供され、ライセンスと同梱ランタイムのクレジットは<a href="LICENSES.md">ライセンス情報</a>および生成HTML内で確認できます。</p>\n`
     : '';
   const dsl4WebAction = manifest.dsl4Web.enabled
-    ? '        <a class="button" href="web-4.0/">Web版を開く</a>\n'
+    ? `${renderCapabilityNotice({camera: true}, '        ')}        <a class="button" href="web-4.0/" data-capability-launch="camera">Web版を開く</a>\n`
     : '        <button class="button" type="button" disabled aria-disabled="true">Web版（準備中）</button>\n';
   const dsl4WebHash = manifest.dsl4Web.enabled
     ? `  <p>DSL 4.0 Web版 SHA-256: <code>${manifest.dsl4Web.output.sha256}</code></p>\n`
@@ -707,7 +772,7 @@ export function renderSampleIndex(manifest: SiteManifest, work: WorkEntry): stri
     .button { display: inline-block; padding: 10px 14px; border-radius: 8px; background: var(--accent); color: white; text-decoration: none; font-weight: 700; }
     .button.secondary { border: 1px solid var(--accent); background: white; color: var(--accent); }
     .button:disabled { cursor: not-allowed; opacity: .55; }
-    li { margin: .45rem 0; }
+${renderCapabilityLaunchStyles()}    li { margin: .45rem 0; }
     small { color: var(--muted); }
     code { overflow-wrap: anywhere; }
 ${renderDetailMediaStyles()}
@@ -771,6 +836,7 @@ ${dsl4WebHash}${webHash}  <h2>成果物プロファイル</h2>
 ${assetItems}
   </ul>
 ${webCredits}</main>
+${renderCapabilityLaunchScript()}
 ${renderSiteFooter('../../')}
 </body>
 </html>
@@ -783,7 +849,7 @@ export function renderMyUrashimaIndex(
   dsl32Artifacts: ArtifactsLock,
 ): string {
   const webAction = dsl4Manifest.web.enabled
-    ? '        <a class="button" href="web-4.0/">Web版を開く</a>\n'
+    ? `${renderCapabilityNotice({camera: true}, '        ')}        <a class="button" href="web-4.0/" data-capability-launch="camera">Web版を開く</a>\n`
     : '        <button class="button" type="button" disabled aria-disabled="true">Web版（準備中）</button>\n';
   const webHash = dsl4Manifest.web.enabled
     ? `  <p>DSL 4.0 Web版 SHA-256: <code>${dsl4Manifest.web.output.sha256}</code></p>\n`
@@ -832,7 +898,7 @@ export function renderMyUrashimaIndex(
     .button { display: inline-block; padding: 10px 14px; border-radius: 8px; background: var(--accent); color: white; text-decoration: none; font-weight: 700; }
     .button.secondary { border: 1px solid var(--accent); background: white; color: var(--accent); }
     .button:disabled { cursor: not-allowed; opacity: .55; }
-${renderDetailMediaStyles()}
+${renderCapabilityLaunchStyles()}${renderDetailMediaStyles()}
   </style>
 </head>
 <body>
@@ -873,6 +939,7 @@ ${webAction}        <a class="button secondary" href="my-urashima.k4.yml" downlo
   <p>DSL 4.0作業用SB3 SHA-256: <code>${dsl4Manifest.output.sha256}</code></p>
 ${webHash}  <p><a href="README.md">生成・変換の説明を見る</a></p>
 </main>
+${renderCapabilityLaunchScript()}
 ${renderSiteFooter('../../')}
 </body>
 </html>
@@ -932,8 +999,8 @@ ${renderSiteHeader('../../')}
     <p>更新日: <time datetime="${work.updatedAt}">${formatDisplayDate(work.updatedAt)}</time></p>
 ${workMedia}
 ${artifactSizes}
-    <div class="actions">
-      <a class="button" href="web-4.0/">Web版を開く</a>
+${renderCapabilityNotice({camera: true}, '    ')}    <div class="actions">
+      <a class="button" href="web-4.0/" data-capability-launch="camera">Web版を開く</a>
       <a class="button secondary" href="${manifest.artifacts.starter.path}" download>スターターをダウンロード</a>
       <a class="button secondary" href="${manifest.artifacts.additionKit.path}" download>addition kitをダウンロード</a>
       <a class="button secondary" href="${manifest.artifacts.sb3.path}" download>完成版SB3をダウンロード</a>
@@ -950,6 +1017,7 @@ ${artifactSizes}
     </dl>
   </article>
 </main>
+${renderCapabilityLaunchScript()}
 ${renderSiteFooter('../../')}
 </body>
 </html>`;

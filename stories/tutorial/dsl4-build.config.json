@@ -117,12 +117,16 @@
         }
       ]
     },
+    "capabilities": {
+      "camera": true
+    },
     "actions": [
       {
         "label": "Web版を開く",
         "href": "stories/tutorial/web-4.0/",
         "style": "primary",
-        "group": "DSL 4.0 チュートリアル"
+        "group": "DSL 4.0 チュートリアル",
+        "launch": "web"
       },
       {
         "label": "スターターをダウンロード",
