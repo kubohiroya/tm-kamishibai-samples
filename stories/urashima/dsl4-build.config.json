@@ -3,11 +3,11 @@
   "runtime": {
     "repository": "https://github.com/kubohiroya/turbowarp-kamishibai-app",
     "version": "4.0.0-rc.13",
-    "commit": "8eec5445aeff455dc5c70329feaf4223b187aa1b",
+    "commit": "9d57c2ee85cd14a7049eb8db41dc26a15e1417fb",
     "basePath": "base/kamishibai-4.0.sb3",
-    "baseSourceIdentity": "sha256:0f03941835c6d036b7b9442568650e855c3b5c324f0387a086b67c9b7c5c72b3",
-    "baseSize": 6849220,
-    "baseSha256": "3c4ec3a13c83e2f075ace0e1b9c27115c888db20645fdf147a1e35c0090f5f4c"
+    "baseSourceIdentity": "sha256:ff71e45faf1075adeeb041fa9edb89592e3a3de9bb0b85bcc70f4f7a2363bca1",
+    "baseSize": 6849427,
+    "baseSha256": "c9d3449c6e6f26c05c0f8f078ef5ba83b94b3ba71f7fc00a000a3448ac31cb28"
   },
   "sourceManifest": "project.source.json",
   "projectAssets": "project-assets-dsl4.yml",
@@ -37,7 +37,7 @@
         "target": "html",
         "autoplay": true,
         "app": {
-          "windowTitle": "浦島太郎 DSL 4.0 | TM紙芝居"
+          "windowTitle": "浦島太郎 DSL 4.0 | TurboWarp紙芝居"
         },
         "cloudVariables": {
           "mode": "disabled"

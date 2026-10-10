@@ -4,14 +4,14 @@
   "input": {
     "profile": "dsl4-offline",
     "path": "tutorial-4.0.sb3",
-    "size": 12744511,
-    "sha256": "048773bfb4bd074fd3027066b87b12fb285bd4cf6c7c7d88dc7029be5d34a410"
+    "size": 12745106,
+    "sha256": "8f4c149508cbe37d2b3b4a04c556e8052ab2f200a7782f772d067d16f11af5c4"
   },
   "output": {
     "path": "web-4.0/index.html",
     "contentType": "text/html",
-    "size": 22725474,
-    "sha256": "ddcee92d5c7610b17f60bedf1ab5da46de479b1ac01f4794a1d372d30009f52d"
+    "size": 22723054,
+    "sha256": "8a6b974d0da644f734c687605488640a97a0024ee446bf0179c51debefb9981f"
   },
   "packager": {
     "package": "@turbowarp/packager",
@@ -20,7 +20,7 @@
       "target": "html",
       "autoplay": true,
       "app": {
-        "windowTitle": "地震だ！頭を守ろう DSL 4.0 | TM紙芝居"
+        "windowTitle": "地震だ！頭を守ろう DSL 4.0 | TurboWarp紙芝居"
       },
       "cloudVariables": {
         "mode": "disabled"
@@ -31,7 +31,7 @@
       {
         "id": "kubohiroyakamishibai4",
         "source": "input-sb3-data-url",
-        "sha256": "d52884ce9206a17701a87eb6c5089be403e0a08d9896bd92965dfe5304ddb450"
+        "sha256": "2781a84184c1e5ad3512cb9c2ca9b4a690f2f061c66ae38653cee57be0fd0f67"
       }
     ],
     "scratchRender": {

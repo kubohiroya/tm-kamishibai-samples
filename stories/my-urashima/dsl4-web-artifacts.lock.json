@@ -4,14 +4,14 @@
   "input": {
     "profile": "dsl4-workshop",
     "path": "my-urashima-4.0.sb3",
-    "size": 16193537,
-    "sha256": "fc4878ecb18b698340571b3cf10b5e1b611df82ea8c48856b39e6b98d8364c74"
+    "size": 16195249,
+    "sha256": "7db316601c6c5c18bf75cae656e5bf282a5e37ae47035444352eb5b8400494cd"
   },
   "output": {
     "path": "web-4.0/index.html",
     "contentType": "text/html",
-    "size": 27506735,
-    "sha256": "20e4f73ee497014d5fc62d7da9a6f43748e62c46836a97807695c224b10f4640"
+    "size": 27508711,
+    "sha256": "a339b4fb7404bbb4419dae7f3787e1f43ee51345026224115c5cde643c4d4ab3"
   },
   "packager": {
     "package": "@turbowarp/packager",
@@ -20,7 +20,7 @@
       "target": "html",
       "autoplay": true,
       "app": {
-        "windowTitle": "my-urashima DSL 4.0 | TM紙芝居"
+        "windowTitle": "my-urashima DSL 4.0 | TurboWarp紙芝居"
       },
       "cloudVariables": {
         "mode": "disabled"
@@ -31,7 +31,7 @@
       {
         "id": "kubohiroyakamishibai4",
         "source": "input-sb3-data-url",
-        "sha256": "020053f3f2fc02040f26fedd8ffbd6b449ef28360df45b49bdd8c33fa06f2f05"
+        "sha256": "0382553b7c977a01e1cf60f753d095c7a1686fcd8006ce9804cb2dca0fae7a65"
       }
     ],
     "scratchRender": {
