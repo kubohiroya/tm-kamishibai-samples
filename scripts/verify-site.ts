@@ -322,10 +322,9 @@ export async function verifyPublishedSite(options: VerifyPublishedSiteOptions = 
   assert.equal(manifest.dsl4Offline.path, 'urashima-4.0.sb3');
   assert.equal(manifest.dsl4Offline.sourceAssetCount, 49);
   assert.equal(manifest.dsl4Offline.embeddedFileCount, 55);
-  assert.equal(
-    manifest.dsl4Offline.runtimeCommit,
-    'ed2a5b586189aa90e6f9e6576898975a150b2a3a',
-  );
+  // The pinned builder commit is written once, in the build configuration. Restating it here
+  // as a literal meant a repin had to edit this file too, so it is read from there instead.
+  assert.equal(manifest.dsl4Offline.runtimeCommit, dsl4Config.runtime.commit);
   assert.deepEqual(manifest.dsl4Offline.sb3Toolchain, {
     package: '@kubohiroya/sb3-toolchain',
     version: '0.9.0',

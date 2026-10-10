@@ -24,30 +24,11 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/checkout@v7
-        with:
-          repository: kubohiroya/turbowarp-kamishibai-app
-          ref: ed2a5b586189aa90e6f9e6576898975a150b2a3a
-          path: .tmp/turbowarp-kamishibai-app
-      - run: corepack enable
-      - uses: actions/setup-node@v7
-        with:
-          node-version: 24
-          cache: pnpm
-          cache-dependency-path: |
-            pnpm-lock.yaml
-            .tmp/turbowarp-kamishibai-app/pnpm-lock.yaml
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm install --frozen-lockfile
-        working-directory: .tmp/turbowarp-kamishibai-app
-      # Since 4.0.0-rc.12 the pinned CLI runs the compiled dist/, which
-      # TurboWarp-Kamishibai does not commit.
-      - run: pnpm run build:lib
-        working-directory: .tmp/turbowarp-kamishibai-app
-      - run: pnpm exec playwright install --with-deps chromium webkit
-      - run: pnpm run check
+      # Builds dist/ as a side effect of pnpm run check, which the upload step publishes.
+      - uses: ./.github/actions/verify
       - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v5
         with:
