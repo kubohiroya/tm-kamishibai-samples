@@ -61,13 +61,26 @@ function sha256(contents: Uint8Array | string): string {
   return createHash("sha256").update(contents).digest("hex");
 }
 
+/**
+ * 引退した名前を human-facing text から締め出す。
+ *
+ * 対象は名前だけで、略称 `TM` 単体は含めない。`TM extension`、`TMCompositionRuntime`、
+ * `TM-POSENET-*` のように正当な用法が残っているため、単語として禁じると害がある。
+ */
 function assertNoHumanFacingLegacyText(relativePath: string, source: string): void {
-  const legacyPattern = /tmpose|TMPose|TMPOSE|turbowarp-tmpose/u;
-  assert.equal(
-    legacyPattern.test(source),
-    false,
-    `${relativePath} contains legacy TMPose wording in human-facing text.`,
-  );
+  const retiredNames = [
+    /tmpose|TMPose|TMPOSE|turbowarp-tmpose/u, // 旧製品名（DSL 3.2の台本キー TMPoseURL は走査対象外）
+    /turbowarp-tm(?![a-z])/u, // 旧package／repository名。現行は turbowarp-teachable-machine
+    /TM紙芝居|TM[ -]Kamishibai/u, // 旧製品名。現行は TurboWarp紙芝居／TurboWarp-Kamishibai
+    /TurboWarp TM(?![A-Za-z])/u, // 拡張の旧略称。現行は Teachable Machine拡張
+  ];
+  for (const pattern of retiredNames) {
+    assert.equal(
+      pattern.test(source),
+      false,
+      `${relativePath} contains a retired name (${pattern.source}) in human-facing text.`,
+    );
+  }
 }
 
 function assertNoSpacedTurboWarpProductNames(relativePath: string, source: string): void {
@@ -122,6 +135,9 @@ async function assertStoryContracts(policy: RepoPolicy): Promise<void> {
   assert.equal(sampleConfig.builder.package, policy.dependencies.builderPackage);
   assert.equal(sampleConfig.builder.version, policy.dependencies.builderVersion);
   assert.equal(sampleConfig.builder.commit, policy.dependencies.builderGitHead);
+  // DSL 3.2 の purpose は my-urashima.manifest.json に入るため、文面を変えると 3.2 成果物の
+  // 再生成が必要になる。あの web ビルドは hermetic ではないので、名称更新は 3.2 を作り直す
+  // 作業と一緒に行う。
   assert.deepEqual(
     sampleConfig.web.allowedOnlineDependencies.map(({ purpose }) => purpose),
     [
