@@ -120,6 +120,20 @@
     "capabilities": {
       "camera": true
     },
+    "artifacts": {
+      "source-yaml": {
+        "href": "stories/tutorial/story.kamishibai.yaml"
+      },
+      "sb3-yaml": {
+        "href": "stories/tutorial/tutorial-4.0.sb3"
+      },
+      "sb3-blocks": {
+        "unavailableReason": "ブロック台本SB3は未提供です。TurboWarpのブロックとして台本を書いたSB3は公式CLIで生成できないため、作成してチェックインする入力として扱います。tutorialから順に用意します（issue #132）。"
+      },
+      "html": {
+        "href": "stories/tutorial/web-4.0/"
+      }
+    },
     "actions": [
       {
         "label": "Web版を開く",

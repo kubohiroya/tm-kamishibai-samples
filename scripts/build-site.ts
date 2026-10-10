@@ -19,9 +19,12 @@ import {refreshChangedStoryArtifacts} from './refresh-story-artifacts.ts';
 import {verifyTutorialCandidate} from './verify-tutorial-dsl4.ts';
 import {verifyPublishedSite} from './verify-site.ts';
 import {
+  artifactFormatOrder,
   readWorksCatalog,
   validateWorksCatalog,
+  type ArtifactFormatId,
   type WorkAction,
+  type WorkActionRequirement,
   type WorkCapabilities,
   type WorkCategory,
   type WorkEntry,
@@ -311,6 +314,47 @@ async function assetRecords(directory: string, kind: string): Promise<AssetRecor
   );
 }
 
+/** 標準4形式の表示名。内部識別名は issue #132 で固定したもの。 */
+const artifactFormatLabels: Record<ArtifactFormatId, string> = {
+  'source-yaml': 'YAML台本',
+  'sb3-yaml': '台本埋め込みSB3',
+  'sb3-blocks': 'ブロック台本SB3',
+  html: 'Web版',
+};
+
+/**
+ * 作品が提供する標準4形式。提供しない形式は理由をそのまま載せる。
+ * `resolveHref` は詳細ページから見た相対パスへ直すために渡す。
+ */
+function renderArtifactFormats(
+  work: WorkEntry,
+  /** その作品のビルド時フラグだけを答える述語。関係しないフラグは false で良い。 */
+  isRequirementMet: (requirement: WorkActionRequirement) => boolean,
+  indent: string,
+  resolveHref: (href: string) => string = (href) => href,
+): string {
+  if (!work.artifacts) return '';
+  const items = artifactFormatOrder.map((format) => {
+    const entry = work.artifacts![format];
+    const label = escapeHtml(artifactFormatLabels[format]);
+    const note = entry.note ? `<span class="work-formats__note">${escapeHtml(entry.note)}</span>` : '';
+    if (entry.requires && !isRequirementMet(entry.requires)) {
+      return `${indent}  <li><span class="work-formats__unavailable">${label}：準備中</span></li>`;
+    }
+    if (entry.href) {
+      return `${indent}  <li><a href="${escapeHtml(resolveHref(entry.href))}">${label}</a>${note}</li>`;
+    }
+    return `${indent}  <li><span class="work-formats__unavailable">${label}：未提供</span><span class="work-formats__note">${escapeHtml(entry.unavailableReason ?? '')}</span></li>`;
+  });
+  return `${indent}<section class="work-formats">
+${indent}  <h4>提供形式</h4>
+${indent}  <ul>
+${items.join('\n')}
+${indent}  </ul>
+${indent}</section>
+`;
+}
+
 /**
  * 段階2の `<usermedia>` 事前許可を描画するか。問題が出たときは false にして、
  * 注意文と確認段だけの段階1の挙動へ戻す。
@@ -325,7 +369,12 @@ function renderCapabilityNotice(capabilities: WorkCapabilities | undefined, inde
 }
 
 function renderCapabilityLaunchStyles(): string {
-  return `    .capability-note { margin: .5rem 0; font-size: .9rem; }
+  return `    .work-formats { margin: .75rem 0; }
+    .work-formats h4 { margin: 0 0 .25rem; font-size: .95rem; }
+    .work-formats ul { margin: 0; padding-left: 1.2rem; font-size: .9rem; }
+    .work-formats__note { display: block; opacity: .8; }
+    .work-formats__unavailable { opacity: .8; }
+    .capability-note { margin: .5rem 0; font-size: .9rem; }
     .capability-gate { margin: .5rem 0; padding: .75rem; border: 1px solid currentColor; border-radius: .4rem; }
     .capability-gate p { margin: 0 0 .5rem; }
 `;
@@ -493,7 +542,7 @@ ${thumbnail}        <h3>${title}</h3>
           <div><dt>作者</dt><dd>${escapeHtml(work.creator)}</dd></div>
           <div><dt>著作権者</dt><dd>${escapeHtml(work.rightsHolder)}</dd></div>
         </dl>
-${renderCapabilityNotice(work.capabilities)}${actions}
+${renderArtifactFormats(work, (requirement) => features[requirement] === true, '        ')}${renderCapabilityNotice(work.capabilities)}${actions}
       </article>`;
 }
 
@@ -780,6 +829,15 @@ export function renderSampleIndex(manifest: SiteManifest, work: WorkEntry): stri
     )
     .join('\n');
   const workMedia = renderDetailMediaGallery(work);
+  const workFormats = renderArtifactFormats(
+    work,
+    (requirement) =>
+      requirement === 'urashimaWeb'
+        ? manifest.web.enabled
+        : requirement === 'urashimaDsl4Web' && manifest.dsl4Web.enabled,
+    '  ',
+    (href) => detailRelativeHref(work, href),
+  );
   return `<!doctype html>
 <html lang="ja">
 <head>
@@ -827,7 +885,7 @@ ${renderSiteHeader('../../')}
     <div><dt>掲載形態</dt><dd>当サイトで配布</dd></div>
     <div><dt>ライセンス・利用条件</dt><dd><a href="LICENSES.md">MPL-2.0、CC BY-SA 2.0ほか</a></dd></div>
   </dl>
-${workMedia}
+${workMedia}${workFormats}
   <div class="artifact-groups">
     <section class="artifact-group" data-dsl-series="3.2" aria-labelledby="dsl-32-heading">
       <h2 id="dsl-32-heading">DSL 3.2 実行版</h2>
@@ -905,6 +963,12 @@ export function renderMyUrashimaIndex(
     {name: '作業用SB3ファイル', record: dsl4Manifest.output},
   ]);
   const workMedia = renderDetailMediaGallery(work);
+  const workFormats = renderArtifactFormats(
+    work,
+    (requirement) => requirement === 'myUrashimaDsl4Web' && dsl4Manifest.web.enabled,
+    '  ',
+    (href) => detailRelativeHref(work, href),
+  );
   return `<!doctype html>
 <html lang="ja">
 <head>
@@ -952,7 +1016,7 @@ ${renderSiteHeader('../../')}
     <div><dt>掲載形態</dt><dd>当サイトで配布</dd></div>
     <div><dt>ライセンス・利用条件</dt><dd><a href="../urashima/LICENSES.md">${escapeHtml(work.license.label)}</a></dd></div>
   </dl>
-${workMedia}
+${workMedia}${workFormats}
   <div class="artifact-groups">
     <section class="artifact-group" data-dsl-series="3.2" aria-labelledby="my-dsl-32-heading">
       <h2 id="my-dsl-32-heading">DSL 3.2 作業版</h2>
@@ -995,6 +1059,12 @@ export function renderTutorialIndex(
     {name: 'addition kitファイル', record: manifest.artifacts.additionKit},
   ]);
   const workMedia = renderDetailMediaGallery(work);
+  const workFormats = renderArtifactFormats(
+    work,
+    () => true,
+    '  ',
+    (href) => detailRelativeHref(work, href),
+  );
   return `<!doctype html>
 <html lang="ja">
 <head>
@@ -1034,7 +1104,7 @@ ${renderSiteHeader('../../')}
     <h1>${escapeHtml(work.title)}</h1>
     <p>${escapeHtml(work.summary)}</p>
     <p>更新日: <time datetime="${work.updatedAt}">${formatDisplayDate(work.updatedAt)}</time></p>
-${workMedia}
+${workMedia}${workFormats}
 ${artifactSizes}
 ${renderCapabilityNotice({camera: true}, '    ')}    <div class="actions">
       <a class="button" href="web-4.0/" data-capability-launch="camera">Web版を開く</a>

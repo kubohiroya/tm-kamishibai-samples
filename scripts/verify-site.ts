@@ -611,6 +611,26 @@ export async function verifyPublishedSite(options: VerifyPublishedSiteOptions = 
   const rootDsl40Actions = urashimaCard.slice(
     urashimaCard.indexOf('data-action-group="DSL 4.0 オフライン実行版"'),
   );
+  // 標準4形式は、提供するものはリンクで、提供しないものは理由を添えて必ず4件並ぶ。
+  for (const [formatsPage, label] of [
+    [urashimaCard, 'urashima card'],
+    [sampleIndex, 'urashima detail'],
+    [myUrashimaIndex, 'my-urashima detail'],
+    [tutorialIndex, 'tutorial detail'],
+  ] as const) {
+    assert(formatsPage.includes('<h4>提供形式</h4>'), `${label} is missing the format list.`);
+    for (const formatLabel of ['YAML台本', '台本埋め込みSB3', 'ブロック台本SB3', 'Web版']) {
+      assert(formatsPage.includes(formatLabel), `${label} is missing ${formatLabel}.`);
+    }
+    assert(
+      formatsPage.includes('ブロック台本SB3：未提供'),
+      `${label} must state that the block source SB3 is unavailable.`,
+    );
+  }
+  assert(
+    myUrashimaIndex.includes('台本埋め込みSB3：未提供'),
+    'the workshop work must state why it embeds no script.',
+  );
   assert(urashimaCard.includes('class="capability-note"'));
   assert.equal(rootDsl32Actions.includes('data-capability-launch="camera"'), manifest.web.enabled);
   assert.equal(rootDsl40Actions.includes('data-capability-launch="camera"'), dsl4WebEnabled);
