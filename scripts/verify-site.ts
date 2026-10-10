@@ -623,21 +623,22 @@ export async function verifyPublishedSite(options: VerifyPublishedSiteOptions = 
       assert(formatsPage.includes(formatLabel), `${label} is missing ${formatLabel}.`);
     }
   }
-  // ブロック台本SB3はtutorialが先行する（issue #132 段階2）。残る2作品は理由を載せたままにする。
-  assert(
-    tutorialIndex.includes('<a href="tutorial-blocks-4.0.sb3">ブロック台本SB3</a>'),
-    'the tutorial must link its block source SB3.',
-  );
-  for (const [formatsPage, label] of [
-    [urashimaCard, 'urashima card'],
-    [sampleIndex, 'urashima detail'],
-    [myUrashimaIndex, 'my-urashima detail'],
+  // ブロック台本SB3はtutorialと浦島太郎が提供する（issue #132 段階2、issue #149）。
+  for (const [formatsPage, href, label] of [
+    [tutorialIndex, 'tutorial-blocks-4.0.sb3', 'tutorial detail'],
+    [urashimaCard, 'stories/urashima/urashima-blocks-4.0.sb3', 'urashima card'],
+    [sampleIndex, 'urashima-blocks-4.0.sb3', 'urashima detail'],
   ] as const) {
     assert(
-      formatsPage.includes('ブロック台本SB3：未提供'),
-      `${label} must state that the block source SB3 is unavailable.`,
+      formatsPage.includes(`<a href="${href}">ブロック台本SB3</a>`),
+      `${label} must link its block source SB3.`,
     );
   }
+  // my-urashimaは作業用SB3とほぼ同一の複製になるため提供しない。理由は表示したままにする。
+  assert(
+    myUrashimaIndex.includes('ブロック台本SB3：未提供'),
+    'the workshop work must state why it provides no block source SB3.',
+  );
   assert(
     myUrashimaIndex.includes('台本埋め込みSB3：未提供'),
     'the workshop work must state why it embeds no script.',

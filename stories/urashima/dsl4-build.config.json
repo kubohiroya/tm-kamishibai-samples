@@ -12,6 +12,7 @@
   "sourceManifest": "project.source.json",
   "projectAssets": "project-assets-dsl4.yml",
   "output": "urashima-4.0.sb3",
+  "blocksOutput": "urashima-blocks-4.0.sb3",
   "webArtifactsLock": "dsl4-web-artifacts.lock.json",
   "limits": {
     "maxSourceBytes": 262144,

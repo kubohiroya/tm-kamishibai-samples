@@ -118,6 +118,67 @@ function inspectProject(sb3Bytes: Uint8Array): {
   };
 }
 
+/**
+ * ブロック台本SB3の検査。台本がブロックにあり、payloadには無いことを確かめる。
+ *
+ * `author-block-dsl` が書くのは宣言ハットと `dsl4SourceFromYamlJson` の2ブロックで、runtime側の
+ * handlerは不活性。つまりこれは作者がTurboWarpで読み・直すためのauthoring表現で、再生できる形に
+ * するのは `build-dsl4` 側である。したがって埋め込みpayloadはベースのstubのままで良く、むしろ
+ * 台本がpayloadへ混入していないことを確認する必要がある。
+ * @see https://github.com/kubohiroya/turbowarp-kamishibai-samples/issues/149
+ */
+function inspectBlockProject(
+  sb3Bytes: Uint8Array,
+  sourceText: string,
+): {archiveEntryCount: number; targetNames: string[]} {
+  const archive = unzipSync(new Uint8Array(sb3Bytes));
+  const project = JSON.parse(strFromU8(archive['project.json'] as Uint8Array)) as ScratchProject;
+  const stage = project.targets.find((target) => target.name === 'Stage');
+  assert(stage, 'The block source project must keep its Stage.');
+  for (const name of ['Stage', 'Urashima', 'Turtle', 'Princess', 'Fish', 'Narration']) {
+    assert.equal(
+      project.targets.filter((target) => target.name === name).length,
+      1,
+      `The block source project must contain one ${name} target.`,
+    );
+  }
+  assert(project.extensions?.includes('kubohiroyakamishibai4'));
+  const blocks = stage.blocks as Record<
+    string,
+    {opcode: string; topLevel?: boolean; next?: string | null; inputs?: Record<string, unknown>}
+  >;
+  const bundled = (member: string) =>
+    `kubohiroyakamishibai4_kubohiroyakamishibairuntime4__${member}`;
+  const hatId = Object.keys(blocks).find(
+    (id) => blocks[id]?.opcode === bundled('whenDsl4Source') && blocks[id]?.topLevel === true,
+  );
+  assert(hatId, 'The block source project must declare one top-level DSL source hat.');
+  const fragmentId = blocks[hatId]?.next;
+  assert(fragmentId, 'The DSL source hat must carry a source fragment.');
+  assert.equal(blocks[fragmentId]?.opcode, bundled('dsl4SourceFromYamlJson'));
+  assert.deepEqual(
+    blocks[fragmentId]?.inputs?.FRAGMENT,
+    [1, [10, sourceText]],
+    'The source fragment must hold the story source verbatim.',
+  );
+  const component =
+    project.extensionStorage?.kubohiroyakamishibai4?.components?.kubohiroyakamishibairuntime4;
+  assert.equal(
+    component?.application?.mode,
+    'menu',
+    'The block source project must stay the authoring base, not a built story.',
+  );
+  assert.notEqual(
+    (component?.source as {text?: string} | undefined)?.text,
+    sourceText,
+    'The block source project must hold the script as blocks, not as an embedded payload.',
+  );
+  return {
+    archiveEntryCount: Object.keys(archive).length,
+    targetNames: project.targets.map((target) => target.name),
+  };
+}
+
 async function canonicalizeSb3(inputPath: string, sourceDirectory: string): Promise<Buffer> {
   await importSb3({inputPath, outputDirectory: sourceDirectory});
   const first = await createDeterministicSb3(sourceDirectory);
@@ -213,6 +274,26 @@ export async function buildUrashimaDsl4({
       path.join(temporaryDirectory, 'final-source'),
     );
     const project = inspectProject(canonicalBytes);
+    const blocksPath = path.join(temporaryDirectory, 'block-source.sb3');
+    commandResult(
+      process.execPath,
+      [
+        builderCli,
+        'author-block-dsl',
+        '--input',
+        sourcePath,
+        '--base',
+        actorBasePath,
+        '--output',
+        blocksPath,
+        '--max-source-bytes',
+        String(limits.maxSourceBytes),
+      ],
+      {cwd: kamishibaiRoot},
+    );
+    const blocksBytes = await readFile(blocksPath);
+    const blocksProject = inspectBlockProject(blocksBytes, sourceBytes.toString('utf8'));
+    const blocksOutputPath = path.join(storyDirectory, config.blocksOutput as string);
     const toolchainPackage = JSON.parse(
       await readFile(
         path.join(projectRoot, 'node_modules/@kubohiroya/sb3-toolchain/package.json'),
@@ -240,9 +321,17 @@ export async function buildUrashimaDsl4({
         archiveEntryCount: project.archiveEntryCount,
         targetNames: project.targetNames,
       },
+      blocksOutput: {
+        path: config.blocksOutput as string,
+        size: blocksBytes.length,
+        sha256: sha256(blocksBytes),
+        archiveEntryCount: blocksProject.archiveEntryCount,
+        targetNames: blocksProject.targetNames,
+      },
     };
     if (writeLock) {
       await writeAtomically(outputPath, canonicalBytes);
+      await writeAtomically(blocksOutputPath, blocksBytes);
       await writeAtomically(
         artifactLockPath,
         Buffer.from(`${JSON.stringify(artifactLock, null, 2)}\n`),
@@ -259,9 +348,20 @@ export async function buildUrashimaDsl4({
           canonicalBytes,
           'urashima-4.0.sb3 is stale; run pnpm update:urashima-dsl4.',
         );
+        assert.deepEqual(
+          await readFile(blocksOutputPath),
+          blocksBytes,
+          `${config.blocksOutput} is stale; run pnpm update:urashima-dsl4.`,
+        );
       }
     }
-    if (publishedOutputPath) await writeAtomically(publishedOutputPath, canonicalBytes);
+    if (publishedOutputPath) {
+      await writeAtomically(publishedOutputPath, canonicalBytes);
+      await writeAtomically(
+        path.join(path.dirname(publishedOutputPath), config.blocksOutput as string),
+        blocksBytes,
+      );
+    }
     return {
       archive: canonicalBytes,
       artifactLock,
