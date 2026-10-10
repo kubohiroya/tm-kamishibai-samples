@@ -14,6 +14,10 @@ docs側はその公開surfaceを使ってcaptureとチュートリアルpublicat
 - `addition-kit/`: 揺れている教室、頭を守る見本、YAML断片
 - `safety-pose/`: 「頭を守る」ラベルを含む検証済みポーズモデル
 - `tutorial-4.0.sb3`: 完成版の自己完結SB3
+- `tutorial-blocks-4.0.sb3`: 台本をTurboWarpの宣言ブロックとして持つ編集用SB3。runtime側のhandlerは
+  不活性なので、これ自体は再生しません。再生できる形にするには公式CLIの`build-dsl4`へ`--base`として
+  渡します。`pnpm verify`は、ここから書き戻したYAMLが`story.kamishibai.yaml`と同じ意味であることを
+  canonical形で確認します
 - `tutorial-story-starter-4.0.zip`: starterとaddition kitをまとめた配布物
 - `tutorial-story-addition-kit-4.0.zip`: addition kitだけの配布物
 - `public-surfaces.json`: 公開URL、version、integrity、license、公開状態

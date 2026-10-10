@@ -4,7 +4,7 @@
   "version": "4.0.0-rc.10",
   "published": true,
   "releaseDependency": "https://github.com/kubohiroya/turbowarp-kamishibai-app/releases/tag/v4.0.0-rc.10",
-  "sourceIdentity": "f772d2c1ff3fa198db2c2ef372edbcffdd7b6b1d9e8627748a44cf31d69ac581",
+  "sourceIdentity": "e79a825ef2edffa355ad3b1a7ce6badc0cebb530b0dc239cf3fab12e07750efb",
   "runtime": {
     "repository": "https://github.com/kubohiroya/turbowarp-kamishibai-app",
     "version": "4.0.0-rc.14",
@@ -23,6 +23,7 @@
     "webUrl": "https://kubohiroya.github.io/turbowarp-kamishibai-samples/stories/tutorial/web-4.0/",
     "sourceUrl": "https://kubohiroya.github.io/turbowarp-kamishibai-samples/stories/tutorial/story.kamishibai.yaml",
     "sb3Url": "https://kubohiroya.github.io/turbowarp-kamishibai-samples/stories/tutorial/tutorial-4.0.sb3",
+    "sb3BlocksUrl": "https://kubohiroya.github.io/turbowarp-kamishibai-samples/stories/tutorial/tutorial-blocks-4.0.sb3",
     "starterUrl": "https://kubohiroya.github.io/turbowarp-kamishibai-samples/stories/tutorial/tutorial-story-starter-4.0.zip",
     "additionKitUrl": "https://kubohiroya.github.io/turbowarp-kamishibai-samples/stories/tutorial/tutorial-story-addition-kit-4.0.zip",
     "manifestUrl": "https://kubohiroya.github.io/turbowarp-kamishibai-samples/stories/tutorial/public-surfaces.json"
@@ -37,6 +38,16 @@
       "path": "tutorial-4.0.sb3",
       "size": 12745101,
       "sha256": "07635bccdc19694116cb249afdabb72dea20809755a86efdfb682f24c6911286",
+      "archiveEntryCount": 10,
+      "targetNames": [
+        "Stage",
+        "Student"
+      ]
+    },
+    "sb3Blocks": {
+      "path": "tutorial-blocks-4.0.sb3",
+      "size": 6859063,
+      "sha256": "32cac0e469c6b1211e1c595f6dba071893592e142261695b9e958b79c01f1e2f",
       "archiveEntryCount": 10,
       "targetNames": [
         "Stage",

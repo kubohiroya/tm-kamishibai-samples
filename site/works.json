@@ -79,7 +79,7 @@
           "href": "stories/urashima/urashima-4.0.sb3"
         },
         "sb3-blocks": {
-          "unavailableReason": "ブロック台本SB3は未提供です。TurboWarpのブロックとして台本を書いたSB3は公式CLIで生成できないため、作成してチェックインする入力として扱います。tutorialから順に用意します（issue #132）。"
+          "unavailableReason": "ブロック台本SB3は未提供です。公式CLIで生成できるようになり、tutorialで先行して用意しました。この作品は台本埋め込みSB3が大きく、ブロック版も同規模になるため、リポジトリ容量を見て順次用意します（issue #132 段階4）。"
         },
         "html": {
           "href": "stories/urashima/web-4.0/",
@@ -191,7 +191,7 @@
           "unavailableReason": "ワークショップ版は台本を埋め込まず、受講者が編集したYAMLを開いて実行する構成のため提供しません。"
         },
         "sb3-blocks": {
-          "unavailableReason": "ブロック台本SB3は未提供です。TurboWarpのブロックとして台本を書いたSB3は公式CLIで生成できないため、作成してチェックインする入力として扱います。tutorialから順に用意します（issue #132）。"
+          "unavailableReason": "ブロック台本SB3は未提供です。公式CLIで生成できるようになり、tutorialで先行して用意しました。この作品は台本埋め込みSB3が大きく、ブロック版も同規模になるため、リポジトリ容量を見て順次用意します（issue #132 段階4）。"
         },
         "html": {
           "href": "stories/my-urashima/web-4.0/",

@@ -144,6 +144,8 @@ export interface Dsl4BuildConfig {
   starterManifest?: string;
   projectAssets: string;
   output: string;
+  /** ブロック台本SB3。台本をTurboWarpの宣言ブロックとして持つauthoring成果物。 */
+  blocksOutput?: string;
   artifactsLock?: string;
   publicSurfaces?: string;
   webArtifactsLock: string;
