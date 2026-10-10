@@ -3,7 +3,7 @@
   "status": "published",
   "version": "4.0.0-rc.10",
   "releaseDependency": "https://github.com/kubohiroya/turbowarp-kamishibai-app/releases/tag/v4.0.0-rc.10",
-  "sourceIdentity": "59721ed9dd5e4202e3ed2bbaee171c1f96f6d1451521cc34ff66e5ce4452899c",
+  "sourceIdentity": "f772d2c1ff3fa198db2c2ef372edbcffdd7b6b1d9e8627748a44cf31d69ac581",
   "runtime": {
     "repository": "https://github.com/kubohiroya/turbowarp-kamishibai-app",
     "version": "4.0.0-rc.13",
@@ -56,13 +56,13 @@
     "inputs": [
       {
         "path": "LICENSES.md",
-        "size": 1371,
-        "sha256": "ea567d3141d3bc872e15a94d74486e283239966379548fde0aad07334ed8b69e"
+        "size": 1378,
+        "sha256": "71269597ea1ea37fb4e716e08c5dd7e577c3a818ae92147154f075d18483ff85"
       },
       {
         "path": "README.md",
-        "size": 2570,
-        "sha256": "4c7a0832cc76d37bb9cc72187d6abf6c08b4242167891a660211264652f6bc25"
+        "size": 2577,
+        "sha256": "7de540e266a92837dd8053c8cb1c2b130d0c546c717057625d4a86db65812747"
       },
       {
         "path": "addition-kit/README.md",
@@ -180,7 +180,7 @@
     "starter": {
       "path": "tutorial-story-starter-4.0.zip",
       "size": 5914509,
-      "sha256": "484151c95d2ffd2d3c0f8ef113a02c5bd301ff56950ac2c3d17b6558288b334d",
+      "sha256": "78a52962ddacb0f71ff8a0ed85e0c42b5b3f9507ca79eb175317a865af04127e",
       "entries": [
         "tutorial-story/LICENSES.md",
         "tutorial-story/README.md",
@@ -204,7 +204,7 @@
     "additionKit": {
       "path": "tutorial-story-addition-kit-4.0.zip",
       "size": 5532,
-      "sha256": "b766f99824a0dca7cbcb6fc70e90dc079a6f5af68c0b2f6e4769793982ba91f0",
+      "sha256": "d6175860c1f30b05f3da4edf151fdd8ffa1c21edc1fc8dad8b0334695727fc2d",
       "entries": [
         "tutorial-story-addition-kit/LICENSES.md",
         "tutorial-story-addition-kit/README.md",
@@ -222,7 +222,7 @@
   },
   "publication": {
     "enabled": true,
-    "reason": "TM Kamishibai 4.0.0-rc.10 release artifacts are published and integrity-verified",
+    "reason": "TurboWarp-Kamishibai 4.0.0-rc.10 release artifacts are published and integrity-verified",
     "issue": "https://github.com/kubohiroya/turbowarp-kamishibai-samples/issues/125"
   }
 }

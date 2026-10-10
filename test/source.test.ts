@@ -344,7 +344,7 @@ test('pins the generic, editor, and player profile contract', async () => {
   assert.equal(config.web.packager.version, '3.13.0');
   assert.equal(config.web.packager.options.target, 'html');
   assert.equal(config.web.packager.options.autoplay, true);
-  assert.equal(config.web.packager.options.app.windowTitle, '浦島太郎 | TM紙芝居');
+  assert.equal(config.web.packager.options.app.windowTitle, '浦島太郎 | TurboWarp紙芝居');
   assert.equal(config.web.packager.options.cloudVariables.mode, 'disabled');
   assert.deepEqual(artifactsLock.web.input, {
     profile: 'player',

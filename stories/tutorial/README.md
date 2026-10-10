@@ -4,7 +4,7 @@ DSL 4.0チュートリアルの「紙芝居を遊ぶ」「紙芝居を作る」�
 最小作品です。教室で地震の揺れを感じた参加者が、自分の身を守るために丈夫な机の下へ入り、
 両手で頭を守る流れを練習します。
 
-公開はTM Kamishibai `4.0.0-rc.10`のrelease固定だけに依存します。samplesを先に公開し、
+公開はTurboWarp-Kamishibai `4.0.0-rc.10`のrelease固定だけに依存します。samplesを先に公開し、
 docs側はその公開surfaceを使ってcaptureとチュートリアルpublicationを行います。
 
 ## 正本と成果物

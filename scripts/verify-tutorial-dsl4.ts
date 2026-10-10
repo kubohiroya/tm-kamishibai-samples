@@ -174,7 +174,7 @@ export async function verifyTutorialCandidate(
   );
   assert.match(web.toString('utf8', 0, 256), /^<!DOCTYPE html>/u);
   assert(
-    web.includes(Buffer.from('<title>地震だ！頭を守ろう DSL 4.0 | TM紙芝居</title>')),
+    web.includes(Buffer.from('<title>地震だ！頭を守ろう DSL 4.0 | TurboWarp紙芝居</title>')),
   );
 
   const starterEntries = Object.keys(unzipSync(new Uint8Array(starterArchive))).sort();

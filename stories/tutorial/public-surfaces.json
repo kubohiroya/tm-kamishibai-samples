@@ -4,7 +4,7 @@
   "version": "4.0.0-rc.10",
   "published": true,
   "releaseDependency": "https://github.com/kubohiroya/turbowarp-kamishibai-app/releases/tag/v4.0.0-rc.10",
-  "sourceIdentity": "59721ed9dd5e4202e3ed2bbaee171c1f96f6d1451521cc34ff66e5ce4452899c",
+  "sourceIdentity": "f772d2c1ff3fa198db2c2ef372edbcffdd7b6b1d9e8627748a44cf31d69ac581",
   "runtime": {
     "repository": "https://github.com/kubohiroya/turbowarp-kamishibai-app",
     "version": "4.0.0-rc.13",
@@ -46,13 +46,13 @@
     "web": {
       "path": "web-4.0/index.html",
       "contentType": "text/html",
-      "size": 22723047,
-      "sha256": "27ddff5abdbb66b385df9d1e6de8b36373b2929940b1ff4c45b678f2303ef393"
+      "size": 22723054,
+      "sha256": "8a6b974d0da644f734c687605488640a97a0024ee446bf0179c51debefb9981f"
     },
     "starter": {
       "path": "tutorial-story-starter-4.0.zip",
       "size": 5914509,
-      "sha256": "484151c95d2ffd2d3c0f8ef113a02c5bd301ff56950ac2c3d17b6558288b334d",
+      "sha256": "78a52962ddacb0f71ff8a0ed85e0c42b5b3f9507ca79eb175317a865af04127e",
       "entries": [
         "tutorial-story/LICENSES.md",
         "tutorial-story/README.md",
@@ -76,7 +76,7 @@
     "additionKit": {
       "path": "tutorial-story-addition-kit-4.0.zip",
       "size": 5532,
-      "sha256": "b766f99824a0dca7cbcb6fc70e90dc079a6f5af68c0b2f6e4769793982ba91f0",
+      "sha256": "d6175860c1f30b05f3da4edf151fdd8ffa1c21edc1fc8dad8b0334695727fc2d",
       "entries": [
         "tutorial-story-addition-kit/LICENSES.md",
         "tutorial-story-addition-kit/README.md",

@@ -10,8 +10,8 @@
   "output": {
     "path": "web-4.0/index.html",
     "contentType": "text/html",
-    "size": 27508704,
-    "sha256": "621a9d7e5be55083bec4fd0ef2daa7dd7e9065a9eeb1b5a20477d12d3da65490"
+    "size": 27508711,
+    "sha256": "a339b4fb7404bbb4419dae7f3787e1f43ee51345026224115c5cde643c4d4ab3"
   },
   "packager": {
     "package": "@turbowarp/packager",
@@ -20,7 +20,7 @@
       "target": "html",
       "autoplay": true,
       "app": {
-        "windowTitle": "my-urashima DSL 4.0 | TM紙芝居"
+        "windowTitle": "my-urashima DSL 4.0 | TurboWarp紙芝居"
       },
       "cloudVariables": {
         "mode": "disabled"

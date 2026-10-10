@@ -379,7 +379,7 @@ export async function verifyPublishedSite(options: VerifyPublishedSiteOptions = 
   assert.deepEqual(manifest.web.packager.options, {
     target: 'html',
     autoplay: true,
-    app: {windowTitle: '浦島太郎 | TM紙芝居'},
+    app: {windowTitle: '浦島太郎 | TurboWarp紙芝居'},
     cloudVariables: {mode: 'disabled'},
     bakeExtensions: true,
   });
@@ -412,7 +412,7 @@ export async function verifyPublishedSite(options: VerifyPublishedSiteOptions = 
   assert(webHtml.length > 0);
   assert(webHtml.length <= 104857600);
   assert(webHtml.toString('utf8', 0, 128).startsWith('<!DOCTYPE html>'));
-  assert(webHtml.includes(Buffer.from('<title>浦島太郎 | TM紙芝居</title>')));
+  assert(webHtml.includes(Buffer.from('<title>浦島太郎 | TurboWarp紙芝居</title>')));
   assert(!webHtml.includes(Buffer.from('class="site-footer"')));
   assert.deepEqual(
     manifest.web.allowedOnlineDependencies.map(({urlPrefix}) => urlPrefix),
@@ -447,7 +447,7 @@ export async function verifyPublishedSite(options: VerifyPublishedSiteOptions = 
       'DSL 4.0 Packager HTML',
     );
     assert.deepEqual(dsl4WebFiles, ['index.html']);
-    assert(dsl4WebHtml.includes(Buffer.from('<title>浦島太郎 DSL 4.0 | TM紙芝居</title>')));
+    assert(dsl4WebHtml.includes(Buffer.from('<title>浦島太郎 DSL 4.0 | TurboWarp紙芝居</title>')));
   } else {
     assert.deepEqual(manifest.dsl4Web, {enabled: false});
     assert.deepEqual(dsl4WebFiles, []);
@@ -486,7 +486,7 @@ export async function verifyPublishedSite(options: VerifyPublishedSiteOptions = 
     assert.deepEqual(myDsl4WebFiles, ['index.html']);
     assert(
       myDsl4WebHtml.includes(
-        Buffer.from('<title>my-urashima DSL 4.0 | TM紙芝居</title>'),
+        Buffer.from('<title>my-urashima DSL 4.0 | TurboWarp紙芝居</title>'),
       ),
     );
   } else {

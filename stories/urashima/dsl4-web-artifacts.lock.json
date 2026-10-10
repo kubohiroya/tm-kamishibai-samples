@@ -10,8 +10,8 @@
   "output": {
     "path": "web-4.0/index.html",
     "contentType": "text/html",
-    "size": 49210364,
-    "sha256": "d18b04c4b4c97352c32b4ebef105d37436bf3b4f6010a1bc56ef265ec70c5743"
+    "size": 49210371,
+    "sha256": "eb6f71b8829bedc687d88938de6bdb68314083bdae46651bf5abd0cc49817ba2"
   },
   "packager": {
     "package": "@turbowarp/packager",
@@ -20,7 +20,7 @@
       "target": "html",
       "autoplay": true,
       "app": {
-        "windowTitle": "浦島太郎 DSL 4.0 | TM紙芝居"
+        "windowTitle": "浦島太郎 DSL 4.0 | TurboWarp紙芝居"
       },
       "cloudVariables": {
         "mode": "disabled"
