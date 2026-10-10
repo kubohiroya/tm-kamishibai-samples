@@ -35,4 +35,4 @@ pnpm run build-workshop-20260801
 output/pdf/workshops/2026-08-01/tm-kamishibai-20260801.pdf
 ```
 
-別のPDFを使用する場合は、`TM_KAMISHIBAI_WORKSHOP_PDF`にファイルの絶対パスを指定してください。
+別のPDFを使用する場合は、`TURBOWARP_KAMISHIBAI_WORKSHOP_PDF`にファイルの絶対パスを指定してください。
