@@ -96,7 +96,7 @@ scene 7では、本体3.2.3の標準コマンド`fadeToWhite`でステージの�
 - 移設元コミット: `9526c9d6391622ee261b8d7c0778b1fbbd2e6745`
 - ビルダー: TurboWarp-Kamishibai 3.2 npm artifact `3.2.3` / `28015ac9ff5221f371e8bd0357a7750ce40bbf7c`
 - 汎用ベース: TurboWarp-Kamishibai / `2b5005d293a9b63c8ba5da396fd86815d093f975`
-- DSL 4.0汎用ベースのソース: TurboWarp-Kamishibai / `4.0.0-rc.13`候補 / `sha256:f75aebacbca61b85c48b36d59d4aaa4d3938cd4b7065cbfb7992475c30e3eba9`
-- DSL 4.0ビルダー: TurboWarp-Kamishibai / `4.0.0-rc.13`候補 / `5355abe74db95881711d17e5ad35db6daea7fd94`（埋め込みTurboWarp TM 3.2.0）
+- DSL 4.0汎用ベースのソース: TurboWarp-Kamishibai / `4.0.0-rc.13`候補 / `sha256:0f03941835c6d036b7b9442568650e855c3b5c324f0387a086b67c9b7c5c72b3`
+- DSL 4.0ビルダー: TurboWarp-Kamishibai / `4.0.0-rc.13`候補 / `8eec5445aeff455dc5c70329feaf4223b187aa1b`（埋め込みTurboWarp TM 3.2.0）
 
 生成・検証・公開の実装は [Issue #2](https://github.com/kubohiroya/turbowarp-kamishibai-samples/issues/2)、Packager Web版は [Issue #7](https://github.com/kubohiroya/turbowarp-kamishibai-samples/issues/7)、DSL 4.0の自動生成は [Issue #90](https://github.com/kubohiroya/turbowarp-kamishibai-samples/issues/90) で管理します。

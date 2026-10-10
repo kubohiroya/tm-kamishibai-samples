@@ -141,7 +141,7 @@ test('provides one intentional CLI diagnostic with an exact starter fix', async 
   const result = spawnSync(
     process.execPath,
     [
-      path.join(kamishibaiRoot, 'bin/tm-kamishibai.mjs'),
+      path.join(kamishibaiRoot, 'bin/turbowarp-kamishibai.mjs'),
       'validate-dsl4',
       '--input',
       path.join(storyDirectory, 'addition-kit/intentional-diagnostic.kamishibai.yaml.txt'),

@@ -176,7 +176,7 @@ export async function buildUrashimaDsl4({
     const builtPath = path.join(temporaryDirectory, 'runtime-built.sb3');
     await writeFile(actorBasePath, baseWithActors.archive);
 
-    const builderCli = path.join(kamishibaiRoot, 'bin/tm-kamishibai.mjs');
+    const builderCli = path.join(kamishibaiRoot, 'bin/turbowarp-kamishibai.mjs');
     const limits = config.limits as Dsl4Limits;
     commandResult(
       process.execPath,
