@@ -556,6 +556,19 @@ export async function verifyPublishedSite(options: VerifyPublishedSiteOptions = 
       capabilityPage.includes("document.querySelectorAll('a[data-capability-launch]')"),
       'capability launch script is missing.',
     );
+    // 段階2: <usermedia> がある環境では起動前に許可を取り、stream は閉じて許可だけを残す。
+    assert(
+      capabilityPage.includes("'HTMLUserMediaElement' in window"),
+      'capability preflight feature detection is missing.',
+    );
+    assert(capabilityPage.includes('setConstraints?.({video: {}})'));
+    for (const handler of ["addEventListener('stream'", "addEventListener('cancel'", "addEventListener('error'"]) {
+      assert(capabilityPage.includes(handler), `capability preflight ${handler} is missing.`);
+    }
+    assert(
+      capabilityPage.includes('track.stop()'),
+      'capability preflight must release the preflight stream.',
+    );
   }
   for (const detailIndex of [sampleIndex, myUrashimaIndex, tutorialIndex]) {
     assert(detailIndex.includes('>作品の場面紹介</h2>'));
