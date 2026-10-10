@@ -12,6 +12,7 @@ import {
   patchPackagerScratchRenderReadbackContext,
 } from './patch-packager-scratch-render.ts';
 import type {OnlineDependency, RuntimeCapability, WebConfig} from './story-config.ts';
+import {bakeVendoredExtensionUrls, readVendoredExtensionsLock} from './turbowarp-extensions.ts';
 
 /** @turbowarp/packager は型定義を同梱しないため、使う API 面だけをここで宣言する。 */
 interface PackagerOptions {
@@ -415,10 +416,21 @@ export async function buildPackagedWeb({
   }
 
   const extensions = projectExtensions(input);
+  // http(s) の拡張機能は固定した複製から bake し、Packager にネットワーク取得をさせない。
+  const vendoredLock = extensions.records.some(({source}) => source === 'packager-baked-url')
+    ? await readVendoredExtensionsLock()
+    : undefined;
+  const bakedUrls = await bakeVendoredExtensionUrls(extensions.urls, vendoredLock);
+  const extensionRecords = extensions.records.map((record) => {
+    if (record.source !== 'packager-baked-url') return record;
+    const entry = vendoredLock?.extensions.find(({url}) => url === record.url);
+    assert(entry, `Extension ${record.url} is not vendored.`);
+    return {id: record.id, source: 'vendored-extension', url: entry.url, sha256: entry.sha256};
+  });
   const loadedProject = await Packager.loadProject(input);
   const [first, second] = await Promise.all([
-    packageOnce(loadedProject, webConfig, extensions.urls),
-    packageOnce(loadedProject, webConfig, extensions.urls),
+    packageOnce(loadedProject, webConfig, bakedUrls),
+    packageOnce(loadedProject, webConfig, bakedUrls),
   ]);
   const firstBytes = Buffer.from(first.data);
   const secondBytes = Buffer.from(second.data);
@@ -460,7 +472,7 @@ export async function buildPackagedWeb({
         cloudVariables: {mode: webConfig.packager.options.cloudVariables.mode},
         bakeExtensions: true,
       },
-      projectExtensions: extensions.records,
+      projectExtensions: extensionRecords,
       scratchRender: {
         repository: packagerScratchRenderContract.fixedRepository,
         commit: packagerScratchRenderContract.fixedCommit,

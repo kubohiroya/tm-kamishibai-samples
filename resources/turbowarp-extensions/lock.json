@@ -1,0 +1,49 @@
+{
+  "formatVersion": 1,
+  "origin": "https://extensions.turbowarp.org",
+  "fetchedAt": "2026-10-10",
+  "extensions": [
+    {
+      "url": "https://extensions.turbowarp.org/-SIPC-/consoles.js",
+      "path": "extensions.turbowarp.org/-SIPC-/consoles.js",
+      "size": 20149,
+      "sha256": "6d38fda8af6a60c9ce8ed03a755f5c2a1158a796a11f8cf6b336fc4e5d64640b",
+      "license": "MIT"
+    },
+    {
+      "url": "https://extensions.turbowarp.org/Lily/TempVariables2.js",
+      "path": "extensions.turbowarp.org/Lily/TempVariables2.js",
+      "size": 17223,
+      "sha256": "dd6cde954ce276fcf1a4f0f8dc322dd89b64bb04be32a06c36fbff54d514e2f0",
+      "license": "MIT AND LGPL-3.0"
+    },
+    {
+      "url": "https://extensions.turbowarp.org/text.js",
+      "path": "extensions.turbowarp.org/text.js",
+      "size": 40564,
+      "sha256": "ef38751a0b27b5bd0dfe59a9f44da0c7f3ae20b3cb29859cca36f95ef7e6d7ea",
+      "license": "MIT AND MPL-2.0"
+    },
+    {
+      "url": "https://extensions.turbowarp.org/local-storage.js",
+      "path": "extensions.turbowarp.org/local-storage.js",
+      "size": 13859,
+      "sha256": "5f1e4d25728b8c2d10886a5d0c4553bfe2d8c7f6818df019a1c0a9493ea8d78c",
+      "license": "MIT AND MPL-2.0"
+    },
+    {
+      "url": "https://extensions.turbowarp.org/Lily/MoreTimers.js",
+      "path": "extensions.turbowarp.org/Lily/MoreTimers.js",
+      "size": 13022,
+      "sha256": "802a3d3b82bec4e8f004106e52ce9b68a84f8baa95850cd9007478a8d9714ff6",
+      "license": "MIT AND LGPL-3.0"
+    },
+    {
+      "url": "https://extensions.turbowarp.org/files.js",
+      "path": "extensions.turbowarp.org/files.js",
+      "size": 22138,
+      "sha256": "27445caffa959c3086b2980c6b25bdba7dcb6e05a2465076c102cbd05229940f",
+      "license": "MIT AND MPL-2.0"
+    }
+  ]
+}
