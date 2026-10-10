@@ -557,7 +557,7 @@ test('keeps my-urashima external-script-only and publishes its DSL 4.0 workshop 
     ArrowRight: 'rehearsal.skipAction',
     ArrowDown: 'rehearsal.skipScene',
   });
-  assert.equal(dsl4Document.poseRecognition.navigation.allowSkip, true);
+  assert.equal(dsl4Document.recognition.navigation.allowSkip, true);
   assert.match(dsl4, /^\s{2}Princess: costume:Princess$/mu);
   assert.match(dsl4, /^\s{2}Princess: Princess$/mu);
   assert.match(
@@ -566,7 +566,7 @@ test('keeps my-urashima external-script-only and publishes its DSL 4.0 workshop 
   );
   assert.equal((dsl4.match(/^#      - Princess\.pose:/gmu) ?? []).length, 3);
   assert.equal((dsl4.match(/^\s{6}- Princess\.pose:/gmu) ?? []).length, 0);
-  assert.match(dsl4, /^\s{2}welcome to dragon castle:\n\s{4}poseModel: PoseModel2$/mu);
+  assert.match(dsl4, /^\s{2}welcome to dragon castle:\n\s{4}recognitionModel: PoseModel2$/mu);
   assert.match(
     dsl4,
     /^\s{6}- Urashima\.setSkin:\n\s{10}skin: Urashima-dance-1\n\s{6}- wait: 1\n(?:^#.*\n){4}\s{6}- wait: 2$/mu,
@@ -757,14 +757,14 @@ test('locks every external script asset and publishes DSL 3.2 and offline DSL 4.
   assert.equal(dsl4Document.assets.PoseModel2.file, 'pose-models/3and4');
   assert.equal(dsl4Document.assets.PoseModel3.file, 'pose-models/6and7');
   assert.match(dsl4, /^\s{2}opening:\n/mu);
-  assert.match(dsl4, /^\s{2}beach:\n\s{4}poseModel: PoseModel1\n\s{4}actions:$/mu);
+  assert.match(dsl4, /^\s{2}beach:\n\s{4}recognitionModel: PoseModel1\n\s{4}actions:$/mu);
   assert.match(dsl4, /^\s{6}- Urashima\.pose:\n\s{10}steps:\n/mu);
   assert.deepEqual(dsl4Document.controls.keymaps.production, {
     Space: 'rehearsal.skipPose',
     ArrowRight: 'rehearsal.skipAction',
     ArrowDown: 'rehearsal.skipScene',
   });
-  assert.equal(dsl4Document.poseRecognition.navigation.allowSkip, true);
+  assert.equal(dsl4Document.recognition.navigation.allowSkip, true);
   const externalLines = source
     .split(/\r?\n/u)
     .filter((line) => /^asset=.*,(?:file|https?):/u.test(line));

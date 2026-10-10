@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v7
         with:
           repository: kubohiroya/tm-kamishibai
-          ref: 65f5e705921b6c92ba6ec5373ec13eff5101f2c6
+          ref: 5355abe74db95881711d17e5ad35db6daea7fd94
           path: .tmp/tm-kamishibai
       - run: corepack enable
       - uses: actions/setup-node@v7
@@ -29,6 +29,10 @@ jobs:
             .tmp/tm-kamishibai/pnpm-lock.yaml
       - run: pnpm install --frozen-lockfile
       - run: pnpm install --frozen-lockfile
+        working-directory: .tmp/tm-kamishibai
+      # Since TM Kamishibai 4.0.0-rc.12 bin/tm-kamishibai.mjs runs the compiled dist/,
+      # which the repository does not commit.
+      - run: pnpm run build:lib
         working-directory: .tmp/tm-kamishibai
       - run: pnpm exec playwright install --with-deps chromium webkit
       - run: pnpm run check

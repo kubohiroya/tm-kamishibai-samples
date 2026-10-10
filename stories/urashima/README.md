@@ -35,7 +35,7 @@
 - `sample.config.json`: ベース、ビルダー、プロファイル、出力名、既定OFFのWeb生成機能を浦島太郎で有効にする設定
 - `artifacts.lock.json`: `_urashima` / `urashima` / `web/index.html` の再現可能な出力ハッシュ
 - `base/kamishibai.sb3`: TM Kamishibai のclone-only UI `generic` 成果物
-- `base/kamishibai-4.0.sb3`: DSL 4.0.0-rc.10の固定release sourceから生成した`generic`ベース
+- `base/kamishibai-4.0.sb3`: DSL 4.0.0-rc.13候補（埋め込みTurboWarp TM 3.2.0）のrelease sourceから生成した`generic`ベース
 
 `source.txt`の`# date:`はビルドが自動管理します。日付行を除いた内容fingerprintが`artifacts.lock.json`の記録から変わった場合だけ、ビルド環境のローカル今日へ更新し、`urashima.txt`、両プロファイル、Web版、my-urashimaを再生成します。内容が同じ再ビルドでは日付も成果物も更新しません。
 
@@ -54,7 +54,7 @@ pnpm verify:urashima-dsl4
 
 ## DSL 4.0オフラインSB3の生成
 
-`dsl4-build.config.json`に固定したTM Kamishibai tag commitを、既定では隣接する`../tm-kamishibai`にcheckoutして依存関係をインストールします。CIでは同じcommitを`.tmp/tm-kamishibai`へcheckoutし、`TM_KAMISHIBAI_DSL4_ROOT`でその場所を指定します。入力となる`base/kamishibai-4.0.sb3`も、DSL 4.0.0-rc.10のrelease source identity、サイズ、SHA-256を設定に固定しています。
+`dsl4-build.config.json`に固定したTM Kamishibai commitを、既定では隣接する`../tm-kamishibai`にcheckoutして依存関係をインストールします。CIでは同じcommitを`.tmp/tm-kamishibai`へcheckoutし、`TM_KAMISHIBAI_DSL4_ROOT`でその場所を指定します。入力となる`base/kamishibai-4.0.sb3`も、DSL 4.0.0-rc.13候補のrelease source identity、サイズ、SHA-256を設定に固定しています。
 
 ```bash
 pnpm update:dsl4-artifacts
@@ -96,7 +96,7 @@ scene 7では、本体3.2.3の標準コマンド`fadeToWhite`でステージの�
 - 移設元コミット: `9526c9d6391622ee261b8d7c0778b1fbbd2e6745`
 - ビルダー: TM Kamishibai 3.2 npm artifact `3.2.3` / `28015ac9ff5221f371e8bd0357a7750ce40bbf7c`
 - 汎用ベース: TM Kamishibai / `2b5005d293a9b63c8ba5da396fd86815d093f975`
-- DSL 4.0汎用ベースのソース: TM Kamishibai / `4.0.0-rc.10` / `sha256:ed05e732c9c0a0d7f43d85802450c88871bdab938a6809f7898815ae3cea714f`
-- DSL 4.0ビルダー: TM Kamishibai / `4.0.0-rc.10` / `65f5e705921b6c92ba6ec5373ec13eff5101f2c6`
+- DSL 4.0汎用ベースのソース: TM Kamishibai / `4.0.0-rc.13`候補 / `sha256:f75aebacbca61b85c48b36d59d4aaa4d3938cd4b7065cbfb7992475c30e3eba9`
+- DSL 4.0ビルダー: TM Kamishibai / `4.0.0-rc.13`候補 / `5355abe74db95881711d17e5ad35db6daea7fd94`（埋め込みTurboWarp TM 3.2.0）
 
 生成・検証・公開の実装は [Issue #2](https://github.com/kubohiroya/tm-kamishibai-samples/issues/2)、Packager Web版は [Issue #7](https://github.com/kubohiroya/tm-kamishibai-samples/issues/7)、DSL 4.0の自動生成は [Issue #90](https://github.com/kubohiroya/tm-kamishibai-samples/issues/90) で管理します。

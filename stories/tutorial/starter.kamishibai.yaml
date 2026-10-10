@@ -22,7 +22,7 @@ actors:
 cover:
   backdrop: Classroom
 
-poseRecognition:
+recognition:
   navigation:
     allowSkip: true
 

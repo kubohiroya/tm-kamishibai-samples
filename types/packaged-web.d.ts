@@ -62,6 +62,8 @@ declare var Scratch:
   | {vm: {runtime: ScratchRuntimeLike; [key: string]: any}; [key: string]: any}
   | undefined;
 declare var __tmposeFilePickerCalls: any[];
+/** DSL 4.0検証スクリプトが仕掛ける、Bubbleオーバーレイに描かれた台詞の読み取り。 */
+declare var __dsl4SpeechText: () => string;
 
 interface Window {
   /** パッケージ済みページの読み込み後に必ず存在する。 */
