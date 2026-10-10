@@ -30,7 +30,11 @@
 - `project-assets-dsl4.yml`: DSL 4.0 actor IDと同名の物理Scratch target 5件を作る`sb3-toolchain --project-assets`入力
 - `project.source.json`: `urashima.k4.yml`を選ぶ固定cache identity付きDSL 4.0 source manifest
 - `dsl4-build.config.json`: 4.0 runtime base、TurboWarp-Kamishibai commit、入力上限を固定する生成設定
-- `dsl4-artifacts.lock.json`: `urashima-4.0.sb3`の入力・出力ハッシュとtarget構成
+- `dsl4-artifacts.lock.json`: `urashima-4.0.sb3`と`urashima-blocks-4.0.sb3`の入力・出力ハッシュとtarget構成
+- `urashima-blocks-4.0.sb3`: 台本をTurboWarpの宣言ブロックとして持つ編集用SB3。runtime側のhandlerは
+  不活性なので、これ自体は再生しません。再生できる形にするには公式CLIの`build-dsl4`へ`--base`として
+  渡します。`pnpm verify`は、ここから書き戻したYAMLが`urashima.k4.yml`と同じ意味であることを
+  canonical形で確認します
 - `dsl4-web-artifacts.lock.json`: `web-4.0/index.html`の入力・出力ハッシュとPackager設定
 - `sample.config.json`: ベース、ビルダー、プロファイル、出力名、既定OFFのWeb生成機能を浦島太郎で有効にする設定
 - `artifacts.lock.json`: `_urashima` / `urashima` / `web/index.html` の再現可能な出力ハッシュ
