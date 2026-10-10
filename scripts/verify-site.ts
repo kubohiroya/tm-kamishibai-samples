@@ -622,6 +622,17 @@ export async function verifyPublishedSite(options: VerifyPublishedSiteOptions = 
     for (const formatLabel of ['YAML台本', '台本埋め込みSB3', 'ブロック台本SB3', 'Web版']) {
       assert(formatsPage.includes(formatLabel), `${label} is missing ${formatLabel}.`);
     }
+  }
+  // ブロック台本SB3はtutorialが先行する（issue #132 段階2）。残る2作品は理由を載せたままにする。
+  assert(
+    tutorialIndex.includes('<a href="tutorial-blocks-4.0.sb3">ブロック台本SB3</a>'),
+    'the tutorial must link its block source SB3.',
+  );
+  for (const [formatsPage, label] of [
+    [urashimaCard, 'urashima card'],
+    [sampleIndex, 'urashima detail'],
+    [myUrashimaIndex, 'my-urashima detail'],
+  ] as const) {
     assert(
       formatsPage.includes('ブロック台本SB3：未提供'),
       `${label} must state that the block source SB3 is unavailable.`,

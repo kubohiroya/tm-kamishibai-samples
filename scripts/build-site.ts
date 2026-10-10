@@ -1528,6 +1528,7 @@ export async function buildSite() {
       ),
       ...[
         tutorialConfig.output,
+        tutorialConfig.blocksOutput,
         tutorialConfig.archives.starter,
         tutorialConfig.archives.additionKit,
       ].map((filename) =>
