@@ -7,7 +7,7 @@
   "runtime": {
     "repository": "https://github.com/kubohiroya/turbowarp-kamishibai-app",
     "version": "4.0.0-rc.13",
-    "commit": "9d57c2ee85cd14a7049eb8db41dc26a15e1417fb",
+    "commit": "fafb7d9b9794427e23cf5d45eac955bfcad463f1",
     "basePath": "base/kamishibai-4.0.sb3",
     "baseSourceIdentity": "sha256:ff71e45faf1075adeeb041fa9edb89592e3a3de9bb0b85bcc70f4f7a2363bca1",
     "baseSize": 6849427,

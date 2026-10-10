@@ -17,7 +17,7 @@
 - `sample.config.json`: `generic` / `editor` / `player` とWeb版の生成設定
 - `artifacts.lock.json`: 再現可能な生成物のサイズとSHA-256
 - `base/kamishibai.sb3`: ポーズ認識成立音対応済み本体コミットから生成したDSL 3.2 `generic` ベース
-- `base/kamishibai-4.0.sb3`: DSL 4.0.0-rc.13候補（埋め込みTurboWarp TM 3.2.0）のrelease sourceから生成し、サイズとSHA-256を固定した`generic`ベース
+- `base/kamishibai-4.0.sb3`: 公開済みDSL 4.0.0-rc.13（埋め込みTurboWarp TM 3.2.0）のrelease artifactを、サイズとSHA-256を固定して取り込んだ`generic`ベース
 
 `stories/my-urashima/`はワークショップ用の依存ストーリーです。DSL 3.2版に加え、Princess PNGを唯一のコスチュームとして持つ`Princess`スプライトと浦島太郎のプロジェクトアセットを組み込んだ、台本非埋め込みの`my-urashima-4.0.sb3`およびWeb版も生成します。生成規約と更新方法は[`stories/my-urashima/README.md`](stories/my-urashima/README.md)に記載しています。
 
