@@ -6,33 +6,20 @@ on:
 permissions:
   contents: read
 
+# A pull request only needs its newest push verified.
+concurrency:
+  group: ci-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 jobs:
   test:
     runs-on: ubuntu-latest
+    # The run finishes in about four minutes. Anything near this ceiling is hung, and without
+    # it a stuck Playwright holds a runner for the six-hour default.
+    timeout-minutes: 40
     env:
       TZ: Asia/Tokyo
       TURBOWARP_KAMISHIBAI_APP_ROOT: ${{ github.workspace }}/.tmp/turbowarp-kamishibai-app
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/checkout@v7
-        with:
-          repository: kubohiroya/turbowarp-kamishibai-app
-          ref: ed2a5b586189aa90e6f9e6576898975a150b2a3a
-          path: .tmp/turbowarp-kamishibai-app
-      - run: corepack enable
-      - uses: actions/setup-node@v7
-        with:
-          node-version: 24
-          cache: pnpm
-          cache-dependency-path: |
-            pnpm-lock.yaml
-            .tmp/turbowarp-kamishibai-app/pnpm-lock.yaml
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm install --frozen-lockfile
-        working-directory: .tmp/turbowarp-kamishibai-app
-      # Since 4.0.0-rc.12 the pinned CLI runs the compiled dist/, which
-      # TurboWarp-Kamishibai does not commit.
-      - run: pnpm run build:lib
-        working-directory: .tmp/turbowarp-kamishibai-app
-      - run: pnpm exec playwright install --with-deps chromium webkit
-      - run: pnpm run check
+      - uses: ./.github/actions/verify
