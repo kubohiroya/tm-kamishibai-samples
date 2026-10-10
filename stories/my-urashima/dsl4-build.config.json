@@ -46,7 +46,7 @@
       },
       {
         "capability": "camera",
-        "purpose": "TurboWarp TMによるポーズ認識"
+        "purpose": "Teachable Machine拡張によるポーズ認識"
       },
       {
         "capability": "audio",

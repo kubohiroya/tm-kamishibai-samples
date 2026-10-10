@@ -4,14 +4,14 @@
   "input": {
     "profile": "dsl4-offline",
     "path": "urashima-4.0.sb3",
-    "size": 34303295,
-    "sha256": "815f221696d705e6f64a35baf435a06c967be300a40a768c92f7f6a79b316ba1"
+    "size": 34303334,
+    "sha256": "a7c603fcd2d5af89ea99f253a286102db8f93266145e99f97d17126a799f9e4f"
   },
   "output": {
     "path": "web-4.0/index.html",
     "contentType": "text/html",
-    "size": 49210386,
-    "sha256": "7742eb072de8baa8f9a65de142533fb9083caab4372593a7cff18175892ad257"
+    "size": 49210676,
+    "sha256": "528350f7a3a694a20f8adf9ca3d6c443cfcc0b55f49628f7dfef370f3e5a7b29"
   },
   "packager": {
     "package": "@turbowarp/packager",
@@ -31,7 +31,7 @@
       {
         "id": "kubohiroyakamishibai4",
         "source": "input-sb3-data-url",
-        "sha256": "278b56f5ddb8a158b26695b2e978f1934ef6cc3fc83df0d5138d5a02141a0ff8"
+        "sha256": "6215d92f43add325e81236e782c0843b728b8b827e7a0933e43c8d66751dee51"
       }
     ],
     "scratchRender": {
@@ -67,7 +67,7 @@
   "runtimeCapabilities": [
     {
       "capability": "camera",
-      "purpose": "TurboWarp TMによるポーズ認識"
+      "purpose": "Teachable Machine拡張によるポーズ認識"
     },
     {
       "capability": "audio",
