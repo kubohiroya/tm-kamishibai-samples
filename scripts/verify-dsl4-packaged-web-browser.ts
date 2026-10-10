@@ -116,7 +116,7 @@ async function openDsl4Page(
       });
     }, storySource);
   }
-  // Since TM Kamishibai 4.0.0-rc.12 the Standard runtime renders every say and think
+  // Since TurboWarp-Kamishibai 4.0.0-rc.12 the Standard runtime renders every say and think
   // through TurboWarp Bubble's SVG overlay, which the packaged stage mounts over the
   // renderer canvas. `Scratch.looks` is deliberately left untouched by that path, so the
   // speech a viewer actually reads has to come off the overlay.

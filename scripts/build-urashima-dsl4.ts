@@ -22,7 +22,7 @@ const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 const storyDirectory = path.join(projectRoot, 'stories/urashima');
 const configPath = path.join(storyDirectory, 'dsl4-build.config.json');
 const artifactLockPath = path.join(storyDirectory, 'dsl4-artifacts.lock.json');
-const defaultKamishibaiRoot = path.resolve(projectRoot, '../tm-kamishibai');
+const defaultKamishibaiRoot = path.resolve(projectRoot, '../turbowarp-kamishibai-app');
 const kamishibaiRootEnvironmentName = 'TM_KAMISHIBAI_DSL4_ROOT';
 
 function sha256(contents: Uint8Array | string): string {
@@ -148,12 +148,12 @@ export async function buildUrashimaDsl4({
   assert.equal(
     runtimeCommit,
     config.runtime.commit,
-    'TM Kamishibai checkout differs from dsl4-build.config.json.',
+    'TurboWarp-Kamishibai checkout differs from dsl4-build.config.json.',
   );
   assert.equal(
     commandResult('git', ['status', '--porcelain'], {cwd: kamishibaiRoot}),
     '',
-    'TM Kamishibai checkout must be clean.',
+    'TurboWarp-Kamishibai checkout must be clean.',
   );
   const basePath = path.join(storyDirectory, config.runtime.basePath as string);
   const baseBytes = await readFile(basePath);

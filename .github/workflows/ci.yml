@@ -11,14 +11,14 @@ jobs:
     runs-on: ubuntu-latest
     env:
       TZ: Asia/Tokyo
-      TM_KAMISHIBAI_DSL4_ROOT: ${{ github.workspace }}/.tmp/tm-kamishibai
+      TM_KAMISHIBAI_DSL4_ROOT: ${{ github.workspace }}/.tmp/turbowarp-kamishibai-app
     steps:
       - uses: actions/checkout@v7
       - uses: actions/checkout@v7
         with:
-          repository: kubohiroya/tm-kamishibai
+          repository: kubohiroya/turbowarp-kamishibai-app
           ref: 5355abe74db95881711d17e5ad35db6daea7fd94
-          path: .tmp/tm-kamishibai
+          path: .tmp/turbowarp-kamishibai-app
       - run: corepack enable
       - uses: actions/setup-node@v7
         with:
@@ -26,13 +26,13 @@ jobs:
           cache: pnpm
           cache-dependency-path: |
             pnpm-lock.yaml
-            .tmp/tm-kamishibai/pnpm-lock.yaml
+            .tmp/turbowarp-kamishibai-app/pnpm-lock.yaml
       - run: pnpm install --frozen-lockfile
       - run: pnpm install --frozen-lockfile
-        working-directory: .tmp/tm-kamishibai
-      # Since TM Kamishibai 4.0.0-rc.12 bin/tm-kamishibai.mjs runs the compiled dist/,
+        working-directory: .tmp/turbowarp-kamishibai-app
+      # Since TurboWarp-Kamishibai 4.0.0-rc.12 bin/tm-kamishibai.mjs runs the compiled dist/,
       # which the repository does not commit.
       - run: pnpm run build:lib
-        working-directory: .tmp/tm-kamishibai
+        working-directory: .tmp/turbowarp-kamishibai-app
       - run: pnpm exec playwright install --with-deps chromium webkit
       - run: pnpm run check

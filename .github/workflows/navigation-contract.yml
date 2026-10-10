@@ -28,8 +28,8 @@ jobs:
       - name: Check canonical docs contract
         uses: actions/checkout@v4
         with:
-          repository: kubohiroya/tm-kamishibai-docs
-          ref: e93abd713bcac3bcef279eb44563119d238e0499
+          repository: kubohiroya/turbowarp-kamishibai-docs
+          ref: f6e6d627156ab5f2baf35cf7b30dcbdc352b9b0d
           path: .navigation-contract-source
           fetch-depth: 1
       - run: corepack enable

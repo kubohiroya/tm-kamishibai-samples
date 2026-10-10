@@ -48,7 +48,7 @@ const tutorialCandidateOutputDirectory = path.join(projectRoot, 'tmp/tutorial-ca
 const outputSampleDirectory = path.join(outputDirectory, 'stories/urashima');
 const myOutputSampleDirectory = path.join(outputDirectory, 'stories/my-urashima');
 const tutorialOutputDirectory = path.join(outputDirectory, 'stories/tutorial');
-const publicUrl = 'https://kubohiroya.github.io/tm-kamishibai-samples/';
+const publicUrl = 'https://kubohiroya.github.io/turbowarp-kamishibai-samples/';
 const worksCatalogPath = path.join(siteDirectory, 'works.json');
 const worksSchemaPath = path.join(siteDirectory, 'works.schema.json');
 
@@ -105,10 +105,10 @@ ${items}
       </ul>`;
 }
 
-function renderSiteHeader(assetPrefix: string, pathname = '/tm-kamishibai-samples/'): string {
+function renderSiteHeader(assetPrefix: string, pathname = '/turbowarp-kamishibai-samples/'): string {
   return renderContractSiteHeader({
     assetBase: assetPrefix,
-    site: 'tm-kamishibai-samples',
+    site: 'turbowarp-kamishibai-samples',
     pathname,
   });
 }
@@ -116,14 +116,14 @@ function renderSiteHeader(assetPrefix: string, pathname = '/tm-kamishibai-sample
 function renderSiteFooter(assetPrefix: string): string {
   return `<footer class="site-footer" data-site-footer-version="1">
   <div class="site-footer__inner">
-    <a class="site-footer__brand" href="https://kubohiroya.github.io/tm-kamishibai/">
+    <a class="site-footer__brand" href="https://kubohiroya.github.io/turbowarp-kamishibai-app/">
       <img class="site-footer__symbol" src="${assetPrefix}favicon.png" width="36" height="36" alt="">
-      <span>TM紙芝居</span>
+      <span>TurboWarp紙芝居</span>
     </a>
     <div class="site-footer__legal">
       <p>© 2026 Hiroya Kubo</p>
       <p class="site-footer__notice">各文書・作品・素材には個別の利用条件が適用されます。</p>
-      <a class="site-footer__rights" href="https://kubohiroya.github.io/tm-kamishibai-samples/licenses/">ライセンス・権利表示</a>
+      <a class="site-footer__rights" href="https://kubohiroya.github.io/turbowarp-kamishibai-samples/licenses/">ライセンス・権利表示</a>
     </div>
   </div>
 </footer>`;
@@ -435,8 +435,8 @@ export function renderRootIndex(
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="TM紙芝居の公式サンプル、コミュニティ作品、外部作品を掲載する作品ライブラリ">
-  <title>TM紙芝居 作品ライブラリ</title>
+  <meta name="description" content="TurboWarp紙芝居の公式サンプル、コミュニティ作品、外部作品を掲載する作品ライブラリ">
+  <title>TurboWarp紙芝居 作品ライブラリ</title>
   <link rel="icon" href="favicon.png" type="image/png">
   <link rel="stylesheet" href="site-shell.css">
   <style>
@@ -516,7 +516,7 @@ export function renderRootIndex(
 <body>
 ${renderSiteHeader('')}
 <main id="main-content">
-  <h1>TM紙芝居 作品ライブラリ</h1>
+  <h1>TurboWarp紙芝居 作品ライブラリ</h1>
   <p class="lead">公式サンプル、コミュニティ作品、外部サイトで公開されている作品を、掲載形態と権利情報を区別して紹介します。</p>
   <p>区分、ライセンス、外部作品の扱いについては<a href="WORKS_POLICY.md">作品掲載方針</a>をご確認ください。</p>
 ${categories}
@@ -683,8 +683,8 @@ export function renderSampleIndex(manifest: SiteManifest, work: WorkEntry): stri
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="TM紙芝居 公式サンプル 浦島太郎">
-  <title>浦島太郎 | TM紙芝居 作品ライブラリ</title>
+  <meta name="description" content="TurboWarp紙芝居 公式サンプル 浦島太郎">
+  <title>浦島太郎 | TurboWarp紙芝居 作品ライブラリ</title>
   <link rel="icon" href="../../favicon.png" type="image/png">
   <link rel="stylesheet" href="../../site-shell.css">
   <style>
@@ -807,8 +807,8 @@ export function renderMyUrashimaIndex(
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="TM紙芝居 公式サンプル my-urashima">
-  <title>${escapeHtml(work.title)} | TM紙芝居 作品ライブラリ</title>
+  <meta name="description" content="TurboWarp紙芝居 公式サンプル my-urashima">
+  <title>${escapeHtml(work.title)} | TurboWarp紙芝居 作品ライブラリ</title>
   <link rel="icon" href="../../favicon.png" type="image/png">
   <link rel="stylesheet" href="../../site-shell.css">
   <style>
@@ -896,7 +896,7 @@ export function renderTutorialIndex(
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>${escapeHtml(work.title)} | TM紙芝居 作品ライブラリ</title>
+  <title>${escapeHtml(work.title)} | TurboWarp紙芝居 作品ライブラリ</title>
   <link rel="icon" href="../../favicon.png">
   <link rel="stylesheet" href="../../site-shell.css">
   <style>
@@ -961,8 +961,8 @@ function renderRightsIndex() {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="TM紙芝居 作品ライブラリの作品、素材、サイトに適用されるライセンスと権利表示を案内します">
-  <title>ライセンス・権利表示 | TM紙芝居 作品ライブラリ</title>
+  <meta name="description" content="TurboWarp紙芝居 作品ライブラリの作品、素材、サイトに適用されるライセンスと権利表示を案内します">
+  <title>ライセンス・権利表示 | TurboWarp紙芝居 作品ライブラリ</title>
   <link rel="icon" href="../favicon.png" type="image/png">
   <link rel="stylesheet" href="../site-shell.css">
   <style>
