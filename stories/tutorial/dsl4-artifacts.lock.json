@@ -6,12 +6,12 @@
   "sourceIdentity": "8fc8a89e36aa3287348051123cedf62dc3ca8f810e750b947ffea372c03621d2",
   "runtime": {
     "repository": "https://github.com/kubohiroya/turbowarp-kamishibai-app",
-    "version": "4.0.0-rc.15",
-    "commit": "ed2a5b586189aa90e6f9e6576898975a150b2a3a",
+    "version": "4.0.0-rc.17",
+    "commit": "2372a770b9da89f77522e620c0fa6d39543a5f8b",
     "basePath": "base/kamishibai-4.0.sb3",
-    "baseSourceIdentity": "sha256:205017e79e5a33fff00c28f1674b17e2e1dd9e07979e28f7aa19f6dc111b5e61",
-    "baseSize": 6849521,
-    "baseSha256": "39bf9735652ec0be8bc8679e3727a9cc27e00a688422c279eab9de31de07bd99"
+    "baseSourceIdentity": "sha256:44e18025b2e095e98272dd32d08d3143227650f2ff7db0f3160310ba783796f8",
+    "baseSize": 6901815,
+    "baseSha256": "c8f2fa2037b03e72f19779738bb0b7104f45c9ab250f03f68f6fa5e284028f69"
   },
   "sb3Toolchain": {
     "package": "@kubohiroya/sb3-toolchain",
@@ -169,8 +169,8 @@
   "outputs": {
     "sb3": {
       "path": "tutorial-4.0.sb3",
-      "size": 12745153,
-      "sha256": "06b914236e9a64681b8df35ebb6382b15830c72c5d8a08c2bded78376a50e44e",
+      "size": 12796036,
+      "sha256": "74707e8f57570cbc85a7f0b257e2b12d8dd22fa78529026da99cfd52477b3678",
       "archiveEntryCount": 10,
       "targetNames": [
         "Stage",
@@ -179,8 +179,8 @@
     },
     "sb3Blocks": {
       "path": "tutorial-blocks-4.0.sb3",
-      "size": 6859132,
-      "sha256": "b68f6caa6f25550316d252ff8d8418706d0cdbb3a2cfc9c69e6c88807b54ca3f",
+      "size": 6911256,
+      "sha256": "adfceb7ea79551141223c0afc3ace056bab2edb6e0076c675bbe674ea7c91b35",
       "archiveEntryCount": 10,
       "targetNames": [
         "Stage",
