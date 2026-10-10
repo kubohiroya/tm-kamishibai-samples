@@ -42,6 +42,23 @@ export interface WorkLicense {
   href: string;
 }
 
+/** DSL 4.0 の標準4形式。内部識別名は issue #132 で固定したもの。 */
+export const artifactFormatOrder = ['source-yaml', 'sb3-yaml', 'sb3-blocks', 'html'] as const;
+
+export type ArtifactFormatId = (typeof artifactFormatOrder)[number];
+
+/** 1形式の提供状況。href があれば提供あり、無ければ unavailableReason で理由を述べる。 */
+export interface WorkArtifactFormat {
+  href?: string;
+  unavailableReason?: string;
+  /** ビルド時フィーチャフラグ。無効なあいだは準備中として扱い、リンクを出さない。 */
+  requires?: WorkActionRequirement;
+  /** 提供はしているが前提がある場合の補足。 */
+  note?: string;
+}
+
+export type WorkArtifacts = Record<ArtifactFormatId, WorkArtifactFormat>;
+
 /** 作品の実行に必要なブラウザ機能。宣言した機能は true だけを取る。 */
 export interface WorkCapabilities {
   camera?: true;
@@ -61,6 +78,7 @@ export interface WorkEntry {
   distribution: WorkDistribution;
   license: WorkLicense;
   capabilities?: WorkCapabilities;
+  artifacts?: WorkArtifacts;
   actions: WorkAction[];
   thumbnail?: WorkThumbnail;
 }
@@ -187,6 +205,44 @@ function validateCapabilities(
   }
 }
 
+function validateArtifacts(artifacts: unknown, label: string): asserts artifacts is WorkArtifacts {
+  assertKeys(artifacts, [...artifactFormatOrder], [...artifactFormatOrder], label);
+  for (const format of artifactFormatOrder) {
+    const formatLabel = `${label}.${format}`;
+    assertKeys(
+      artifacts[format],
+      ['href', 'unavailableReason', 'note', 'requires'],
+      [],
+      formatLabel,
+    );
+    const entry = artifacts[format] as Record<string, unknown>;
+    assert.equal(
+      Object.hasOwn(entry, 'href') !== Object.hasOwn(entry, 'unavailableReason'),
+      true,
+      `${formatLabel} must have either href or unavailableReason.`,
+    );
+    if (Object.hasOwn(entry, 'href')) {
+      assertString(entry.href, `${formatLabel}.href`);
+      assert(
+        !/^[a-z]+:/u.test(entry.href as string),
+        `${formatLabel}.href must be site-relative.`,
+      );
+    } else {
+      assertString(entry.unavailableReason, `${formatLabel}.unavailableReason`);
+    }
+    if (Object.hasOwn(entry, 'note')) assertString(entry.note, `${formatLabel}.note`);
+    if (Object.hasOwn(entry, 'requires')) {
+      assert(
+        (['urashimaWeb', 'urashimaDsl4Web', 'myUrashimaDsl4Web'] as unknown[]).includes(
+          entry.requires,
+        ),
+        `${formatLabel}.requires is invalid.`,
+      );
+      assert(Object.hasOwn(entry, 'href'), `${formatLabel}.requires needs href.`);
+    }
+  }
+}
+
 function validateThumbnail(thumbnail: unknown, label: string): asserts thumbnail is WorkThumbnail {
   assertKeys(
     thumbnail,
@@ -260,6 +316,7 @@ export function validateWorksCatalog(catalog: unknown): WorksCatalog {
         'distribution',
         'license',
         'capabilities',
+        'artifacts',
         'actions',
         'thumbnail',
       ],

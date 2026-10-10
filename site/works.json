@@ -71,6 +71,21 @@
       "capabilities": {
         "camera": true
       },
+      "artifacts": {
+        "source-yaml": {
+          "href": "stories/urashima/urashima.k4.yml"
+        },
+        "sb3-yaml": {
+          "href": "stories/urashima/urashima-4.0.sb3"
+        },
+        "sb3-blocks": {
+          "unavailableReason": "ブロック台本SB3は未提供です。TurboWarpのブロックとして台本を書いたSB3は公式CLIで生成できないため、作成してチェックインする入力として扱います。tutorialから順に用意します（issue #132）。"
+        },
+        "html": {
+          "href": "stories/urashima/web-4.0/",
+          "requires": "urashimaDsl4Web"
+        }
+      },
       "actions": [
         {
           "label": "Web版を開く",
@@ -167,6 +182,22 @@
       },
       "capabilities": {
         "camera": true
+      },
+      "artifacts": {
+        "source-yaml": {
+          "href": "stories/my-urashima/my-urashima.k4.yml"
+        },
+        "sb3-yaml": {
+          "unavailableReason": "ワークショップ版は台本を埋め込まず、受講者が編集したYAMLを開いて実行する構成のため提供しません。"
+        },
+        "sb3-blocks": {
+          "unavailableReason": "ブロック台本SB3は未提供です。TurboWarpのブロックとして台本を書いたSB3は公式CLIで生成できないため、作成してチェックインする入力として扱います。tutorialから順に用意します（issue #132）。"
+        },
+        "html": {
+          "href": "stories/my-urashima/web-4.0/",
+          "note": "台本は埋め込まず、開いたYAMLを実行します。",
+          "requires": "myUrashimaDsl4Web"
+        }
       },
       "actions": [
         {
