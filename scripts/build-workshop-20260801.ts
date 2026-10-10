@@ -36,7 +36,7 @@ export interface AssembleWorkshopDistributionOptions {
 }
 
 export const workshopEdition = "20260801";
-export const workshopPdfEnvironmentVariable = "TM_KAMISHIBAI_WORKSHOP_PDF";
+export const workshopPdfEnvironmentVariable = "TURBOWARP_KAMISHIBAI_WORKSHOP_PDF";
 export const workshopResourceDirectories = Object.freeze([
   "drafts",
   "draft-samples",

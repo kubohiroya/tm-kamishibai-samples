@@ -54,7 +54,7 @@ pnpm verify:urashima-dsl4
 
 ## DSL 4.0オフラインSB3の生成
 
-`dsl4-build.config.json`に固定したTurboWarp-Kamishibai commitを、既定では隣接する`../turbowarp-kamishibai-app`にcheckoutして依存関係をインストールします。CIでは同じcommitを`.tmp/turbowarp-kamishibai-app`へcheckoutし、`TM_KAMISHIBAI_DSL4_ROOT`でその場所を指定します。入力となる`base/kamishibai-4.0.sb3`も、DSL 4.0.0-rc.13候補のrelease source identity、サイズ、SHA-256を設定に固定しています。
+`dsl4-build.config.json`に固定したTurboWarp-Kamishibai commitを、既定では隣接する`../turbowarp-kamishibai-app`にcheckoutして依存関係をインストールします。CIでは同じcommitを`.tmp/turbowarp-kamishibai-app`へcheckoutし、`TURBOWARP_KAMISHIBAI_APP_ROOT`でその場所を指定します。入力となる`base/kamishibai-4.0.sb3`も、DSL 4.0.0-rc.13候補のrelease source identity、サイズ、SHA-256を設定に固定しています。
 
 ```bash
 pnpm update:dsl4-artifacts

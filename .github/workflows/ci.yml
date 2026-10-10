@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       TZ: Asia/Tokyo
-      TM_KAMISHIBAI_DSL4_ROOT: ${{ github.workspace }}/.tmp/turbowarp-kamishibai-app
+      TURBOWARP_KAMISHIBAI_APP_ROOT: ${{ github.workspace }}/.tmp/turbowarp-kamishibai-app
     steps:
       - uses: actions/checkout@v7
       - uses: actions/checkout@v7

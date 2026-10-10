@@ -113,7 +113,7 @@ const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 const storyDirectory = path.join(projectRoot, 'stories/tutorial');
 const configPath = path.join(storyDirectory, 'dsl4-build.config.json');
 const defaultKamishibaiRoot = path.resolve(projectRoot, '../turbowarp-kamishibai-app');
-const kamishibaiRootEnvironmentName = 'TM_KAMISHIBAI_DSL4_ROOT';
+const kamishibaiRootEnvironmentName = 'TURBOWARP_KAMISHIBAI_APP_ROOT';
 const zipTimestamp = new Date('2026-08-12T00:00:00.000Z');
 
 const starterSharedFiles = [

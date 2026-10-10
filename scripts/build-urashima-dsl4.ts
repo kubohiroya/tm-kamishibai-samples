@@ -23,7 +23,7 @@ const storyDirectory = path.join(projectRoot, 'stories/urashima');
 const configPath = path.join(storyDirectory, 'dsl4-build.config.json');
 const artifactLockPath = path.join(storyDirectory, 'dsl4-artifacts.lock.json');
 const defaultKamishibaiRoot = path.resolve(projectRoot, '../turbowarp-kamishibai-app');
-const kamishibaiRootEnvironmentName = 'TM_KAMISHIBAI_DSL4_ROOT';
+const kamishibaiRootEnvironmentName = 'TURBOWARP_KAMISHIBAI_APP_ROOT';
 
 function sha256(contents: Uint8Array | string): string {
   return createHash('sha256').update(contents).digest('hex');
