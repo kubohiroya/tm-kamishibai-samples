@@ -2,12 +2,12 @@
   "formatVersion": 1,
   "runtime": {
     "repository": "https://github.com/kubohiroya/turbowarp-kamishibai-app",
-    "version": "4.0.0-rc.18",
-    "commit": "61601e71f594cb0fa865b56b56c6d231d17bbbec",
+    "version": "4.0.0-rc.19",
+    "commit": "a46ee0e3fa3e40eea72ff9af23ba508ae00421ab",
     "basePath": "base/kamishibai-4.0.sb3",
-    "baseSourceIdentity": "sha256:756b18e5296d3e0048b3cf8fcdab787f95b79a35a86099571ac01d857fb60e05",
-    "baseSize": 6902974,
-    "baseSha256": "7c765569ee9ce589398089a602e714efbd8dc5b8a09cc91bef417a3d9d10f65d"
+    "baseSourceIdentity": "sha256:4734fa24b900e9d2bb94e22e00c13465eab898c6e7612157c6a9b6d7c4eadce3",
+    "baseSize": 6905528,
+    "baseSha256": "0a2c06d172a6d6bda090f88eeccc62e4dc4d1c7d34e1170b23568601430591dd"
   },
   "sb3Toolchain": {
     "package": "@kubohiroya/sb3-toolchain",
@@ -463,8 +463,8 @@
   },
   "output": {
     "path": "my-urashima-4.0.sb3",
-    "size": 16248370,
-    "sha256": "779b7968360ea76e9295cfa5933b1593c0918ea7c969b678ecb9982057baccac",
+    "size": 16250193,
+    "sha256": "6638928dbde659b4d280755e431934891b22cd2665b949ab48b7e8ed6fdc9fc1",
     "archiveEntryCount": 51,
     "targetNames": [
       "Stage",
