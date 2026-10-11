@@ -99,9 +99,30 @@ export async function verifyTutorialCandidate(
   );
   assert.equal(publicSurfaces.sourceIdentity, artifactLock.sourceIdentity);
   assert.equal(publicSurfaces.releaseDependency, config.releaseDependency);
-  assert.match(
-    config.releaseDependency as string,
-    /turbowarp-kamishibai-app\/releases\/tag\/v4\.0\.0-rc\.10$/u,
+  // 公開の根拠は、実際にビルドへ使った runtime ピンの release そのもの。
+  // 固定値で書くと repin ごとに書き換えが必要になるので、ピンから組み立てて突き合わせる。
+  const runtimeConfig = await readJson<Dsl4BuildConfig>(
+    path.resolve(storyDirectory, config.runtime.config as string),
+  );
+  const runtimePin = runtimeConfig.runtime;
+  assert.deepEqual(
+    artifactLock.runtime,
+    runtimePin,
+    'Tutorial lock runtime differs from the runtime pin it builds against.',
+  );
+  assert.equal(
+    config.version,
+    runtimePin.version,
+    'Tutorial version must name the app release it builds against.',
+  );
+  assert.equal(
+    config.releaseDependency,
+    `${runtimePin.repository as string}/releases/tag/v${runtimePin.version as string}`,
+    'Tutorial releaseDependency must point at the app release the runtime pin names.',
+  );
+  assert(
+    publication.reason.includes(runtimePin.version as string),
+    'Tutorial publication reason must name the app release whose artifacts justify publishing.',
   );
   assert.doesNotMatch(
     publication.reason,

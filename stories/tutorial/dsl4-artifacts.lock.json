@@ -1,9 +1,9 @@
 {
   "formatVersion": 1,
   "status": "published",
-  "version": "4.0.0-rc.10",
-  "releaseDependency": "https://github.com/kubohiroya/turbowarp-kamishibai-app/releases/tag/v4.0.0-rc.10",
-  "sourceIdentity": "d8e001a0be526c9d63ea765789b82f5b2c576f5a41176268520809c4b807ba5d",
+  "version": "4.0.0-rc.21",
+  "releaseDependency": "https://github.com/kubohiroya/turbowarp-kamishibai-app/releases/tag/v4.0.0-rc.21",
+  "sourceIdentity": "fb5b624617fb4d7f768300f57e0b98071dd768b22c61ee0f07a4369ae6fd00f1",
   "runtime": {
     "repository": "https://github.com/kubohiroya/turbowarp-kamishibai-app",
     "version": "4.0.0-rc.21",
@@ -65,7 +65,7 @@
       {
         "path": "README.md",
         "size": 3560,
-        "sha256": "5f16ed93e21984c7ad12b6df34d735a1b9f3e753a0396643a16f6ad7bb375b32"
+        "sha256": "c9b473c8b02c0bb39ce481e9cb107c7ac55eaff1b97c1451cd6ee712f183af44"
       },
       {
         "path": "addition-kit/README.md",
@@ -235,7 +235,7 @@
   },
   "publication": {
     "enabled": true,
-    "reason": "TurboWarp-Kamishibai 4.0.0-rc.10 release artifacts are published and integrity-verified",
+    "reason": "TurboWarp-Kamishibai 4.0.0-rc.21 release artifacts are published and integrity-verified",
     "issue": "https://github.com/kubohiroya/turbowarp-kamishibai-samples/issues/125"
   }
 }
