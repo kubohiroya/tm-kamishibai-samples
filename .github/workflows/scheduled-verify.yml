@@ -1,0 +1,27 @@
+name: Scheduled verification
+
+# The DSL 3.2 Web build is not hermetic: the TurboWarp Packager pulls extensions at build time, so
+# the packaged bytes can stop matching stories/urashima/artifacts.lock.json without anyone here
+# changing a file. Pull requests may skip the DSL 3.2 browser checks when nothing in them reaches
+# those artifacts; this run never skips anything, so the drift surfaces on a schedule instead of
+# ambushing the next unrelated change.
+on:
+  schedule:
+    # 09:00 Monday, Asia/Tokyo.
+    - cron: "0 0 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      TZ: Asia/Tokyo
+      TURBOWARP_KAMISHIBAI_APP_ROOT: ${{ github.workspace }}/.tmp/turbowarp-kamishibai-app
+    steps:
+      - uses: actions/checkout@v7
+      # No pull request, so every packaged-web check runs.
+      - uses: ./.github/actions/verify

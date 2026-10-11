@@ -16,10 +16,23 @@ import {fileURLToPath} from 'node:url';
  * the next.
  */
 const checks = [
-  'scripts/verify-packaged-web-browser.ts',
-  'scripts/verify-packaged-web-webkit-audio.ts',
-  'scripts/verify-dsl4-packaged-web-browser.ts',
+  {script: 'scripts/verify-packaged-web-browser.ts', line: 'dsl32'},
+  {script: 'scripts/verify-packaged-web-webkit-audio.ts', line: 'dsl32'},
+  {script: 'scripts/verify-dsl4-packaged-web-browser.ts', line: 'dsl4'},
 ] as const;
+
+/**
+ * `all` by default, so running this by hand checks everything.
+ *
+ * The pull-request workflow narrows it to `dsl4` when nothing in the change can reach the DSL 3.2
+ * artifacts -- `scripts/web-checks-scope.ts` owns that judgement -- and the scheduled run never
+ * narrows it, because the DSL 3.2 Web build is not hermetic and drifts on its own.
+ */
+const scope = process.env.KAMISHIBAI_WEB_CHECKS ?? 'all';
+if (scope !== 'all' && scope !== 'dsl4') {
+  throw new Error(`KAMISHIBAI_WEB_CHECKS must be all or dsl4, received: ${scope}`);
+}
+const selected = checks.filter((check) => scope === 'all' || check.line === 'dsl4');
 
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 
@@ -52,7 +65,12 @@ function runCheck(script: string): Promise<CheckResult> {
   });
 }
 
-const results = await Promise.all(checks.map((script) => runCheck(script)));
+if (scope !== 'all') {
+  const skipped = checks.filter((check) => !selected.includes(check)).map(({script}) => script);
+  process.stdout.write(`Skipping the DSL 3.2 packaged-web checks: ${skipped.join(', ')}\n`);
+  process.stdout.write('Nothing in this change reaches them; the scheduled run covers drift.\n');
+}
+const results = await Promise.all(selected.map(({script}) => runCheck(script)));
 for (const result of results) {
   const seconds = (result.ms / 1000).toFixed(1);
   process.stdout.write(`\n--- ${result.script} (${seconds}s, exit ${result.code})\n`);
@@ -61,7 +79,7 @@ for (const result of results) {
 
 const failed = results.filter((result) => result.code !== 0);
 if (failed.length > 0) {
-  process.stdout.write(`\n${failed.length} of ${checks.length} packaged-web checks failed:\n`);
+  process.stdout.write(`\n${failed.length} of ${selected.length} packaged-web checks failed:\n`);
   for (const result of failed) process.stdout.write(`  ${result.script}\n`);
   process.exitCode = 1;
 }
