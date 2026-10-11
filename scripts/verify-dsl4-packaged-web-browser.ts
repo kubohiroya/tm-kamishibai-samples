@@ -398,6 +398,28 @@ try {
       if (!poseSkipAccepted) await tutorial.page.waitForTimeout(1_000);
     }
     assert.equal(poseSkipAccepted, true, 'The active tutorial pose must accept the skip control.');
+
+    // 台本が宣言した`poseRecognition.preview.controls`を、app shellが実際に描いているかを見る。
+    // appのtestはbundleを組んで読み込むところまでで、カメラのあるブラウザで作品を再生しない。
+    // 4.0.0-rc.17以前は、この宣言があるだけで起動時に落ちていた。
+    const previewControls = await tutorial.page.evaluate(() =>
+      [...document.querySelectorAll('[data-dsl4-preview-control]')].map((node) => {
+        const element = node as HTMLElement;
+        const group = element.parentElement as HTMLElement | null;
+        return {
+          control: element.dataset.dsl4PreviewControl ?? '',
+          anchor: group?.dataset.dsl4PreviewControlAnchor ?? '',
+          display: group?.style.display ?? '',
+          labelled: (element.getAttribute('aria-label') ?? '').length > 0,
+          // アイコンはObject URLとして実体化される。残っていればassetの受け渡しが成立している。
+          icon: (element.querySelector('img')?.getAttribute('src') ?? '').startsWith('blob:'),
+        };
+      }),
+    );
+    assert.deepEqual(previewControls, [
+      {control: 'mirroring', anchor: 'top-right', display: 'flex', labelled: true, icon: true},
+      {control: 'cameraMenu', anchor: 'top-left', display: 'flex', labelled: true, icon: true},
+    ]);
     try {
       await tutorial.page.waitForFunction(
         () => {
