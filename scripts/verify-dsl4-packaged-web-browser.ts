@@ -402,6 +402,16 @@ try {
     // 台本が宣言した`poseRecognition.preview.controls`を、app shellが実際に描いているかを見る。
     // appのtestはbundleを組んで読み込むところまでで、カメラのあるブラウザで作品を再生しない。
     // 4.0.0-rc.17以前は、この宣言があるだけで起動時に落ちていた。
+    // 4.0.0-rc.19から、ポーズ認識を使う作品はタイトルで`<usermedia>`を出してカメラを求めます。
+    // 出すのはその要素を持つブラウザだけで、Playwrightが積むChromium 149は持ちません。ここで
+    // 見ているのは「持たないブラウザでは何も変わらない」側です——段は現れず、カメラは従来どおり
+    // 読む側が開き、作品は最後まで進みます（上のskipがそれを示しています）。
+    const cameraPermissionStep = await tutorial.page.evaluate(() => ({
+      supported: 'HTMLUserMediaElement' in globalThis,
+      drawn: Boolean(document.querySelector('[data-dsl4-user-media-gate]')),
+    }));
+    assert.deepEqual(cameraPermissionStep, {supported: false, drawn: false});
+
     const previewControls = await tutorial.page.evaluate(() =>
       [...document.querySelectorAll('[data-dsl4-preview-control]')].map((node) => {
         const element = node as HTMLElement;
