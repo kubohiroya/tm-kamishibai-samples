@@ -16,7 +16,7 @@
     "compact:urashima-actors": "node scripts/compact-urashima-actor-assets.ts",
     "deploy": "gh workflow run deploy.yml --ref main",
     "test": "vitest run",
-    "test:web": "node scripts/verify-packaged-web-browser.ts && node scripts/verify-packaged-web-webkit-audio.ts && node scripts/verify-dsl4-packaged-web-browser.ts",
+    "test:web": "node scripts/run-web-checks.ts",
     "pack:dry-run": "pnpm pack --pack-destination .tmp/pack",
     "update:my-urashima": "node scripts/refresh-story-artifacts.ts --force-my",
     "update:urashima-dsl4-inputs": "node scripts/update-urashima-dsl4-inputs.ts --download",
