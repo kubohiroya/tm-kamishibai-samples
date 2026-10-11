@@ -1,18 +1,18 @@
 {
   "formatVersion": 1,
   "status": "published",
-  "version": "4.0.0-rc.14",
+  "version": "4.0.0-rc.21",
   "published": true,
-  "releaseDependency": "https://github.com/kubohiroya/turbowarp-kamishibai-app/releases/tag/v4.0.0-rc.14",
-  "sourceIdentity": "1bd31118d42bc213653c91d80d88a7d854334c6899a9cd07887db992f2612069",
+  "releaseDependency": "https://github.com/kubohiroya/turbowarp-kamishibai-app/releases/tag/v4.0.0-rc.21",
+  "sourceIdentity": "fb5b624617fb4d7f768300f57e0b98071dd768b22c61ee0f07a4369ae6fd00f1",
   "runtime": {
     "repository": "https://github.com/kubohiroya/turbowarp-kamishibai-app",
-    "version": "4.0.0-rc.14",
-    "commit": "9fdf447bf7995617dab3112f6a80fd3462e0e4e0",
+    "version": "4.0.0-rc.21",
+    "commit": "1393fce089b1f3a2588f36ca80a60cc4d0f73d9a",
     "basePath": "base/kamishibai-4.0.sb3",
-    "baseSourceIdentity": "sha256:bd33a6d5cbe98aaa03b13a001e1bea29700b921b18d8dbf25505bb0965ae2dc8",
-    "baseSize": 6849434,
-    "baseSha256": "dc1e4a645fcfe200264127f5aa21ccb12e08b81b4e2147e69a78c5c55b5349e6"
+    "baseSourceIdentity": "sha256:991caedbe190a69224bf64f29568befa225d17c52319dd5a36ff861c7f969c72",
+    "baseSize": 6907680,
+    "baseSha256": "c88776006c1c3e958131b160966076124fa9e7550d5751ad902d8bfffebe8bbc"
   },
   "license": {
     "spdx": "MPL-2.0",
@@ -23,6 +23,7 @@
     "webUrl": "https://kubohiroya.github.io/turbowarp-kamishibai-samples/stories/tutorial/web-4.0/",
     "sourceUrl": "https://kubohiroya.github.io/turbowarp-kamishibai-samples/stories/tutorial/story.kamishibai.yaml",
     "sb3Url": "https://kubohiroya.github.io/turbowarp-kamishibai-samples/stories/tutorial/tutorial-4.0.sb3",
+    "sb3BlocksUrl": "https://kubohiroya.github.io/turbowarp-kamishibai-samples/stories/tutorial/tutorial-blocks-4.0.sb3",
     "starterUrl": "https://kubohiroya.github.io/turbowarp-kamishibai-samples/stories/tutorial/tutorial-story-starter-4.0.zip",
     "additionKitUrl": "https://kubohiroya.github.io/turbowarp-kamishibai-samples/stories/tutorial/tutorial-story-addition-kit-4.0.zip",
     "manifestUrl": "https://kubohiroya.github.io/turbowarp-kamishibai-samples/stories/tutorial/public-surfaces.json"
@@ -30,13 +31,23 @@
   "artifacts": {
     "source": {
       "path": "story.kamishibai.yaml",
-      "size": 2184,
-      "sha256": "4802082dd6f8225e22449ed1d1690fd29f978a63028d44eb24c8f75f87420b2d"
+      "size": 2708,
+      "sha256": "ce84d1aafb3ede3903bf59f72ae98faac895a750a1524f3ccfa51b4017a747f9"
     },
     "sb3": {
       "path": "tutorial-4.0.sb3",
-      "size": 12745101,
-      "sha256": "07635bccdc19694116cb249afdabb72dea20809755a86efdfb682f24c6911286",
+      "size": 12804065,
+      "sha256": "1a9749dc28aef2bb319ff601c5cbd195c2e18651c1f6642737288828a133196c",
+      "archiveEntryCount": 10,
+      "targetNames": [
+        "Stage",
+        "Student"
+      ]
+    },
+    "sb3Blocks": {
+      "path": "tutorial-blocks-4.0.sb3",
+      "size": 6917204,
+      "sha256": "d95bf23d90d5b407762aca143380daa3ec0404713cc472a70b61885ab4bc9691",
       "archiveEntryCount": 10,
       "targetNames": [
         "Stage",
@@ -46,13 +57,13 @@
     "web": {
       "path": "web-4.0/index.html",
       "contentType": "text/html",
-      "size": 22723049,
-      "sha256": "bc35bbd5cd60fa23213027e2815fcd61aac04eb31b31cf10496730d0f0a4d5d3"
+      "size": 22976222,
+      "sha256": "14cfbcda0073df001b31b61f031d988d2cdae803e0537f99cc96b4e50f312a00"
     },
     "starter": {
       "path": "tutorial-story-starter-4.0.zip",
-      "size": 5914509,
-      "sha256": "78a52962ddacb0f71ff8a0ed85e0c42b5b3f9507ca79eb175317a865af04127e",
+      "size": 5914755,
+      "sha256": "10702462bd20c4f913d326a4cef658c77cffb117f7394423009ae9a684bd7bbe",
       "entries": [
         "tutorial-story/LICENSES.md",
         "tutorial-story/README.md",
@@ -75,8 +86,8 @@
     },
     "additionKit": {
       "path": "tutorial-story-addition-kit-4.0.zip",
-      "size": 5532,
-      "sha256": "d6175860c1f30b05f3da4edf151fdd8ffa1c21edc1fc8dad8b0334695727fc2d",
+      "size": 5716,
+      "sha256": "0d5a958e1ecf32aeab526441b141a424459c40dad567837dd55f94c81b2b292b",
       "entries": [
         "tutorial-story-addition-kit/LICENSES.md",
         "tutorial-story-addition-kit/README.md",

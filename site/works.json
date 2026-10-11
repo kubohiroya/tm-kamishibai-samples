@@ -79,7 +79,8 @@
           "href": "stories/urashima/urashima-4.0.sb3"
         },
         "sb3-blocks": {
-          "unavailableReason": "ブロック台本SB3は未提供です。TurboWarpのブロックとして台本を書いたSB3は公式CLIで生成できないため、作成してチェックインする入力として扱います。tutorialから順に用意します（issue #132）。"
+          "href": "stories/urashima/urashima-blocks-4.0.sb3",
+          "note": "台本をTurboWarpのブロックとして持つ編集用です。再生するには公式CLIの build-dsl4 にベースとして渡します。"
         },
         "html": {
           "href": "stories/urashima/web-4.0/",
@@ -128,6 +129,13 @@
         {
           "label": "オフラインSB3をダウンロード",
           "href": "stories/urashima/urashima-4.0.sb3",
+          "style": "secondary",
+          "download": true,
+          "group": "DSL 4.0 オフライン実行版"
+        },
+        {
+          "label": "ブロック台本SB3をダウンロード",
+          "href": "stories/urashima/urashima-blocks-4.0.sb3",
           "style": "secondary",
           "download": true,
           "group": "DSL 4.0 オフライン実行版"
@@ -191,7 +199,7 @@
           "unavailableReason": "ワークショップ版は台本を埋め込まず、受講者が編集したYAMLを開いて実行する構成のため提供しません。"
         },
         "sb3-blocks": {
-          "unavailableReason": "ブロック台本SB3は未提供です。TurboWarpのブロックとして台本を書いたSB3は公式CLIで生成できないため、作成してチェックインする入力として扱います。tutorialから順に用意します（issue #132）。"
+          "unavailableReason": "ブロック台本SB3は未提供です。この作品の作業用SB3は台本を埋め込まない構成のため、ブロック台本版は作業用SB3とほぼ同一の16MBの複製になり、増える内容は宣言ブロック2件分だけです。容量に見合わないため提供しません（issue #149）。"
         },
         "html": {
           "href": "stories/my-urashima/web-4.0/",

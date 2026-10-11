@@ -4,6 +4,7 @@
 
 - YAML台本、設定、artifact lock、公開surface manifest、README
 - `classroom.svg`、`earthquake-classroom.svg`、`student-ready.svg`、`protect-head.svg`
+- `camera-mirror-to-mirrored.svg`、`camera-mirror-to-unmirrored.svg`、`camera-select.svg`（カメラプレビューの操作UIのアイコン）
 - addition kitのYAML断片
 - `success.mp3`（浦島太郎サンプルの`Jump`成功音と同一bytes）
 - `safety-pose/`（浦島太郎サンプルの`6and7`モデルと同じmodel topology／weights）

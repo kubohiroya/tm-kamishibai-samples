@@ -1,17 +1,17 @@
 {
   "formatVersion": 1,
   "status": "published",
-  "version": "4.0.0-rc.14",
-  "releaseDependency": "https://github.com/kubohiroya/turbowarp-kamishibai-app/releases/tag/v4.0.0-rc.14",
-  "sourceIdentity": "1bd31118d42bc213653c91d80d88a7d854334c6899a9cd07887db992f2612069",
+  "version": "4.0.0-rc.21",
+  "releaseDependency": "https://github.com/kubohiroya/turbowarp-kamishibai-app/releases/tag/v4.0.0-rc.21",
+  "sourceIdentity": "fb5b624617fb4d7f768300f57e0b98071dd768b22c61ee0f07a4369ae6fd00f1",
   "runtime": {
     "repository": "https://github.com/kubohiroya/turbowarp-kamishibai-app",
-    "version": "4.0.0-rc.14",
-    "commit": "9fdf447bf7995617dab3112f6a80fd3462e0e4e0",
+    "version": "4.0.0-rc.21",
+    "commit": "1393fce089b1f3a2588f36ca80a60cc4d0f73d9a",
     "basePath": "base/kamishibai-4.0.sb3",
-    "baseSourceIdentity": "sha256:bd33a6d5cbe98aaa03b13a001e1bea29700b921b18d8dbf25505bb0965ae2dc8",
-    "baseSize": 6849434,
-    "baseSha256": "dc1e4a645fcfe200264127f5aa21ccb12e08b81b4e2147e69a78c5c55b5349e6"
+    "baseSourceIdentity": "sha256:991caedbe190a69224bf64f29568befa225d17c52319dd5a36ff861c7f969c72",
+    "baseSize": 6907680,
+    "baseSha256": "c88776006c1c3e958131b160966076124fa9e7550d5751ad902d8bfffebe8bbc"
   },
   "sb3Toolchain": {
     "package": "@kubohiroya/sb3-toolchain",
@@ -20,8 +20,8 @@
   "sources": {
     "complete": {
       "path": "story.kamishibai.yaml",
-      "size": 2184,
-      "sha256": "4802082dd6f8225e22449ed1d1690fd29f978a63028d44eb24c8f75f87420b2d"
+      "size": 2708,
+      "sha256": "ce84d1aafb3ede3903bf59f72ae98faac895a750a1524f3ccfa51b4017a747f9"
     },
     "starter": {
       "path": "starter.kamishibai.yaml",
@@ -30,6 +30,9 @@
     },
     "completeStructure": {
       "assetIds": [
+        "CameraMirrorToMirrored",
+        "CameraMirrorToUnmirrored",
+        "CameraSelect",
         "Classroom",
         "StudentReady",
         "EarthquakeClassroom",
@@ -56,13 +59,13 @@
     "inputs": [
       {
         "path": "LICENSES.md",
-        "size": 1378,
-        "sha256": "71269597ea1ea37fb4e716e08c5dd7e577c3a818ae92147154f075d18483ff85"
+        "size": 1526,
+        "sha256": "4e7ab42065268af5841f4fa771bc4b56bbf949bc09113446459e7e4935defb3e"
       },
       {
         "path": "README.md",
-        "size": 2577,
-        "sha256": "59052288bd2aa93420e31104ce6e89bd9934d4f610d9e962afc87e30e71f390b"
+        "size": 3560,
+        "sha256": "c9b473c8b02c0bb39ce481e9cb107c7ac55eaff1b97c1451cd6ee712f183af44"
       },
       {
         "path": "addition-kit/README.md",
@@ -76,8 +79,8 @@
       },
       {
         "path": "addition-kit/add-pose-scene.yml.txt",
-        "size": 2184,
-        "sha256": "4802082dd6f8225e22449ed1d1690fd29f978a63028d44eb24c8f75f87420b2d"
+        "size": 2708,
+        "sha256": "ce84d1aafb3ede3903bf59f72ae98faac895a750a1524f3ccfa51b4017a747f9"
       },
       {
         "path": "addition-kit/earthquake-classroom.svg",
@@ -151,8 +154,8 @@
       },
       {
         "path": "story.kamishibai.yaml",
-        "size": 2184,
-        "sha256": "4802082dd6f8225e22449ed1d1690fd29f978a63028d44eb24c8f75f87420b2d"
+        "size": 2708,
+        "sha256": "ce84d1aafb3ede3903bf59f72ae98faac895a750a1524f3ccfa51b4017a747f9"
       },
       {
         "path": "student-ready.svg",
@@ -169,8 +172,18 @@
   "outputs": {
     "sb3": {
       "path": "tutorial-4.0.sb3",
-      "size": 12745101,
-      "sha256": "07635bccdc19694116cb249afdabb72dea20809755a86efdfb682f24c6911286",
+      "size": 12804065,
+      "sha256": "1a9749dc28aef2bb319ff601c5cbd195c2e18651c1f6642737288828a133196c",
+      "archiveEntryCount": 10,
+      "targetNames": [
+        "Stage",
+        "Student"
+      ]
+    },
+    "sb3Blocks": {
+      "path": "tutorial-blocks-4.0.sb3",
+      "size": 6917204,
+      "sha256": "d95bf23d90d5b407762aca143380daa3ec0404713cc472a70b61885ab4bc9691",
       "archiveEntryCount": 10,
       "targetNames": [
         "Stage",
@@ -179,8 +192,8 @@
     },
     "starter": {
       "path": "tutorial-story-starter-4.0.zip",
-      "size": 5914509,
-      "sha256": "78a52962ddacb0f71ff8a0ed85e0c42b5b3f9507ca79eb175317a865af04127e",
+      "size": 5914755,
+      "sha256": "10702462bd20c4f913d326a4cef658c77cffb117f7394423009ae9a684bd7bbe",
       "entries": [
         "tutorial-story/LICENSES.md",
         "tutorial-story/README.md",
@@ -203,8 +216,8 @@
     },
     "additionKit": {
       "path": "tutorial-story-addition-kit-4.0.zip",
-      "size": 5532,
-      "sha256": "d6175860c1f30b05f3da4edf151fdd8ffa1c21edc1fc8dad8b0334695727fc2d",
+      "size": 5716,
+      "sha256": "0d5a958e1ecf32aeab526441b141a424459c40dad567837dd55f94c81b2b292b",
       "entries": [
         "tutorial-story-addition-kit/LICENSES.md",
         "tutorial-story-addition-kit/README.md",
@@ -222,7 +235,7 @@
   },
   "publication": {
     "enabled": true,
-    "reason": "TurboWarp-Kamishibai 4.0.0-rc.14 release artifacts are published and integrity-verified",
+    "reason": "TurboWarp-Kamishibai 4.0.0-rc.21 release artifacts are published and integrity-verified",
     "issue": "https://github.com/kubohiroya/turbowarp-kamishibai-samples/issues/125"
   }
 }

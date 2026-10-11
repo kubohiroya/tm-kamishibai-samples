@@ -36,6 +36,8 @@ export interface Dsl4ArtifactLock {
   sb3Toolchain: {package: string; version: string};
   source: Dsl4SourceDigest;
   output: Dsl4OutputDigest;
+  /** ブロック台本SB3。台本を宣言ブロックとして持つauthoring成果物を出す作品だけが持つ。 */
+  blocksOutput?: Dsl4OutputDigest;
   [key: string]: unknown;
 }
 

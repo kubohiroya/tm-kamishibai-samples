@@ -27,6 +27,7 @@ export interface TutorialCandidateVerification {
   published: boolean;
   sourceIdentity: string;
   sb3Sha256: string;
+  sb3BlocksSha256: string;
   starterSha256: string;
   webSha256: string;
 }
@@ -171,8 +172,13 @@ export async function verifyTutorialCandidate(
     'できた！ 頭を守れたね。揺れがおさまるまで、そのまま待とう。',
   );
 
-  const [sb3, starterArchive, additionArchive, web] = await Promise.all([
+  const [sb3, blocksSb3, starterArchive, additionArchive, web] = await Promise.all([
     verifyRecord(candidateOutputDirectory, artifactLock.outputs.sb3, 'Tutorial SB3'),
+    verifyRecord(
+      candidateOutputDirectory,
+      artifactLock.outputs.sb3Blocks,
+      'Tutorial block source SB3',
+    ),
     verifyRecord(candidateOutputDirectory, artifactLock.outputs.starter, 'Tutorial starter'),
     verifyRecord(
       candidateOutputDirectory,
@@ -192,6 +198,19 @@ export async function verifyTutorialCandidate(
     project.extensionStorage?.kubohiroyakamishibai4?.components
       ?.kubohiroyakamishibairuntime4?.application?.mode,
     'story',
+  );
+  // ブロック台本SB3は authoring 成果物なので、payload ではなくブロックに台本を持つ。
+  const blocksProject = JSON.parse(
+    strFromU8(unzipSync(new Uint8Array(blocksSb3))['project.json'] as Uint8Array),
+  ) as ScratchProject;
+  assert.deepEqual(
+    blocksProject.targets.map(({name}) => name),
+    artifactLock.outputs.sb3Blocks.targetNames,
+  );
+  assert.equal(
+    blocksProject.extensionStorage?.kubohiroyakamishibai4?.components
+      ?.kubohiroyakamishibairuntime4?.application?.mode,
+    'menu',
   );
   assert.match(web.toString('utf8', 0, 256), /^<!DOCTYPE html>/u);
   assert(
@@ -235,6 +254,7 @@ export async function verifyTutorialCandidate(
     published: publication.enabled,
     sourceIdentity: artifactLock.sourceIdentity,
     sb3Sha256: artifactLock.outputs.sb3.sha256,
+    sb3BlocksSha256: artifactLock.outputs.sb3Blocks.sha256,
     starterSha256: artifactLock.outputs.starter.sha256,
     webSha256: webLock.output.sha256,
   };

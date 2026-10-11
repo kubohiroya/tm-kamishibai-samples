@@ -2,16 +2,17 @@
   "formatVersion": 1,
   "runtime": {
     "repository": "https://github.com/kubohiroya/turbowarp-kamishibai-app",
-    "version": "4.0.0-rc.14",
-    "commit": "9fdf447bf7995617dab3112f6a80fd3462e0e4e0",
+    "version": "4.0.0-rc.21",
+    "commit": "1393fce089b1f3a2588f36ca80a60cc4d0f73d9a",
     "basePath": "base/kamishibai-4.0.sb3",
-    "baseSourceIdentity": "sha256:bd33a6d5cbe98aaa03b13a001e1bea29700b921b18d8dbf25505bb0965ae2dc8",
-    "baseSize": 6849434,
-    "baseSha256": "dc1e4a645fcfe200264127f5aa21ccb12e08b81b4e2147e69a78c5c55b5349e6"
+    "baseSourceIdentity": "sha256:991caedbe190a69224bf64f29568befa225d17c52319dd5a36ff861c7f969c72",
+    "baseSize": 6907680,
+    "baseSha256": "c88776006c1c3e958131b160966076124fa9e7550d5751ad902d8bfffebe8bbc"
   },
   "sourceManifest": "project.source.json",
   "projectAssets": "project-assets-dsl4.yml",
   "output": "urashima-4.0.sb3",
+  "blocksOutput": "urashima-blocks-4.0.sb3",
   "webArtifactsLock": "dsl4-web-artifacts.lock.json",
   "limits": {
     "maxSourceBytes": 262144,
@@ -48,7 +49,7 @@
     "runtimeCapabilities": [
       {
         "capability": "camera",
-        "purpose": "TurboWarp TMによるポーズ認識"
+        "purpose": "Teachable Machine拡張によるポーズ認識"
       },
       {
         "capability": "audio",

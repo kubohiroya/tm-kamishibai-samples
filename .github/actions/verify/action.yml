@@ -1,0 +1,90 @@
+name: Verify the samples site
+description: >-
+  Checks out the pinned TurboWarp-Kamishibai builder, installs both workspaces and runs
+  pnpm run check. Shared by the pull-request workflow and the Pages deployment so the two
+  cannot drift; a composite action keeps dist/ in the caller's workspace for upload.
+
+inputs:
+  pull-request:
+    description: >-
+      The pull request being verified. Given one, the two DSL 3.2 packaged-web browser checks are
+      skipped when nothing it touches can reach their artifacts -- scripts/web-checks-scope.ts
+      makes that judgement. Left empty, as on the Pages deployment and the scheduled run,
+      everything runs.
+    required: false
+    default: ""
+
+runs:
+  using: composite
+  steps:
+    # stories/urashima/dsl4-build.config.json is the single place the pinned builder commit
+    # is written. The build asserts the checkout's HEAD against it, so reading the ref from
+    # here means a repin is one edit instead of one per workflow.
+    - id: pin
+      shell: bash
+      run: |
+        commit=$(node -e "process.stdout.write(require('./stories/urashima/dsl4-build.config.json').runtime.commit)")
+        printf 'commit=%s\n' "$commit" >> "$GITHUB_OUTPUT"
+        printf 'Pinned builder commit: %s\n' "$commit"
+    - uses: actions/checkout@v7
+      with:
+        repository: kubohiroya/turbowarp-kamishibai-app
+        ref: ${{ steps.pin.outputs.commit }}
+        path: .tmp/turbowarp-kamishibai-app
+    - shell: bash
+      run: corepack enable
+    - uses: actions/setup-node@v7
+      with:
+        node-version: 24
+        cache: pnpm
+        cache-dependency-path: |
+          pnpm-lock.yaml
+          .tmp/turbowarp-kamishibai-app/pnpm-lock.yaml
+    - shell: bash
+      run: pnpm install --frozen-lockfile
+    - shell: bash
+      working-directory: .tmp/turbowarp-kamishibai-app
+      run: pnpm install --frozen-lockfile
+    # Since 4.0.0-rc.12 the pinned CLI runs the compiled dist/, which
+    # TurboWarp-Kamishibai does not commit.
+    - shell: bash
+      working-directory: .tmp/turbowarp-kamishibai-app
+      run: pnpm run build:lib
+    # Downloading Chromium and WebKit costs about a minute of every run, and the browsers
+    # only change when Playwright does.
+    - id: playwright-version
+      shell: bash
+      run: |
+        version=$(node -e "process.stdout.write(require('playwright/package.json').version)")
+        printf 'version=%s\n' "$version" >> "$GITHUB_OUTPUT"
+    - id: playwright-cache
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/ms-playwright
+        key: playwright-${{ runner.os }}-${{ steps.playwright-version.outputs.version }}-chromium-webkit
+    # The OS packages the browsers link against live outside the cached directory, so they
+    # are installed either way; only the browser downloads are skipped on a hit.
+    - if: steps.playwright-cache.outputs.cache-hit == 'true'
+      shell: bash
+      run: pnpm exec playwright install-deps chromium webkit
+    - if: steps.playwright-cache.outputs.cache-hit != 'true'
+      shell: bash
+      run: pnpm exec playwright install --with-deps chromium webkit
+    # Asking GitHub for the changed files is exact and needs no deep fetch. The repository owns the
+    # rule itself, where it can be read and tested, rather than the workflow.
+    - id: scope
+      if: inputs.pull-request != ''
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+        PULL_REQUEST: ${{ inputs.pull-request }}
+      run: |
+        scope=$(gh api --paginate \
+          "repos/${GITHUB_REPOSITORY}/pulls/${PULL_REQUEST}/files" --jq '.[].filename' \
+          | node scripts/web-checks-scope.ts)
+        printf 'web-checks=%s\n' "$scope" >> "$GITHUB_OUTPUT"
+        printf 'Packaged-web checks: %s\n' "$scope"
+    - shell: bash
+      env:
+        KAMISHIBAI_WEB_CHECKS: ${{ steps.scope.outputs.web-checks || 'all' }}
+      run: pnpm run check

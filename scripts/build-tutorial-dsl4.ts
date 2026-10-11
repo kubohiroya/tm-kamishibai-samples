@@ -56,6 +56,7 @@ export interface TutorialArtifactLock {
   };
   outputs: {
     sb3: DependencyRecord & ProjectInspection;
+    sb3Blocks: DependencyRecord & ProjectInspection;
     starter: ArchiveRecord;
     additionKit: ArchiveRecord;
   };
@@ -78,6 +79,7 @@ export interface TutorialPublicSurfaces {
     webUrl: string;
     sourceUrl: string;
     sb3Url: string;
+    sb3BlocksUrl: string;
     starterUrl: string;
     additionKitUrl: string;
     manifestUrl: string;
@@ -85,6 +87,7 @@ export interface TutorialPublicSurfaces {
   artifacts: {
     source: DependencyRecord;
     sb3: DependencyRecord;
+    sb3Blocks: DependencyRecord;
     web: {path: string; size: number; sha256: string};
     starter: ArchiveRecord;
     additionKit: ArchiveRecord;
@@ -228,6 +231,59 @@ function inspectProject(sb3Bytes: Uint8Array): ProjectInspection {
   };
 }
 
+/**
+ * ブロック台本SB3の検査。台本がブロックにあり、payloadには無いことを確かめる。
+ *
+ * `author-block-dsl` が書くのは宣言ハットと `dsl4SourceFromYamlJson` の2ブロックで、runtime側の
+ * handlerは不活性。つまりこれは作者がTurboWarpで読み・直すためのauthoring表現で、再生できる形に
+ * するのは `build-dsl4` 側である。したがって埋め込みpayloadはベースのstubのままで良く、むしろ
+ * tutorialの台本がpayloadへ混入していないことを確認する必要がある。
+ * @see https://github.com/kubohiroya/turbowarp-kamishibai-samples/issues/132
+ */
+function inspectBlockProject(sb3Bytes: Uint8Array, sourceText: string): ProjectInspection {
+  const archive = unzipSync(new Uint8Array(sb3Bytes));
+  const project = JSON.parse(strFromU8(archive['project.json'] as Uint8Array)) as ScratchProject;
+  const stage = project.targets.find((target) => target.name === 'Stage');
+  assert(stage, 'The block source project must keep its Stage.');
+  assert.deepEqual(
+    project.targets.map(({name}) => name),
+    ['Stage', 'Student'],
+    'The block source project must keep the tutorial targets.',
+  );
+  assert(project.extensions?.includes('kubohiroyakamishibai4'));
+  const blocks = stage.blocks as Record<string, {opcode: string; topLevel?: boolean; next?: string | null; inputs?: Record<string, unknown>}>;
+  const bundled = (member: string) =>
+    `kubohiroyakamishibai4_kubohiroyakamishibairuntime4__${member}`;
+  const hatId = Object.keys(blocks).find(
+    (id) => blocks[id]?.opcode === bundled('whenDsl4Source') && blocks[id]?.topLevel === true,
+  );
+  assert(hatId, 'The block source project must declare one top-level DSL source hat.');
+  const fragmentId = blocks[hatId]?.next;
+  assert(fragmentId, 'The DSL source hat must carry a source fragment.');
+  assert.equal(blocks[fragmentId]?.opcode, bundled('dsl4SourceFromYamlJson'));
+  assert.deepEqual(
+    blocks[fragmentId]?.inputs?.FRAGMENT,
+    [1, [10, sourceText]],
+    'The source fragment must hold the story source verbatim.',
+  );
+  const component =
+    project.extensionStorage?.kubohiroyakamishibai4?.components?.kubohiroyakamishibairuntime4;
+  assert.equal(
+    component?.application?.mode,
+    'menu',
+    'The block source project must stay the authoring base, not a built story.',
+  );
+  assert.notEqual(
+    (component?.source as {text?: string} | undefined)?.text,
+    sourceText,
+    'The block source project must hold the script as blocks, not as an embedded payload.',
+  );
+  return {
+    archiveEntryCount: Object.keys(archive).length,
+    targetNames: project.targets.map(({name}) => name),
+  };
+}
+
 async function canonicalizeSb3(inputPath: string, sourceDirectory: string): Promise<Buffer> {
   await importSb3({inputPath, outputDirectory: sourceDirectory});
   const first = await createDeterministicSb3(sourceDirectory);
@@ -316,6 +372,7 @@ export function createTutorialPublicSurfaces(
       webUrl: `${root}${webLock.publicPath}`,
       sourceUrl: `${root}story.kamishibai.yaml`,
       sb3Url: `${root}${artifactLock.outputs.sb3.path}`,
+      sb3BlocksUrl: `${root}${artifactLock.outputs.sb3Blocks.path}`,
       starterUrl: `${root}${artifactLock.outputs.starter.path}`,
       additionKitUrl: `${root}${artifactLock.outputs.additionKit.path}`,
       manifestUrl: `${root}${config.publicSurfaces as string}`,
@@ -323,6 +380,7 @@ export function createTutorialPublicSurfaces(
     artifacts: {
       source: artifactLock.sources.complete,
       sb3: artifactLock.outputs.sb3,
+      sb3Blocks: artifactLock.outputs.sb3Blocks,
       web: webLock.output,
       starter: artifactLock.outputs.starter,
       additionKit: artifactLock.outputs.additionKit,
@@ -434,6 +492,25 @@ export async function buildTutorialDsl4({
       path.join(temporaryDirectory, 'canonical-source'),
     );
     const project = inspectProject(canonicalBytes);
+    const blocksPath = path.join(temporaryDirectory, 'block-source.sb3');
+    commandResult(
+      process.execPath,
+      [
+        builderCli,
+        'author-block-dsl',
+        '--input',
+        path.join(storyDirectory, sourceName),
+        '--base',
+        actorBasePath,
+        '--output',
+        blocksPath,
+        '--max-source-bytes',
+        String(limits.maxSourceBytes),
+      ],
+      {cwd: kamishibaiRoot},
+    );
+    const blocksBytes = await readFile(blocksPath);
+    const blocksProject = inspectBlockProject(blocksBytes, sourceBytes.toString('utf8'));
     const archives = await buildArchives(config);
     const inputPaths = [
       sourceName,
@@ -484,6 +561,12 @@ export async function buildTutorialDsl4({
           sha256: sha256(canonicalBytes),
           ...project,
         },
+        sb3Blocks: {
+          path: config.blocksOutput as string,
+          size: blocksBytes.length,
+          sha256: sha256(blocksBytes),
+          ...blocksProject,
+        },
         starter: archives.starter.record,
         additionKit: archives.additionKit.record,
       },
@@ -492,6 +575,7 @@ export async function buildTutorialDsl4({
     };
     const committed = {
       sb3: path.join(storyDirectory, config.output),
+      sb3Blocks: path.join(storyDirectory, config.blocksOutput as string),
       starter: path.join(storyDirectory, archiveNames.starter as string),
       additionKit: path.join(storyDirectory, archiveNames.additionKit as string),
       lock: path.join(storyDirectory, config.artifactsLock as string),
@@ -499,6 +583,7 @@ export async function buildTutorialDsl4({
     if (writeLock) {
       await Promise.all([
         writeAtomically(committed.sb3, canonicalBytes),
+        writeAtomically(committed.sb3Blocks, blocksBytes),
         writeAtomically(committed.starter, archives.starter.bytes),
         writeAtomically(committed.additionKit, archives.additionKit.bytes),
         writeAtomically(
@@ -513,12 +598,14 @@ export async function buildTutorialDsl4({
         'Tutorial artifact lock is stale; run pnpm update:tutorial-dsl4.',
       );
       if (verifyCommittedOutput) {
-        const [sb3, starterArchive, additionArchive] = await Promise.all([
+        const [sb3, blocksSb3, starterArchive, additionArchive] = await Promise.all([
           readFile(committed.sb3),
+          readFile(committed.sb3Blocks),
           readFile(committed.starter),
           readFile(committed.additionKit),
         ]);
         assert.deepEqual(sb3, canonicalBytes, 'Tutorial SB3 is stale.');
+        assert.deepEqual(blocksSb3, blocksBytes, 'Tutorial block source SB3 is stale.');
         assert.deepEqual(starterArchive, archives.starter.bytes, 'Tutorial starter ZIP is stale.');
         assert.deepEqual(
           additionArchive,
@@ -530,6 +617,10 @@ export async function buildTutorialDsl4({
     if (publishedOutputDirectory) {
       await Promise.all([
         writeAtomically(path.join(publishedOutputDirectory, config.output), canonicalBytes),
+        writeAtomically(
+          path.join(publishedOutputDirectory, config.blocksOutput as string),
+          blocksBytes,
+        ),
         writeAtomically(
           path.join(publishedOutputDirectory, archiveNames.starter as string),
           archives.starter.bytes,

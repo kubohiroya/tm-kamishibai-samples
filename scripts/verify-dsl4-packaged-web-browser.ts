@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {createServer} from 'node:http';
-import {readFile} from 'node:fs/promises';
+import {mkdir, readFile, writeFile} from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 
@@ -162,12 +162,46 @@ async function openDsl4Page(
   return {canvasReadbackWarnings, externalRequests, failures, page};
 }
 
+/**
+ * Chromiumの既定のフェイクカメラは、色の帯が流れていく動画を映します。チュートリアルの
+ * `Student.pose`は確信度0.5を1秒保てば成立し（`idleChargePerSecond`は0）、その流れる模様は
+ * `頭を守る`を56〜85%と読むことがあるので、ポーズ待ちが読み飛ばし操作より先に自力で成立して
+ * しまい、下の「skip控えを受け付ける」検証がときどき落ちていました。
+ *
+ * 一色だけの一枚絵を映せば、推論の入力はカメラ映像の切り出し方や左右反転に左右されません。
+ * ポーズ認識拡張の切り出しが変わっても分類結果は変わらず、灰色一色では`頭を守る`は1%に留まる
+ * ので、ポーズ待ちは読み飛ばし操作を待ち続けます。
+ */
+async function writeUniformFakeCameraVideo(): Promise<string> {
+  const width = 640;
+  const height = 480;
+  const frames = 2;
+  const luma = 128;
+  const chroma = 128;
+  const header = Buffer.from(`YUV4MPEG2 W${width} H${height} F30:1 It A1:1 C420jpeg\n`, 'ascii');
+  const frame = Buffer.concat([
+    Buffer.from('FRAME\n', 'ascii'),
+    Buffer.alloc(width * height, luma),
+    Buffer.alloc((width * height) / 2, chroma),
+  ]);
+  const videoPath = path.join(projectRoot, 'tmp/fake-camera-uniform.y4m');
+  await mkdir(path.dirname(videoPath), {recursive: true});
+  await writeFile(videoPath, Buffer.concat([header, ...Array.from({length: frames}, () => frame)]));
+  return videoPath;
+}
+
+const fakeCameraVideoPath = await writeUniformFakeCameraVideo();
+
 let browser;
 try {
   const origin = listeningOrigin(server);
   browser = await chromium.launch({
     headless: true,
-    args: ['--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream'],
+    args: [
+      '--use-fake-device-for-media-stream',
+      '--use-fake-ui-for-media-stream',
+      `--use-file-for-fake-video-capture=${fakeCameraVideoPath}`,
+    ],
   });
 
   if (urashimaEnabled) {
@@ -398,6 +432,38 @@ try {
       if (!poseSkipAccepted) await tutorial.page.waitForTimeout(1_000);
     }
     assert.equal(poseSkipAccepted, true, 'The active tutorial pose must accept the skip control.');
+
+    // 台本が宣言した`poseRecognition.preview.controls`を、app shellが実際に描いているかを見る。
+    // appのtestはbundleを組んで読み込むところまでで、カメラのあるブラウザで作品を再生しない。
+    // 4.0.0-rc.17以前は、この宣言があるだけで起動時に落ちていた。
+    // 4.0.0-rc.19から、ポーズ認識を使う作品はタイトルで`<usermedia>`を出してカメラを求めます。
+    // 出すのはその要素を持つブラウザだけで、Playwrightが積むChromium 149は持ちません。ここで
+    // 見ているのは「持たないブラウザでは何も変わらない」側です——段は現れず、カメラは従来どおり
+    // 読む側が開き、作品は最後まで進みます（上のskipがそれを示しています）。
+    const cameraPermissionStep = await tutorial.page.evaluate(() => ({
+      supported: 'HTMLUserMediaElement' in globalThis,
+      drawn: Boolean(document.querySelector('[data-dsl4-user-media-gate]')),
+    }));
+    assert.deepEqual(cameraPermissionStep, {supported: false, drawn: false});
+
+    const previewControls = await tutorial.page.evaluate(() =>
+      [...document.querySelectorAll('[data-dsl4-preview-control]')].map((node) => {
+        const element = node as HTMLElement;
+        const group = element.parentElement as HTMLElement | null;
+        return {
+          control: element.dataset.dsl4PreviewControl ?? '',
+          anchor: group?.dataset.dsl4PreviewControlAnchor ?? '',
+          display: group?.style.display ?? '',
+          labelled: (element.getAttribute('aria-label') ?? '').length > 0,
+          // アイコンはObject URLとして実体化される。残っていればassetの受け渡しが成立している。
+          icon: (element.querySelector('img')?.getAttribute('src') ?? '').startsWith('blob:'),
+        };
+      }),
+    );
+    assert.deepEqual(previewControls, [
+      {control: 'mirroring', anchor: 'top-right', display: 'flex', labelled: true, icon: true},
+      {control: 'cameraMenu', anchor: 'top-left', display: 'flex', labelled: true, icon: true},
+    ]);
     try {
       await tutorial.page.waitForFunction(
         () => {
@@ -462,8 +528,9 @@ try {
     }
     assert.deepEqual(tutorial.externalRequests, []);
     assert.deepEqual(tutorial.failures, []);
-    // TMPose 1.12.0 retains the normal Canvas2D context after physical-camera
-    // benchmarks found no repeatable gain from the readback hint. Chromium may warn once.
+    // The embedded Teachable Machine extension at 1.12.0 retains the normal Canvas2D context
+    // after physical-camera benchmarks found no repeatable gain from the readback hint.
+    // Chromium may warn once.
     assert(
       tutorial.canvasReadbackWarnings.length <= 1,
       `Tutorial emitted repeated Canvas readback warnings: ${tutorial.canvasReadbackWarnings.join('\n')}`,

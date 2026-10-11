@@ -4,7 +4,7 @@ DSL 4.0チュートリアルの「紙芝居を遊ぶ」「紙芝居を作る」�
 最小作品です。教室で地震の揺れを感じた参加者が、自分の身を守るために丈夫な机の下へ入り、
 両手で頭を守る流れを練習します。
 
-公開はTurboWarp-Kamishibai `4.0.0-rc.14`のrelease固定だけに依存します。samplesを先に公開し、
+公開はTurboWarp-Kamishibai `4.0.0-rc.21`のrelease固定だけに依存します。samplesを先に公開し、
 docs側はその公開surfaceを使ってcaptureとチュートリアルpublicationを行います。
 
 ## 正本と成果物
@@ -14,6 +14,10 @@ docs側はその公開surfaceを使ってcaptureとチュートリアルpublicat
 - `addition-kit/`: 揺れている教室、頭を守る見本、YAML断片
 - `safety-pose/`: 「頭を守る」ラベルを含む検証済みポーズモデル
 - `tutorial-4.0.sb3`: 完成版の自己完結SB3
+- `tutorial-blocks-4.0.sb3`: 台本をTurboWarpの宣言ブロックとして持つ編集用SB3。runtime側のhandlerは
+  不活性なので、これ自体は再生しません。再生できる形にするには公式CLIの`build-dsl4`へ`--base`として
+  渡します。`pnpm verify`は、ここから書き戻したYAMLが`story.kamishibai.yaml`と同じ意味であることを
+  canonical形で確認します
 - `tutorial-story-starter-4.0.zip`: starterとaddition kitをまとめた配布物
 - `tutorial-story-addition-kit-4.0.zip`: addition kitだけの配布物
 - `public-surfaces.json`: 公開URL、version、integrity、license、公開状態
@@ -32,8 +36,13 @@ docs側はその公開surfaceを使ってcaptureとチュートリアルpublicat
 
 ## 公開フラグ
 
-`dsl4-build.config.json`の`publication.enabled`は起動時固定でONです。`4.0.0-rc.14`の固定release
+`dsl4-build.config.json`の`publication.enabled`は起動時固定でONです。`4.0.0-rc.21`の固定release
 sourceから成果物を再現してブラウザー検証し、`dist/`と作品一覧へ公開します。docs側のcapture完了は
 公開条件にしません。問題時はフラグをOFFへ戻して4.0チュートリアルの公開導線だけを停止し、既存3.2成果物を維持します。
 
-完成版とaddition kitは`poseRecognition.preview.overlay`を使い、手首ジョイントとボーンをカメラ映像へ重ねて表示します。これはTurboWarp TMのoverlay APIを利用する例です。
+完成版とaddition kitは`poseRecognition.preview.overlay`を使い、手首ジョイントとボーンをカメラ映像へ重ねて表示します。これはTeachable Machine拡張のoverlay APIを利用する例です。
+
+あわせて`poseRecognition.preview.controls`も宣言し、カメラ映像の左右反転ボタン（右上）とカメラ選択メニュー（左上）を
+出します。描くのはapp shellの固定rendererで、作品側はアイコンと位置を指定するだけです。アイコンは`kind: image`の
+素材として台本に宣言します（スプライトのコスチュームではないので`project-assets-dsl4.yml`には置きません）。
+カメラが動いている間だけ表示され、カメラを止めると消えます。

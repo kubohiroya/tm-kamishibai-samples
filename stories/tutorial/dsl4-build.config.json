@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "status": "published",
-  "version": "4.0.0-rc.14",
-  "releaseDependency": "https://github.com/kubohiroya/turbowarp-kamishibai-app/releases/tag/v4.0.0-rc.14",
+  "version": "4.0.0-rc.21",
+  "releaseDependency": "https://github.com/kubohiroya/turbowarp-kamishibai-app/releases/tag/v4.0.0-rc.21",
   "runtime": {
     "config": "../urashima/dsl4-build.config.json"
   },
@@ -12,6 +12,7 @@
   "starterManifest": "starter/project.source.json",
   "projectAssets": "project-assets-dsl4.yml",
   "output": "tutorial-4.0.sb3",
+  "blocksOutput": "tutorial-blocks-4.0.sb3",
   "artifactsLock": "dsl4-artifacts.lock.json",
   "publicSurfaces": "public-surfaces.json",
   "archives": {
@@ -26,7 +27,7 @@
   },
   "publication": {
     "enabled": true,
-    "reason": "TurboWarp-Kamishibai 4.0.0-rc.14 release artifacts are published and integrity-verified",
+    "reason": "TurboWarp-Kamishibai 4.0.0-rc.21 release artifacts are published and integrity-verified",
     "issue": "https://github.com/kubohiroya/turbowarp-kamishibai-samples/issues/125"
   },
   "webArtifactsLock": "dsl4-web-artifacts.lock.json",
@@ -92,7 +93,7 @@
       "slides": [
         {
           "src": "stories/tutorial/card-scenes/01.webp",
-          "alt": "TM紙芝居4.0.0-rc.6のタイトル画面",
+          "alt": "4.0.0-rc.6のタイトル画面",
           "caption": "4.0.0-rc.6のタイトル"
         },
         {
@@ -128,7 +129,8 @@
         "href": "stories/tutorial/tutorial-4.0.sb3"
       },
       "sb3-blocks": {
-        "unavailableReason": "ブロック台本SB3は未提供です。TurboWarpのブロックとして台本を書いたSB3は公式CLIで生成できないため、作成してチェックインする入力として扱います。tutorialから順に用意します（issue #132）。"
+        "href": "stories/tutorial/tutorial-blocks-4.0.sb3",
+        "note": "台本をTurboWarpのブロックとして持つ編集用です。再生するには公式CLIの build-dsl4 にベースとして渡します。"
       },
       "html": {
         "href": "stories/tutorial/web-4.0/"
@@ -152,6 +154,13 @@
       {
         "label": "完成版SB3をダウンロード",
         "href": "stories/tutorial/tutorial-4.0.sb3",
+        "style": "secondary",
+        "download": true,
+        "group": "DSL 4.0 チュートリアル"
+      },
+      {
+        "label": "ブロック台本SB3をダウンロード",
+        "href": "stories/tutorial/tutorial-blocks-4.0.sb3",
         "style": "secondary",
         "download": true,
         "group": "DSL 4.0 チュートリアル"

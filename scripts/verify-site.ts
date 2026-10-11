@@ -322,10 +322,9 @@ export async function verifyPublishedSite(options: VerifyPublishedSiteOptions = 
   assert.equal(manifest.dsl4Offline.path, 'urashima-4.0.sb3');
   assert.equal(manifest.dsl4Offline.sourceAssetCount, 49);
   assert.equal(manifest.dsl4Offline.embeddedFileCount, 55);
-  assert.equal(
-    manifest.dsl4Offline.runtimeCommit,
-    '9fdf447bf7995617dab3112f6a80fd3462e0e4e0',
-  );
+  // The pinned builder commit is written once, in the build configuration. Restating it here
+  // as a literal meant a repin had to edit this file too, so it is read from there instead.
+  assert.equal(manifest.dsl4Offline.runtimeCommit, dsl4Config.runtime.commit);
   assert.deepEqual(manifest.dsl4Offline.sb3Toolchain, {
     package: '@kubohiroya/sb3-toolchain',
     version: '0.9.0',
@@ -622,11 +621,23 @@ export async function verifyPublishedSite(options: VerifyPublishedSiteOptions = 
     for (const formatLabel of ['YAML台本', '台本埋め込みSB3', 'ブロック台本SB3', 'Web版']) {
       assert(formatsPage.includes(formatLabel), `${label} is missing ${formatLabel}.`);
     }
+  }
+  // ブロック台本SB3はtutorialと浦島太郎が提供する（issue #132 段階2、issue #149）。
+  for (const [formatsPage, href, label] of [
+    [tutorialIndex, 'tutorial-blocks-4.0.sb3', 'tutorial detail'],
+    [urashimaCard, 'stories/urashima/urashima-blocks-4.0.sb3', 'urashima card'],
+    [sampleIndex, 'urashima-blocks-4.0.sb3', 'urashima detail'],
+  ] as const) {
     assert(
-      formatsPage.includes('ブロック台本SB3：未提供'),
-      `${label} must state that the block source SB3 is unavailable.`,
+      formatsPage.includes(`<a href="${href}">ブロック台本SB3</a>`),
+      `${label} must link its block source SB3.`,
     );
   }
+  // my-urashimaは作業用SB3とほぼ同一の複製になるため提供しない。理由は表示したままにする。
+  assert(
+    myUrashimaIndex.includes('ブロック台本SB3：未提供'),
+    'the workshop work must state why it provides no block source SB3.',
+  );
   assert(
     myUrashimaIndex.includes('台本埋め込みSB3：未提供'),
     'the workshop work must state why it embeds no script.',
