@@ -8,6 +8,15 @@ controls:
       ArrowDown: rehearsal.skipScene
 
 assets:
+  CameraMirrorToMirrored:
+    kind: image
+    file: camera-mirror-to-mirrored.svg
+  CameraMirrorToUnmirrored:
+    kind: image
+    file: camera-mirror-to-unmirrored.svg
+  CameraSelect:
+    kind: image
+    file: camera-select.svg
   Classroom:
     kind: backdrop
     file: classroom.svg
@@ -41,6 +50,17 @@ recognition:
     allowSkip: true
   preview:
     mirroring: mirrored
+    controls:
+      mirroring:
+        position: top-right
+        opacity: 0.85
+        assets:
+          showMirrored: CameraMirrorToMirrored
+          showUnmirrored: CameraMirrorToUnmirrored
+      cameraMenu:
+        position: top-left
+        opacity: 0.85
+        buttonAsset: CameraSelect
     overlay:
       visible: true
       jointStyles:

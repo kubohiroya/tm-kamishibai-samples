@@ -41,3 +41,8 @@ sourceから成果物を再現してブラウザー検証し、`dist/`と作品�
 公開条件にしません。問題時はフラグをOFFへ戻して4.0チュートリアルの公開導線だけを停止し、既存3.2成果物を維持します。
 
 完成版とaddition kitは`poseRecognition.preview.overlay`を使い、手首ジョイントとボーンをカメラ映像へ重ねて表示します。これはTeachable Machine拡張のoverlay APIを利用する例です。
+
+あわせて`poseRecognition.preview.controls`も宣言し、カメラ映像の左右反転ボタン（右上）とカメラ選択メニュー（左上）を
+出します。描くのはapp shellの固定rendererで、作品側はアイコンと位置を指定するだけです。アイコンは`kind: image`の
+素材として台本に宣言します（スプライトのコスチュームではないので`project-assets-dsl4.yml`には置きません）。
+カメラが動いている間だけ表示され、カメラを止めると消えます。
