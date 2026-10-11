@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "status": "published",
-  "version": "4.0.0-rc.10",
-  "releaseDependency": "https://github.com/kubohiroya/turbowarp-kamishibai-app/releases/tag/v4.0.0-rc.10",
+  "version": "4.0.0-rc.14",
+  "releaseDependency": "https://github.com/kubohiroya/turbowarp-kamishibai-app/releases/tag/v4.0.0-rc.14",
   "runtime": {
     "config": "../urashima/dsl4-build.config.json"
   },
@@ -26,7 +26,7 @@
   },
   "publication": {
     "enabled": true,
-    "reason": "TurboWarp-Kamishibai 4.0.0-rc.10 release artifacts are published and integrity-verified",
+    "reason": "TurboWarp-Kamishibai 4.0.0-rc.14 release artifacts are published and integrity-verified",
     "issue": "https://github.com/kubohiroya/turbowarp-kamishibai-samples/issues/125"
   },
   "webArtifactsLock": "dsl4-web-artifacts.lock.json",

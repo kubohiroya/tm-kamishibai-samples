@@ -25,7 +25,12 @@ test('builds a deterministic published SB3 and tutorial distribution archives', 
     readFile(path.join(storyDirectory, 'public-surfaces.json'), 'utf8').then(JSON.parse),
   ]);
   assert.equal(build.artifactLock.status, 'published');
-  assert.equal(build.artifactLock.version, '4.0.0-rc.10');
+  // 宣言しているリリースは、ビルドに使った runtime ピンそのものでなければならない。
+  assert.equal(build.artifactLock.version, build.artifactLock.runtime.version);
+  assert.equal(
+    build.artifactLock.releaseDependency,
+    `${build.artifactLock.runtime.repository}/releases/tag/v${build.artifactLock.runtime.version}`,
+  );
   assert.equal(build.artifactLock.publication.enabled, true);
   assert.equal(build.artifactLock.publication.reason, config.publication.reason);
   assert.equal(config.work.thumbnail.src, 'stories/tutorial/card-scenes.gif');
